@@ -1,3 +1,7 @@
+/*
+This work is licensed under the Creative Commons Attribution - Pas dâ€™Utilisation Commerciale - Partage dans les MÃªmes Conditions 3.0 France License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
+*/
+
 #include <Drawbot.h>
 
 Draw::Draw(float surfaceL, float surfaceH, char * nomFichier)
@@ -47,7 +51,7 @@ void Draw::commencer(void)
 	Serial.println(this->surfaceH);
 
 	// fixe les limites par defaut que le stylo ne franchira pas
-	// pour chaque coté de la surface
+	// pour chaque cotÃ© de la surface
 	setlimG(180);
 	setlimD(180);
 	setlimH(250);
@@ -64,23 +68,23 @@ void Draw::commencer(void)
 
 	setRatioDist(1.00);
 
-	// calcul de la longueur des fils au début
+	// calcul de la longueur des fils au dÃ©but
 	this->aG = filG(this->aX, this->aY);
 	this->aD = filD(this->aX, this->aY);
 
-	// le point de départ de la 1ere figure est le point courant
+	// le point de dÃ©part de la 1ere figure est le point courant
 	this->ptDepartX = this->aX;
 	this->ptDepartY = this->aY;
 
 	setRatioVitesse(1.00);
 	
-	// une petite vitesse par défaut
-	// pour que le moteur bouge même si on ne spécifie rien
+	// une petite vitesse par dÃ©faut
+	// pour que le moteur bouge mÃªme si on ne spÃ©cifie rien
 	setVitesse(10);
 
-	// *** envoi des données d'initialisation ***
+	// *** envoi des donnÃ©es d'initialisation ***
 
-	// caractère pour commencer l'init
+	// caractÃ¨re pour commencer l'init
 	Serial.print('\t');
 	
 	Serial.print(this->surfaceL);
@@ -105,7 +109,7 @@ void Draw::commencer(void)
 	Serial.print(',');
 	Serial.print(this->limB);
 	
-	// caractère de fin d'init
+	// caractÃ¨re de fin d'init
 	Serial.println();
 
 	// si on est en mode SVG
@@ -142,7 +146,7 @@ void Draw::commencer(void)
 	else
 	{
 		// calcule le ratio pour le rapport pas/distance
-		// setRatioDist(1.00); déplaçé plus haut
+		// setRatioDist(1.00); dÃ©plaÃ§Ã© plus haut
 	}
 
 	// associe le servo-moteur au bon pin
@@ -186,7 +190,7 @@ void Draw::setlimG(float limG)
 {
 	this->limG = limG;
 
-	// mise à jour de la largeur
+	// mise Ã  jour de la largeur
 	this->largeur = this->surfaceL - this->limG - this->limD;
 }
 
@@ -194,7 +198,7 @@ void Draw::setlimD(float limD)
 {
 	this->limD = limD;
 
-	// mise à jour de la largeur
+	// mise Ã  jour de la largeur
 	this->largeur = this->surfaceL - this->limG - this->limD;
 }
 
@@ -202,7 +206,7 @@ void Draw::setlimH(float limH)
 {
 	this->limH = limH;
 
-	// mise à jour de la hauteur
+	// mise Ã  jour de la hauteur
 	this->hauteur = this->surfaceH - this->limH - this->limB;
 }
 
@@ -210,7 +214,7 @@ void Draw::setlimB(float limB)
 {
 	this->limB = limB;
 
-	// mise à jour de la hauteur
+	// mise Ã  jour de la hauteur
 	this->hauteur = this->surfaceH - this->limH - this->limB;
 }
 
@@ -224,7 +228,7 @@ void Draw::setaXY(float aX, float aY)
 // xx(pas)/ratio --> xx(mm)
 void Draw::setRatioDist(float ratioDist)
 {
-	// ratio calculé en fonction du diametre moteur et du nb de pas
+	// ratio calculÃ© en fonction du diametre moteur et du nb de pas
 	// *2 car en mode demi-pas il faut 2 fois plus de pas
 	this->ratioDist = ratioDist * float(NBPAS*2) / (3.1415*DIAMETRE);
 }
@@ -234,7 +238,7 @@ void Draw::setRatioVitesse(float ratioVitesse)
 	this->ratioVitesse = ratioVitesse;
 }
 
-// renvoie la longueur du fil (en pas) en fonction de la position donnée (en mm)
+// renvoie la longueur du fil (en pas) en fonction de la position donnÃ©e (en mm)
 long Draw::filG(float x, float  y)
 {
 	return sqrt ( pow((x + this->limG) * this->ratioDist, 2)
@@ -259,10 +263,10 @@ void Draw::alimenter(bool alimenter)
 	else
 	{
 		this->masqueAlim = B0000;
-		// éloigne le stylo avant de couper tout
+		// Ã©loigne le stylo avant de couper tout
 		ecrire(false);
 		
-		// Processing: b=désalimenter
+		// Processing: b=dÃ©salimenter
 		Serial.print('b');
 	}
 
@@ -271,7 +275,7 @@ void Draw::alimenter(bool alimenter)
 
 }
 
-// approche ou eloigne le stylo pour écrire ou non
+// approche ou eloigne le stylo pour Ã©crire ou non
 void Draw::ecrire(bool ecrireOk)
 {
 	// si on veut ecrire et que le stylo n'ecrit pas
@@ -308,22 +312,22 @@ void Draw::ligne(float bX, float bY, bool ecrit)
 	// aG, aD: Longueur actuelle des fils.
 
 	// bX, bY: position du point de destination.
-	// bG, bD: Longueur des fils à la destination.
+	// bG, bD: Longueur des fils Ã  la destination.
 
-	// nbPasG, nbPasD: Nombre de pas à faire pour aller à destination.
+	// nbPasG, nbPasD: Nombre de pas Ã  faire pour aller Ã  destination.
 
 	// delaiG, delaiD: Delai avant chaque pas.
 
-	// 1) on calcule la longueur des fils à la destination
-	// 2) on fait la différence par rapport à la longueur actuelle
-	// 3) Calcule le délai en fonction du rapport de longeur des fils
+	// 1) on calcule la longueur des fils Ã  la destination
+	// 2) on fait la diffÃ©rence par rapport Ã  la longueur actuelle
+	// 3) Calcule le dÃ©lai en fonction du rapport de longeur des fils
 
 	// stoque la position voulue
-	// avant qu'elle soit modifiée par les limites
+	// avant qu'elle soit modifiÃ©e par les limites
 	this->aXf = bX;
 	this->aYf = bY;
 
-	// contrôle des limites, n'ecris pas si en dehors
+	// contrÃ´le des limites, n'ecris pas si en dehors
 	if (bX < 0 || bX > this->largeur || bY < 0 || bY > this->hauteur)
 	{
 		if (bX < 0)
@@ -339,7 +343,7 @@ void Draw::ligne(float bX, float bY, bool ecrit)
 	}
 	else
 	{
-		// s'il est dedans et qu'il doit ecrire, écrit
+		// s'il est dedans et qu'il doit ecrire, Ã©crit
 		if (ecrit)
 		{
 			ecrire(true);
@@ -348,11 +352,11 @@ void Draw::ligne(float bX, float bY, bool ecrit)
 			ecrire(false);
 	}
 
-	// longueur fils à la destination (en pas)
+	// longueur fils Ã  la destination (en pas)
 	long bG = filG(bX, bY);
 	long bD = filD(bX, bY);
 
-	// nombre de pas à faire
+	// nombre de pas Ã  faire
 	long nbPasG = bG-this->aG;
 	long nbPasD = bD-this->aD;
 
@@ -397,7 +401,7 @@ void Draw::ligne(float bX, float bY, bool ecrit)
 
 	while(nbPasG > 0 || nbPasD > 0)
 	{
-		// si le delai est franchi et qu'il reste des pas à faire
+		// si le delai est franchi et qu'il reste des pas Ã  faire
 		if ((nbPasG > 0) && (micros() - dernierTempsG >= delaiG))
 		{
 			// stoque le temps actuel dans lastTimer
@@ -409,7 +413,7 @@ void Draw::ligne(float bX, float bY, bool ecrit)
 			// decremente le nb de pas restants
 			nbPasG--;
 			
-			// on écrit que sur les 4 bits & coupe tout si c'est pas alimenté & le code de déplacement
+			// on Ã©crit que sur les 4 bits & coupe tout si c'est pas alimentÃ© & le code de dÃ©placement
 			PORTC = B001111 & tabMot[this->aG%8];
 
 			// Processing: f=motG-- ; h=motG++
@@ -427,7 +431,7 @@ void Draw::ligne(float bX, float bY, bool ecrit)
 			// decremente le nb de pas restants
 			nbPasD--;
 
-			// on écrit que sur les 4 bits & coupe tout si c'est pas alimenté & le code de déplacement
+			// on Ã©crit que sur les 4 bits & coupe tout si c'est pas alimentÃ© & le code de dÃ©placement
 			PORTD = B00111100 & (tabMot[this->aD%8] << 2);
 
 			// Processing: c=motD-- ; e=motD++
@@ -472,7 +476,7 @@ void Draw::ligneABS(float x, float y)
 	}
 	
 	// si c'est une petite longueur, on y va directement
-	// et puis pour finir au cas ou ça tombe pas juste avec les boucles
+	// et puis pour finir au cas ou Ã§a tombe pas juste avec les boucles
 	ligne(x, y, true);
 }
 
@@ -547,7 +551,7 @@ void Draw::bezierCubABS(float x1, float y1, float x2, float y2, float x, float y
 		ligne(ptx, pty, true);
 	}
 	
-	// finit le dernier trajet au cas ou ça ne tombe pas juste
+	// finit le dernier trajet au cas ou Ã§a ne tombe pas juste
 	ligne(x, y, true);
 
 	this->ptBezierQuadX = 0;
@@ -640,17 +644,17 @@ void Draw::bezierQuadREL(float x, float y)
 
 void Draw::arcABS(float a1, float a2, float a3, float a4, float a5, float a6, float a7)
 {
-	// à compléter
+	// Ã  complÃ©ter
 }
 
 void Draw::arcREL(float a1, float a2, float a3, float a4, float a5, float a6, float a7)
 {
-	// à compléter
+	// Ã  complÃ©ter
 }
 
 void Draw::ellipse(float rx, float ry)
 {
-	// ratio pour déterminer
+	// ratio pour dÃ©terminer
 	// la distance du point de controle en fonction du rayon
 	float k = 0.551915;
 
@@ -658,7 +662,7 @@ void Draw::ellipse(float rx, float ry)
 	float x = this->aX;
 	float y = this->aY;
 
-	// se déplace à gauche du cercle
+	// se dÃ©place Ã  gauche du cercle
 	deplacerABS(x-rx, y);
 
 	bezierCubABS(x-rx,y-ry*k , x-rx*k,y-ry , x,y-ry);
@@ -681,7 +685,7 @@ void Draw::cercle(float r)
 
 int Draw::initSD(char * nomFichier)
 {
-	// pin 10 en sortie pour etre sur qu'il ne sera pas utilisé
+	// pin 10 en sortie pour etre sur qu'il ne sera pas utilisÃ©
 	pinMode(PIN_CS, OUTPUT);
 
 	if (!SD.begin(PIN_CS))
@@ -711,22 +715,22 @@ void Draw::val(const char * requette, char * valeur)
 	// valeur: valeur de la requette
 	// ex: (21cm) ou (fill:none;stroke:#000000)
 
-	// crée une chaine de la meme taille que valeur (+2 pour (=") )
+	// crÃ©e une chaine de la meme taille que valeur (+2 pour (=") )
 	char requ[strlen(requette)+2];
 	
 	char car = ' ';
 	int i = 0;
 	
-	// copie la chaine cherchée et ajoute le (=")	
+	// copie la chaine cherchÃ©e et ajoute le (=")	
 	strcpy(requ, requette);
 	strcat(requ, "=\"");
 
-	// se positionne à la fin de la requette cherchée + (=")
-	// pour récupérer la valeur de la requette
+	// se positionne Ã  la fin de la requette cherchÃ©e + (=")
+	// pour rÃ©cupÃ©rer la valeur de la requette
 	trouveSD(requ);
 	
-	// tant qu'il y a qqch à lire
-	// et qu'on n'est pas rendu au (") correspondant à la fin de la valeur
+	// tant qu'il y a qqch Ã  lire
+	// et qu'on n'est pas rendu au (") correspondant Ã  la fin de la valeur
 	while( this->fichier.available() && car != '"')
 	{
 		// lis
@@ -743,15 +747,15 @@ void Draw::val(const char * requette, char * valeur)
 }
 
 // Renvoie la valeur du nombre.
-// Pre-condition : Le curseur doit être positionné au début d'un nombre
-// Parcours le nombre jusqu'au prochain caractère qui n'est pas un chiffre.
+// Pre-condition : Le curseur doit Ãªtre positionnÃ© au dÃ©but d'un nombre
+// Parcours le nombre jusqu'au prochain caractÃ¨re qui n'est pas un chiffre.
 // Converti le nombre en float
 
 bool Draw::estChiffre(char car)
 {
 	int i;
 
-	// caractères considérés comme étant des chiffres
+	// caractÃ¨res considÃ©rÃ©s comme Ã©tant des chiffres
 	const char * chiffres = "-.0123456789";
 
 	// parcours le tableau de chiffres
@@ -762,22 +766,22 @@ bool Draw::estChiffre(char car)
 			return true;
 	}
 	
-	// si on est là c'est qu'aucun chiffre n'a été trouvé, renvoie faux
+	// si on est lÃ  c'est qu'aucun chiffre n'a Ã©tÃ© trouvÃ©, renvoie faux
 	return false;
 }
 
 float Draw::valNb(const char * requette)
 {
-	// nombre de max 20 caractères
+	// nombre de max 20 caractÃ¨res
 	char chaine[20+1];
 
-	// se positionne en début de fichier
+	// se positionne en dÃ©but de fichier
 	this->fichier.seek(0);
 
 	// recuperation des valeurs sous forme de chaine
 	val(requette, chaine);
 
-	// unité de mesure de la valeur : (cm) ou (mm)
+	// unitÃ© de mesure de la valeur : (cm) ou (mm)
 	char unite[3];
 
 	// chaine contenant le nombre : (-3456.345)
@@ -819,7 +823,7 @@ float Draw::valNb(const char * requette)
 	// converti la chaine en float
 	nbFl = atof(nbCh);
 
-	// On converti les unités en px (unités utilisateur) :
+	// On converti les unitÃ©s en px (unitÃ©s utilisateur) :
 
 	// px (aucun changement)
 	if (!strcmp(unite, "px"))
@@ -845,7 +849,7 @@ float Draw::valNb(const char * requette)
 	else if (!strcmp(unite, "in"))
 		nbFl *= 90;
 
-	// si l'unité n'est pas spécifiée, c'est l'unité utilisateur par défaut
+	// si l'unitÃ© n'est pas spÃ©cifiÃ©e, c'est l'unitÃ© utilisateur par dÃ©faut
 	else
 		nbFl *= 1;
 
@@ -857,19 +861,19 @@ boolean Draw::trouveSD(const char * mot)
 	int i = 0;
 	char car;
 		
-	// tant qu'il y a qqch à lire
+	// tant qu'il y a qqch Ã  lire
 	while( this->fichier.available() )
 	{
 		car = this->fichier.read();
 		
-		// si le caractère correspond, passe au suivant
+		// si le caractÃ¨re correspond, passe au suivant
 		if (car == mot[i])
 		{
 			i++;
 
-			// si fin du mot (mot trouvé)
+			// si fin du mot (mot trouvÃ©)
 			if(mot[i] == '\0')
-				// on s'est bien positionné, opération réeussie! :)
+				// on s'est bien positionnÃ©, opÃ©ration rÃ©eussie! :)
 				return true;
 		}
 		// si un des car. n'est pas bon on reprends depuis le debut
@@ -877,7 +881,7 @@ boolean Draw::trouveSD(const char * mot)
 			i=0;
 	}
 
-	// si on est là c'est qu'on a pas trouvé le mot, fail!
+	// si on est lÃ  c'est qu'on a pas trouvÃ© le mot, fail!
 	return false;
 }
 
@@ -885,25 +889,25 @@ void Draw::dessiner(void)
 {
 	char car;
 
-	// tableau contenant les valeurs à lançer dans la requette
+	// tableau contenant les valeurs Ã  lanÃ§er dans la requette
 	// (max 7 valeurs avec la fonction arc() )
 	float tNb[7];
 
-	// tant qu'il y a qqch à lire
+	// tant qu'il y a qqch Ã  lire
 	while( this->fichier.available() )
 	{
 		car = this->fichier.read();
 
-		// Appelle les fonctions de dessin svg en fonction du caractère détecté
+		// Appelle les fonctions de dessin svg en fonction du caractÃ¨re dÃ©tectÃ©
 		switch (car)
 		{
 			// deplacerABS (2 args)
 			case 'M':
-				// lis les paramètres tant qu'il y a des nombres
+				// lis les paramÃ¨tres tant qu'il y a des nombres
 				do
 				{
-					// la fonction deplacerABS() attends 2 paramètres
-					// on les récupère sous forme de tableau (tNb)
+					// la fonction deplacerABS() attends 2 paramÃ¨tres
+					// on les rÃ©cupÃ¨re sous forme de tableau (tNb)
 					params(tNb, 2);
 
 					// appel de la fonction
@@ -1096,8 +1100,8 @@ void Draw::dessiner(void)
 				while ( estChiffre(this->fichier.peek()) );
 			break;
 			
-			// si on détecte la fin du contenu de "d"
-			// on a parcouru toute les données, ça a reeussi !!
+			// si on dÃ©tecte la fin du contenu de "d"
+			// on a parcouru toute les donnÃ©es, Ã§a a reeussi !!
 			case '"':
 				// On ferme le fichier
 				this->fichier.close();
@@ -1105,7 +1109,7 @@ void Draw::dessiner(void)
 				return;
 			break;
 			
-			// si ce n'est pas une lettre de déplacement
+			// si ce n'est pas une lettre de dÃ©placement
 			default:
 				// Serial.print(car);
 			break;
@@ -1113,7 +1117,7 @@ void Draw::dessiner(void)
 	
 	}
 
-	// si on est là c'est qu'on a parcouru tout le fichier
+	// si on est lÃ  c'est qu'on a parcouru tout le fichier
 	// sans trouver le (") de fin de la balise (d) : fail
 
 	// Err. 11 : Le fichier svg est incomplet.
@@ -1123,19 +1127,19 @@ void Draw::dessiner(void)
 
 void Draw::svg(void)
 {
-	// si on est pas en mode svg, on a rien à faire ici,
+	// si on est pas en mode svg, on a rien Ã  faire ici,
 	// donc on renvoie un erreur.
 	if (!modeSVG)
 	{
-		// Err. 10 : Tentative d'utilisation d'un fichier SVG qui n'a pas été initialisé.
+		// Err. 10 : Tentative d'utilisation d'un fichier SVG qui n'a pas Ã©tÃ© initialisÃ©.
 		Serial.print("E10");
 		return;
 	}
 
-	// se positionne en début de fichier
+	// se positionne en dÃ©but de fichier
 	this->fichier.seek(0);
 
-	// Se positionne jusqu'à la balise SVG
+	// Se positionne jusqu'Ã  la balise SVG
 	// Si on ne la trouve pas, on renvoie une erreur
 	if (! trouveSD("<svg") )
 	{
@@ -1144,16 +1148,16 @@ void Draw::svg(void)
 		return;
 	}
 
-	// Se positionne jusqu'à la balise PATH
+	// Se positionne jusqu'Ã  la balise PATH
 	// Si on ne la trouve pas, on renvoie une erreur
 	if (! trouveSD("<path") )
 	{
-		// Err. 13 : Le fichier svg n'inclut aucune donnée de dessin.
+		// Err. 13 : Le fichier svg n'inclut aucune donnÃ©e de dessin.
 		Serial.print("E13");
 		return;
 	}
 
-	// tant que l'on trouve le début des données d'un traçé, on dessine
+	// tant que l'on trouve le dÃ©but des donnÃ©es d'un traÃ§Ã©, on dessine
 	while ( trouveSD("d=\"") )
 	{
 		dessiner();
@@ -1162,7 +1166,7 @@ void Draw::svg(void)
 
 void Draw::params(float * tNb, int nbParams)
 {
-	// chaine qui va contenir le nombre à convertir en float
+	// chaine qui va contenir le nombre Ã  convertir en float
 	// ex: (23456.43532)
 	char valeur[20];
 

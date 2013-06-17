@@ -1,3 +1,7 @@
+/*
+This work is licensed under the Creative Commons Attribution - Pas dâ€™Utilisation Commerciale - Partage dans les MÃªmes Conditions 3.0 France License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
+*/
+
 #ifndef Drawbot
 #define Drawbot
 
@@ -7,20 +11,20 @@
 
 #include "Arduino.h"
 
-// définition des pins
+// dÃ©finition des pins
 #define PIN_CS 10
 #define PIN_SERVO A5
 
-// position du servo-moteur (en degrés)
-// lorsque le robot n'écrit pas (MIN) - lorsque il écrit (MAX)
+// position du servo-moteur (en degrÃ©s)
+// lorsque le robot n'Ã©crit pas (MIN) - lorsque il Ã©crit (MAX)
 #define MIN_SERVO 81
 #define MAX_SERVO 91
 
-// spécifications mécaniques du robot
+// spÃ©cifications mÃ©caniques du robot
 #define NBPAS 200
 #define DIAMETRE 20
 
-// différentes étapes des pins du moteur en mode demi-pas:
+// diffÃ©rentes Ã©tapes des pins du moteur en mode demi-pas:
 const int tabMot[8] = {B0101, B0100, B0110, B0010, B1010, B1000, B1001, B0001};
 
 class Draw {
@@ -53,55 +57,55 @@ class Draw {
 	** setters **
 	************/
 
-	// initialise la position du curseur, à n'utiliser qu'au début.
-	// Par défaut: au centre de la surface
+	// initialise la position du curseur, Ã  n'utiliser qu'au dÃ©but.
+	// Par dÃ©faut: au centre de la surface
 	void setaXY(float aX, float aY);
     
-	// initialise le ratio pour le calcul de distance, à n'utiliser qu'au début.
-	// Par défaut: 100
+	// initialise le ratio pour le calcul de distance, Ã  n'utiliser qu'au dÃ©but.
+	// Par dÃ©faut: 100
 	void setRatioDist(float ratioDist);
 
-	// initialise le ratio pour le calcul de vitesse, à n'utiliser qu'au début).
-	// Par défaut: 100
+	// initialise le ratio pour le calcul de vitesse, Ã  n'utiliser qu'au dÃ©but).
+	// Par dÃ©faut: 100
 	void setRatioVitesse(float ratioVitesse);
 
 	// initialise la vitesse du crayon
-	// Par défaut: 100
+	// Par dÃ©faut: 100
     void setVitesse(float vitesse);
 
-	// initialise les limites que le crayon ne franchira pas, de chaque cotés de la surface
-	// Limite haute: Prévoir une bonne marge, minimum 1/10 de la hauteur de la surface, 
-	// pour éviter que le crayon ne se fasse pas tirer dans 2 sens opposés.
-	// Une valeur proche de 0 entrainerait un traçé imprécis et risquerait de déteriorer le crayon.
-	// Limite gauche et droite: Prévoir une légère marge pour qu'aucune des 2 chaines ne soient
-	// jamais à la verticale (dans ce cas l'autre chaine ne serait pas tendue).
-	void setlimG(float limG);	// Par défaut: 10
-	void setlimD(float limD);	// Par défaut: 10
-	void setlimH(float limH);	// Par défaut: 50
-	void setlimB(float limB);	// Par défaut: 10
+	// initialise les limites que le crayon ne franchira pas, de chaque cotÃ©s de la surface
+	// Limite haute: PrÃ©voir une bonne marge, minimum 1/10 de la hauteur de la surface, 
+	// pour Ã©viter que le crayon ne se fasse pas tirer dans 2 sens opposÃ©s.
+	// Une valeur proche de 0 entrainerait un traÃ§Ã© imprÃ©cis et risquerait de dÃ©teriorer le crayon.
+	// Limite gauche et droite: PrÃ©voir une lÃ©gÃ¨re marge pour qu'aucune des 2 chaines ne soient
+	// jamais Ã  la verticale (dans ce cas l'autre chaine ne serait pas tendue).
+	void setlimG(float limG);	// Par dÃ©faut: 10
+	void setlimD(float limD);	// Par dÃ©faut: 10
+	void setlimH(float limH);	// Par dÃ©faut: 50
+	void setlimB(float limB);	// Par dÃ©faut: 10
 	
 	/*****************
 	** alimentation **
 	*****************/
 	
-	// alimente ou désalimente le moteur.
-	// Attention, selon le poids du crayon, la désalimentation peut entrainer la chute du robot.
+	// alimente ou dÃ©salimente le moteur.
+	// Attention, selon le poids du crayon, la dÃ©salimentation peut entrainer la chute du robot.
 	void alimenter(bool alimenter);
 
-	// obligatoire, à placer en début de programme:
-	// réalise les procédures d'initialisation nécessaires au fonctionnement du robot.
+	// obligatoire, Ã  placer en dÃ©but de programme:
+	// rÃ©alise les procÃ©dures d'initialisation nÃ©cessaires au fonctionnement du robot.
 	void commencer(void);
     
 	/*****************
 	** deplacements **
 	*****************/
 
-	// Quasiment toutes ces fonctions sont doublée,
-	// de manière à effectuer le traçé: 
+	// Quasiment toutes ces fonctions sont doublÃ©e,
+	// de maniÃ¨re Ã  effectuer le traÃ§Ã©: 
 	// - en position absolue (ABS)
 	// - en position relative (REL)
 
-	// deplacements (sans écrire)
+	// deplacements (sans Ã©crire)
 
 	// place le crayon au point [x, y]
 	void deplacerABS(float x, float y);
@@ -116,47 +120,47 @@ class Draw {
 	void ligneABS(float x, float y);
 	void ligneREL(float x, float y);
 	
-	// fini le traçé courant:
-	// Revient au point cible du dernier déplacement.
+	// fini le traÃ§Ã© courant:
+	// Revient au point cible du dernier dÃ©placement.
 	// Ceci permet de faire des formes "finies"
 	void finir(void);
 
 	// lignes horizontales/verticales
 
-	// trace une ligne horizontale sur toute la largeur de la surface, à la coordonée y.
+	// trace une ligne horizontale sur toute la largeur de la surface, Ã  la coordonÃ©e y.
 	void horizABS(float y);
 	void horizREL(float y);
 
 	// trace une ligne verticale sur toute la hauteur de la surface,
-	// à la coordonée x.
+	// Ã  la coordonÃ©e x.
 	void vertiABS(float x);
 	void vertiREL(float x);
 
 	// courbes de Bezier cubiques
 	
-	// trace une courbe de Bézier cubique
+	// trace une courbe de BÃ©zier cubique
 	// dont les points de controle P1 et P2 sont respectivement
 	// en [x1, y1] et [x2, y2],
 	// et dont le point de destination est en [x, y].
 	void bezierCubABS(float x, float y, float x1, float y1, float x2, float y2);
 	void bezierCubREL(float x, float y, float x1, float y1, float x2, float y2);
 
-	// idem, le point de controle P1 est l'image du point P2 de la dernière courbe de Bézier
-	// (cubique ou quadratique) par symétrie avec le point courant.
-	// Si la dernière figure n'était pas une courbe de Bézier, il correspond au point courant.
+	// idem, le point de controle P1 est l'image du point P2 de la derniÃ¨re courbe de BÃ©zier
+	// (cubique ou quadratique) par symÃ©trie avec le point courant.
+	// Si la derniÃ¨re figure n'Ã©tait pas une courbe de BÃ©zier, il correspond au point courant.
 	void bezierCubABS(float x, float y, float x2, float y2);
 	void bezierCubREL(float x, float y, float x2, float y2);
 
 	//courbes de Bezier quadratiques
 
-	// trace une courbe de Bézier quadratique dont le point de controle P1 est en [x1, y1]
+	// trace une courbe de BÃ©zier quadratique dont le point de controle P1 est en [x1, y1]
 	// et dont le point de destination est en [x, y].
 	void bezierQuadABS(float x, float y, float x1, float y1);
 	void bezierQuadREL(float x, float y, float x1, float y1);
 
-	// idem, le point de controle est l'image du point de controle de la dernière courbe de Bézier
-	// (cubique ou quadratique) par symétrie avec le point courant.
-	// Si la dernière figure n'était pas une courbe de Bézier, il correspond au point courant.
+	// idem, le point de controle est l'image du point de controle de la derniÃ¨re courbe de BÃ©zier
+	// (cubique ou quadratique) par symÃ©trie avec le point courant.
+	// Si la derniÃ¨re figure n'Ã©tait pas une courbe de BÃ©zier, il correspond au point courant.
 	void bezierQuadABS(float x, float y);
 	void bezierQuadREL(float x, float y);
 	
@@ -182,12 +186,12 @@ class Draw {
 	
 	
 	/**********
-	** noyau ** (classe à l'origine de tout déplacement)
+	** noyau ** (classe Ã  l'origine de tout dÃ©placement)
 	**********/
 
 	Servo servo;
 
-	// ligne() n'initialise pas les variables pour les courbes Bezier, à la différence de ligneABS()
+	// ligne() n'initialise pas les variables pour les courbes Bezier, Ã  la diffÃ©rence de ligneABS()
 	void ligne(float x, float y, bool ecrit);
 	
 	/*********************
@@ -204,7 +208,7 @@ class Draw {
 	void val(const char *requette, char *valeur);
 
 	// recupere une valeur du fichier XML qui est un nombre et le converti en float,
-	// en prenant en compte les unités (cm, mm, ...)
+	// en prenant en compte les unitÃ©s (cm, mm, ...)
 	// EX: width --> 210 OU height --> 320
 	float valNb(const char *requette);
 
@@ -212,16 +216,16 @@ class Draw {
 	bool estChiffre(char car);
 
 	// trouve un mot dans le fichier
-	// renvoie faux si non trouvé (le curseur sera à la fin du mot)
+	// renvoie faux si non trouvÃ© (le curseur sera Ã  la fin du mot)
 	boolean trouveSD(const char *mot);
 
-	// récupère nbParams paramètres, les convertis en float et les stoquent dans le tableau tNb
+	// rÃ©cupÃ¨re nbParams paramÃ¨tres, les convertis en float et les stoquent dans le tableau tNb
 	void params(float *tNb, int nbParams);
 
-	// dessine les traçés en lisant le contenu du fichier .svg
+	// dessine les traÃ§Ã©s en lisant le contenu du fichier .svg
 	void dessiner(void);
 
-	// le fichier XML à lire
+	// le fichier XML Ã  lire
 	File fichier;
 
 	long filG(float x, float y);
@@ -237,7 +241,7 @@ class Draw {
 	// masque
 	int masqueAlim;
 
-	// si ecrire est vrai, le stylo est contre la paroi, sinon il est éloigné
+	// si ecrire est vrai, le stylo est contre la paroi, sinon il est Ã©loignÃ©
 	void ecrire(bool ecrire);
 
 	//variables:
@@ -247,16 +251,16 @@ class Draw {
 	float aX;
 	float aY; // position sur le plan
 	
-	float aXf; // position voulue (fictive) avant qu'elle soit modifiée par les limites
+	float aXf; // position voulue (fictive) avant qu'elle soit modifiÃ©e par les limites
 	float aYf;
 	
 	float surfaceH;
 	float surfaceL; // taille du plan (en mm)
 	
-	float largeur; // surface où l'on peu écrire (limites comprises)
+	float largeur; // surface oÃ¹ l'on peu Ã©crire (limites comprises)
 	float hauteur;
 	
-	int nbPas; // nb de pas des moteurs (on suppose qu'ils sont de même type)
+	int nbPas; // nb de pas des moteurs (on suppose qu'ils sont de mÃªme type)
 	float diametre;
 	
 	float ratioDist; // ratio entre le nb de pas et les mm
@@ -276,7 +280,7 @@ class Draw {
 	float limG;
 	float limD;
 	float limH;
-	float limB; //limites que le stylo ne franchira pas, de chaque coté de la surface
+	float limB; //limites que le stylo ne franchira pas, de chaque cotÃ© de la surface
 };
 
 #endif
