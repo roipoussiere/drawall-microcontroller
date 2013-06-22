@@ -1,5 +1,8 @@
 /*
-This work is licensed under the Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 3.0 France License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
+This work is licensed under the Creative Commons Attribution
+- Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions
+3.0 France License. To view a copy of this license, visit
+http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 */
 
 import processing.serial.*;
@@ -7,10 +10,11 @@ import processing.serial.*;
 Serial arduino;  // le port série
 
 color colEcrire = 0;
-color colPasEcrire = #B9B79F;
+color colPasEcrire = #3969ec;
 color colLim = #EEEEEE;
 color colBarreAlim = #CCFFAF;
 color colBarreDesalim = #FFAFAF;
+color colBarreFin = #8aeda2;
 color colFond = #AAAAAA;
 color colCurseur = #FC2E31;
 
@@ -31,9 +35,11 @@ float limD;
 float limH;
 float limB;
 
-boolean alim = false;
-
-String msgErr = "";
+// -1 : desalimenté
+// 0 : alimenté
+// 1 : fin
+int etat = -1;
+String msgBarre = "";
 
 void setup()
 {
@@ -42,7 +48,7 @@ void setup()
   println(Serial.list()); // listing des ports dispos
 
   // init la communication avec l'arduino
-  arduino = new Serial(this, Serial.list()[0], 57600);
+  arduino = new Serial(this, Serial.list()[0], 9600);
   
   println("\n*** informations pré-traitement ***");
 
@@ -55,7 +61,7 @@ void setup()
   // attends la réception
   while (msg == null)
   {
-    // récupère tout jusqu'au $
+    // récupère tout jusqu'au caractère de début d'init.
     msg = arduino.readStringUntil('\t'); 
   }
 
@@ -70,7 +76,7 @@ void setup()
   
   while (msg == null)
   {
-    // récupère tout jusqu'au \n
+    // récupère tout jusqu'au caractère de fin d'init.
     msg = arduino.readStringUntil('\n');
   }
   
@@ -122,7 +128,7 @@ void draw()
   else
     eY = eX;
 
-  float debX = (width-surfaceL*eX)/2;
+  float debX = (width - surfaceL*eX)/2;
   float debY = (height - barreH - surfaceH*eY)/2;
   
   rectOut(limG*eX, limH*eY, (surfaceL-limD-limG)*eX,
@@ -148,6 +154,7 @@ void draw()
     w = ecrire
     x = pas ecrire
     E = erreur (suivi du code d'erreur)
+    _ = Message arduino
     ************************/
 
     switch(mvt)
@@ -169,37 +176,45 @@ void draw()
       break;
 
       case 'w':
+        msgBarre = "Dessin en cours...";
         stroke(colEcrire);
       break;
 
       case 'x':
+        msgBarre = "Déplacement en cours...";
         stroke(colPasEcrire);
       break;
         
       case 'a':
-        alim = true;
+        etat = 0;
         barre();
       break;
       
       case 'b':
-        alim = false;
+        etat = -1;
         barre();
       break;
 
       case 't':
         println("test");
       break;
+
+      case 'n':
+        fin();
+      break;
       
-      case '_':
-        print(arduino.readStringUntil('\0') );
+      case '>':
+        // Lis et affiche le message jusqu'au car. de fin de chaine.
+        String msg = arduino.readStringUntil('<');
+        print(msg);
       break;
       
       // Si on a envoyé une erreur
       case 'E':
-        String msg = "" + arduino.readChar() + arduino.readChar();
+        int numErr = int("" + arduino.readChar() + arduino.readChar());
         // Appelle la fonction erreur()
         // qui va afficher l'erreur en print et sur l'interface.
-        erreur( int(msg) );
+        erreur(numErr);
       break;
 
       default:
@@ -220,9 +235,15 @@ void draw()
   }
 }
 
+void fin()
+{
+  etat = 1;
+  msgBarre = "Le dessin a été reproduit avec succès.";
+  barre();
+}
+
 void erreur(int code)
 {
-         
         print("\n*** Erreur ");
         print(code);
         print(" ***\n");
@@ -230,51 +251,54 @@ void erreur(int code)
         switch (code)
         {
           case 00 :
-            msgErr = "Un caractère non-attendu a été reçu:";
+            msgBarre = "Un caractère non-attendu a été reçu:";
           break;
           
           case 01 :
-            msgErr = "Carte absente ou non reconnue.";
+            msgBarre = "Carte absente ou non reconnue.";
           break;
 
           case 02 :
-            msgErr = "Erreur d'ouverture du fichier.";
+            msgBarre = "Erreur d'ouverture du fichier.";
           break;
 
           case 10 :
-            msgErr = "Tentative d'utilisation d'un fichier SVG qui n'a pas été initialisé.";
+            msgBarre = "Tentative d'utilisation d'un fichier SVG qui n'a pas été initialisé.";
           break;
 
           case 11 :
-            msgErr = "Le fichier svg est incomplet.";
+            msgBarre = "Le fichier svg est incomplet.";
           break;
 
           case 12 :
-            msgErr = "Le fichier n'est pas un fichier svg.";
+            msgBarre = "Le fichier n'est pas un fichier svg.";
           break;
 
           case 13 :
-            msgErr = "Le fichier svg n'inclut aucune donnée de dessin.";
+            msgBarre = "Le fichier svg n'inclut aucune donnée de dessin.";
           break;
 
           default :
-            msgErr = "Erreur inconnue.";
+            msgBarre = "Erreur inconnue.";
           break;
           
         }
         
         // On imprime le descriptif de l'erreur
-        println(msgErr);  
+        print(msgBarre);
+        barre();
 }
 
 void barre()
 {
   pushStyle();
   // *** barre de statut ***
-  if(alim) // couleur de la barre en fonction de l'état du moteur
+  if(etat == 0) // couleur de la barre en fonction de l'état du robot
     fill(colBarreAlim);
-  else
+  else if(etat == -1)
     fill(colBarreDesalim);
+  else if(etat == 1)
+    fill(colBarreFin);
   
   stroke(0); // contour noir
   
@@ -282,14 +306,13 @@ void barre()
   // rectangle de la barre (écrase l'ancien texte)
   
   fill(0); // couleur du texte
-  
-  text(
-    "surface: " + round(surfaceL-limG-limD) + "x" + round(surfaceH-limH-limB) +
+  String msg = "surface: " + round(surfaceL-limG-limD) + "x" + round(surfaceH-limH-limB) +
     "  |  X: " + round(posX) + " Y:" + round(posY) +
     "  |  motG: " + motG + " motD: " + motD +
     "  |  ratio: " + ratioDist +
-    "  | " + msgErr
-  , 4, height - 3); // écriture du texte
+    "  | " + msgBarre;
+  
+  text(msg, 4, height - 3); // écriture du texte
   popStyle();
 }
 

@@ -1,36 +1,19 @@
 /*
-This work is licensed under the Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 3.0 France License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
+This work is licensed under the Creative Commons Attribution
+- Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions
+3.0 France License. To view a copy of this license, visit
+http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 */
 
 #ifndef Drawbot
 #define Drawbot
 
+#include "params.h"
+#include <Arduino.h>
 #include <math.h>
 #include <SD.h>
 #include <Servo.h> 
 
-#include "Arduino.h"
-
-// définition des pins
-#define PIN_CS 10
-#define PIN_SERVO A5
-#define PIN_PAUSE 5
-#define PIN_CLK_MOT_G 6
-#define PIN_DIR_MOT_G 7
-#define PIN_CLK_MOT_D 8
-#define PIN_DIR_MOT_D 9
-
-// position du servo-moteur (en degrés)
-// lorsque le robot n'écrit pas (MIN) - lorsque il écrit (MAX)
-#define MIN_SERVO 81
-#define MAX_SERVO 91
-
-// spécifications mécaniques du robot
-#define NBPAS 200
-#define DIAMETRE 20
-
-// différentes étapes des pins du moteur en mode demi-pas:
-const int tabMot[8] = {B0101, B0100, B0110, B0010, B1010, B1000, B1001, B0001};
 
 class Draw {
 	public:
@@ -263,6 +246,7 @@ class Draw {
 	float aXf; // position voulue (fictive) avant qu'elle soit modifiée par les limites
 	float aYf;
 	
+
 	float surfaceH;
 	float surfaceL; // taille du plan (en mm)
 	
