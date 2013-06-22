@@ -25,9 +25,6 @@ class Draw {
 	// dimentions de la surface (en mm)
 	Draw(float surfaceL, float surfaceH);
 
-	// Ajout du nom du fichier .svg si en mode svg
-	Draw(float surfaceL, float surfaceH, char *nomFichier);
-
 	/************
 	** getters **
 	************/
@@ -169,7 +166,7 @@ class Draw {
 	// trace un cercle dont le centre est les point courant et de rayon r.
 	void cercle(float r);
 	
-	void svg(void);
+	void svg(char* fileName);
 
 	
 	
@@ -191,9 +188,7 @@ class Draw {
 	*********************/
 	
 	// initialisation de la carte SD
-	int initSD(char *nomFichier);
-
-	char* nomFichier;
+	int initSD();
 
 	// recupere une valeur du fichier XML
 	// EX: width --> (21cm) OU style --> (fill:none;stroke:#000000)

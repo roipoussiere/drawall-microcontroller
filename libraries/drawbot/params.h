@@ -44,8 +44,8 @@ http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 #define MIN_SERVO 30 // position lorsque le robot n'écrit pas (en degrés)
 #define MAX_SERVO 90 // position lorsque le robot écrit (en degrés)
 
-#define DELAY_BEFORE_SERVO 500 // Pause avant chaque déplacement (en ms)
-#define DELAY_AFTER_SERVO 500 // Pause après chaque déplacement (en ms)
+#define DELAY_BEFORE_SERVO 200 // Pause avant chaque déplacement (en ms)
+#define DELAY_AFTER_SERVO 200 // Pause après chaque déplacement (en ms)
 
 // moteurs :
 

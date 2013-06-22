@@ -7,22 +7,6 @@ http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 
 #include <drawbot.h>
 
-Draw::Draw(float surfaceL, float surfaceH, char* nomFichier)
-{
-	// dimentions de la surface
-	this->surfaceL = surfaceL;
-	this->surfaceH = surfaceH;
-
-	// pour que ecrireOk() fonctionne la 1ere fois
-	this->ecrireOk = true;
-    
-    // Enregistrement du nom du fichier
-	this->nomFichier = nomFichier;
-
-	// On passe en mode de dessin svg
-	this->modeSVG = true;
-}
-
 Draw::Draw(float surfaceL, float surfaceH)
 {
 	// dimentions de la surface
@@ -31,9 +15,6 @@ Draw::Draw(float surfaceL, float surfaceH)
 
 	// pour que ecrireOk() fonctionne la 1ere fois
 	this->ecrireOk = true;
-
-	// On n'est pas en mode de dessin svg
-	this->modeSVG = false;
 }
 
 void Draw::commencer(void)
@@ -51,6 +32,9 @@ void Draw::commencer(void)
     
     // Attache le servo à son pin
     servo.attach(PIN_SERVO);
+    
+    // Initialisation carte SD
+    initSD();
     
     // alimenter(false); // moteur non-alimenté au début
     
@@ -122,42 +106,20 @@ void Draw::commencer(void)
 	
 	// caractère de fin d'init
 	Serial.print('\n');
+    
+/*	echL = this->surfaceL / valNb("width");
+	echH = this->surfaceH / valNb("height");
 
-	// si on est en mode SVG
-	if (this->modeSVG) {
-		// initialisation SD et stoque le code d'erreur
-		int err = initSD(this->nomFichier);
-
-		// S'il y a eu une erreur au constructeur,
-		// Affiche l'erreur et quitte
-		if (err != 0) {
-			Serial.print('E');
-			Serial.print('0');
-			Serial.print(err);
-			return;
-		}
-		
-
-/*		echL = this->surfaceL / valNb("width");
-		echH = this->surfaceH / valNb("height");
-
-		if (echL > echH)
-		{
-			setRatioDist(echH);
-		}
-		else
-		{
-			setRatioDist(echL);
-		}
-*/
+	if (echL > echH)
+	{
+		setRatioDist(echH);
 	}
-	// Si on est pas en mode SVG
 	else
 	{
-		// calcule le ratio pour le rapport pas/distance
-		// setRatioDist(1.00); déplaçé plus haut
+		setRatioDist(echL);
 	}
-    
+*/
+
     // Pause jusqu'à l'appui sur le BP.
     // Serial.print(">Appuyez sur le bouton pour commencer<");
 	// while(digitalRead(PIN_BP) == LOW) {}
@@ -695,7 +657,7 @@ void Draw::cercle(float r)
 * fonctions pour lire les svg *
 ******************************/
 
-int Draw::initSD(char * nomFichier)
+int Draw::initSD()
 {
 	// pin 10 en sortie pour etre sur qu'il ne sera pas utilisé
 	pinMode(PIN_CS, OUTPUT);
@@ -704,16 +666,6 @@ int Draw::initSD(char * nomFichier)
 		// Err. 01 : Carte absente ou non reconnue.
 		return 01;
 	}
-
-	// ouvre le fichier
-	this->fichier = SD.open(nomFichier);
-
-	// si erreur d'ouverture de fichier, arrete.
-	if (!this->fichier) {
-		// Err. 02 : Erreur d'ouverture de fichier.
-		return 02;
-	}
-
 	return 0;
 }
 
@@ -1112,13 +1064,13 @@ void Draw::dessiner(void)
 	return;
 }
 
-void Draw::svg(void)
+void Draw::svg(char* nomFichier)
 {
-	// si on est pas en mode svg, on a rien à faire ici,
-	// donc on renvoie un erreur.
-	if (!modeSVG) {
-		// Err. 10 : Tentative d'utilisation d'un fichier SVG qui n'a pas été initialisé.
-		Serial.print("E10");
+	this->fichier = SD.open(nomFichier);
+
+	if (!this->fichier) {
+		// Err. 02 : Erreur d'ouverture de fichier.
+		Serial.print("E02");
 		return;
 	}
 

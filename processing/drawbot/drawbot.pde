@@ -262,10 +262,6 @@ void erreur(int code)
             msgBarre = "Erreur d'ouverture du fichier.";
           break;
 
-          case 10 :
-            msgBarre = "Tentative d'utilisation d'un fichier SVG qui n'a pas été initialisé.";
-          break;
-
           case 11 :
             msgBarre = "Le fichier svg est incomplet.";
           break;
@@ -279,7 +275,7 @@ void erreur(int code)
           break;
 
           default :
-            msgBarre = "Erreur inconnue.";
+            msgBarre = "Erreur inconnue : " + code;
           break;
           
         }
