@@ -1,20 +1,17 @@
 /*
-This work is licensed under the Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 3.0 France License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
+This work is licensed under the Creative Commons Attribution
+- Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions
+3.0 France License. To view a copy of this license, visit
+http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 */
 
 #include <drawbot.h>
 
 Draw::Draw(float surfaceL, float surfaceH, char* nomFichier)
 {
-    // pins moteur en sortie
-    pinMode(PIN_DIR_MOT_G, OUTPUT);
-    pinMode(PIN_CLK_MOT_G, OUTPUT);
-    pinMode(PIN_DIR_MOT_D, OUTPUT);
-    pinMode(PIN_CLK_MOT_D, OUTPUT);
-    
 	// dimentions de la surface
-	this->surfaceL = surfaceL; //surfaceL;
-	this->surfaceH = surfaceH; //surfaceH;
+	this->surfaceL = surfaceL;
+	this->surfaceH = surfaceH;
 
 	// pour que ecrireOk() fonctionne la 1ere fois
 	this->ecrireOk = true;
@@ -28,15 +25,9 @@ Draw::Draw(float surfaceL, float surfaceH, char* nomFichier)
 
 Draw::Draw(float surfaceL, float surfaceH)
 {
-    // pins moteur en sortie
-    pinMode(PIN_DIR_MOT_G, OUTPUT);
-    pinMode(PIN_CLK_MOT_G, OUTPUT);
-    pinMode(PIN_DIR_MOT_D, OUTPUT);
-    pinMode(PIN_CLK_MOT_D, OUTPUT);
-    
 	// dimentions de la surface
-	this->surfaceL = surfaceL; //surfaceL;
-	this->surfaceH = surfaceH; //surfaceH;
+	this->surfaceL = surfaceL;
+	this->surfaceH = surfaceH;
 
 	// pour que ecrireOk() fonctionne la 1ere fois
 	this->ecrireOk = true;
@@ -46,12 +37,23 @@ Draw::Draw(float surfaceL, float surfaceH)
 }
 
 void Draw::commencer(void)
-{
-	Serial.print("surface: ");
-	Serial.print(this->surfaceL);
-	Serial.print(" * ");
-	Serial.println(this->surfaceH);
-
+{    
+    // pins en entrée
+    pinMode(PIN_BP, INPUT);
+    
+    // pins en sortie
+    pinMode(PIN_OFF_MOT, OUTPUT);
+    pinMode(PIN_DIR_MOT_G, OUTPUT);
+    pinMode(PIN_DIR_MOT_D, OUTPUT);
+    pinMode(PIN_CLK_MOT_G, OUTPUT);
+    pinMode(PIN_CLK_MOT_D, OUTPUT);
+    // pin CS au moment de la lecture de la carte
+    
+    // Attache le servo à son pin
+    servo.attach(PIN_SERVO);
+    
+    // alimenter(false); // moteur non-alimenté au début
+    
 	// fixe les limites par defaut que le stylo ne franchira pas
 	// pour chaque coté de la surface
 	setlimG(180);
@@ -62,11 +64,6 @@ void Draw::commencer(void)
 	// initialise la position du stylo au centre de la surface
 	this->aX = this->largeur / 2;
 	this->aY = this->hauteur / 2;
-
-	Serial.print("position: ");
-	Serial.print(this->aX);
-	Serial.print(" , ");
-	Serial.println(this->aY);
 
 	setRatioDist(1.00);
 
@@ -84,7 +81,19 @@ void Draw::commencer(void)
 	// pour que le moteur bouge même si on ne spécifie rien
 	setVitesse(10);
 
-	// *** envoi des données d'initialisation ***
+    // *** Affichage des informations ***
+    
+	Serial.print("surface: ");
+	Serial.print(this->surfaceL);
+	Serial.print(" * ");
+	Serial.println(this->surfaceH);
+
+	Serial.print("position: ");
+	Serial.print(this->aX);
+	Serial.print(" , ");
+	Serial.println(this->aY);
+	
+	// *** envoi des données d'initialisation à Processing ***
 
 	// caractère pour commencer l'init
 	Serial.print('\t');
@@ -112,7 +121,7 @@ void Draw::commencer(void)
 	Serial.print(this->limB);
 	
 	// caractère de fin d'init
-	Serial.println();
+	Serial.print('\n');
 
 	// si on est en mode SVG
 	if (this->modeSVG) {
@@ -148,12 +157,11 @@ void Draw::commencer(void)
 		// calcule le ratio pour le rapport pas/distance
 		// setRatioDist(1.00); déplaçé plus haut
 	}
+    
+    // Pause jusqu'à l'appui sur le BP.
+    // Serial.print(">Appuyez sur le bouton pour commencer<");
+	// while(digitalRead(PIN_BP) == LOW) {}
 
-	// associe le servo-moteur au bon pin
-	// servo.attach(PIN_SERVO);
-	pinMode(PIN_SERVO, OUTPUT);
-	digitalWrite(PIN_SERVO, LOW);
-	
 	// alimente le moteur
 	alimenter(true);
 }
@@ -254,23 +262,18 @@ long Draw::filD(float x, float  y)
 void Draw::alimenter(bool alimenter)
 {
 	if (alimenter) {
-		this->masqueAlim = B1111;
-
+	    digitalWrite(PIN_OFF_MOT, LOW);
 		// Processing: a=alimenter
 		Serial.print('a');
 	}
 	else {
-		this->masqueAlim = B0000;
+	    digitalWrite(PIN_OFF_MOT, HIGH);
 		// éloigne le stylo avant de couper tout
 		ecrire(false);
 		
 		// Processing: b=désalimenter
 		Serial.print('b');
 	}
-
-	PORTC = B001111 | this->masqueAlim;
-	PORTD = B00111100 | this->masqueAlim << 2;
-
 }
 
 // approche ou eloigne le stylo pour écrire ou non
@@ -278,12 +281,11 @@ void Draw::ecrire(bool ecrireOk)
 {
 	// si on veut ecrire et que le stylo n'ecrit pas
 	if (ecrireOk && !this->ecrireOk) {
-		// servo.write(MIN_SERVO);
-		digitalWrite(PIN_SERVO, HIGH);
-		delay(1000);
-		digitalWrite(PIN_SERVO, LOW);
-
-		// Processing: w=ecrire
+        delay(DELAY_BEFORE_SERVO);
+		servo.write(MIN_SERVO);
+        delay(DELAY_AFTER_SERVO);
+        
+		// Processing: w = ecrire
 		Serial.print('w');
 
 		this->ecrireOk = true;
@@ -291,12 +293,11 @@ void Draw::ecrire(bool ecrireOk)
 	
 	// si on ne veut pas ecrire et que le stylo ecrit
 	else if (!ecrireOk && this->ecrireOk) {
-		// servo.write(MAX_SERVO);
-		digitalWrite(PIN_SERVO, HIGH);
-		delay(1000);
-		digitalWrite(PIN_SERVO, LOW);
+        delay(DELAY_BEFORE_SERVO);
+		servo.write(MAX_SERVO);
+        delay(DELAY_AFTER_SERVO);
 
-		// Processing: x=pas ecrire	
+		// Processing: x = ne pas ecrire	
 		Serial.print('x');
 		this->ecrireOk = false;
 	}
@@ -1092,9 +1093,6 @@ void Draw::dessiner(void)
 			// si on détecte la fin du contenu de "d"
 			// on a parcouru toute les données, ça a reeussi !!
 			case '"':
-				// On ferme le fichier
-				this->fichier.close();
-
 				return;
 			break;
 			
@@ -1146,7 +1144,12 @@ void Draw::svg(void)
 	// tant que l'on trouve le début des données d'un traçé, on dessine
 	while ( trouveSD("d=\"") ) {
 		dessiner();
-	}	
+	}
+	
+	this->fichier.close();
+	this->centrer();
+	alimenter(false);
+	Serial.print("n");
 }
 
 void Draw::params(float * tNb, int nbParams)
