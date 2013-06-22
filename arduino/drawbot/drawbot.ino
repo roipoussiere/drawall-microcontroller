@@ -3,7 +3,7 @@
 
 #include <drawbot.h>
 
-Draw drawbot(1500, 1500, "drawbot.svg");
+Draw drawbot(1500, 1500);
 
 void setup() {
   Serial.begin(9600);
@@ -13,7 +13,7 @@ void setup() {
 }
 
 void loop() {
-  drawbot.svg();
+  drawbot.svg("drawbot.svg");
   
   while(true) {}
 }
