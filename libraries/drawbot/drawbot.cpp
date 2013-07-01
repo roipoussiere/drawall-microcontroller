@@ -20,17 +20,24 @@ Draw::Draw(float surfaceL, float surfaceH)
 void Draw::commencer(void)
 {    
     // pins en entrée
-    pinMode(PIN_BP, INPUT);
+    pinMode(PIN_LEFT_CAPTOR, INPUT);
+    pinMode(PIN_RIGHT_CAPTOR, INPUT);
+    pinMode(PIN_REMOTE, INPUT);
     
     // pins en sortie
-    pinMode(PIN_OFF_MOT, OUTPUT);
-    pinMode(PIN_DIR_MOT_G, OUTPUT);
-    pinMode(PIN_DIR_MOT_D, OUTPUT);
-    pinMode(PIN_CLK_MOT_G, OUTPUT);
-    pinMode(PIN_CLK_MOT_D, OUTPUT);
+    pinMode(PIN_OFF_MOTORS, OUTPUT);
+    pinMode(PIN_LEFT_MOTOR_SPEED, OUTPUT);
+    pinMode(PIN_LEFT_MOTOR_DIRECTION, OUTPUT);
+    pinMode(PIN_RIGHT_MOTOR_SPEED, OUTPUT);
+    pinMode(PIN_RIGHT_MOTOR_DIRECTION, OUTPUT);
+    pinMode(PIN_SCREEN_SCE, OUTPUT);
+    pinMode(PIN_SCREEN_RST, OUTPUT);
+    pinMode(PIN_SCREEN_DC, OUTPUT);
+    pinMode(PIN_SCREEN_SDIN, OUTPUT);
+    pinMode(PIN_SCREEN_SCLK, OUTPUT);
     // pin CS au moment de la lecture de la carte
     
-    // Attache le servo à son pin
+    // Lie le servo-moteur à son pin
     servo.attach(PIN_SERVO);
     
     // Initialisation carte SD
@@ -153,7 +160,7 @@ long Draw::getB(void)
 void Draw::setVitesse(float vitesse)
 {
 	// delai entre chaque pas, en micro-secondes
-	this->delaiBase = (this->ratioVitesse)*60000000 / (vitesse*float(NBPAS));
+	this->delaiBase = (this->ratioVitesse)*60000000 / (vitesse*float(STEPS));
 }
 
 void Draw::setlimG(float limG)
@@ -200,7 +207,7 @@ void Draw::setRatioDist(float ratioDist)
 {
 	// ratio calculé en fonction du diametre moteur et du nb de pas
 	// *2 car en mode demi-pas il faut 2 fois plus de pas
-	this->ratioDist = ratioDist * float(NBPAS*2) / (3.1415*DIAMETRE);
+	this->ratioDist = ratioDist * float(STEPS*2) / (3.1415*DIAMETER);
 }
 
 void Draw::setRatioVitesse(float ratioVitesse)
@@ -224,12 +231,12 @@ long Draw::filD(float x, float  y)
 void Draw::alimenter(bool alimenter)
 {
 	if (alimenter) {
-	    digitalWrite(PIN_OFF_MOT, LOW);
+	    digitalWrite(PIN_OFF_MOTORS, LOW);
 		// Processing: a=alimenter
 		Serial.print('a');
 	}
 	else {
-	    digitalWrite(PIN_OFF_MOT, HIGH);
+	    digitalWrite(PIN_OFF_MOTORS, HIGH);
 		// éloigne le stylo avant de couper tout
 		ecrire(false);
 		
@@ -354,15 +361,15 @@ void Draw::ligne(float bX, float bY, bool ecrit)
 	dernierTempsD = micros();
     
 	if (sensG == -1) {
-	    digitalWrite(PIN_DIR_MOT_G, true);
+	    digitalWrite(PIN_LEFT_MOTOR_DIRECTION, LEFT_DIRECTION);
 	} else if (sensG == +1) {
-	    digitalWrite(PIN_DIR_MOT_G, false);
+	    digitalWrite(PIN_LEFT_MOTOR_DIRECTION, !LEFT_DIRECTION);
 	}
 	
-	if (sensD == -1) { // changer pin
-	    digitalWrite(PIN_DIR_MOT_D, true);
-	} else if (sensG == +1) {
-	    digitalWrite(PIN_DIR_MOT_D, false);
+	if (sensD == -1) {
+	    digitalWrite(PIN_RIGHT_MOTOR_DIRECTION, RIGHT_DIRECTION);
+	} else if (sensD == +1) {
+	    digitalWrite(PIN_RIGHT_MOTOR_DIRECTION, !RIGHT_DIRECTION);
 	}
     
 	while(nbPasG > 0 || nbPasD > 0)
@@ -405,24 +412,23 @@ void Draw::ligne(float bX, float bY, bool ecrit)
 	this->aY = bY;
 }
 
+//******************************************
+// À modifier, il ne faut pas faire de pause
+//******************************************
+
 void Draw::pasG()
 {
-	// on écrit que sur les 4 bits & coupe tout si c'est pas alimenté & le code de déplacement
-	// PORTC = B001111 & tabMot[];
-	
-	digitalWrite(PIN_CLK_MOT_G, true);
+	digitalWrite(PIN_LEFT_MOTOR_SPEED, true);
 	delayMicroseconds(50);
-	digitalWrite(PIN_CLK_MOT_G, false);
+	digitalWrite(PIN_LEFT_MOTOR_SPEED, false);
 	
 }
 
 void Draw::pasD()
 {
-	// on écrit que sur les 4 bits & coupe tout si c'est pas alimenté & le code de déplacement
-	// PORTD = B00111100 & (tabMot[this->aD%8] << 2);
-	digitalWrite(PIN_CLK_MOT_D, true);
+	digitalWrite(PIN_RIGHT_MOTOR_SPEED, true);
 	delayMicroseconds(50);
-	digitalWrite(PIN_CLK_MOT_D, false);
+	digitalWrite(PIN_RIGHT_MOTOR_SPEED, false);
 }
 
 void Draw::ligneABS(float x, float y)
@@ -660,9 +666,9 @@ void Draw::cercle(float r)
 int Draw::initSD()
 {
 	// pin 10 en sortie pour etre sur qu'il ne sera pas utilisé
-	pinMode(PIN_CS, OUTPUT);
+	pinMode(PIN_SD_CS, OUTPUT);
 
-	if (!SD.begin(PIN_CS)) {
+	if (!SD.begin(PIN_SD_CS)) {
 		// Err. 01 : Carte absente ou non reconnue.
 		return 01;
 	}
