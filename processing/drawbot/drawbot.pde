@@ -159,19 +159,19 @@ void draw()
 
     switch(mvt)
     {
-      case 'f':
+      case 'l':
         motG--;
       break;
 
-      case 'h':
+      case 'L':
         motG++;
       break;
 
-      case 'c':
+      case 'r':
         motD--;
       break;
 
-      case 'e':
+      case 'R':
         motD++;
       break;
 
