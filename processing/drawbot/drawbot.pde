@@ -24,12 +24,14 @@ float mSheetWidth, mSheetHeight;
 int mLeftLength, mRightLength;
 float mScaleX;
 
+float mScale;
 float posX, posY; // position du stylo
 
 // -1 : desalimenté
 // 0 : alimenté
 // 1 : fin
 int etat = -1;
+
 int barreH = 15;
 String msgBarre = "";
 void setup()
@@ -90,7 +92,7 @@ void setup()
 
   majPos();
   println("Position : " + posX + " , " + posY);
-  println("Échelle processing : " + initScale());
+  println("Échelle processing : " + mScale);
   
   println("\n*** lancement de l'interface ***");
 
@@ -105,33 +107,31 @@ void setup()
   frame.setResizable(true);
 }
 
-float initScale()
+void initScale()
 {
   float scaleX = width / mDistanceBetweenMotors;
   float scaleY = (height - barreH) / (mSheetPositionY + mSheetHeight);
   float scale;
   
   if(scaleX > scaleY) {
-    scale = scaleY;
+    mScale = scaleY;
   } else {
-    scale = scaleX;
+    mScale = scaleX;
   }
-
-  return scale;
 }
 
 void draw() // Appelé tout le temps
 {  
-  float scale = initScale();  
+  initScale();  
   
-  float areaX = (width - mDistanceBetweenMotors * scale) / 2;
-  float areaY = (height - barreH - (mSheetPositionY + mSheetHeight) * scale) / 2;
+  float areaX = (width - mDistanceBetweenMotors * mScale) / 2;
+  float areaY = (height - barreH - (mSheetPositionY + mSheetHeight) * mScale) / 2;
   
-  rectOut(mSheetPositionX*scale, mSheetPositionY*scale,
-        mSheetWidth*scale, mSheetHeight*scale,
-        mDistanceBetweenMotors*scale, (mSheetHeight + mSheetPositionY) * scale, colLim);
+  rectOut(mSheetPositionX, mSheetPositionY,
+        mSheetWidth, mSheetHeight,
+        mDistanceBetweenMotors, mSheetHeight + mSheetPositionY, colLim);
 
-  echelle(areaX + 6, 5, scale, scale, 30, 3);
+  echelle(areaX + 6, 5, round(mSheetWidth/10));
   barre();
   
   while (arduino.available() > 0)
@@ -222,7 +222,7 @@ _ = Message arduino
     }
     
     majPos();
-    point(posX*scale + areaX, posY*scale + areaY);
+    point(posX*mScale + areaX, posY*mScale + areaY);
     
     barre();
   }
@@ -313,6 +313,13 @@ void barre()
 }
 
 void rectOut( float x, float y, float w, float h, float limL, float limH, color fillCol) {
+  x *= mScale;
+  y *= mScale;
+  w *= mScale;
+  h *= mScale;
+  limL *= mScale;
+  limH *= mScale;
+  
   pushStyle();
   noStroke();
   
@@ -341,24 +348,23 @@ void rectOut( float x, float y, float w, float h, float limL, float limH, color 
   popStyle();
 }
 
-void echelle(float x, float y, float eX, float eY, float ech, int flecheL)
+void echelle(float x, float y, float ech)
 {
   pushStyle();
   stroke(0);
   fill(0);
 
-  x = round(x);
-  y = round(y);
+  int flecheL = 3;
 
-  line(x, y, x + eX*ech, y);
-  line(x + eX*ech, y, x + eX*ech - flecheL, y - flecheL);
-  line(x + eX*ech, y, x + eX*ech - flecheL, y + flecheL);
+  line(x, y, x + mScale*ech, y);
+  line(x + mScale*ech, y, x + mScale*ech - flecheL, y - flecheL);
+  line(x + mScale*ech, y, x + mScale*ech - flecheL, y + flecheL);
   
-  line(x, y, x, y + eY*ech);
-  line(x, y + eY*ech, x - flecheL, y + eY*ech - flecheL);
-  line(x, y + eY*ech, x + flecheL, y + eY*ech - flecheL);
+  line(x, y, x, y + mScale*ech);
+  line(x, y + mScale*ech, x - flecheL, y + mScale*ech - flecheL);
+  line(x, y + mScale*ech, x + flecheL, y + mScale*ech - flecheL);
   
-  text( (ech/10) + " cm", x + 4, y + 14);
+  text( int(ech) + " mm", x + 4, y + 14);
   
   popStyle();
 }
