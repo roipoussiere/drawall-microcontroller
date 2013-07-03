@@ -22,12 +22,12 @@ file or visit http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 #define PIN_SERVO 5
 
 // moteur gauche
-#define PIN_LEFT_MOTOR_SPEED 6 // vitesse
-#define PIN_LEFT_MOTOR_DIRECTION 7 // direction
+#define PIN_LEFT_MOTOR_STEP 6 // vitesse
+#define PIN_LEFT_MOTOR_DIR 7 // direction
 
 // moteur droit
-#define PIN_RIGHT_MOTOR_SPEED 8 // vitesse
-#define PIN_RIGHT_MOTOR_DIRECTION 9 // direction
+#define PIN_RIGHT_MOTOR_STEP 8 // vitesse
+#define PIN_RIGHT_MOTOR_DIR 9 // direction
 
 // pin CS de la carte SD
 // Snootlab et Adafruit : 10 - Sparkfun : 8
@@ -60,7 +60,7 @@ file or visit http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 // moteurs :
 
 // nombre de pas
-#define STEPS 800
+#define STEPS 400
 
 // Diamètre du pignon
 #define DIAMETER 12
