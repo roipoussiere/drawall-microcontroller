@@ -7,11 +7,19 @@ http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 
 #include <drawbot.h>
 
-Draw::Draw(float surfaceL, float surfaceH)
+Draw::Draw(int distanceEntreMoteurs, int largeurFeuille, int hauteurFeuille, int posFeuilleX, int posFeuilleY)
 {
     // dimentions de la surface
-    mSheetHeight = surfaceL;
-    mSheetWidth = surfaceH;
+    
+    //***************************
+    // À placer dans l'en-tête !!
+    //***************************
+        
+    mSheetWidth = largeurFeuille;
+    mSheetHeight = hauteurFeuille;
+    mDistanceBetweenMotors = distanceEntreMoteurs;
+    mSheetPositionX = posFeuilleX;
+    mSheetPositionY = posFeuilleY;
 
     // pour que ecrireOk() fonctionne la 1ere fois
     mWriting = true;
@@ -43,20 +51,19 @@ void Draw::commencer(void)
     // Initialisation carte SD
     initSD();
     
-    // alimenter(false); // moteur non-alimenté au début
-    
-    // fixe les limites par defaut que le stylo ne franchira pas
-    // pour chaque coté de la surface
-    setlimG(180);
-    setlimD(180);
-    setlimH(250);
-    setlimB(10);
-
-    // initialise la position du stylo au centre de la surface
-    mPositionX = mAreaWidth / 2;
-    mPositionY = mAreaHeight / 2;
+    if (mDistanceBetweenMotors < mSheetWidth + mSheetPositionX) {
+        Serial.print("Erreur : La distance entre les 2 moteurs est inférieure à la largeur de la feuille + position.");
+        return;
+    }
 
     setRatioDist(1.00);
+
+    // Par défault initialise la position du stylo au centre de la surface
+    /**********************
+    * À remplacer par setPosition(CENTER);
+    ***********************/
+    mPositionX = mSheetWidth / 2;
+    mPositionY = mSheetHeight / 2;
 
     // calcul de la longueur des fils au début
     mLeftLength = filG(mPositionX, mPositionY);
@@ -74,24 +81,25 @@ void Draw::commencer(void)
 
     // *** Affichage des informations ***
     
-    Serial.print("surface: ");
-    Serial.print(mSheetHeight);
-    Serial.print(" * ");
-    Serial.println(mSheetWidth);
-
-    Serial.print("position: ");
+    Serial.print("position : ");
     Serial.print(mPositionX);
     Serial.print(" , ");
     Serial.println(mPositionY);
     
+    Serial.print("gauche : ");
+    Serial.print(mLeftLength);
+    Serial.print(" , droite : ");
+    Serial.println(mRightLength);
+
     // *** envoi des données d'initialisation à Processing ***
 
     // caractère pour commencer l'init
     Serial.print('\t');
-    
-    Serial.print(mSheetHeight);
+
+    // surfaceL, surfaceH, G, D    
+    Serial.print(mDistanceBetweenMotors);
     Serial.print(',');
-    Serial.print(mSheetWidth);
+    Serial.print(mSheetPositionY + mSheetHeight + 100);
     
     Serial.print(',');
     Serial.print(mLeftLength);
@@ -99,17 +107,17 @@ void Draw::commencer(void)
     Serial.print(mRightLength);
     
     Serial.print(',');
-    Serial.print(mScale);
+    Serial.print(mScaleX);
 
+    // limG, limD, limH, limB
     Serial.print(',');
-    Serial.print(mLeftLimit);
+    Serial.print(mSheetPositionX);
     Serial.print(',');
-    Serial.print(mRightLimit);
-
+    Serial.print(mDistanceBetweenMotors - mSheetPositionX - mSheetWidth);
     Serial.print(',');
-    Serial.print(mUpperLimit);
+    Serial.print(mSheetPositionY);
     Serial.print(',');
-    Serial.print(mLowerLimit);
+    Serial.print(100);
     
     // caractère de fin d'init
     Serial.print('\n');
@@ -163,38 +171,6 @@ void Draw::setVitesse(float vitesse)
     mDelay = (mSpeedScale)*60000000 / (vitesse*float(STEPS));
 }
 
-void Draw::setlimG(float limG)
-{
-    mLeftLimit = limG;
-
-    // mise à jour de la largeur
-    mAreaWidth = mSheetHeight - mLeftLimit - mRightLimit;
-}
-
-void Draw::setlimD(float limD)
-{
-    mRightLimit = limD;
-
-    // mise à jour de la largeur
-    mAreaWidth = mSheetHeight - mLeftLimit - mRightLimit;
-}
-
-void Draw::setlimH(float limH)
-{
-    mUpperLimit = limH;
-
-    // mise à jour de la hauteur
-    mAreaHeight = mSheetWidth - mUpperLimit - mLowerLimit;
-}
-
-void Draw::setlimB(float limB)
-{
-    mLowerLimit = limB;
-
-    // mise à jour de la hauteur
-    mAreaHeight = mSheetWidth - mUpperLimit - mLowerLimit;
-}
-
 void Draw::setaXY(float aX, float aY)
 {
     mPositionX = aX;
@@ -206,8 +182,7 @@ void Draw::setaXY(float aX, float aY)
 void Draw::setRatioDist(float ratioDist)
 {
     // ratio calculé en fonction du diametre moteur et du nb de pas
-    // *2 car en mode demi-pas il faut 2 fois plus de pas
-    mScale = ratioDist * float(STEPS*2) / (3.1415*DIAMETER);
+    mScaleX = ratioDist * float(STEPS) / (PI*DIAMETER);
 }
 
 void Draw::setRatioVitesse(float ratioVitesse)
@@ -218,14 +193,14 @@ void Draw::setRatioVitesse(float ratioVitesse)
 // renvoie la longueur du fil (en pas) en fonction de la position donnée (en mm)
 long Draw::filG(float x, float  y)
 {
-    return sqrt ( pow((x + mLeftLimit) * mScale, 2)
-    + pow((y + mUpperLimit) * mScale, 2) );
+    return sqrt ( pow((mSheetPositionX + x) * mScaleX, 2)
+    + pow((mSheetPositionY + y) * mScaleX, 2) );
 }
 
 long Draw::filD(float x, float  y)
 {
-    return sqrt ( pow((mSheetHeight - x - mLeftLimit) * mScale, 2)
-    + pow((y + mUpperLimit) * mScale, 2) );
+    return sqrt ( pow((mDistanceBetweenMotors - mSheetPositionX - x) * mScaleX, 2)
+    + pow((mSheetPositionY + y) * mScaleX, 2) );
 }
 
 void Draw::alimenter(bool alimenter)
@@ -294,15 +269,16 @@ void Draw::ligne(float bX, float bY, bool ecrit)
     mFictivePosY = bY;
 
     // contrôle des limites, n'ecris pas si en dehors
-    if (bX < 0 || bX > mAreaWidth || bY < 0 || bY > mAreaHeight) {
+    if (bX < 0 || bX > mSheetWidth || bY < 0 || bY > mSheetHeight) {
         if (bX < 0)
             bX = 0;
-        if (bX > mAreaWidth)
-            bX = mAreaWidth;
+        else if (bX > mSheetWidth)
+            bX = mSheetWidth;
+        
         if (bY < 0)
             bY = 0;
-        if (bY > mAreaHeight)
-            bY = mAreaHeight;
+        else if (bY > mSheetHeight)
+            bY = mSheetHeight;
 
         ecrire(false);
     } else {
@@ -497,13 +473,13 @@ void Draw::deplacerREL(float x, float y)
 
 void Draw::centrer(void)
 {
-    deplacerABS(mAreaWidth/2 , mAreaHeight/2);
+    deplacerABS(mSheetWidth/2 , mSheetHeight/2);
 }
 
 void Draw::horizABS(float y)
 {
     deplacerABS(0, y);
-    ligneABS(mAreaWidth, y);
+    ligneABS(mSheetWidth, y);
 }
 
 void Draw::horizREL(float y)
@@ -514,7 +490,7 @@ void Draw::horizREL(float y)
 void Draw::vertiABS(float x)
 {
     deplacerABS(x, 0);
-    ligneABS(x, mAreaHeight);
+    ligneABS(x, mSheetHeight);
 }
 
 void Draw::vertiREL(float x)
