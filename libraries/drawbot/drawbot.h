@@ -23,7 +23,7 @@ class Draw {
 	****************/
 
 	// dimentions de la surface (en mm)
-	Draw(float surfaceL, float surfaceH);
+	Draw(int distanceEntreMoteurs, int largeurFeuille, int hauteurFeuille, int posFeuilleX, int posFeuilleY);
 
 	/************
 	** getters **
@@ -48,6 +48,9 @@ class Draw {
     
 	// initialise le ratio pour le calcul de distance, à n'utiliser qu'au début.
 	// Par défaut: 100
+	/***************************************
+	* Remplacer par SetScaleX et setScaleY *
+	****************************************/
 	void setRatioDist(float ratioDist);
 
 	// initialise le ratio pour le calcul de vitesse, à n'utiliser qu'au début).
@@ -55,19 +58,7 @@ class Draw {
 	void setRatioVitesse(float ratioVitesse);
 
 	// initialise la vitesse du crayon
-	// Par défaut: 100
     void setVitesse(float vitesse);
-
-	// initialise les limites que le crayon ne franchira pas, de chaque cotés de la surface
-	// Limite haute: Prévoir une bonne marge, minimum 1/10 de la hauteur de la surface, 
-	// pour éviter que le crayon ne se fasse pas tirer dans 2 sens opposés.
-	// Une valeur proche de 0 entrainerait un traçé imprécis et risquerait de déteriorer le crayon.
-	// Limite gauche et droite: Prévoir une légère marge pour qu'aucune des 2 chaines ne soient
-	// jamais à la verticale (dans ce cas l'autre chaine ne serait pas tendue).
-	void setlimG(float limG);	// Par défaut: 10
-	void setlimD(float limD);	// Par défaut: 10
-	void setlimH(float limH);	// Par défaut: 50
-	void setlimB(float limB);	// Par défaut: 10
 	
 	/*****************
 	** alimentation **
@@ -97,6 +88,10 @@ class Draw {
 	void deplacerREL(float x, float y);
 
 	// place le crayon au centre de la surface.
+	
+	/**********************************************
+	À supprimer, remplacer par setPosition(CENTER);
+	***********************************************/
 	void centrer(void);
 
 	// lignes droite:
@@ -219,6 +214,10 @@ class Draw {
 	unsigned int mLeftLength;
 	unsigned int mRightLength;
 
+    int mDistanceBetweenMotors;
+    int mSheetPositionX;
+    int mSheetPositionY;
+    
 	// le fichier XML à lire
 	File mFile;
 
@@ -227,16 +226,14 @@ class Draw {
 	float mPositionX;
 	float mPositionY; // position sur le plan
 	
-	float mFictivePosX; // position voulue (fictive) avant qu'elle soit modifiée par les limites
+	float mFictivePosX; // position voulue (fictive) avant qu'elle ne soit modifiée par les limites
 	float mFictivePosY;	
 
 	float mSheetWidth;
 	float mSheetHeight; // taille du plan (en mm)
-	
-	float mAreaWidth; // surface où l'on peu écrire (limites comprises)
-	float mAreaHeight;
-	
-	float mScale; // ratio entre le nb de pas et les mm
+		
+	float mScaleX; // ratio entre le nb de pas et les mm
+	float mScaleY; // ratio entre le nb de pas et les mm
 	
 	float mDelay;
 	
@@ -248,12 +245,7 @@ class Draw {
 	float mCubicCurveX;
 	float mCubicCurveY;
 	float mQuadraticCurveX;
-	float mQuadraticCurveY;
-	
-	float mLeftLimit;
-	float mRightLimit;
-	float mUpperLimit;
-	float mLowerLimit; //limites que le stylo ne franchira pas, de chaque coté de la surface
+	float mQuadraticCurveY;	
 };
 
 #endif

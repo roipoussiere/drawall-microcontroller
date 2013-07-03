@@ -7,7 +7,7 @@ http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 
 import processing.serial.*;
 
-Serial arduino;  // le port série
+Serial arduino; // le port série
 
 color colEcrire = 0;
 color colPasEcrire = #3969ec;
@@ -50,11 +50,9 @@ void setup()
   // init la communication avec l'arduino
   arduino = new Serial(this, Serial.list()[0], 9600);
   
-  println("\n*** informations pré-traitement ***");
-
   // tableau récupéré sur la liason série qui contiendra:
   float tabInit[] = new float[9]; // les variables d'initialisation
-  // --> { surfaceL, surfaceH, aG, aD  }
+  // --> { surfaceL, surfaceH, aG, aD }
 
   String msg = null;
   
@@ -62,11 +60,12 @@ void setup()
   while (msg == null)
   {
     // récupère tout jusqu'au caractère de début d'init.
-    msg = arduino.readStringUntil('\t'); 
+    msg = arduino.readStringUntil('\t');
   }
 
   // on imprime les messages envoyés sur le port série
   // ils sont à titre informatifs et ne sont pas nécessaires au fonctionnement.
+  println("\n*** informations pré-traitement ***");
   print(msg);
 
   println("\n*** données d'initialisation ***");
@@ -96,18 +95,22 @@ void setup()
 
   limH = tabInit[7];
   limB = tabInit[8];
-    
+  
+  majPos();
+  
   println("surfaceL: " + surfaceL + " - surfaceH: " + surfaceH);
   println("motG: " + motG + " - motD: " + motD);
   println("ratioDist: " + ratioDist);
   println("limG: " + limG + " - limD: " + limD);
   println("limH: " + limH + " - limB: " + limB);
+  println("Position : " + posX + " , " + posY);
+  println("Test : " + (float(motG)/ratioDist) + " , " + (posX) );
   
   println("\n*** lancement de l'interface ***");
 
   // *** texte ***
   PFont maTypo = loadFont("Garuda-12.vlw"); // choix de la typo
-  textFont(maTypo, 12);  // Définition de la taille de la typo
+  textFont(maTypo, 12); // Définition de la taille de la typo
 
   // *** creation fenêtre ***
   background(colFond);
@@ -135,27 +138,28 @@ void draw()
   (surfaceH-limB-limH)*eY, surfaceL*eX, surfaceH*eY, colLim);
 
   echelle(debX + 6, 5, eX, eY, 30, 3);
-    
+  barre();
+  
   while (arduino.available() > 0)
   {
     char mvt = arduino.readChar();
     
     /************************
-    Les caractères envoyés sur le port série
-    correspondent aux différentes actions
-    à effectuer par le simulateur:
+Les caractères envoyés sur le port série
+correspondent aux différentes actions
+à effectuer par le simulateur:
 
-    f = motG--
-    h = motG++
-    c = motD--
-    e = motD++
-    a = alimenter
-    b = désalimenter
-    w = ecrire
-    x = pas ecrire
-    E = erreur (suivi du code d'erreur)
-    _ = Message arduino
-    ************************/
+f = motG--
+h = motG++
+c = motD--
+e = motD++
+a = alimenter
+b = désalimenter
+w = ecrire
+x = pas ecrire
+E = erreur (suivi du code d'erreur)
+_ = Message arduino
+************************/
 
     switch(mvt)
     {
@@ -221,18 +225,20 @@ void draw()
         erreur(0);
         print(mvt);
       break;
-      }
-
-    // calcul position en pas
-    posX = ( pow(float(motG)/ratioDist, 2) - pow(float(motD)/ratioDist, 2)
-      + pow(surfaceL, 2) ) / (2*surfaceL);
-    posY = sqrt( pow(float(motG)/ratioDist, 2) - pow(posX, 2) );
-
-    barre();
+    }
     
+    majPos();
     point(posX*eX + debX, posY*eY + debY);
-
+    
+    barre();
   }
+}
+
+void majPos()
+{
+  posX = ( pow(float(motG)/ratioDist, 2) - pow(float(motD)/ratioDist, 2)
+      + pow(surfaceL, 2) ) / (2*surfaceL);
+  posY = sqrt( pow(float(motG)/ratioDist, 2) - pow(posX, 2) );
 }
 
 void fin()
@@ -303,10 +309,10 @@ void barre()
   
   fill(0); // couleur du texte
   String msg = "surface: " + round(surfaceL-limG-limD) + "x" + round(surfaceH-limH-limB) +
-    "  |  X: " + round(posX) + " Y:" + round(posY) +
-    "  |  motG: " + motG + " motD: " + motD +
-    "  |  ratio: " + ratioDist +
-    "  | " + msgBarre;
+    " | X: " + round(posX) + " Y:" + round(posY) +
+    " | motG: " + motG + " motD: " + motD +
+    " | ratio: " + ratioDist +
+    " | " + msgBarre;
   
   text(msg, 4, height - 3); // écriture du texte
   popStyle();
@@ -364,4 +370,4 @@ void echelle(float x, float y, float eX, float eY, float ech, int flecheL)
 }
 
 // fonction pour stopper le programme (en attendant de trouver mieux...)
-void quit() {  while(true) {} }
+void quit() { while(true) {} }

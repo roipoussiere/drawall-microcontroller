@@ -59,7 +59,7 @@ file or visit http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 
 // moteurs :
 
-// nombre de pas
+// nombre de (micros-)pas
 #define STEPS 400
 
 // Diamètre du pignon
@@ -70,7 +70,7 @@ file or visit http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 #define RIGHT_DIRECTION true
 
 /*********************
-* Valeurs par défaut *
+* Autres variables *
 **********************/
 
 #define SCALE 1.0
