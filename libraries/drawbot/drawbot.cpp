@@ -10,11 +10,11 @@ http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 Draw::Draw(float surfaceL, float surfaceH)
 {
     // dimentions de la surface
-    this->surfaceL = surfaceL;
-    this->surfaceH = surfaceH;
+    mSheetHeight = surfaceL;
+    mSheetWidth = surfaceH;
 
     // pour que ecrireOk() fonctionne la 1ere fois
-    this->ecrireOk = true;
+    mWriting = true;
 }
 
 void Draw::commencer(void)
@@ -26,10 +26,10 @@ void Draw::commencer(void)
     
     // pins en sortie
     pinMode(PIN_OFF_MOTORS, OUTPUT);
-    pinMode(PIN_LEFT_MOTOR_SPEED, OUTPUT);
-    pinMode(PIN_LEFT_MOTOR_DIRECTION, OUTPUT);
-    pinMode(PIN_RIGHT_MOTOR_SPEED, OUTPUT);
-    pinMode(PIN_RIGHT_MOTOR_DIRECTION, OUTPUT);
+    pinMode(PIN_LEFT_MOTOR_STEP, OUTPUT);
+    pinMode(PIN_LEFT_MOTOR_DIR, OUTPUT);
+    pinMode(PIN_RIGHT_MOTOR_STEP, OUTPUT);
+    pinMode(PIN_RIGHT_MOTOR_DIR, OUTPUT);
     pinMode(PIN_SCREEN_SCE, OUTPUT);
     pinMode(PIN_SCREEN_RST, OUTPUT);
     pinMode(PIN_SCREEN_DC, OUTPUT);
@@ -38,7 +38,7 @@ void Draw::commencer(void)
     // pin CS au moment de la lecture de la carte
     
     // Lie le servo-moteur à son pin
-    servo.attach(PIN_SERVO);
+    mServo.attach(PIN_SERVO);
     
     // Initialisation carte SD
     initSD();
@@ -53,18 +53,18 @@ void Draw::commencer(void)
     setlimB(10);
 
     // initialise la position du stylo au centre de la surface
-    this->aX = this->largeur / 2;
-    this->aY = this->hauteur / 2;
+    mPositionX = mAreaWidth / 2;
+    mPositionY = mAreaHeight / 2;
 
     setRatioDist(1.00);
 
     // calcul de la longueur des fils au début
-    this->aG = filG(this->aX, this->aY);
-    this->aD = filD(this->aX, this->aY);
+    mLeftLength = filG(mPositionX, mPositionY);
+    mRightLength = filD(mPositionX, mPositionY);
 
     // le point de départ de la 1ere figure est le point courant
-    this->ptDepartX = this->aX;
-    this->ptDepartY = this->aY;
+    mStartCurveX = mPositionX;
+    mStartCurveY = mPositionY;
 
     setRatioVitesse(1.00);
     
@@ -75,47 +75,47 @@ void Draw::commencer(void)
     // *** Affichage des informations ***
     
     Serial.print("surface: ");
-    Serial.print(this->surfaceL);
+    Serial.print(mSheetHeight);
     Serial.print(" * ");
-    Serial.println(this->surfaceH);
+    Serial.println(mSheetWidth);
 
     Serial.print("position: ");
-    Serial.print(this->aX);
+    Serial.print(mPositionX);
     Serial.print(" , ");
-    Serial.println(this->aY);
+    Serial.println(mPositionY);
     
     // *** envoi des données d'initialisation à Processing ***
 
     // caractère pour commencer l'init
     Serial.print('\t');
     
-    Serial.print(this->surfaceL);
+    Serial.print(mSheetHeight);
     Serial.print(',');
-    Serial.print(this->surfaceH);
+    Serial.print(mSheetWidth);
     
     Serial.print(',');
-    Serial.print(this->aG);
+    Serial.print(mLeftLength);
     Serial.print(',');
-    Serial.print(this->aD);
+    Serial.print(mRightLength);
     
     Serial.print(',');
-    Serial.print(this->ratioDist);
+    Serial.print(mScale);
 
     Serial.print(',');
-    Serial.print(this->limG);
+    Serial.print(mLeftLimit);
     Serial.print(',');
-    Serial.print(this->limD);
+    Serial.print(mRightLimit);
 
     Serial.print(',');
-    Serial.print(this->limH);
+    Serial.print(mUpperLimit);
     Serial.print(',');
-    Serial.print(this->limB);
+    Serial.print(mLowerLimit);
     
     // caractère de fin d'init
     Serial.print('\n');
     
-/*    echL = this->surfaceL / valNb("width");
-    echH = this->surfaceH / valNb("height");
+/*    echL = mSheetHeight / valNb("width");
+    echH = mSheetWidth / valNb("height");
 
     if (echL > echH)
     {
@@ -137,68 +137,68 @@ void Draw::commencer(void)
 
 float Draw::getaX(void)
 {
-    return this->aX;
+    return mPositionX;
 }
 
 float Draw::getaY(void)
 {
-    return this->aY;
+    return mPositionY;
 }
 
 // renvoie la longueur du fil (en pas) en fonction de la position actuelle
 long Draw::getA(void)
 {
-    return this->aG;
+    return mLeftLength;
 }
 
 long Draw::getB(void)
 {
-    return this->aD;
+    return mRightLength;
 }
 
 // vitesse du moteur (en tr/min)
 void Draw::setVitesse(float vitesse)
 {
     // delai entre chaque pas, en micro-secondes
-    this->delaiBase = (this->ratioVitesse)*60000000 / (vitesse*float(STEPS));
+    mDelay = (mSpeedScale)*60000000 / (vitesse*float(STEPS));
 }
 
 void Draw::setlimG(float limG)
 {
-    this->limG = limG;
+    mLeftLimit = limG;
 
     // mise à jour de la largeur
-    this->largeur = this->surfaceL - this->limG - this->limD;
+    mAreaWidth = mSheetHeight - mLeftLimit - mRightLimit;
 }
 
 void Draw::setlimD(float limD)
 {
-    this->limD = limD;
+    mRightLimit = limD;
 
     // mise à jour de la largeur
-    this->largeur = this->surfaceL - this->limG - this->limD;
+    mAreaWidth = mSheetHeight - mLeftLimit - mRightLimit;
 }
 
 void Draw::setlimH(float limH)
 {
-    this->limH = limH;
+    mUpperLimit = limH;
 
     // mise à jour de la hauteur
-    this->hauteur = this->surfaceH - this->limH - this->limB;
+    mAreaHeight = mSheetWidth - mUpperLimit - mLowerLimit;
 }
 
 void Draw::setlimB(float limB)
 {
-    this->limB = limB;
+    mLowerLimit = limB;
 
     // mise à jour de la hauteur
-    this->hauteur = this->surfaceH - this->limH - this->limB;
+    mAreaHeight = mSheetWidth - mUpperLimit - mLowerLimit;
 }
 
 void Draw::setaXY(float aX, float aY)
 {
-    this->aX = aX;
-    this->aY = aY;
+    mPositionX = aX;
+    mPositionY = aY;
 }
 
 // xx(mm)*ratio --> xx(pas)
@@ -207,25 +207,25 @@ void Draw::setRatioDist(float ratioDist)
 {
     // ratio calculé en fonction du diametre moteur et du nb de pas
     // *2 car en mode demi-pas il faut 2 fois plus de pas
-    this->ratioDist = ratioDist * float(STEPS*2) / (3.1415*DIAMETER);
+    mScale = ratioDist * float(STEPS*2) / (3.1415*DIAMETER);
 }
 
 void Draw::setRatioVitesse(float ratioVitesse)
 {
-    this->ratioVitesse = ratioVitesse;
+    mSpeedScale = ratioVitesse;
 }
 
 // renvoie la longueur du fil (en pas) en fonction de la position donnée (en mm)
 long Draw::filG(float x, float  y)
 {
-    return sqrt ( pow((x + this->limG) * this->ratioDist, 2)
-    + pow((y + this->limH) * this->ratioDist, 2) );
+    return sqrt ( pow((x + mLeftLimit) * mScale, 2)
+    + pow((y + mUpperLimit) * mScale, 2) );
 }
 
 long Draw::filD(float x, float  y)
 {
-    return sqrt ( pow((this->surfaceL - x - limG) * this->ratioDist, 2)
-    + pow((y + this->limH) * this->ratioDist, 2) );
+    return sqrt ( pow((mSheetHeight - x - mLeftLimit) * mScale, 2)
+    + pow((y + mUpperLimit) * mScale, 2) );
 }
 
 void Draw::alimenter(bool alimenter)
@@ -249,26 +249,26 @@ void Draw::alimenter(bool alimenter)
 void Draw::ecrire(bool ecrireOk)
 {
     // si on veut ecrire et que le stylo n'ecrit pas
-    if (ecrireOk && !this->ecrireOk) {
+    if (ecrireOk && !mWriting) {
         delay(DELAY_BEFORE_SERVO);
-        servo.write(MIN_SERVO);
+        mServo.write(MIN_SERVO);
         delay(DELAY_AFTER_SERVO);
         
         // Processing: w = ecrire
         Serial.print('w');
 
-        this->ecrireOk = true;
+        mWriting = true;
     }
     
     // si on ne veut pas ecrire et que le stylo ecrit
-    else if (!ecrireOk && this->ecrireOk) {
+    else if (!ecrireOk && mWriting) {
         delay(DELAY_BEFORE_SERVO);
-        servo.write(MAX_SERVO);
+        mServo.write(MAX_SERVO);
         delay(DELAY_AFTER_SERVO);
 
         // Processing: x = ne pas ecrire    
         Serial.print('x');
-        this->ecrireOk = false;
+        mWriting = false;
     }
 }
 
@@ -290,19 +290,19 @@ void Draw::ligne(float bX, float bY, bool ecrit)
 
     // stoque la position voulue
     // avant qu'elle soit modifiée par les limites
-    this->aXf = bX;
-    this->aYf = bY;
+    mFictivePosX = bX;
+    mFictivePosY = bY;
 
     // contrôle des limites, n'ecris pas si en dehors
-    if (bX < 0 || bX > this->largeur || bY < 0 || bY > this->hauteur) {
+    if (bX < 0 || bX > mAreaWidth || bY < 0 || bY > mAreaHeight) {
         if (bX < 0)
             bX = 0;
-        if (bX > this->largeur)
-            bX = this->largeur;
+        if (bX > mAreaWidth)
+            bX = mAreaWidth;
         if (bY < 0)
             bY = 0;
-        if (bY > this->hauteur)
-            bY = this->hauteur;
+        if (bY > mAreaHeight)
+            bY = mAreaHeight;
 
         ecrire(false);
     } else {
@@ -319,8 +319,8 @@ void Draw::ligne(float bX, float bY, bool ecrit)
     long bD = filD(bX, bY);
 
     // nombre de pas à faire
-    long nbPasG = bG-this->aG;
-    long nbPasD = bD-this->aD;
+    long nbPasG = bG-mLeftLength;
+    long nbPasD = bD-mRightLength;
 
     bool sensGHaut = true;
     bool sensDHaut = true;
@@ -346,26 +346,26 @@ void Draw::ligne(float bX, float bY, bool ecrit)
     nbPasD = fabs(nbPasD);
 
     if (nbPasG > nbPasD) {
-        delaiG = this->delaiBase;
-        delaiD = this->delaiBase * (float(nbPasG) / float(nbPasD));
+        delaiG = mDelay;
+        delaiD = mDelay * (float(nbPasG) / float(nbPasD));
     } else {
-        delaiD = this->delaiBase;
-        delaiG = this->delaiBase * (float(nbPasD) / float(nbPasG));
+        delaiD = mDelay;
+        delaiG = mDelay * (float(nbPasD) / float(nbPasG));
     }
 
     dernierTempsG = micros();
     dernierTempsD = micros();
     
     if (sensGHaut) {
-        digitalWrite(PIN_LEFT_MOTOR_DIRECTION, LEFT_DIRECTION);
+        digitalWrite(PIN_LEFT_MOTOR_DIR, LEFT_DIRECTION);
     } else {
-        digitalWrite(PIN_LEFT_MOTOR_DIRECTION, !LEFT_DIRECTION);
+        digitalWrite(PIN_LEFT_MOTOR_DIR, !LEFT_DIRECTION);
     }
     
     if (sensDHaut) {
-        digitalWrite(PIN_RIGHT_MOTOR_DIRECTION, RIGHT_DIRECTION);
+        digitalWrite(PIN_RIGHT_MOTOR_DIR, RIGHT_DIRECTION);
     } else {
-        digitalWrite(PIN_RIGHT_MOTOR_DIRECTION, !RIGHT_DIRECTION);
+        digitalWrite(PIN_RIGHT_MOTOR_DIR, !RIGHT_DIRECTION);
     }
     
     while(nbPasG > 0 || nbPasD > 0)
@@ -377,11 +377,11 @@ void Draw::ligne(float bX, float bY, bool ecrit)
             
             // incremente ou decremente (en fonction de la direction)
             if (sensGHaut) {
-                aG++;
-                Serial.print('l');
-            } else {
-                aG--;
+                mLeftLength++;
                 Serial.print('L');
+            } else {
+                mLeftLength--;
+                Serial.print('l');
             }
             
             // decremente le nb de pas restants
@@ -397,11 +397,11 @@ void Draw::ligne(float bX, float bY, bool ecrit)
             
             // incremente ou decremente (en fonction de la direction)
             if (sensDHaut) {
-                aD++;
-                Serial.print('r');
-            } else {
-                aD--;
+                mRightLength++;
                 Serial.print('R');
+            } else {
+                mRightLength--;
+                Serial.print('r');
             }
             
             // decremente le nb de pas restants
@@ -412,8 +412,8 @@ void Draw::ligne(float bX, float bY, bool ecrit)
         }
     }
 
-    this->aX = bX;
-    this->aY = bY;
+    mPositionX = bX;
+    mPositionY = bY;
 }
 
 //******************************************
@@ -422,30 +422,30 @@ void Draw::ligne(float bX, float bY, bool ecrit)
 
 void Draw::pasG()
 {
-    digitalWrite(PIN_LEFT_MOTOR_SPEED, true);
+    digitalWrite(PIN_LEFT_MOTOR_STEP, true);
     delayMicroseconds(50);
-    digitalWrite(PIN_LEFT_MOTOR_SPEED, false);
+    digitalWrite(PIN_LEFT_MOTOR_STEP, false);
     
 }
 
 void Draw::pasD()
 {
-    digitalWrite(PIN_RIGHT_MOTOR_SPEED, true);
+    digitalWrite(PIN_RIGHT_MOTOR_STEP, true);
     delayMicroseconds(50);
-    digitalWrite(PIN_RIGHT_MOTOR_SPEED, false);
+    digitalWrite(PIN_RIGHT_MOTOR_STEP, false);
 }
 
 void Draw::ligneABS(float x, float y)
 {
-    this->ptBezierQuadX = 0;
-    this->ptBezierQuadY = 0;
-    this->ptBezierCubX = 0;
-    this->ptBezierCubY = 0;
+    mQuadraticCurveX = 0;
+    mQuadraticCurveY = 0;
+    mCubicCurveX = 0;
+    mCubicCurveY = 0;
     
     int longmax = 20;
     
-    float longX = abs(x-this->aX);
-    float longY = abs(y-this->aY);
+    float longX = abs(x-mPositionX);
+    float longY = abs(y-mPositionY);
 
     float miniX;
     float miniY;
@@ -459,11 +459,11 @@ void Draw::ligneABS(float x, float y)
             boucle = ceil(longY/longmax);
         }
             
-        miniX = ((x-this->aX) / boucle);
-        miniY = ((y-this->aY) / boucle);
+        miniX = ((x-mPositionX) / boucle);
+        miniY = ((y-mPositionY) / boucle);
         
         for(int i=0; i<boucle; i++) {
-            ligne(this->aX + miniX, this->aY + miniY, true);
+            ligne(mPositionX + miniX, mPositionY + miniY, true);
         }
     }
     
@@ -474,52 +474,52 @@ void Draw::ligneABS(float x, float y)
 
 void Draw::ligneREL(float x, float y)
 {
-    ligneABS(this->aX + x , this->aY + y);
+    ligneABS(mPositionX + x , mPositionY + y);
 }
 
 void Draw::finir(void)
 {
-    ligneABS(this->ptDepartX, this->ptDepartY);
+    ligneABS(mStartCurveX, mStartCurveY);
 }
 
 void Draw::deplacerABS(float x, float y)
 {
     ligne(x, y, false);
     
-    this->ptDepartX = x;
-    this->ptDepartY = y;
+    mStartCurveX = x;
+    mStartCurveY = y;
 }
 
 void Draw::deplacerREL(float x, float y)
 {
-    deplacerABS(this->aX+x, this->aY+y);
+    deplacerABS(mPositionX+x, mPositionY+y);
 }
 
 void Draw::centrer(void)
 {
-    deplacerABS(this->largeur/2 , this->hauteur/2);
+    deplacerABS(mAreaWidth/2 , mAreaHeight/2);
 }
 
 void Draw::horizABS(float y)
 {
     deplacerABS(0, y);
-    ligneABS(this->largeur, y);
+    ligneABS(mAreaWidth, y);
 }
 
 void Draw::horizREL(float y)
 {
-    horizABS(this->aY+y);
+    horizABS(mPositionY+y);
 }
 
 void Draw::vertiABS(float x)
 {
     deplacerABS(x, 0);
-    ligneABS(x, this->hauteur);
+    ligneABS(x, mAreaHeight);
 }
 
 void Draw::vertiREL(float x)
 {
-    vertiABS(this->aX+x);
+    vertiABS(mPositionX+x);
 }
 
 void Draw::bezierCubABS(float x1, float y1, float x2, float y2, float x, float y)
@@ -531,8 +531,8 @@ void Draw::bezierCubABS(float x1, float y1, float x2, float y2, float x, float y
     // P1-P2 = pts de controles
     // P3 = pt cible
 
-    float x0 = this->aX;
-    float y0 = this->aY;
+    float x0 = mPositionX;
+    float y0 = mPositionY;
     float ptx, pty;
     float t;
 
@@ -545,22 +545,22 @@ void Draw::bezierCubABS(float x1, float y1, float x2, float y2, float x, float y
     // finit le dernier trajet au cas ou ça ne tombe pas juste
     ligne(x, y, true);
 
-    this->ptBezierQuadX = 0;
-    this->ptBezierQuadY = 0;
-    this->ptBezierCubX = x2;
-    this->ptBezierCubY = y2;
+    mQuadraticCurveX = 0;
+    mQuadraticCurveY = 0;
+    mCubicCurveX = x2;
+    mCubicCurveY = y2;
 }
 
 void Draw::bezierCubABS(float x2, float y2, float x, float y)
 {
     float x1, y1;
     
-    if(this->ptBezierCubX == 0 && this->ptBezierCubY == 0) {
+    if(mCubicCurveX == 0 && mCubicCurveY == 0) {
         x1 = x;
         y1 = y;
     } else {
-        x1 = 2*this->aXf-this->ptBezierCubX;
-        y1 = 2*this->aYf-this->ptBezierCubY;
+        x1 = 2*mFictivePosX-mCubicCurveX;
+        y1 = 2*mFictivePosY-mCubicCurveY;
     }
     
     bezierCubABS(x1, y1, x2, y2, x, y);
@@ -568,12 +568,12 @@ void Draw::bezierCubABS(float x2, float y2, float x, float y)
 
 void Draw::bezierCubREL(float x1, float y1, float x2, float y2, float x, float y)
 {
-    bezierCubABS(this->aX+x1, this->aY+y1, this->aX+x2, this->aY+y2, this->aX+x, this->aY+y);
+    bezierCubABS(mPositionX+x1, mPositionY+y1, mPositionX+x2, mPositionY+y2, mPositionX+x, mPositionY+y);
 }
 
 void Draw::bezierCubREL(float x2, float y2, float x, float y)
 {
-    bezierCubABS(this->aX+x2, this->aY+y2, this->aX+x, this->aY+y);
+    bezierCubABS(mPositionX+x2, mPositionY+y2, mPositionX+x, mPositionY+y);
 }
 
 void Draw::bezierQuadABS(float x1, float y1, float x, float y)
@@ -585,8 +585,8 @@ void Draw::bezierQuadABS(float x1, float y1, float x, float y)
     // P1 = pt de controle
     // P2 = pt cible
 
-    float x0 = this->aX;
-    float y0 = this->aY;
+    float x0 = mPositionX;
+    float y0 = mPositionY;
     float ptx, pty;
 
     for(float t=0; t<=1; t+=0.01) {
@@ -596,21 +596,21 @@ void Draw::bezierQuadABS(float x1, float y1, float x, float y)
     }
     ligne(x, y, true);
 
-    this->ptBezierCubX = 0;
-    this->ptBezierCubY = 0;
-    this->ptBezierQuadX = x1;
-    this->ptBezierQuadY = y1;
+    mCubicCurveX = 0;
+    mCubicCurveY = 0;
+    mQuadraticCurveX = x1;
+    mQuadraticCurveY = y1;
 }
 
 void Draw::bezierQuadABS(float x, float y)
 {
     float x1, y1;
-    if(this->ptBezierQuadX == 0 && this->ptBezierQuadY == 0) {
+    if(mQuadraticCurveX == 0 && mQuadraticCurveY == 0) {
         x1 = x;
         y1 = y;
     } else {
-        x1 = 2*this->aXf-this->ptBezierQuadX;
-        y1 = 2*this->aYf-this->ptBezierQuadY;
+        x1 = 2*mFictivePosX - mQuadraticCurveX;
+        y1 = 2*mFictivePosY - mQuadraticCurveY;
     }
 
     bezierQuadABS(x1, y1, x, y);
@@ -618,12 +618,12 @@ void Draw::bezierQuadABS(float x, float y)
 
 void Draw::bezierQuadREL(float x1, float y1, float x, float y)
 {
-    bezierQuadABS(this->aX+x1, this->aY+y1, this->aX+x, this->aY+y);
+    bezierQuadABS(mPositionX+x1, mPositionY+y1, mPositionX+x, mPositionY+y);
 }
 
 void Draw::bezierQuadREL(float x, float y)
 {
-    bezierQuadABS(this->aX+x, this->aY+y);
+    bezierQuadABS(mPositionX+x, mPositionY+y);
 }
 
 void Draw::arcABS(float a1, float a2, float a3, float a4, float a5, float a6, float a7)
@@ -643,8 +643,8 @@ void Draw::ellipse(float rx, float ry)
     float k = 0.551915;
 
     // pour simplifier les formules
-    float x = this->aX;
-    float y = this->aY;
+    float x = mPositionX;
+    float y = mPositionY;
 
     // se déplace à gauche du cercle
     deplacerABS(x-rx, y);
@@ -703,9 +703,9 @@ void Draw::val(const char * requette, char * valeur)
     
     // tant qu'il y a qqch à lire
     // et qu'on n'est pas rendu au (") correspondant à la fin de la valeur
-    while( this->fichier.available() && car != '"') {
+    while( mFile.available() && car != '"') {
         // lis
-        car = this->fichier.read();
+        car = mFile.read();
 
         // stocke le car.
         valeur[i] = car;
@@ -747,7 +747,7 @@ float Draw::valNb(const char * requette)
     char chaine[20+1];
 
     // se positionne en début de fichier
-    this->fichier.seek(0);
+    mFile.seek(0);
 
     // recuperation des valeurs sous forme de chaine
     val(requette, chaine);
@@ -835,8 +835,8 @@ boolean Draw::trouveSD(const char * mot)
     char car;
         
     // tant qu'il y a qqch à lire
-    while( this->fichier.available() ) {
-        car = this->fichier.read();
+    while( mFile.available() ) {
+        car = mFile.read();
         
         // si le caractère correspond, passe au suivant
         if (car == mot[i]) {
@@ -867,8 +867,8 @@ void Draw::dessiner(void)
     float tNb[7];
 
     // tant qu'il y a qqch à lire
-    while( this->fichier.available() ) {
-        car = this->fichier.read();
+    while( mFile.available() ) {
+        car = mFile.read();
 
         // Appelle les fonctions de dessin svg en fonction du caractère détecté
         switch (car) {
@@ -884,7 +884,7 @@ void Draw::dessiner(void)
                     deplacerABS (tNb[0], tNb[1]);
                 }
                 // teste le prochain car (le curseur ne bouge pas)
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
 
             break;
 
@@ -894,7 +894,7 @@ void Draw::dessiner(void)
                     params(tNb, 2);
                     deplacerREL (tNb[0], tNb[1]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
 
             // finir (aucun arg)
@@ -913,7 +913,7 @@ void Draw::dessiner(void)
                     params(tNb, 2);
                     ligneABS (tNb[0], tNb[1]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
 
             break;
 
@@ -923,7 +923,7 @@ void Draw::dessiner(void)
                     params(tNb, 2);
                     ligneREL (tNb[0], tNb[1]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
 
             // horizABS (1 arg)
@@ -932,7 +932,7 @@ void Draw::dessiner(void)
                     params(tNb, 1);
                     horizABS (tNb[0]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
 
             // horizREL (1 arg)
@@ -941,7 +941,7 @@ void Draw::dessiner(void)
                     params(tNb, 1);
                     horizREL (tNb[0]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
 
             // vertiABS (1 arg)
@@ -950,7 +950,7 @@ void Draw::dessiner(void)
                     params(tNb, 1);
                     vertiABS (tNb[0]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
 
             // vertiABS (1 arg)
@@ -959,7 +959,7 @@ void Draw::dessiner(void)
                     params(tNb, 1);
                     vertiREL (tNb[0]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
             
             // bezierCubABS (6 args)
@@ -968,7 +968,7 @@ void Draw::dessiner(void)
                     params (tNb, 6);
                     bezierCubABS (tNb[0], tNb[1], tNb[2], tNb[3], tNb[4], tNb[5]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
 
             // bezierCubREL (6 args)
@@ -977,7 +977,7 @@ void Draw::dessiner(void)
                     params (tNb, 6);
                     bezierCubREL (tNb[0], tNb[1], tNb[2], tNb[3], tNb[4], tNb[5]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
             
             // bezierCubABS (4 args)
@@ -986,7 +986,7 @@ void Draw::dessiner(void)
                     params (tNb, 4);
                     bezierCubABS (tNb[0], tNb[1], tNb[2], tNb[3]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
 
             // bezierCubREL (4 args)
@@ -995,7 +995,7 @@ void Draw::dessiner(void)
                     params (tNb, 4);
                     bezierCubREL (tNb[0], tNb[1], tNb[2], tNb[3]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
             
             // bezierQuadABS (4 args)
@@ -1004,7 +1004,7 @@ void Draw::dessiner(void)
                     params (tNb, 4);
                     bezierQuadABS (tNb[0], tNb[1], tNb[2], tNb[3]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
 
             // bezierQuadREL (4 args)
@@ -1013,7 +1013,7 @@ void Draw::dessiner(void)
                     params (tNb, 4);
                     bezierQuadREL (tNb[0], tNb[1], tNb[2], tNb[3]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
             
             // bezierQuadABS (2 args)
@@ -1022,7 +1022,7 @@ void Draw::dessiner(void)
                     params (tNb, 2);
                     bezierQuadABS (tNb[0], tNb[1]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
 
             // bezierQuadREL (2 args)
@@ -1031,7 +1031,7 @@ void Draw::dessiner(void)
                     params (tNb, 2);
                     bezierQuadREL (tNb[0], tNb[1]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
             
             // arcABS (7 args)
@@ -1040,7 +1040,7 @@ void Draw::dessiner(void)
                     params (tNb, 7);
                     arcABS (tNb[0], tNb[1], tNb[2], tNb[3], tNb[4], tNb[5], tNb[6]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
 
             // arcREL (7 args)
@@ -1049,7 +1049,7 @@ void Draw::dessiner(void)
                     params (tNb, 7);
                     arcREL (tNb[0], tNb[1], tNb[2], tNb[3], tNb[4], tNb[5], tNb[6]);
                 }
-                while ( estChiffre(this->fichier.peek()) );
+                while ( estChiffre(mFile.peek()) );
             break;
             
             // si on détecte la fin du contenu de "d"
@@ -1076,16 +1076,16 @@ void Draw::dessiner(void)
 
 void Draw::svg(char* nomFichier)
 {
-    this->fichier = SD.open(nomFichier);
+    mFile = SD.open(nomFichier);
 
-    if (!this->fichier) {
+    if (!mFile) {
         // Err. 02 : Erreur d'ouverture de fichier.
         Serial.print("E02");
         return;
     }
 
     // se positionne en début de fichier
-    this->fichier.seek(0);
+    mFile.seek(0);
 
     // Se positionne jusqu'à la balise SVG
     // Si on ne la trouve pas, on renvoie une erreur
@@ -1108,8 +1108,8 @@ void Draw::svg(char* nomFichier)
         dessiner();
     }
     
-    this->fichier.close();
-    this->centrer();
+    mFile.close();
+    centrer();
     alimenter(false);
     Serial.print("n");
 }
@@ -1127,14 +1127,14 @@ void Draw::params(float * tNb, int nbParams)
     for (i=0; i < nbParams; i++) {
         // passe les espaces et virgules
         do {
-            car = this->fichier.read();
+            car = mFile.read();
         }
         while (car == ' ' || car == ',');
 
         // tant que les car. sont des chiffres, lis et stoque dans une chaine
         for (j=0; estChiffre(car); j++) {
             valeur[j] = car;
-            car = this->fichier.read();
+            car = mFile.read();
         }
         valeur[j] = '\0';
 

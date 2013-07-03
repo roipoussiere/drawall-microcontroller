@@ -171,14 +171,6 @@ class Draw {
 	
 	
 	private:
-	
-	
-	
-	/**********
-	** noyau ** (classe à l'origine de tout déplacement)
-	**********/
-
-	Servo servo;
 
 	// ligne() n'initialise pas les variables pour les courbes Bezier, à la différence de ligneABS()
 	void ligne(float x, float y, bool ecrit);
@@ -212,63 +204,56 @@ class Draw {
 	// dessine les traçés en lisant le contenu du fichier .svg
 	void dessiner(void);
 
-	// le fichier XML à lire
-	File fichier;
-
 	long filG(float x, float y);
 	long filD(float x, float y);
-
-	unsigned int aG;
-	unsigned int aD;
-
-	// vrai si l'utilisateur souhaite dessiner un .svg
-	// faux sinon
-	bool modeSVG;
-
-	// masque
-	int masqueAlim;
 
 	// si ecrire est vrai, le stylo est contre la paroi, sinon il est éloigné
 	void ecrire(bool ecrire);
 
-	//variables:
+	/************
+	* Attributs *
+    *************/
 
-	float ratioVitesse;
-	
-	float aX;
-	float aY; // position sur le plan
-	
-	float aXf; // position voulue (fictive) avant qu'elle soit modifiée par les limites
-	float aYf;
-	
+	Servo mServo;
 
-	float surfaceH;
-	float surfaceL; // taille du plan (en mm)
+	unsigned int mLeftLength;
+	unsigned int mRightLength;
+
+	// le fichier XML à lire
+	File mFile;
+
+	float mSpeedScale; // **** À supprimer ***
 	
-	float largeur; // surface où l'on peu écrire (limites comprises)
-	float hauteur;
+	float mPositionX;
+	float mPositionY; // position sur le plan
 	
-	int nbPas; // nb de pas des moteurs (on suppose qu'ils sont de même type)
-	float diametre;
+	float mFictivePosX; // position voulue (fictive) avant qu'elle soit modifiée par les limites
+	float mFictivePosY;	
+
+	float mSheetWidth;
+	float mSheetHeight; // taille du plan (en mm)
 	
-	float ratioDist; // ratio entre le nb de pas et les mm
+	float mAreaWidth; // surface où l'on peu écrire (limites comprises)
+	float mAreaHeight;
 	
-	float delaiBase;
+	float mScale; // ratio entre le nb de pas et les mm
 	
-	bool ecrireOk;
+	float mDelay;
 	
-	float ptDepartX;	
-	float ptDepartY;
+	bool mWriting;
 	
-	float ptBezierCubX;
-	float ptBezierCubY;
-	float ptBezierQuadX;
-	float ptBezierQuadY;
+	float mStartCurveX;	
+	float mStartCurveY;
 	
-	float limG;
-	float limD;
-	float limH;
-	float limB; //limites que le stylo ne franchira pas, de chaque coté de la surface
+	float mCubicCurveX;
+	float mCubicCurveY;
+	float mQuadraticCurveX;
+	float mQuadraticCurveY;
+	
+	float mLeftLimit;
+	float mRightLimit;
+	float mUpperLimit;
+	float mLowerLimit; //limites que le stylo ne franchira pas, de chaque coté de la surface
 };
 
 #endif
