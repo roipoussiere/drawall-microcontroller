@@ -96,28 +96,25 @@ void Draw::commencer(void)
     // caractère pour commencer l'init
     Serial.print('\t');
 
-    // surfaceL, surfaceH, G, D    
     Serial.print(mDistanceBetweenMotors);
     Serial.print(',');
-    Serial.print(mSheetPositionY + mSheetHeight + 100);
     
+    Serial.print(mSheetPositionX);
     Serial.print(',');
+    Serial.print(mSheetPositionY);    
+    Serial.print(',');
+    
+    Serial.print(mSheetWidth);
+    Serial.print(',');
+    Serial.print(mSheetHeight);
+    Serial.print(',');
+
     Serial.print(mLeftLength);
     Serial.print(',');
     Serial.print(mRightLength);
+    Serial.print(',');
     
-    Serial.print(',');
     Serial.print(mScaleX);
-
-    // limG, limD, limH, limB
-    Serial.print(',');
-    Serial.print(mSheetPositionX);
-    Serial.print(',');
-    Serial.print(mDistanceBetweenMotors - mSheetPositionX - mSheetWidth);
-    Serial.print(',');
-    Serial.print(mSheetPositionY);
-    Serial.print(',');
-    Serial.print(100);
     
     // caractère de fin d'init
     Serial.print('\n');
