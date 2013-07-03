@@ -3,7 +3,7 @@
 
 #include <drawbot.h>
 
-Draw drawbot(1500, 1000, 1000, 250, 500);
+Draw drawbot(1500, 1000, 1000, 250, 250);
 
 void setup() {
   Serial.begin(9600);

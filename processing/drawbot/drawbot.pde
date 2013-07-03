@@ -18,29 +18,20 @@ color colBarreFin = #8aeda2;
 color colFond = #AAAAAA;
 color colCurseur = #FC2E31;
 
-float surfaceL;
-float surfaceH;
-
-int barreH = 15;
-
-int zoom = 4;
-
-int motG, motD;
+float mDistanceBetweenMotors;
+float mSheetPositionX, mSheetPositionY;
+float mSheetWidth, mSheetHeight;
+int mLeftLength, mRightLength;
+float mScaleX;
 
 float posX, posY; // position du stylo
-float ratioDist;
-
-float limG;
-float limD;
-float limH;
-float limB;
 
 // -1 : desalimenté
 // 0 : alimenté
 // 1 : fin
 int etat = -1;
+int barreH = 15;
 String msgBarre = "";
-
 void setup()
 {
   // *** acquisition des données d'init ***
@@ -51,7 +42,7 @@ void setup()
   arduino = new Serial(this, Serial.list()[0], 9600);
   
   // tableau récupéré sur la liason série qui contiendra:
-  float tabInit[] = new float[9]; // les variables d'initialisation
+  float tabInit[] = new float[8]; // les variables d'initialisation
   // --> { surfaceL, surfaceH, aG, aD }
 
   String msg = null;
@@ -82,29 +73,24 @@ void setup()
   // retire les espaces, separe et stoque les param. dans un tableau
   tabInit = float( split( trim(msg) , ',') );
   
-  surfaceL = tabInit[0];
-  surfaceH = tabInit[1];
+  mDistanceBetweenMotors = tabInit[0];
+  mSheetPositionX = tabInit[1];
+  mSheetPositionY = tabInit[2];
+  mSheetWidth = tabInit[3];
+  mSheetHeight = tabInit[4];
+  mLeftLength = int(tabInit[5]);
+  mRightLength = int(tabInit[6]);
+  mScaleX = tabInit[7];
+    
+  println("Distance inter-moteurs : " + mDistanceBetweenMotors);
+  println("Position de la feuille : " + mSheetPositionX + " , " + mSheetPositionY);
+  println("Taille de la feuille : " + mSheetWidth + " * " + mSheetHeight);
+  println("Longueur des câbles : gauche = " + mLeftLength + " , droit = " + mRightLength);
+  println("Échelle : X = " + mScaleX);
 
-  motG = int(tabInit[2]);
-  motD = int(tabInit[3]);
-  
-  ratioDist = tabInit[4];
-  
-  limG = tabInit[5];
-  limD = tabInit[6];
-
-  limH = tabInit[7];
-  limB = tabInit[8];
-  
   majPos();
-  
-  println("surfaceL: " + surfaceL + " - surfaceH: " + surfaceH);
-  println("motG: " + motG + " - motD: " + motD);
-  println("ratioDist: " + ratioDist);
-  println("limG: " + limG + " - limD: " + limD);
-  println("limH: " + limH + " - limB: " + limB);
   println("Position : " + posX + " , " + posY);
-  println("Test : " + (float(motG)/ratioDist) + " , " + (posX) );
+  println("Échelle processing : " + initScale());
   
   println("\n*** lancement de l'interface ***");
 
@@ -119,40 +105,48 @@ void setup()
   frame.setResizable(true);
 }
 
-void draw()
+float initScale()
 {
-  float eX = width/surfaceL;
-  float eY = (height - barreH)/surfaceH;
+  float scaleX = width / mDistanceBetweenMotors;
+  float scaleY = (height - barreH) / (mSheetPositionY + mSheetHeight);
+  float scale;
   
-  float eL, eH; // dimentions du rectangle qui conserve les proportions
-  
-  if(eX > eY)
-    eX = eY;
-  else
-    eY = eX;
+  if(scaleX > scaleY) {
+    scale = scaleY;
+  } else {
+    scale = scaleX;
+  }
 
-  float debX = (width - surfaceL*eX)/2;
-  float debY = (height - barreH - surfaceH*eY)/2;
-  
-  rectOut(limG*eX, limH*eY, (surfaceL-limD-limG)*eX,
-  (surfaceH-limB-limH)*eY, surfaceL*eX, surfaceH*eY, colLim);
+  return scale;
+}
 
-  echelle(debX + 6, 5, eX, eY, 30, 3);
+void draw() // Appelé tout le temps
+{  
+  float scale = initScale();  
+  
+  float areaX = (width - mDistanceBetweenMotors * scale) / 2;
+  float areaY = (height - barreH - (mSheetPositionY + mSheetHeight) * scale) / 2;
+  
+  rectOut(mSheetPositionX*scale, mSheetPositionY*scale,
+        mSheetWidth*scale, mSheetHeight*scale,
+        mDistanceBetweenMotors*scale, (mSheetHeight + mSheetPositionY) * scale, colLim);
+
+  echelle(areaX + 6, 5, scale, scale, 30, 3);
   barre();
   
   while (arduino.available() > 0)
   {
     char mvt = arduino.readChar();
     
-    /************************
+/************************
 Les caractères envoyés sur le port série
 correspondent aux différentes actions
 à effectuer par le simulateur:
 
-f = motG--
-h = motG++
-c = motD--
-e = motD++
+f = mLeftLength--
+h = mLeftLength++
+c = mRightLength--
+e = mRightLength++
 a = alimenter
 b = désalimenter
 w = ecrire
@@ -164,19 +158,19 @@ _ = Message arduino
     switch(mvt)
     {
       case 'l':
-        motG--;
+        mLeftLength--;
       break;
 
       case 'L':
-        motG++;
+        mLeftLength++;
       break;
 
       case 'r':
-        motD--;
+        mRightLength--;
       break;
 
       case 'R':
-        motD++;
+        mRightLength++;
       break;
 
       case 'w':
@@ -228,7 +222,7 @@ _ = Message arduino
     }
     
     majPos();
-    point(posX*eX + debX, posY*eY + debY);
+    point(posX*scale + areaX, posY*scale + areaY);
     
     barre();
   }
@@ -236,9 +230,9 @@ _ = Message arduino
 
 void majPos()
 {
-  posX = ( pow(float(motG)/ratioDist, 2) - pow(float(motD)/ratioDist, 2)
-      + pow(surfaceL, 2) ) / (2*surfaceL);
-  posY = sqrt( pow(float(motG)/ratioDist, 2) - pow(posX, 2) );
+  posX = (pow(float(mLeftLength)/mScaleX, 2) - pow(float(mRightLength)/mScaleX, 2)
+      + pow(mDistanceBetweenMotors, 2) ) / (2*mDistanceBetweenMotors);
+  posY = sqrt( pow(float(mLeftLength)/mScaleX, 2) - pow(posX, 2) );
 }
 
 void fin()
@@ -308,10 +302,10 @@ void barre()
   // rectangle de la barre (écrase l'ancien texte)
   
   fill(0); // couleur du texte
-  String msg = "surface: " + round(surfaceL-limG-limD) + "x" + round(surfaceH-limH-limB) +
+  String msg = "surface: " + round(mSheetWidth) + "x" + round(mSheetHeight) +
     " | X: " + round(posX) + " Y:" + round(posY) +
-    " | motG: " + motG + " motD: " + motD +
-    " | ratio: " + ratioDist +
+    " | motG: " + mLeftLength + " motD: " + mRightLength +
+    " | ratio: " + mScaleX +
     " | " + msgBarre;
   
   text(msg, 4, height - 3); // écriture du texte
@@ -338,7 +332,7 @@ void rectOut( float x, float y, float w, float h, float limL, float limH, color 
 
   //lignes verticales
   line(debX, debY, debX, debY + limH);
-  line(debX + limL - 1, debY - 1, debX + limL - 1, debY + limH);
+  line(debX + limL, debY - 1, debX + limL, debY + limH);
 
   //lignes horizontales
   line(debX, debY - 1, debX + limL - 1, debY - 1);
