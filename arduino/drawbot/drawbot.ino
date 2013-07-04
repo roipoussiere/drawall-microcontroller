@@ -3,17 +3,17 @@
 
 #include <drawbot.h>
 
-Draw drawbot(1500, 1000, 1000, 250, 250);
+Drawbot d(1500, 1000, 1000, 250, 250);
 
 void setup() {
   Serial.begin(9600);
-  drawbot.commencer();
-  drawbot.setVitesse(500);
+  d.begin();
+  d.setSpeed(500);
   delay(2000);
 }
 
 void loop() {
-  drawbot.svg("drawbot.svg");
+  d.svg("drawbot.svg");
   
   while(true) {}
 }

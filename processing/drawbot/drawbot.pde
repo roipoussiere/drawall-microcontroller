@@ -34,6 +34,7 @@ int etat = -1;
 
 int barreH = 15;
 String msgBarre = "";
+
 void setup()
 {
   // *** acquisition des données d'init ***
@@ -83,7 +84,7 @@ void setup()
   mLeftLength = int(tabInit[5]);
   mRightLength = int(tabInit[6]);
   mScaleX = tabInit[7];
-    
+  
   println("Distance inter-moteurs : " + mDistanceBetweenMotors);
   println("Position de la feuille : " + mSheetPositionX + " , " + mSheetPositionY);
   println("Taille de la feuille : " + mSheetWidth + " * " + mSheetHeight);
@@ -193,17 +194,19 @@ _ = Message arduino
         barre();
       break;
 
-      case 't':
-        println("test");
-      break;
-
       case 'n':
-        fin();
+        etat = 1;
+        msgBarre = "Le dessin a été reproduit avec succès.";
+        barre();
       break;
       
-      case '>':
-        // Lis et affiche le message jusqu'au car. de fin de chaine.
-        String msg = arduino.readStringUntil('<');
+      case '_':
+        String msg = null;
+  
+        while (msg == null)
+        {
+          msg = arduino.readStringUntil('\n');
+        }
         print(msg);
       break;
       
@@ -233,13 +236,6 @@ void majPos()
   posX = (pow(float(mLeftLength)/mScaleX, 2) - pow(float(mRightLength)/mScaleX, 2)
       + pow(mDistanceBetweenMotors, 2) ) / (2*mDistanceBetweenMotors);
   posY = sqrt( pow(float(mLeftLength)/mScaleX, 2) - pow(posX, 2) );
-}
-
-void fin()
-{
-  etat = 1;
-  msgBarre = "Le dessin a été reproduit avec succès.";
-  barre();
 }
 
 void erreur(int code)
