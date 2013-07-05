@@ -77,11 +77,11 @@ file or visit http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 
 #define SERIAL_BAUDS 9600
 
-#define SCALE_X 1.0
-#define SCALE_Y 1.0
+#define SCALE_X 1.5
+#define SCALE_Y 1.5
 
 #define OFFSET_X 0
-#define OFFSET_Y 0
+#define OFFSET_Y -100
 
 #define DEFAULT_SPEED 10
 #define DEFAULT_POSITION CENTER

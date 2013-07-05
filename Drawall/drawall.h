@@ -60,10 +60,7 @@ class Drawall {
     // obligatoire, à placer en début de programme :
     // réalise les procédures d'initialisation nécessaires au fonctionnement du robot.
     void begin();
-    
-    float positionToX(Position position);
-    float positionToY(Position position);
-        
+            
     /***********
     ** Dessin **
     ***********/
@@ -144,6 +141,9 @@ class Drawall {
     void leftStep();
     void rightStep();
     
+    float positionToX(Position position);
+    float positionToY(Position position);
+
     // fini le traçé courant:
     // Revient au point cible du dernier déplacement.
     // Ceci permet de faire des formes "finies"
