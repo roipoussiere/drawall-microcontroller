@@ -215,6 +215,7 @@ void Drawall::setSpeed(float speed)
 }
 
 // renvoie la longueur du fil (en pas) en fonction de la position donnée (en mm)
+// TODO : Ne pas placer les SCALE et OFFSET ici pour ne pas influencer sur la position initiale
 long Drawall::positionToLeftLength(float positionX, float positionY)
 {
     return sqrt ( pow((mSheetPositionX + positionX + OFFSET_X) * mRatio * SCALE_X * mScale, 2)

@@ -92,7 +92,6 @@ void setup()
 
   majPos();
   println("Position : " + posX + " , " + posY);
-  println("Échelle processing : " + mScale);
   
   println("\n*** lancement de l'interface ***");
 
@@ -131,7 +130,7 @@ void draw() // Appelé tout le temps
         mSheetWidth, mSheetHeight,
         mDistanceBetweenMotors, mSheetHeight + mSheetPositionY + 10, colLim);
 
-  echelle(areaX + 6, 5, round(mSheetWidth/10));
+  echelle(areaX + 6, areaY + 4, round(mSheetWidth/10));
   barre();
   
   while (arduino.available() > 0)

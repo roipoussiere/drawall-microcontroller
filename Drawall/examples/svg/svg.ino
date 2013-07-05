@@ -1,14 +1,22 @@
 /*
+
+Drawall library - svg test
+
 This work is licensed under the Creative Commons Attribution
 - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions
 3.0 France License. To view a copy of this license, visit
 http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
+
+Created on 
 */
 
+// Before uploading this sketch, copy the drawbot.svg file into your SD card.
+
+// Include the drawall libraries and dependancies
 #include <SD.h>
 #include <Servo.h>
-
 #include <drawall.h>
+
 
 Drawall d(1500, 1000, 500, 250, 250);
 
