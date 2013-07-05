@@ -270,6 +270,10 @@ void erreur(int code)
             msgBarre = "Le fichier svg n'inclut aucune donnée de dessin.";
           break;
 
+          case 20 :
+            msgBarre = "La distance entre les 2 moteurs est inférieure à la largeur de la feuille + position.";
+          break;
+          
           default :
             msgBarre = "Erreur inconnue : " + code;
           break;
