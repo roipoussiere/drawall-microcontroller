@@ -177,11 +177,11 @@ float Drawall::positionToY(Position position)
 
         case LEFT_CENTER:
         case CENTER:        
-        case RIGHT_CENTER: y = mSheetWidth/2; break;
+        case RIGHT_CENTER: y = mSheetHeight/2; break;
 
         case LOWER_LEFT: 
         case LOWER_CENTER:
-        case LOWER_RIGHT: y = mSheetWidth; break;
+        case LOWER_RIGHT: y = mSheetHeight; break;
                 
         default: break;
     }
