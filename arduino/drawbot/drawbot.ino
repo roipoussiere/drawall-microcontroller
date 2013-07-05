@@ -13,7 +13,6 @@ http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 Drawbot d(1500, 1000, 1000, 250, 250);
 
 void setup() {
-  Serial.begin(9600);
   d.begin();
   d.setSpeed(500);
   delay(2000);

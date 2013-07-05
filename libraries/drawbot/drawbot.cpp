@@ -16,12 +16,11 @@ Drawbot::Drawbot(int distanceBetweenMotors,
         mSheetPositionX(sheetPositionX),
         mSheetPositionY(sheetPositionY)
 {
-    // pour que ecrireOk() fonctionne la 1ere fois
-    mWriting = true;
 }
 
 void Drawbot::begin()
-{    
+{
+    Serial.begin(SERIAL_BAUDS);
     // pins en entrée
     pinMode(PIN_LEFT_CAPTOR, INPUT);
     pinMode(PIN_RIGHT_CAPTOR, INPUT);
@@ -45,6 +44,9 @@ void Drawbot::begin()
     
     // Initialisation carte SD
     sdInit();
+    
+    // pour que write() fonctionne la 1ere fois
+    mWriting = true;
     
     if (mDistanceBetweenMotors < mSheetWidth + mSheetPositionX) {
         error("20");
