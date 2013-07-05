@@ -14,7 +14,6 @@ http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 #include <SD.h>
 #include <Servo.h> 
 
-
 class Drawbot {
     public:
 
