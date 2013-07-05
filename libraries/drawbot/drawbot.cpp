@@ -7,18 +7,15 @@ http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 
 #include <drawbot.h>
 
-Drawbot::Drawbot(int distanceBetweenMotors, int sheetWidth, int sheetHeight, int sheetPositionX, int sheetPositionY)
+Drawbot::Drawbot(int distanceBetweenMotors,
+    int sheetWidth, int sheetHeight,
+    int sheetPositionX, int sheetPositionY) :
+        mSheetWidth(sheetWidth),
+        mSheetHeight(sheetHeight),
+        mDistanceBetweenMotors(distanceBetweenMotors),
+        mSheetPositionX(sheetPositionX),
+        mSheetPositionY(sheetPositionY)
 {
-    // dimentions de la surface
-    
-    // TODO : À placer dans l'en-tête !!
-    
-    mSheetWidth = sheetWidth;
-    mSheetHeight = sheetHeight;
-    mDistanceBetweenMotors = distanceBetweenMotors;
-    mSheetPositionX = sheetPositionX;
-    mSheetPositionY = sheetPositionY;
-
     // pour que ecrireOk() fonctionne la 1ere fois
     mWriting = true;
 }
@@ -195,8 +192,6 @@ long Drawbot::getRightLength()
 
 // xx(mm)*ratio --> xx(pas)
 // xx(pas)/ratio --> xx(mm)
-// TODO : Modifier, ça change la vitesse au lieu de changer l'échelle
-
 void Drawbot::initRatio()
 {
     // ratio calculé en fonction du diametre moteur et du nb de pas
@@ -1070,8 +1065,6 @@ void Drawbot::draw()
     error("11");
     return;
 }
-
-// TODO : Décommenter et tester
 
 void Drawbot::error(char* errNumber)
 {
