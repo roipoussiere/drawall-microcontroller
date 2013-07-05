@@ -55,11 +55,7 @@ void Drawbot::begin()
 
     initRatio();
 
-    // Par défault initialise la position du stylo au centre de la surface
-
-    // TODO : À remplacer par setPosition(CENTER);
-    mPositionX = mSheetWidth / 2;
-    mPositionY = mSheetHeight / 2;
+    setPosition(DEFAULT_POSITION);
 
     // calcul de la longueur des fils au début
     mLeftLength = positionToLeftLength(mPositionX, mPositionY);
@@ -133,6 +129,58 @@ void Drawbot::setPosition(float positionX, float positionY)
 {
     mPositionX = positionX;
     mPositionY = positionY;
+}
+
+void Drawbot::setPosition(Position position)
+{
+    setPosition(positionToX(position), positionToY(position));
+}
+
+float Drawbot::positionToX(Position position)
+{
+    float x;
+    
+    switch (position) {
+        case UPPER_LEFT:
+        case LEFT_CENTER:
+        case LOWER_LEFT: x = 0; break;
+
+        case UPPER_CENTER:
+        case CENTER:
+        case LOWER_CENTER: x = mSheetWidth / 2; break;
+        
+        
+        case UPPER_RIGHT:
+        case RIGHT_CENTER:
+        case LOWER_RIGHT: x = mSheetWidth; break;
+        
+        default: break;
+    }
+    
+    return x;
+}
+
+float Drawbot::positionToY(Position position)
+{
+    float y;
+    
+    switch (position) {
+        case UPPER_LEFT:
+        case UPPER_CENTER:
+        case UPPER_RIGHT: y = 0; break;
+
+        case LEFT_CENTER:
+        case CENTER:        
+        case RIGHT_CENTER: y = mSheetWidth/2; break;
+
+        case LOWER_LEFT: 
+        case LOWER_CENTER:
+        case LOWER_RIGHT: y = mSheetWidth; break;
+                
+        default: break;
+    }
+    
+    return y;
 }
 
 long Drawbot::getLeftLength()
@@ -436,14 +484,14 @@ void Drawbot::move(float x, float y)
     mStartCurveY = y;
 }
 
+void Drawbot::move(Position position)
+{
+    move(positionToX(position), positionToY(position));
+}
+
 void Drawbot::_move(float x, float y)
 {
     move(mPositionX + x, mPositionY + y);
-}
-
-void Drawbot::centrer()
-{
-    move(mSheetWidth/2 , mSheetHeight/2);
 }
 
 void Drawbot::horizontal(float y)
@@ -1094,11 +1142,8 @@ void Drawbot::svg(char* nomFichier)
         draw();
     }
     
-    mFile.close();
-    centrer();
-    power(false);
-    
-    // Fin
+    // Fin du dessin svg
+    mFile.close();    
     Serial.print("n");
 }
 
@@ -1132,7 +1177,7 @@ void Drawbot::getParameters(float * tNb, int nbParams)
 
 void Drawbot::end()
 {
-    centrer();
+    move(LOWER_CENTER);
     power(false);
     while(true) {};
 }
