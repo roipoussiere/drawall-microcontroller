@@ -65,12 +65,10 @@ void Drawbot::begin()
     mLeftLength = positionToLeftLength(mPositionX, mPositionY);
     mRightLength = positionToRightLength(mPositionX, mPositionY);
 
-    // le point de départ de la 1ere figure est le point courant
+    // Le point de départ de la 1ere figure est le point courant
     mStartCurveX = mPositionX;
     mStartCurveY = mPositionY;
     
-    // une petite vitesse par défaut
-    // pour que le moteur bouge même si on ne spécifie rien
     setSpeed(DEFAULT_SPEED);
 
     // *** Affichage des informations ***
@@ -114,7 +112,7 @@ void Drawbot::begin()
     Serial.print('\n');
 
     // Pause jusqu'à l'appui sur le BP.
-    // Serial.print(">Appuyez sur le bouton pour commencer<");
+    // Serial.println("_Appuyez sur le bouton pour commencer");
     // while(digitalRead(PIN_BP) == LOW) {}
 
     // alimente le moteur
@@ -167,14 +165,14 @@ void Drawbot::setSpeed(float speed)
 // renvoie la longueur du fil (en pas) en fonction de la position donnée (en mm)
 long Drawbot::positionToLeftLength(float positionX, float positionY)
 {
-    return sqrt ( pow((mSheetPositionX + positionX) * mRatio * SCALE_X, 2)
-    + pow((mSheetPositionY + positionY) * mRatio * SCALE_Y, 2) );
+    return sqrt ( pow((mSheetPositionX + positionX + OFFSET_X) * mRatio * SCALE_X, 2)
+    + pow((mSheetPositionY + positionY + OFFSET_Y) * mRatio * SCALE_Y, 2) );
 }
 
 long Drawbot::positionToRightLength(float positionX, float positionY)
 {
-    return sqrt ( pow((mDistanceBetweenMotors - mSheetPositionX - positionX) * mRatio * SCALE_X, 2)
-    + pow((mSheetPositionY + positionY) * mRatio * SCALE_Y, 2) );
+    return sqrt ( pow((mDistanceBetweenMotors - mSheetPositionX - positionX - OFFSET_X) * mRatio * SCALE_X, 2)
+    + pow((mSheetPositionY + positionY + OFFSET_Y) * mRatio * SCALE_Y, 2) );
 }
 
 void Drawbot::power(bool alimenter)
