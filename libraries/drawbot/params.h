@@ -76,11 +76,8 @@ file or visit http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 #define SCALE_X 1.0
 #define SCALE_Y 1.0
 
-#define OFFSET_X 250
-#define OFFSET_Y 250
+#define OFFSET_X 0
+#define OFFSET_Y 0
 
 #define DEFAULT_SPEED 10
-
-// TODO : À modifer pour spécifier le centre
-#define DEFAULT_POSITION_X 250
-#define DEFAULT_POSITION_Y 250
+#define DEFAULT_POSITION CENTER

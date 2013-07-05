@@ -17,27 +17,39 @@ http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 class Drawbot {
     public:
 
+    enum Position {
+        CENTER,
+        UPPER_CENTER,
+        LOWER_CENTER,
+        LEFT_CENTER,
+        RIGHT_CENTER,
+        UPPER_LEFT,
+        UPPER_RIGHT,
+        LOWER_LEFT,
+        LOWER_RIGHT
+    };
+    
     /****************
     ** construceurs **
     ****************/
 
     // dimentions de la surface (en mm)
     Drawbot(int distanceBetweenMotors, int sheetWidth, int sheetHeight, int sheetPositionX, int sheetPositionY);
-
+    
     /**********************
     ** getters & setters **
     **********************/
-
+    
     // renvoie la position courante en X du crayon
     float getPositionX();
-
+    
     // renvoie la position courante en Y du crayon
     float getPositionY();
 
     // initialise la position du curseur, à n'utiliser qu'au début.
-    // Par défaut: au centre de la surface
     void setPosition(float aX, float aY);
-
+    void setPosition(Position position);
+    
     // initialise la vitesse du crayon
     void setSpeed(float vitesse);
     
@@ -49,25 +61,18 @@ class Drawbot {
     // réalise les procédures d'initialisation nécessaires au fonctionnement du robot.
     void begin();
     
-    /*****************
-    ** deplacements **
-    *****************/
+    float positionToX(Position position);
+    float positionToY(Position position);
+        
+    /***********
+    ** Dessin **
+    ***********/
 
-    // Quasiment toutes ces fonctions sont doublée,
-    // de manière à effectuer le traçé: 
-    // - en position absolue (ABS)
-    // - en position relative (REL)
+    // Ces fonctions sont doublée pour desiner en absolu ou _relatif
 
-    // deplacements (sans écrire)
-
-    // place le crayon au point [x, y]
     void move(float x, float y);
+    void move(Position position);
     void _move(float x, float y);
-
-    // place le crayon au centre de la surface.
-    
-    // TODO : remplacer par setPosition(CENTER);
-    void centrer();
 
     void end();
     // lignes droite:
