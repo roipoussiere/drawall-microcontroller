@@ -44,9 +44,8 @@ void setup()
   // init la communication avec l'arduino
   arduino = new Serial(this, Serial.list()[0], 9600);
   
-  // tableau récupéré sur la liason série qui contiendra:
-  float tabInit[] = new float[8]; // les variables d'initialisation
-  // --> { surfaceL, surfaceH, aG, aD }
+  // tableau récupéré sur la liason série qui contiendra les variables d'initialisation
+  float tabInit[] = new float[8];
 
   String msg = null;
   

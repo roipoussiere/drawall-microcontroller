@@ -8,14 +8,13 @@ http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 #include <SD.h>
 #include <Servo.h>
 
-#include <drawbot.h>
+#include <drawall.h>
 
-Drawbot d(1500, 1000, 1000, 250, 250);
+Drawall d(1500, 1000, 1000, 250, 250);
 
 void setup() {
   d.begin();
   d.setSpeed(500);
-  delay(2000);
 }
 
 void loop() {

@@ -5,9 +5,12 @@ This work is licensed under the Creative Commons Attribution
 http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 */
 
-#include <drawbot.h>
+// TODO : Corriger Warnings pour les conversions de texte en char*
 
-Drawbot::Drawbot(int distanceBetweenMotors,
+#include <drawall.h>
+
+// TODO : Corriger Warning ici
+Drawall::Drawall(int distanceBetweenMotors,
     int sheetWidth, int sheetHeight,
     int sheetPositionX, int sheetPositionY) :
         mSheetWidth(sheetWidth),
@@ -18,9 +21,10 @@ Drawbot::Drawbot(int distanceBetweenMotors,
 {
 }
 
-void Drawbot::begin()
+void Drawall::begin()
 {
     Serial.begin(SERIAL_BAUDS);
+    
     // pins en entrée
     pinMode(PIN_LEFT_CAPTOR, INPUT);
     pinMode(PIN_RIGHT_CAPTOR, INPUT);
@@ -47,6 +51,8 @@ void Drawbot::begin()
     
     // pour que write() fonctionne la 1ere fois
     mWriting = true;
+    
+    mScale = 1;  
     
     if (mDistanceBetweenMotors < mSheetWidth + mSheetPositionX) {
         error("20");
@@ -112,30 +118,32 @@ void Drawbot::begin()
 
     // alimente le moteur
     power(true);
+    
+    delay(DELAY_BEFORE_STARTING);
 }
 
-float Drawbot::getPositionX()
+float Drawall::getPositionX()
 {
     return mPositionX;
 }
 
-float Drawbot::getPositionY()
+float Drawall::getPositionY()
 {
     return mPositionY;
 }
 
-void Drawbot::setPosition(float positionX, float positionY)
+void Drawall::setPosition(float positionX, float positionY)
 {
     mPositionX = positionX;
     mPositionY = positionY;
 }
 
-void Drawbot::setPosition(Position position)
+void Drawall::setPosition(Position position)
 {
     setPosition(positionToX(position), positionToY(position));
 }
 
-float Drawbot::positionToX(Position position)
+float Drawall::positionToX(Position position)
 {
     float x;
     
@@ -148,7 +156,6 @@ float Drawbot::positionToX(Position position)
         case CENTER:
         case LOWER_CENTER: x = mSheetWidth / 2; break;
         
-        
         case UPPER_RIGHT:
         case RIGHT_CENTER:
         case LOWER_RIGHT: x = mSheetWidth; break;
@@ -159,7 +166,7 @@ float Drawbot::positionToX(Position position)
     return x;
 }
 
-float Drawbot::positionToY(Position position)
+float Drawall::positionToY(Position position)
 {
     float y;
     
@@ -182,45 +189,45 @@ float Drawbot::positionToY(Position position)
     return y;
 }
 
-long Drawbot::getLeftLength()
+long Drawall::getLeftLength()
 {
     return mLeftLength;
 }
 
-long Drawbot::getRightLength()
+long Drawall::getRightLength()
 {
     return mRightLength;
 }
 
 // xx(mm)*ratio --> xx(pas)
 // xx(pas)/ratio --> xx(mm)
-void Drawbot::initRatio()
+void Drawall::initRatio()
 {
     // ratio calculé en fonction du diametre moteur et du nb de pas
     mRatio = float(STEPS) / (PI * DIAMETER);
 }
 
 // vitesse du moteur (en tr/min)
-void Drawbot::setSpeed(float speed)
+void Drawall::setSpeed(float speed)
 {
     // delai entre chaque pas, en micro-secondes
     mDelay = (60000000) / (speed * float(STEPS));
 }
 
 // renvoie la longueur du fil (en pas) en fonction de la position donnée (en mm)
-long Drawbot::positionToLeftLength(float positionX, float positionY)
+long Drawall::positionToLeftLength(float positionX, float positionY)
 {
-    return sqrt ( pow((mSheetPositionX + positionX + OFFSET_X) * mRatio * SCALE_X, 2)
-    + pow((mSheetPositionY + positionY + OFFSET_Y) * mRatio * SCALE_Y, 2) );
+    return sqrt ( pow((mSheetPositionX + positionX + OFFSET_X) * mRatio * SCALE_X * mScale, 2)
+    + pow((mSheetPositionY + positionY + OFFSET_Y) * mRatio * SCALE_Y * mScale, 2) );
 }
 
-long Drawbot::positionToRightLength(float positionX, float positionY)
+long Drawall::positionToRightLength(float positionX, float positionY)
 {
-    return sqrt ( pow((mDistanceBetweenMotors - mSheetPositionX - positionX - OFFSET_X) * mRatio * SCALE_X, 2)
-    + pow((mSheetPositionY + positionY + OFFSET_Y) * mRatio * SCALE_Y, 2) );
+    return sqrt ( pow((mDistanceBetweenMotors - mSheetPositionX - positionX - OFFSET_X) * mRatio * SCALE_X * mScale, 2)
+    + pow((mSheetPositionY + positionY + OFFSET_Y) * mRatio * SCALE_Y * mScale, 2) );
 }
 
-void Drawbot::power(bool alimenter)
+void Drawall::power(bool alimenter)
 {
     if (alimenter) {
         digitalWrite(PIN_OFF_MOTORS, LOW);
@@ -238,7 +245,7 @@ void Drawbot::power(bool alimenter)
 }
 
 // approche ou eloigne le stylo pour écrire ou non
-void Drawbot::write(bool write)
+void Drawall::write(bool write)
 {
     // si on veut ecrire et que le stylo n'ecrit pas
     if (write && !mWriting) {
@@ -264,7 +271,7 @@ void Drawbot::write(bool write)
     }
 }
 
-void Drawbot::line(float bX, float bY, bool writing)
+void Drawall::line(float bX, float bY, bool writing)
 {
     // aX, aY: Position du point courant
     // aG, aD: Longueur actuelle des fils.
@@ -411,7 +418,7 @@ void Drawbot::line(float bX, float bY, bool writing)
 
 // TODO : À modifier, il ne faut pas faire de pause
 
-void Drawbot::leftStep()
+void Drawall::leftStep()
 {
     digitalWrite(PIN_LEFT_MOTOR_STEP, true);
     delayMicroseconds(50);
@@ -419,14 +426,14 @@ void Drawbot::leftStep()
     
 }
 
-void Drawbot::rightStep()
+void Drawall::rightStep()
 {
     digitalWrite(PIN_RIGHT_MOTOR_STEP, true);
     delayMicroseconds(50);
     digitalWrite(PIN_RIGHT_MOTOR_STEP, false);
 }
 
-void Drawbot::line(float x, float y)
+void Drawall::line(float x, float y)
 {
     mQuadraticCurveX = 0;
     mQuadraticCurveY = 0;
@@ -463,17 +470,17 @@ void Drawbot::line(float x, float y)
     line(x, y, true);
 }
 
-void Drawbot::_line(float x, float y)
+void Drawall::_line(float x, float y)
 {
     line(mPositionX + x , mPositionY + y);
 }
 
-void Drawbot::endCurve()
+void Drawall::endCurve()
 {
     line(mStartCurveX, mStartCurveY);
 }
 
-void Drawbot::move(float x, float y)
+void Drawall::move(float x, float y)
 {
     line(x, y, false);
     
@@ -481,39 +488,39 @@ void Drawbot::move(float x, float y)
     mStartCurveY = y;
 }
 
-void Drawbot::move(Position position)
+void Drawall::move(Position position)
 {
     move(positionToX(position), positionToY(position));
 }
 
-void Drawbot::_move(float x, float y)
+void Drawall::_move(float x, float y)
 {
     move(mPositionX + x, mPositionY + y);
 }
 
-void Drawbot::horizontal(float y)
+void Drawall::horizontal(float y)
 {
     move(0, y);
     line(mSheetWidth, y);
 }
 
-void Drawbot::_horizontal(float y)
+void Drawall::_horizontal(float y)
 {
     horizontal(mPositionY+y);
 }
 
-void Drawbot::vertical(float x)
+void Drawall::vertical(float x)
 {
     move(x, 0);
     line(x, mSheetHeight);
 }
 
-void Drawbot::_vertical(float x)
+void Drawall::_vertical(float x)
 {
     vertical(mPositionX+x);
 }
 
-void Drawbot::cubicCurve(float x1, float y1, float x2, float y2, float x, float y)
+void Drawall::cubicCurve(float x1, float y1, float x2, float y2, float x, float y)
 {
     // B(t) = P0(1-t)^3 + 3*P1*t(1-t)^2 + 3*P2*t^2*(1-t) + P3*t^3
     // t=[0,1]
@@ -542,7 +549,7 @@ void Drawbot::cubicCurve(float x1, float y1, float x2, float y2, float x, float 
     mCubicCurveY = y2;
 }
 
-void Drawbot::cubicCurve(float x2, float y2, float x, float y)
+void Drawall::cubicCurve(float x2, float y2, float x, float y)
 {
     float x1, y1;
     
@@ -557,17 +564,17 @@ void Drawbot::cubicCurve(float x2, float y2, float x, float y)
     cubicCurve(x1, y1, x2, y2, x, y);
 }
 
-void Drawbot::_cubicCurve(float x1, float y1, float x2, float y2, float x, float y)
+void Drawall::_cubicCurve(float x1, float y1, float x2, float y2, float x, float y)
 {
     cubicCurve(mPositionX+x1, mPositionY+y1, mPositionX+x2, mPositionY+y2, mPositionX+x, mPositionY+y);
 }
 
-void Drawbot::_cubicCurve(float x2, float y2, float x, float y)
+void Drawall::_cubicCurve(float x2, float y2, float x, float y)
 {
     cubicCurve(mPositionX+x2, mPositionY+y2, mPositionX+x, mPositionY+y);
 }
 
-void Drawbot::quadraticCurve(float x1, float y1, float x, float y)
+void Drawall::quadraticCurve(float x1, float y1, float x, float y)
 {
     // B(t) = P0*(1-t)^2 + 2*P1*t(1-t) + P2*t^2
     // t=[0,1]
@@ -593,12 +600,12 @@ void Drawbot::quadraticCurve(float x1, float y1, float x, float y)
     mQuadraticCurveY = y1;
 }
 
-void Drawbot::_quadraticCurve(float x1, float y1, float x, float y)
+void Drawall::_quadraticCurve(float x1, float y1, float x, float y)
 {
     quadraticCurve(mPositionX+x1, mPositionY+y1, mPositionX+x, mPositionY+y);
 }
 
-void Drawbot::quadraticCurve(float x, float y)
+void Drawall::quadraticCurve(float x, float y)
 {
     float x1, y1;
     if(mQuadraticCurveX == 0 && mQuadraticCurveY == 0) {
@@ -612,22 +619,22 @@ void Drawbot::quadraticCurve(float x, float y)
     quadraticCurve(x1, y1, x, y);
 }
 
-void Drawbot::_quadraticCurve(float x, float y)
+void Drawall::_quadraticCurve(float x, float y)
 {
     quadraticCurve(mPositionX+x, mPositionY+y);
 }
 
-void Drawbot::arc(float a1, float a2, float a3, float a4, float a5, float a6, float a7)
+void Drawall::arc(float a1, float a2, float a3, float a4, float a5, float a6, float a7)
 {
     // à compléter
 }
 
-void Drawbot::_arc(float a1, float a2, float a3, float a4, float a5, float a6, float a7)
+void Drawall::_arc(float a1, float a2, float a3, float a4, float a5, float a6, float a7)
 {
     // à compléter
 }
 
-void Drawbot::ellipse(float rx, float ry)
+void Drawall::ellipse(float rx, float ry)
 {
     // ratio pour déterminer
     // la distance du point de controle en fonction du rayon
@@ -649,7 +656,7 @@ void Drawbot::ellipse(float rx, float ry)
     move(x, y);
 }
 
-void Drawbot::circle(float r)
+void Drawall::circle(float r)
 {
     ellipse(r, r);
 }
@@ -658,7 +665,7 @@ void Drawbot::circle(float r)
 * fonctions pour lire les svg *
 ******************************/
 
-int Drawbot::sdInit()
+int Drawall::sdInit()
 {
     // pin 10 en sortie pour etre sur qu'il ne sera pas utilisé
     pinMode(PIN_SD_CS, OUTPUT);
@@ -673,7 +680,7 @@ int Drawbot::sdInit()
 // TODO : Voir pourquoi pas de char* en sortie
 
 // recuperation textuelle d'une valeur d'un attribut
-void Drawbot::getAttribute(const char * attribute, char * value)
+void Drawall::getAttribute(const char * attribute, char * value)
 {
     int pos = mFile.position();
     // se positionne en début de fichier
@@ -711,7 +718,7 @@ void Drawbot::getAttribute(const char * attribute, char * value)
     mFile.seek(pos);
 }
 
-bool Drawbot::isNumber(char car)
+bool Drawall::isNumber(char car)
 {
     int i;
 
@@ -730,7 +737,7 @@ bool Drawbot::isNumber(char car)
     return false;
 }
 
-float Drawbot::getNumericAttribute(const char * attribute)
+float Drawall::getNumericAttribute(const char * attribute)
 {
     // nombre de max 20 caractères
     char chaine[20+1];
@@ -818,7 +825,7 @@ float Drawbot::getNumericAttribute(const char * attribute)
     return nbFl;
 }
 
-boolean Drawbot::sdFind(const char * word)
+boolean Drawall::sdFind(const char * word)
 {
     int i = 0;
     char car;
@@ -847,7 +854,7 @@ boolean Drawbot::sdFind(const char * word)
     return false;
 }
 
-void Drawbot::draw()
+void Drawall::draw()
 {
     char car;
 
@@ -1068,7 +1075,7 @@ void Drawbot::draw()
     return;
 }
 
-void Drawbot::error(char* errNumber)
+void Drawall::error(char* errNumber)
 {
     Serial.print('E');
     Serial.print(errNumber);
@@ -1077,31 +1084,31 @@ void Drawbot::error(char* errNumber)
     while(true) {}
 }
 
-void Drawbot::setScale(int width, int height)
-{
-    /*Serial.print("_scale = ");
-    Serial.println(mScaleX);
+void Drawall::setScale(int width, int height)
+{/*
+    Serial.print("_scale = ");
+    Serial.println(mScale);
 
-    float scaleWidth = mSheetWidth / width;
-    float scaleHeight = mSheetHeight / height;
+    float scaleX = mSheetWidth / width;
+    float scaleY = mSheetHeight / height;
 
     Serial.print("_scaleX = ");
-    Serial.println(scaleWidth);
+    Serial.println(scaleX);
     Serial.print("_scaleY = ");
-    Serial.println(scaleHeight);
+    Serial.println(scaleY);
 
-    if (scaleWidth > scaleHeight)
+    if (scaleX > scaleY)
     {
-        setRatioDist(scaleHeight);
+        mScale = scaleY;
     } else {
-        setRatioDist(scaleWidth);
+        mScale = scaleX;
     }
     
     Serial.print("_scale = ");
-    Serial.println(mScaleX);*/
+    Serial.println(mScale);*/
 }
 
-void Drawbot::svg(char* nomFichier)
+void Drawall::svg(char* nomFichier)
 {
     mFile = SD.open(nomFichier);
 
@@ -1142,7 +1149,7 @@ void Drawbot::svg(char* nomFichier)
     Serial.print("n");
 }
 
-void Drawbot::getParameters(float * tNb, int nbParams)
+void Drawall::getParameters(float * tNb, int nbParams)
 {
     // chaine qui va contenir le nombre à convertir en float
     // ex: (23456.43532)
@@ -1170,7 +1177,7 @@ void Drawbot::getParameters(float * tNb, int nbParams)
     }
 }
 
-void Drawbot::end()
+void Drawall::end()
 {
     move(LOWER_CENTER);
     power(false);

@@ -14,7 +14,7 @@ http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 #include <SD.h>
 #include <Servo.h> 
 
-class Drawbot {
+class Drawall {
     public:
 
     enum Position {
@@ -34,7 +34,7 @@ class Drawbot {
     ****************/
 
     // dimentions de la surface (en mm)
-    Drawbot(int distanceBetweenMotors, int sheetWidth, int sheetHeight, int sheetPositionX, int sheetPositionY);
+    Drawall(int distanceBetweenMotors, int sheetWidth, int sheetHeight, int sheetPositionX, int sheetPositionY);
     
     /**********************
     ** getters & setters **
@@ -149,22 +149,15 @@ class Drawbot {
     // Ceci permet de faire des formes "finies"
     void endCurve();
 
-    // renvoie la longueur courante du câble gauche
+    // renvoie la longueur courante des câbles
     long getLeftLength();
-    
-    // renvoie la longueur courante du câble droit
     long getRightLength();
     
-    // initialise le ratio pour le calcul de distance, à n'utiliser qu'au début.
-    // Par défaut: 100
-    
-    // TODO : Remplacer par SetScaleX et setScaleY
     void initRatio();
 
     void setScale(int width, int height);
     
-    // alimente ou désalimente le moteur.
-    // Attention, selon le poids du crayon, la désalimentation peut entrainer la chute du robot.
+    // alimente ou désalimente le moteur (peut entrainer la chute du robot)
     void power(bool alimenter);
 
     void error(char* errNumber);
@@ -210,24 +203,23 @@ class Drawbot {
 
     Servo mServo;
 
-    unsigned int mLeftLength;
-    unsigned int mRightLength;
+    unsigned int mLeftLength, mRightLength;
 
     int mDistanceBetweenMotors;
-    int mSheetPositionX;
-    int mSheetPositionY;
+    
+    int mSheetPositionX, mSheetPositionY;
     
     // le fichier XML à lire
     File mFile;
     
-    float mPositionX;
-    float mPositionY; // position sur le plan
+    float mScale;
     
-    float mFictivePosX; // position voulue (fictive) avant qu'elle ne soit modifiée par les limites
-    float mFictivePosY;    
+    float mPositionX,mPositionY; // position sur le plan
+    
+    // point d'arrivée fictif non modifié par les limites
+    float mFictivePosX, mFictivePosY;
 
-    float mSheetWidth;
-    float mSheetHeight; // taille du plan (en mm)
+    float mSheetWidth, mSheetHeight; // taille du plan (en mm)
     
     float mRatio; // ratio entre le nb de pas et les mm
     
@@ -235,13 +227,10 @@ class Drawbot {
     
     bool mWriting;
     
-    float mStartCurveX;    
-    float mStartCurveY;
+    float mStartCurveX, mStartCurveY;
     
-    float mCubicCurveX;
-    float mCubicCurveY;
-    float mQuadraticCurveX;
-    float mQuadraticCurveY;    
+    float mCubicCurveX, mCubicCurveY;
+    float mQuadraticCurveX, mQuadraticCurveY;    
 };
 
 #endif

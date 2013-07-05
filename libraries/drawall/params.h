@@ -73,10 +73,12 @@ file or visit http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 * Autres variables *
 **********************/
 
+#define DELAY_BEFORE_STARTING 2000 // Pause avant de commencer à desiner
+
 #define SERIAL_BAUDS 9600
 
-#define SCALE_X 1.0
-#define SCALE_Y 1.0
+#define SCALE_X 1
+#define SCALE_Y 1
 
 #define OFFSET_X 0
 #define OFFSET_Y 0
