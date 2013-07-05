@@ -14,6 +14,5 @@ void setup() {
 
 void loop() {
   d.svg("drawbot.svg");
-  
-  while(true) {}
+  d.end();
 }

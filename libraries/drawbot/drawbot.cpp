@@ -11,10 +11,8 @@ Drawbot::Drawbot(int distanceBetweenMotors, int sheetWidth, int sheetHeight, int
 {
     // dimentions de la surface
     
-    //***************************
-    // À placer dans l'en-tête !!
-    //***************************
-        
+    // TODO : À placer dans l'en-tête !!
+    
     mSheetWidth = sheetWidth;
     mSheetHeight = sheetHeight;
     mDistanceBetweenMotors = distanceBetweenMotors;
@@ -25,7 +23,7 @@ Drawbot::Drawbot(int distanceBetweenMotors, int sheetWidth, int sheetHeight, int
     mWriting = true;
 }
 
-void Drawbot::begin(void)
+void Drawbot::begin()
 {    
     // pins en entrée
     pinMode(PIN_LEFT_CAPTOR, INPUT);
@@ -52,16 +50,14 @@ void Drawbot::begin(void)
     sdInit();
     
     if (mDistanceBetweenMotors < mSheetWidth + mSheetPositionX) {
-        Serial.print("Erreur : La distance entre les 2 moteurs est inférieure à la largeur de la feuille + position.");
-        return;
+        error("20");
     }
 
-    setScale(1);
+    initRatio();
 
     // Par défault initialise la position du stylo au centre de la surface
-    /**********************
-    * À remplacer par setPosition(CENTER);
-    ***********************/
+
+    // TODO : À remplacer par setPosition(CENTER);
     mPositionX = mSheetWidth / 2;
     mPositionY = mSheetHeight / 2;
 
@@ -112,7 +108,7 @@ void Drawbot::begin(void)
     Serial.print(mRightLength);
     Serial.print(',');
     
-    Serial.print(mScaleX);
+    Serial.print(mRatio);
     
     // caractère de fin d'init
     Serial.print('\n');
@@ -125,12 +121,12 @@ void Drawbot::begin(void)
     power(true);
 }
 
-float Drawbot::getPositionX(void)
+float Drawbot::getPositionX()
 {
     return mPositionX;
 }
 
-float Drawbot::getPositionY(void)
+float Drawbot::getPositionY()
 {
     return mPositionY;
 }
@@ -141,43 +137,44 @@ void Drawbot::setPosition(float positionX, float positionY)
     mPositionY = positionY;
 }
 
-long Drawbot::getLeftLength(void)
+long Drawbot::getLeftLength()
 {
     return mLeftLength;
 }
 
-long Drawbot::getRightLength(void)
+long Drawbot::getRightLength()
 {
     return mRightLength;
 }
 
 // xx(mm)*ratio --> xx(pas)
 // xx(pas)/ratio --> xx(mm)
-// Ça change la vitesse au lieu de changer l'échelle
-void Drawbot::setScale(float scale)
+// TODO : Modifier, ça change la vitesse au lieu de changer l'échelle
+
+void Drawbot::initRatio()
 {
     // ratio calculé en fonction du diametre moteur et du nb de pas
-    mScaleX = scale * float(STEPS) / (PI * DIAMETER);
+    mRatio = float(STEPS) / (PI * DIAMETER);
 }
 
 // vitesse du moteur (en tr/min)
 void Drawbot::setSpeed(float speed)
 {
     // delai entre chaque pas, en micro-secondes
-    mDelay = (SPEED_SCALE * 60000000) / (speed * float(STEPS));
+    mDelay = (60000000) / (speed * float(STEPS));
 }
 
 // renvoie la longueur du fil (en pas) en fonction de la position donnée (en mm)
 long Drawbot::positionToLeftLength(float positionX, float positionY)
 {
-    return sqrt ( pow((mSheetPositionX + positionX) * mScaleX, 2)
-    + pow((mSheetPositionY + positionY) * mScaleX, 2) );
+    return sqrt ( pow((mSheetPositionX + positionX) * mRatio * SCALE_X, 2)
+    + pow((mSheetPositionY + positionY) * mRatio * SCALE_Y, 2) );
 }
 
 long Drawbot::positionToRightLength(float positionX, float positionY)
 {
-    return sqrt ( pow((mDistanceBetweenMotors - mSheetPositionX - positionX) * mScaleX, 2)
-    + pow((mSheetPositionY + positionY) * mScaleX, 2) );
+    return sqrt ( pow((mDistanceBetweenMotors - mSheetPositionX - positionX) * mRatio * SCALE_X, 2)
+    + pow((mSheetPositionY + positionY) * mRatio * SCALE_Y, 2) );
 }
 
 void Drawbot::power(bool alimenter)
@@ -245,7 +242,7 @@ void Drawbot::line(float bX, float bY, bool writing)
     mFictivePosX = bX;
     mFictivePosY = bY;
 
-    // contrôle des limites, n'ecris pas si en dehors
+    // contrôle des limites, n'ecrit pas si en dehors
     if (bX < 0 || bX > mSheetWidth || bY < 0 || bY > mSheetHeight) {
         if (bX < 0)
             bX = 0;
@@ -369,9 +366,7 @@ void Drawbot::line(float bX, float bY, bool writing)
     mPositionY = bY;
 }
 
-//******************************************
-// À modifier, il ne faut pas faire de pause
-//******************************************
+// TODO : À modifier, il ne faut pas faire de pause
 
 void Drawbot::leftStep()
 {
@@ -430,7 +425,7 @@ void Drawbot::_line(float x, float y)
     line(mPositionX + x , mPositionY + y);
 }
 
-void Drawbot::end(void)
+void Drawbot::endCurve()
 {
     line(mStartCurveX, mStartCurveY);
 }
@@ -448,7 +443,7 @@ void Drawbot::_move(float x, float y)
     move(mPositionX + x, mPositionY + y);
 }
 
-void Drawbot::centrer(void)
+void Drawbot::centrer()
 {
     move(mSheetWidth/2 , mSheetHeight/2);
 }
@@ -632,9 +627,7 @@ int Drawbot::sdInit()
     return 0;
 }
 
-/*************************************
-Voir pourquoi pas de char* en sortie
-**************************************/
+// TODO : Voir pourquoi pas de char* en sortie
 
 // recuperation textuelle d'une valeur d'un attribut
 void Drawbot::getAttribute(const char * attribute, char * value)
@@ -811,7 +804,7 @@ boolean Drawbot::sdFind(const char * word)
     return false;
 }
 
-void Drawbot::draw(void)
+void Drawbot::draw()
 {
     char car;
 
@@ -852,12 +845,12 @@ void Drawbot::draw(void)
 
             // finir (aucun arg)
             case 'Z':
-                end();
+                endCurve();
             break;
 
             // finir (aucun arg)
             case 'z':
-                end();
+                endCurve();
             break;
 
             // ligneABS (2 args)
@@ -1028,20 +1021,20 @@ void Drawbot::draw(void)
     // sans trouver le (") de fin de la balise (d) : fail
 
     // Err. 11 : Le fichier svg est incomplet.
-    Serial.print("E11");
+    error("11");
     return;
 }
 
-/**********************
-À décommenter et tester
-**********************/
+// TODO : Décommenter et tester
 
-/*void Drawbot::error(char* errNumber)
+void Drawbot::error(char* errNumber)
 {
     Serial.print('E');
     Serial.print(errNumber);
+    delay(1000);
+    write(false);
     while(true) {}
-}*/
+}
 
 void Drawbot::setScale(int width, int height)
 {
@@ -1073,7 +1066,7 @@ void Drawbot::svg(char* nomFichier)
 
     if (!mFile) {
         // Err. 02 : Erreur d'ouverture de fichier.
-        Serial.print("E02");
+        error("02");
         return;
     }
 
@@ -1084,7 +1077,7 @@ void Drawbot::svg(char* nomFichier)
     // Si on ne la trouve pas, on renvoie une erreur
     if (! sdFind("<svg") ) {
         // Err. 12 : Le fichier n'est pas un fichier svg.
-        Serial.print("E12");
+        error("12");
         return;
     }
     
@@ -1094,7 +1087,7 @@ void Drawbot::svg(char* nomFichier)
     // Si on ne la trouve pas, on renvoie une erreur
     if (! sdFind("<path") ) {
         // Err. 13 : Le fichier svg n'inclut aucune donnée de dessin.
-        Serial.print("E13");
+        error("13");
         return;
     }
 
@@ -1137,4 +1130,11 @@ void Drawbot::getParameters(float * tNb, int nbParams)
 
         tNb[i] = atof(valeur);
     }
+}
+
+void Drawbot::end()
+{
+    centrer();
+    power(false);
+    while(true) {};
 }
