@@ -1054,7 +1054,9 @@ void Drawall::draw()
                 return;
             break;
             
+            // Caractères inutiles
             case ' ':
+            case '\n':
             break;
             
             // si la lettre n'est pas reconnue            

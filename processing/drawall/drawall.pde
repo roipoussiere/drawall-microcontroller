@@ -129,7 +129,7 @@ void draw() // Appelé tout le temps
   
   rectOut(mSheetPositionX, mSheetPositionY,
         mSheetWidth, mSheetHeight,
-        mDistanceBetweenMotors, mSheetHeight + mSheetPositionY, colLim);
+        mDistanceBetweenMotors, mSheetHeight + mSheetPositionY + 10, colLim);
 
   echelle(areaX + 6, 5, round(mSheetWidth/10));
   barre();
@@ -181,6 +181,7 @@ _ = Message arduino
       case 'x':
         msgBarre = "Déplacement en cours...";
         stroke(colPasEcrire);
+        // noStroke();
       break;
         
       case 'a':
@@ -326,10 +327,10 @@ void rectOut( float x, float y, float w, float h, float limL, float limH, color 
   float debY = (height - barreH - limH)/2;
   
   fill( fillCol );
-  rect(debX + 1, debY - 1, x - 1, limH);
-  rect(debX + 1, debY - 1, limL - 1, y);
-  rect(x + w + debX, debY - 1, limL - x - w, limH);
-  rect(debX + 1, debY + y + h, limL - 1, limH - y - h);
+  rect(debX + 1, debY - 1, x - 1, limH); // gauche
+  rect(debX + 1, debY - 1, limL - 1, y); // haut
+  rect(x + w + debX, debY - 1, limL - x - w, limH); //  droite
+  rect(debX + 1, debY + y + h, limL - 1, limH - y - h); // bas
 
   noFill();
   stroke(0);

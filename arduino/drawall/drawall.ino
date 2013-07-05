@@ -10,7 +10,7 @@ http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 
 #include <drawall.h>
 
-Drawall d(1500, 1000, 1000, 250, 250);
+Drawall d(1500, 1000, 500, 250, 250);
 
 void setup() {
   d.begin();
