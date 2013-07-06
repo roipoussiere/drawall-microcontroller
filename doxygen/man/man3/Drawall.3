@@ -1,0 +1,254 @@
+.TH "Drawall" 3 "Samedi Juillet 6 2013" "Version 1.0" "Drawall" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Drawall \- 
+.SH SYNOPSIS
+.br
+.PP
+.SS "Types publics"
+
+.in +1c
+.ti -1c
+.RI "enum \fBPosition\fP { \fBCENTER\fP, \fBUPPER_CENTER\fP, \fBLOWER_CENTER\fP, \fBLEFT_CENTER\fP, \fBRIGHT_CENTER\fP, \fBUPPER_LEFT\fP, \fBUPPER_RIGHT\fP, \fBLOWER_LEFT\fP, \fBLOWER_RIGHT\fP }"
+.br
+.RI "\fIPosition sur la feuille\&. \fP"
+.in -1c
+.SS "Fonctions membres publiques"
+
+.in +1c
+.ti -1c
+.RI "\fBDrawall\fP (int distanceBetweenMotors, int sheetWidth, int sheetHeight, int sheetPositionX, int sheetPositionY)"
+.br
+.RI "\fIInitialise la librairie\&. \fP"
+.ti -1c
+.RI "void \fBbegin\fP ()"
+.br
+.RI "\fIDémarre la librairie\&. \fP"
+.ti -1c
+.RI "void \fBend\fP ()"
+.br
+.RI "\fIFinit le traçé\&. \fP"
+.ti -1c
+.RI "float \fBgetPositionX\fP ()"
+.br
+.RI "\fIRenvoie la position horizontale actuelle du crayon\&. \fP"
+.ti -1c
+.RI "float \fBgetPositionY\fP ()"
+.br
+.RI "\fIRenvoie la position verticale actuelle du crayon\&. \fP"
+.ti -1c
+.RI "void \fBsetPosition\fP (float x, float y)"
+.br
+.RI "\fISpécifie la position initiale du crayon\&. \fP"
+.ti -1c
+.RI "void \fBsetPosition\fP (\fBPosition\fP position)"
+.br
+.RI "\fISpécifie la position initiale du crayon\&. \fP"
+.ti -1c
+.RI "void \fBsetSpeed\fP (float speed)"
+.br
+.RI "\fISpécifie la vitesse du traçé\&. \fP"
+.ti -1c
+.RI "void \fBmove\fP (float x, float y)"
+.br
+.RI "\fIDéplace le crayon à un point donné absolu\&. \fP"
+.ti -1c
+.RI "void \fBmove\fP (\fBPosition\fP position)"
+.br
+.RI "\fIDéplace le crayon à un point donné absolu\&. \fP"
+.ti -1c
+.RI "void \fB_move\fP (float x, float y)"
+.br
+.RI "\fIDéplace le crayon à un point donné relatif\&.  Une position relative correspond à la position d'un point par rapport à la position actuelle\&. \fP"
+.ti -1c
+.RI "void \fBline\fP (float x, float y)"
+.br
+.ti -1c
+.RI "void \fB_line\fP (float x, float y)"
+.br
+.ti -1c
+.RI "void \fBhorizontal\fP (float y)"
+.br
+.ti -1c
+.RI "void \fB_horizontal\fP (float y)"
+.br
+.ti -1c
+.RI "void \fBvertical\fP (float x)"
+.br
+.ti -1c
+.RI "void \fB_vertical\fP (float x)"
+.br
+.ti -1c
+.RI "void \fBcubicCurve\fP (float x, float y, float x1, float y1, float x2, float y2)"
+.br
+.ti -1c
+.RI "void \fB_cubicCurve\fP (float x, float y, float x1, float y1, float x2, float y2)"
+.br
+.ti -1c
+.RI "void \fBcubicCurve\fP (float x, float y, float x2, float y2)"
+.br
+.ti -1c
+.RI "void \fB_cubicCurve\fP (float x, float y, float x2, float y2)"
+.br
+.ti -1c
+.RI "void \fBquadraticCurve\fP (float x, float y, float x1, float y1)"
+.br
+.ti -1c
+.RI "void \fB_quadraticCurve\fP (float x, float y, float x1, float y1)"
+.br
+.ti -1c
+.RI "void \fBquadraticCurve\fP (float x, float y)"
+.br
+.ti -1c
+.RI "void \fB_quadraticCurve\fP (float x, float y)"
+.br
+.ti -1c
+.RI "void \fBarc\fP (float a1, float a2, float a3, float a4, float a5, float a6, float a7)"
+.br
+.ti -1c
+.RI "void \fB_arc\fP (float a1, float a2, float a3, float a4, float a5, float a6, float a7)"
+.br
+.ti -1c
+.RI "void \fBellipse\fP (float rx, float ry)"
+.br
+.ti -1c
+.RI "void \fBcircle\fP (float r)"
+.br
+.ti -1c
+.RI "void \fBsvg\fP (char *fileName)"
+.br
+.in -1c
+.SH "Documentation des énumérations membres"
+.PP 
+.SS "enum \fBDrawall::Position\fP"
+
+.PP
+Position sur la feuille\&. Les différentes position pour accès rapide, correspondant aux 8 points cardinaux, plus le centre\&. 
+.PP
+\fBBogue\fP
+.RS 4
+Ne fonctionne pas dans le sketch\&. 
+.RE
+.PP
+
+.SH "Documentation des constructeurs et destructeur"
+.PP 
+.SS "Drawall::Drawall (intdistanceBetweenMotors, intsheetWidth, intsheetHeight, intsheetPositionX, intsheetPositionY)"
+
+.PP
+Initialise la librairie\&. \fBParamètres:\fP
+.RS 4
+\fIdistanceBetweenMotors\fP Distance entre les deux moteurs\&. 
+.br
+\fIsheetWidth\fP Largeur de la feuille\&. 
+.br
+\fIsheetHeight\fP Hauteur de la feuille\&. 
+.br
+\fIsheetPositionX\fP Position en X de la feuille par rapport au moteur de gauche\&. 
+.br
+\fIsheetPositionY\fP Position en Y de la feuille par rapport au moteur de gauche\&. 
+.RE
+.PP
+
+.SH "Documentation des fonctions membres"
+.PP 
+.SS "void Drawall::_move (floatx, floaty)"
+
+.PP
+Déplace le crayon à un point donné relatif\&.  Une position relative correspond à la position d'un point par rapport à la position actuelle\&. \fBParamètres:\fP
+.RS 4
+\fIx\fP La position horizontale du point de destination du crayon\&. 
+.br
+\fIy\fP La position verticale du point de destination du crayon\&. 
+.RE
+.PP
+
+.SS "void Drawall::begin ()"
+
+.PP
+Démarre la librairie\&. \fBNécessaire\fP au fonctionnement de la librairie\&. Réalise les procédures d'initialisation du robot\&. 
+.SS "void Drawall::end ()"
+
+.PP
+Finit le traçé\&. Utilisé à la fin du programme\&. Cela positionne le crayon en bas de la feuille, désalimente les moteurs et met en pause le programme\&. 
+.SS "float Drawall::getPositionX ()"
+
+.PP
+Renvoie la position horizontale actuelle du crayon\&. \fBRenvoie:\fP
+.RS 4
+La position horizontale du crayon\&. 
+.RE
+.PP
+
+.SS "float Drawall::getPositionY ()"
+
+.PP
+Renvoie la position verticale actuelle du crayon\&. \fBRenvoie:\fP
+.RS 4
+La position verticale du crayon\&. 
+.RE
+.PP
+
+.SS "void Drawall::move (floatx, floaty)"
+
+.PP
+Déplace le crayon à un point donné absolu\&. \fBParamètres:\fP
+.RS 4
+\fIx\fP La position horizontale du point de destination du crayon\&. 
+.br
+\fIy\fP La position verticale du point de destination du crayon\&. 
+.RE
+.PP
+
+.SS "void Drawall::move (\fBPosition\fPposition)"
+
+.PP
+Déplace le crayon à un point donné absolu\&. \fBParamètres:\fP
+.RS 4
+\fIposition\fP La position du point de destination du crayon (voir type enum \fIPosition\fP) 
+.RE
+.PP
+
+.SS "void Drawall::setPosition (floatx, floaty)"
+
+.PP
+Spécifie la position initiale du crayon\&. À utiliser avant de commencer à tracer\&. 
+.PP
+\fBParamètres:\fP
+.RS 4
+\fIx\fP La position horizontale du crayon\&. 
+.br
+\fIy\fP La position verticale du crayon\&. 
+.RE
+.PP
+
+.SS "void Drawall::setPosition (\fBPosition\fPposition)"
+
+.PP
+Spécifie la position initiale du crayon\&. À utiliser avant de commencer à tracer\&. 
+.PP
+\fBParamètres:\fP
+.RS 4
+\fIposition\fP La position du crayon (voir type enum \fIPosition\fP)\&. 
+.RE
+.PP
+\fBBogue\fP
+.RS 4
+Ne fonctionne pas sur le sketch\&. 
+.RE
+.PP
+
+.SS "void Drawall::setSpeed (floatspeed)"
+
+.PP
+Spécifie la vitesse du traçé\&. \fBParamètres:\fP
+.RS 4
+\fIspeed\fP La vitesse du traçé\&. 
+.RE
+.PP
+
+
+.SH "Auteur"
+.PP 
+Généré automatiquement par Doxygen pour Drawall à partir du code source\&.
