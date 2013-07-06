@@ -30,6 +30,6 @@ void setup() {
 }
 
 void loop() {
-  d.svg("drawbot.svg"); // Draw the vectorial picture.
+  d.svg("drawbot.svg"); // Draw the vectorial picture from the "drawbot.svg" file.
   d.end(); // Finish the drawing.
 }

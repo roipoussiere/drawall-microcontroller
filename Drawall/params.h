@@ -116,7 +116,7 @@ Ce travail est sous licence Creative Commons Attribution - Pas d’Utilisation C
 #define OFFSET_X 0
 
 /// Offset vertical appliqué au dessin, permetant de le décaler.
-#define OFFSET_Y -100
+#define OFFSET_Y 0
 
 /// Vitesse par défaut du crayon, avant l'appel éventuel de setSpeed() (en m/s).
 #define DEFAULT_SPEED 10

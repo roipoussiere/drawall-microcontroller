@@ -198,17 +198,17 @@ void Drawall::setSpeed(float speed)
     mDelay = (60000000) / (speed * float(STEPS));
 }
 
-// TODO : Ne pas placer les SCALE et OFFSET ici pour ne pas influencer sur la position initiale
+// TODO : Ne pas placer SCALE et OFFSET ici pour ne pas influencer sur la position initiale
 long Drawall::positionToLeftLength(float positionX, float positionY)
 {
-    return sqrt ( pow((mSheetPositionX + positionX + OFFSET_X) * mRatio * SCALE_X * mScale, 2)
-    + pow((mSheetPositionY + positionY + OFFSET_Y) * mRatio * SCALE_Y * mScale, 2) );
+    return sqrt ( pow((mSheetPositionX + positionX) * mRatio, 2)
+    + pow((mSheetPositionY + positionY) * mRatio, 2) );
 }
 
 long Drawall::positionToRightLength(float positionX, float positionY)
 {
-    return sqrt ( pow((mDistanceBetweenMotors - mSheetPositionX - positionX - OFFSET_X) * mRatio * SCALE_X * mScale, 2)
-    + pow((mSheetPositionY + positionY + OFFSET_Y) * mRatio * SCALE_Y * mScale, 2) );
+    return sqrt ( pow((mDistanceBetweenMotors - mSheetPositionX - positionX) * mRatio, 2)
+    + pow((mSheetPositionY + positionY) * mRatio, 2) );
 }
 
 void Drawall::power(bool alimenter)
@@ -289,10 +289,10 @@ void Drawall::line(float bX, float bY, bool writing)
             write(false);
         }
     }
-
+    
     // longueur fils à la destination (en pas)
-    long bG = positionToLeftLength(bX, bY);
-    long bD = positionToRightLength(bX, bY);
+    long bG = positionToLeftLength(bX * SCALE_X * mScale + OFFSET_X, bY * SCALE_X * mScale + OFFSET_Y);
+    long bD = positionToRightLength(bX * SCALE_X * mScale + OFFSET_X, bY * SCALE_X * mScale + OFFSET_Y);
 
     // nombre de pas à faire
     long nbPasG = bG - mLeftLength;
