@@ -104,21 +104,31 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <dd>Remplir la fonction.  </dd>
 <dt><a class="anchor" id="_todo000001"></a>Membre <a class="el" href="class_drawall.html#a393a47765d30fbf5b6d9c5333d2ffbc7">Drawall::arc</a>  (float a1, float a2, float a3, float a4, float a5, float a6, float a7)</dt>
 <dd>Remplir la fonction.  </dd>
-<dt><a class="anchor" id="_todo000005"></a>Membre <a class="el" href="class_drawall.html#a614483922fcc5d3711d7ffde0634abaf">Drawall::error</a>  (char *errNumber)</dt>
+<dt><a class="anchor" id="_todo000006"></a>Membre <a class="el" href="class_drawall.html#a614483922fcc5d3711d7ffde0634abaf">Drawall::error</a>  (char *errNumber)</dt>
 <dd>Mettre en pause le traçé, quand la pause sera opérationnelle.  </dd>
-<dt><a class="anchor" id="_todo000008"></a>Membre <a class="el" href="class_drawall.html#ad1302f3d9035d964cf0b49fd473142c0">Drawall::getAttribute</a>  (const char *attribute, char *value)</dt>
+<dt><a class="anchor" id="_todo000009"></a>Membre <a class="el" href="class_drawall.html#ad1302f3d9035d964cf0b49fd473142c0">Drawall::getAttribute</a>  (const char *attribute, char *value)</dt>
 <dd><p class="startdd">Détecter le '&gt;' pour chercher uniquement dans la balise. </p>
 <p class="enddd">Voir pourquoi pas de char* en sortie.  </p>
 </dd>
-<dt><a class="anchor" id="_todo000009"></a>Membre <a class="el" href="class_drawall.html#a4b36b2bd819a76e653fa65a36a313245">Drawall::getParameters</a>  (float *tabParams, int nbParams)</dt>
+<dt><a class="anchor" id="_todo000010"></a>Membre <a class="el" href="class_drawall.html#adb726f927bfd543e36f4244c4652ac4d">Drawall::getNumericAttribute</a>  (const char *attribute)</dt>
+<dd>Convertir les unités en mm, pas en px.  </dd>
+<dt><a class="anchor" id="_todo000011"></a>Membre <a class="el" href="class_drawall.html#a4b36b2bd819a76e653fa65a36a313245">Drawall::getParameters</a>  (float *tabParams, int nbParams)</dt>
 <dd>Voir si on peut renvoyer le tableau.  </dd>
-<dt><a class="anchor" id="_todo000003"></a>Membre <a class="el" href="class_drawall.html#a5e79590a31ccfb848ed607a7350aea59">Drawall::initRatio</a>  ()</dt>
+<dt><a class="anchor" id="_todo000004"></a>Membre <a class="el" href="class_drawall.html#a5e79590a31ccfb848ed607a7350aea59">Drawall::initRatio</a>  ()</dt>
 <dd>Inverser le ratio car le nombre de pas est une valeur entière, éviter de le diviser.  </dd>
-<dt><a class="anchor" id="_todo000006"></a>Membre <a class="el" href="class_drawall.html#aeed2040ed275b0923354df9922213f5f">Drawall::leftStep</a>  ()</dt>
-<dd>La direction en paramètre ou en argument de classe.  </dd>
-<dt><a class="anchor" id="_todo000007"></a>Membre <a class="el" href="class_drawall.html#ae8e2e37e7319a7a0e0ea90602f8d8acd">Drawall::rightStep</a>  ()</dt>
-<dd>La direction en paramètre ou en argument de classe.  </dd>
-<dt><a class="anchor" id="_todo000004"></a>Membre <a class="el" href="class_drawall.html#a8bdde448dad14f9f2b1e8734d3637a16">Drawall::setScale</a>  (int width, int height)</dt>
+<dt><a class="anchor" id="_todo000007"></a>Membre <a class="el" href="class_drawall.html#aeed2040ed275b0923354df9922213f5f">Drawall::leftStep</a>  ()</dt>
+<dd><p class="startdd">La direction en paramètre ou en argument de classe. </p>
+<p class="enddd">Il faudrait ne pas faire de pause pour ne pas influencer sur le traçé  </p>
+</dd>
+<dt><a class="anchor" id="_todo000003"></a>Membre <a class="el" href="class_drawall.html#a4247b7668cdd7ec6cdd98b9e25d369f7">Drawall::line</a>  (float pX, float pY, bool writing)</dt>
+<dd>Trop long, éclater la méthode.  </dd>
+<dt><a class="anchor" id="_todo000012"></a>Membre <a class="el" href="class_drawall.html#ab2de4e422d5929bb63fa8a550a4fdcee">Drawall::mRatio</a>  </dt>
+<dd>Renommer en mStepLength et inverser le ratio  </dd>
+<dt><a class="anchor" id="_todo000008"></a>Membre <a class="el" href="class_drawall.html#ae8e2e37e7319a7a0e0ea90602f8d8acd">Drawall::rightStep</a>  ()</dt>
+<dd><p class="startdd">La direction en paramètre ou en argument de classe. </p>
+<p class="enddd">Il faudrait ne pas faire de pause pour ne pas influencer sur le traçé  </p>
+</dd>
+<dt><a class="anchor" id="_todo000005"></a>Membre <a class="el" href="class_drawall.html#a8bdde448dad14f9f2b1e8734d3637a16">Drawall::setScale</a>  (int width, int height)</dt>
 <dd>Changer le nom et retourner l'échelle plutôt que de la modifier directement. </dd>
 </dl>
 </div></div><!-- contents -->
@@ -126,7 +136,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Généré le Samedi Juillet 6 2013 15:01:29 pour Drawall par
+    <li class="footer">Généré le Samedi Juillet 6 2013 20:04:47 pour Drawall par
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

@@ -58,8 +58,8 @@ void Drawall::begin()
     mRightLength = positionToRightLength(mPositionX, mPositionY);
 
     // Le point de départ de la 1ere figure est le point courant
-    mStartCurveX = mPositionX;
-    mStartCurveY = mPositionY;
+    mStartFigureX = mPositionX;
+    mStartFigureY = mPositionY;
     
     setSpeed(DEFAULT_SPEED);
 
@@ -446,17 +446,17 @@ void Drawall::_line(float x, float y)
     line(mPositionX + x , mPositionY + y);
 }
 
-void Drawall::endCurve()
+void Drawall::endFigure()
 {
-    line(mStartCurveX, mStartCurveY);
+    line(mStartFigureX, mStartFigureY);
 }
 
 void Drawall::move(float x, float y)
 {
     line(x, y, false);
     
-    mStartCurveX = x;
-    mStartCurveY = y;
+    mStartFigureX = x;
+    mStartFigureY = y;
 }
 
 void Drawall::move(Position position)
@@ -800,8 +800,8 @@ void Drawall::draw()
 
         // Appelle les fonctions de dessin svg en fonction du caractère détecté
         switch (car) {
-            // deplacerABS (2 args)
-            case 'M':
+            
+            case 'M': // deplacerABS (2 args)
                 // lis les paramètres tant qu'il y a des nombres
                 do {
                     // la fonction deplacerABS() attends 2 paramètres
@@ -816,7 +816,6 @@ void Drawall::draw()
 
             break;
 
-            // deplacerREL (2 args)
             case 'm':
                 do {
                     getParameters(tNb, 2);
@@ -825,17 +824,14 @@ void Drawall::draw()
                 while(isNumber(mFile.peek()));
             break;
 
-            // finir (aucun arg)
             case 'Z':
-                endCurve();
+                endFigure();
             break;
 
-            // finir (aucun arg)
             case 'z':
-                endCurve();
+                endFigure();
             break;
 
-            // ligneABS (2 args)
             case 'L':
                 do {
                     getParameters(tNb, 2);
@@ -845,7 +841,6 @@ void Drawall::draw()
 
             break;
 
-            // ligneREL (2 args)
             case 'l':
                 do {
                     getParameters(tNb, 2);
@@ -854,7 +849,6 @@ void Drawall::draw()
                 while(isNumber(mFile.peek()));
             break;
 
-            // horizABS (1 arg)
             case 'H':
                 do {
                     getParameters(tNb, 1);
@@ -863,7 +857,6 @@ void Drawall::draw()
                 while(isNumber(mFile.peek()));
             break;
 
-            // horizREL (1 arg)
             case 'h':
                 do {
                     getParameters(tNb, 1);
@@ -872,7 +865,6 @@ void Drawall::draw()
                 while(isNumber(mFile.peek()));
             break;
 
-            // vertiABS (1 arg)
             case 'V':
                 do {
                     getParameters(tNb, 1);
@@ -881,7 +873,6 @@ void Drawall::draw()
                 while(isNumber(mFile.peek()));
             break;
 
-            // vertiABS (1 arg)
             case 'v':
                 do {
                     getParameters(tNb, 1);
@@ -890,7 +881,6 @@ void Drawall::draw()
                 while(isNumber(mFile.peek()));
             break;
             
-            // bezierCubABS (6 args)
             case 'C':
                 do {
                     getParameters(tNb, 6);
@@ -899,7 +889,6 @@ void Drawall::draw()
                 while(isNumber(mFile.peek()));
             break;
 
-            // bezierCubREL (6 args)
             case 'c':
                 do {
                     getParameters(tNb, 6);
@@ -908,7 +897,6 @@ void Drawall::draw()
                 while(isNumber(mFile.peek()));
             break;
             
-            // bezierCubABS (4 args)
             case 'S':
                 do {
                     getParameters(tNb, 4);
@@ -917,7 +905,6 @@ void Drawall::draw()
                 while(isNumber(mFile.peek()));
             break;
 
-            // bezierCubREL (4 args)
             case 's':
                 do {
                     getParameters(tNb, 4);
@@ -926,7 +913,6 @@ void Drawall::draw()
                 while(isNumber(mFile.peek()));
             break;
             
-            // bezierQuadABS (4 args)
             case 'Q':
                 do {
                     getParameters(tNb, 4);
@@ -935,7 +921,6 @@ void Drawall::draw()
                 while(isNumber(mFile.peek()));
             break;
 
-            // bezierQuadREL (4 args)
             case 'q':
                 do {
                     getParameters(tNb, 4);
@@ -944,7 +929,6 @@ void Drawall::draw()
                 while(isNumber(mFile.peek()));
             break;
             
-            // bezierQuadABS (2 args)
             case 'T':
                 do {
                     getParameters(tNb, 2);
@@ -953,7 +937,6 @@ void Drawall::draw()
                 while ( isNumber(mFile.peek()) );
             break;
 
-            // bezierQuadREL (2 args)
             case 't':
                 do {
                     getParameters(tNb, 2);
@@ -962,7 +945,6 @@ void Drawall::draw()
                 while(isNumber(mFile.peek()));
             break;
             
-            // arcABS (7 args)
             case 'A':
                 do {
                     getParameters(tNb, 7);
@@ -971,7 +953,6 @@ void Drawall::draw()
                 while(isNumber(mFile.peek()));
             break;
 
-            // arcREL (7 args)
             case 'a':
                 do {
                     getParameters(tNb, 7);

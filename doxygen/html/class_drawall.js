@@ -29,7 +29,7 @@ var class_drawall =
     [ "draw", "class_drawall.html#a554e3835c80aaf595f4b6c3f03ffbdd8", null ],
     [ "ellipse", "class_drawall.html#adc914972bbb800662e8b338727011b77", null ],
     [ "end", "class_drawall.html#a02232c69b50b8eed9b06d08852f3400b", null ],
-    [ "endCurve", "class_drawall.html#a8f27a7944020d4f1738fef00fed9f75f", null ],
+    [ "endFigure", "class_drawall.html#a594130daf0b3fa09c566a202277d2d24", null ],
     [ "error", "class_drawall.html#a614483922fcc5d3711d7ffde0634abaf", null ],
     [ "getAttribute", "class_drawall.html#ad1302f3d9035d964cf0b49fd473142c0", null ],
     [ "getLeftLength", "class_drawall.html#ace2ce1ec092b6160d3a35fe50a4d27b0", null ],
@@ -80,10 +80,10 @@ var class_drawall =
     [ "mScale", "class_drawall.html#a1bb9abcc7adb0a5a4d87612b1fe9f787", null ],
     [ "mServo", "class_drawall.html#a1e576ad0bbb79b12e6b1cdc9c9a388d2", null ],
     [ "mSheetHeight", "class_drawall.html#a52a38641245d9ac3242b7e2e8c33fb18", null ],
-    [ "mSheetPositionX", "class_drawall.html#ac6424c2762d23bbf5f27d450e383bbf6", null ],
-    [ "mSheetPositionY", "class_drawall.html#a0bcf1c5ee08115d51d429bf8b2b7623b", null ],
+    [ "mSheetPositionX", "class_drawall.html#a2d6f9b433049207c2f9684cc6899f4f2", null ],
+    [ "mSheetPositionY", "class_drawall.html#a1fc882f939a33a30e63ee47ac9b1e5a9", null ],
     [ "mSheetWidth", "class_drawall.html#a9d9f191979f1ccb22baffd87c7ede4c7", null ],
-    [ "mStartCurveX", "class_drawall.html#a7ecfc0124ecbcd8d1869178a76a84869", null ],
-    [ "mStartCurveY", "class_drawall.html#acc57d4a60a5cf92f1af949fce28d5117", null ],
+    [ "mStartFigureX", "class_drawall.html#a9d75c75f22cdcfcdc43cc400eb8a92bb", null ],
+    [ "mStartFigureY", "class_drawall.html#a10ce288fd8de6a3fe1f8e200ad648493", null ],
     [ "mWriting", "class_drawall.html#a974a33e7f496cf4d32fa0f9b4033cd2b", null ]
 ];

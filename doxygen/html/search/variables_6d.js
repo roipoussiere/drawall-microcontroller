@@ -17,10 +17,10 @@ var searchData=
   ['mscale',['mScale',['../class_drawall.html#a1bb9abcc7adb0a5a4d87612b1fe9f787',1,'Drawall']]],
   ['mservo',['mServo',['../class_drawall.html#a1e576ad0bbb79b12e6b1cdc9c9a388d2',1,'Drawall']]],
   ['msheetheight',['mSheetHeight',['../class_drawall.html#a52a38641245d9ac3242b7e2e8c33fb18',1,'Drawall']]],
-  ['msheetpositionx',['mSheetPositionX',['../class_drawall.html#ac6424c2762d23bbf5f27d450e383bbf6',1,'Drawall']]],
-  ['msheetpositiony',['mSheetPositionY',['../class_drawall.html#a0bcf1c5ee08115d51d429bf8b2b7623b',1,'Drawall']]],
+  ['msheetpositionx',['mSheetPositionX',['../class_drawall.html#a2d6f9b433049207c2f9684cc6899f4f2',1,'Drawall']]],
+  ['msheetpositiony',['mSheetPositionY',['../class_drawall.html#a1fc882f939a33a30e63ee47ac9b1e5a9',1,'Drawall']]],
   ['msheetwidth',['mSheetWidth',['../class_drawall.html#a9d9f191979f1ccb22baffd87c7ede4c7',1,'Drawall']]],
-  ['mstartcurvex',['mStartCurveX',['../class_drawall.html#a7ecfc0124ecbcd8d1869178a76a84869',1,'Drawall']]],
-  ['mstartcurvey',['mStartCurveY',['../class_drawall.html#acc57d4a60a5cf92f1af949fce28d5117',1,'Drawall']]],
+  ['mstartfigurex',['mStartFigureX',['../class_drawall.html#a9d75c75f22cdcfcdc43cc400eb8a92bb',1,'Drawall']]],
+  ['mstartfigurey',['mStartFigureY',['../class_drawall.html#a10ce288fd8de6a3fe1f8e200ad648493',1,'Drawall']]],
   ['mwriting',['mWriting',['../class_drawall.html#a974a33e7f496cf4d32fa0f9b4033cd2b',1,'Drawall']]]
 ];
