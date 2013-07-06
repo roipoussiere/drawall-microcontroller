@@ -1,15 +1,9 @@
 /*
-This work is licensed under the Creative Commons Attribution
-- Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions
-3.0 France License. To view a copy of this license, visit
-http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
+Ce travail est sous licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 3.0 France License. Pour voir voir une copie de cette licence, ouvrez le fichier LIENCE.txt ou connectez-vous sur http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 */
-
-// TODO : Corriger Warnings pour les conversions de texte en char*
 
 #include <drawall.h>
 
-// TODO : Corriger Warning ici
 Drawall::Drawall(int distanceBetweenMotors,
     int sheetWidth, int sheetHeight,
     int sheetPositionX, int sheetPositionY) :
@@ -25,12 +19,12 @@ void Drawall::begin()
 {
     Serial.begin(SERIAL_BAUDS);
     
-    // pins en entrée
+    // pins d'entrée
     pinMode(PIN_LEFT_CAPTOR, INPUT);
     pinMode(PIN_RIGHT_CAPTOR, INPUT);
     pinMode(PIN_REMOTE, INPUT);
     
-    // pins en sortie
+    // pins de sortie
     pinMode(PIN_OFF_MOTORS, OUTPUT);
     pinMode(PIN_LEFT_MOTOR_STEP, OUTPUT);
     pinMode(PIN_LEFT_MOTOR_DIR, OUTPUT);
@@ -43,10 +37,7 @@ void Drawall::begin()
     pinMode(PIN_SCREEN_SCLK, OUTPUT);
     // pin CS au moment de la lecture de la carte
     
-    // Lie le servo-moteur à son pin
     mServo.attach(PIN_SERVO);
-    
-    // Initialisation carte SD
     sdInit();
     
     // pour que write() fonctionne la 1ere fois
@@ -62,7 +53,7 @@ void Drawall::begin()
 
     setPosition(DEFAULT_POSITION);
 
-    // calcul de la longueur des fils au début
+    // Calcul de la longueur des fils au début
     mLeftLength = positionToLeftLength(mPositionX, mPositionY);
     mRightLength = positionToRightLength(mPositionX, mPositionY);
 
@@ -72,7 +63,7 @@ void Drawall::begin()
     
     setSpeed(DEFAULT_SPEED);
 
-    // *** Affichage des informations ***
+    // *** Affichage des informations concernant le robot ***
     
     Serial.print("Position : ");
     Serial.print(mPositionX);
@@ -116,9 +107,7 @@ void Drawall::begin()
     // Serial.println("_Appuyez sur le bouton pour commencer");
     // while(digitalRead(PIN_BP) == LOW) {}
 
-    // alimente le moteur
     power(true);
-    
     delay(DELAY_BEFORE_STARTING);
 }
 
@@ -199,22 +188,16 @@ long Drawall::getRightLength()
     return mRightLength;
 }
 
-// xx(mm)*ratio --> xx(pas)
-// xx(pas)/ratio --> xx(mm)
 void Drawall::initRatio()
 {
-    // ratio calculé en fonction du diametre moteur et du nb de pas
     mRatio = float(STEPS) / (PI * DIAMETER);
 }
 
-// vitesse du moteur (en tr/min)
 void Drawall::setSpeed(float speed)
 {
-    // delai entre chaque pas, en micro-secondes
     mDelay = (60000000) / (speed * float(STEPS));
 }
 
-// renvoie la longueur du fil (en pas) en fonction de la position donnée (en mm)
 // TODO : Ne pas placer les SCALE et OFFSET ici pour ne pas influencer sur la position initiale
 long Drawall::positionToLeftLength(float positionX, float positionY)
 {
@@ -232,31 +215,24 @@ void Drawall::power(bool alimenter)
 {
     if (alimenter) {
         digitalWrite(PIN_OFF_MOTORS, LOW);
-        // Processing: a=alimenter
-        Serial.print('a');
+        Serial.print('a'); // Processing: a = alimenter
     }
     else {
         digitalWrite(PIN_OFF_MOTORS, HIGH);
-        // éloigne le stylo avant de couper tout
         write(false);
-        
-        // Processing: b=désalimenter
-        Serial.print('b');
+        Serial.print('b'); // Processing: b = désalimenter
     }
 }
 
-// approche ou eloigne le stylo pour écrire ou non
 void Drawall::write(bool write)
 {
-    // si on veut ecrire et que le stylo n'ecrit pas
+    // Si on souhaite écrire et que le stylo n'ecrit pas
     if (write && !mWriting) {
         delay(DELAY_BEFORE_SERVO);
         mServo.write(MIN_SERVO);
         delay(DELAY_AFTER_SERVO);
         
-        // Processing: w = ecrire
-        Serial.print('w');
-
+        Serial.print('w'); // Processing: w = ecrire
         mWriting = true;
     }
     
@@ -266,8 +242,7 @@ void Drawall::write(bool write)
         mServo.write(MAX_SERVO);
         delay(DELAY_AFTER_SERVO);
 
-        // Processing: x = ne pas ecrire    
-        Serial.print('x');
+        Serial.print('x'); // Processing: x = ne pas ecrire
         mWriting = false;
     }
 }
@@ -293,7 +268,7 @@ void Drawall::line(float bX, float bY, bool writing)
     mFictivePosX = bX;
     mFictivePosY = bY;
 
-    // contrôle des limites, n'ecrit pas si en dehors
+    // Contrôle des limites, n'ecrit pas si en dehors
     if (bX < 0 || bX > mSheetWidth || bY < 0 || bY > mSheetHeight) {
         if (bX < 0)
             bX = 0;
@@ -417,8 +392,6 @@ void Drawall::line(float bX, float bY, bool writing)
     mPositionY = bY;
 }
 
-// TODO : À modifier, il ne faut pas faire de pause
-
 void Drawall::leftStep()
 {
     digitalWrite(PIN_LEFT_MOTOR_STEP, true);
@@ -465,9 +438,6 @@ void Drawall::line(float x, float y)
             line(mPositionX + miniX, mPositionY + miniY, true);
         }
     }
-    
-    // si c'est une petite longueur, on y va directement
-    // et puis pour finir au cas ou ça tombe pas juste avec les boucles
     line(x, y, true);
 }
 
@@ -523,13 +493,6 @@ void Drawall::_vertical(float x)
 
 void Drawall::cubicCurve(float x1, float y1, float x2, float y2, float x, float y)
 {
-    // B(t) = P0(1-t)^3 + 3*P1*t(1-t)^2 + 3*P2*t^2*(1-t) + P3*t^3
-    // t=[0,1]
-
-    // P0 = pt source
-    // P1-P2 = pts de controles
-    // P3 = pt cible
-
     float x0 = mPositionX;
     float y0 = mPositionY;
     float ptx, pty;
@@ -577,13 +540,6 @@ void Drawall::_cubicCurve(float x2, float y2, float x, float y)
 
 void Drawall::quadraticCurve(float x1, float y1, float x, float y)
 {
-    // B(t) = P0*(1-t)^2 + 2*P1*t(1-t) + P2*t^2
-    // t=[0,1]
-
-    // P0 = pt source
-    // P1 = pt de controle
-    // P2 = pt cible
-
     float x0 = mPositionX;
     float y0 = mPositionY;
     float ptx, pty;
@@ -637,11 +593,10 @@ void Drawall::_arc(float a1, float a2, float a3, float a4, float a5, float a6, f
 
 void Drawall::ellipse(float rx, float ry)
 {
-    // ratio pour déterminer
-    // la distance du point de controle en fonction du rayon
+    // ratio pour déterminer la distance du point de controle en fonction du rayon
     float k = 0.551915;
 
-    // pour simplifier les formules
+    // raccourci pour simplifier les formules
     float x = mPositionX;
     float y = mPositionY;
 
@@ -662,35 +617,22 @@ void Drawall::circle(float r)
     ellipse(r, r);
 }
 
-/******************************
-* fonctions pour lire les svg *
-******************************/
-
-int Drawall::sdInit()
+void Drawall::sdInit()
 {
-    // pin 10 en sortie pour etre sur qu'il ne sera pas utilisé
+    // pin CS en sortie pour etre sur qu'il ne sera pas utilisé
     pinMode(PIN_SD_CS, OUTPUT);
 
     if (!SD.begin(PIN_SD_CS)) {
-        // Err. 01 : Carte absente ou non reconnue.
-        return 01;
+        error("01"); // Err 01 : Carte absente ou non reconnue.
     }
-    return 0;
 }
 
-// TODO : Voir pourquoi pas de char* en sortie
-
-// recuperation textuelle d'une valeur d'un attribut
 void Drawall::getAttribute(const char * attribute, char * value)
 {
     int pos = mFile.position();
-    // se positionne en début de fichier
     mFile.seek(0);
 
-    // attribute : ce que l'on veut obtenir, ex: (svg)
-    // att : requette + =" , ex : svg="
-    // valeur : valeur de la requette, ex : 21cm ou fill:none;stroke:#000000
-
+    // att : requette avec =" , ex : svg="
     // crée une chaine de la meme taille que valeur (+2 pour (=") )
     char att[strlen(attribute)+2];
     
@@ -713,7 +655,7 @@ void Drawall::getAttribute(const char * attribute, char * value)
         i++;
     }
 
-    // quand on a fini, remplace le (") par le car. de fin de chaine.
+    // Quand on a fini, remplace le (") par le car. de fin de chaine.
     value[i-1] = '\0';
     
     mFile.seek(pos);
@@ -722,19 +664,15 @@ void Drawall::getAttribute(const char * attribute, char * value)
 bool Drawall::isNumber(char car)
 {
     int i;
-
-    // caractères considérés comme étant des chiffres
     const char * chiffres = "-.0123456789";
 
-    // parcours le tableau de chiffres
     for(i=0; chiffres[i] != '\0'; i++) {
-        // si c'est un chiffre, renvoie vrai
         if (car == chiffres[i]) {
             return true;
         }
     }
     
-    // si on est là c'est qu'aucun chiffre n'a été trouvé, renvoie faux
+    // Aucun chiffre n'a été trouvé, renvoie faux
     return false;
 }
 
@@ -783,42 +721,35 @@ float Drawall::getNumericAttribute(const char * attribute)
     nbCh[tNbCh] = '\0';
     unite[tUnite] = '\0';
 
-    // converti la chaine en float
+    // Conversion de la chaine en float
     nbFl = atof(nbCh);
 
-    // On converti les unités en px (unités utilisateur) :
+    // Conversion des unités en mm :
 
-    // px (aucun changement)
     if (!strcmp(unite, "px")) {
         nbFl *= 1;
     }
 
-    // pt (*1.25)
     else if (!strcmp(unite, "pt")) {
         nbFl *= 1.25;
     }
     
-    // pc (*15)
     else if (!strcmp(unite, "pc")) {
         nbFl *= 15;
     }
 
-    // mm (*3.543307)
     else if (!strcmp(unite, "mm")) {
         nbFl *= 3.543307;
     }
 
-    // cm (*35.43307)
     else if (!strcmp(unite, "cm")) {
         nbFl *= 35.43307;
     }
 
-    // in (*90)
     else if (!strcmp(unite, "in")) {
         nbFl *= 90;
     }
 
-    // si l'unité n'est pas spécifiée, c'est l'unité utilisateur par défaut
     else {
         nbFl *= 1;
     }
@@ -826,7 +757,7 @@ float Drawall::getNumericAttribute(const char * attribute)
     return nbFl;
 }
 
-boolean Drawall::sdFind(const char * word)
+bool Drawall::sdFind(const char * word)
 {
     int i = 0;
     char car;

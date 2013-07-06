@@ -21,7 +21,7 @@ Created on 5 july 2013 by Nathanael Jourdane
 #include <drawall.h>
 
 // Initialise the library with :
-// Distance between the motors, sheet position (X and Y) and sheet size (width and height)
+// Distance between the motors, sheet size (width and height) and sheet position (X and Y)
 Drawall d(1500, 1000, 500, 250, 250);
 
 void setup() {

@@ -1,0 +1,5 @@
+<map id="Drawall::_horizontal" name="Drawall::_horizontal">
+<area shape="rect" id="node3" href="$class_drawall.html#a5a42dc6fb6006798c13eb02c5c024a46" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position absolue y..." alt="" coords="192,32,323,61"/>
+<area shape="rect" id="node5" href="$class_drawall.html#acb43c0e3119660e47dc1cbdb55b8fead" title="Déplace le crayon à la position absolue [x ; y]." alt="" coords="371,5,477,35"/>
+<area shape="rect" id="node7" href="$class_drawall.html#a40ff3356f8911b4e8ea30e425cd6c1db" title="Trace une ligne droite, de la position actuelle à la position absolue [x; y]." alt="" coords="527,32,620,61"/>
+</map>

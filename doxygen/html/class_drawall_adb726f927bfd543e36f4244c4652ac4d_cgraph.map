@@ -1,0 +1,5 @@
+<map id="Drawall::getNumericAttribute" name="Drawall::getNumericAttribute">
+<area shape="rect" id="node3" href="$class_drawall.html#ad1302f3d9035d964cf0b49fd473142c0" title="Récupere la valeur de l&#39;attribut attribute du fichier svg sous forme textuelle." alt="" coords="245,5,387,35"/>
+<area shape="rect" id="node7" href="$class_drawall.html#ab303d5d3e84e6970fc71d2c6011228e5" title="Informe si le caractère car est un chiffre." alt="" coords="251,59,381,88"/>
+<area shape="rect" id="node5" href="$class_drawall.html#a0d877651832d5b48e933fbd2d00bc8ad" title="Cherche le mot word dans le fichier." alt="" coords="436,5,548,35"/>
+</map>

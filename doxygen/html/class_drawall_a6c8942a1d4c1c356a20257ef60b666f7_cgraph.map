@@ -1,0 +1,11 @@
+<map id="Drawall::begin" name="Drawall::begin">
+<area shape="rect" id="node3" href="$class_drawall.html#a2fe722f0b3f165b1108eff00e5e15e07" title="initialise de la carte SD." alt="" coords="204,5,311,35"/>
+<area shape="rect" id="node5" href="$class_drawall.html#a614483922fcc5d3711d7ffde0634abaf" title="À appeler lorsque une erreur se produit." alt="" coords="408,57,507,87"/>
+<area shape="rect" id="node10" href="$class_drawall.html#a5e79590a31ccfb848ed607a7350aea59" title="Initialise le ratio entre le nombre de pas et la distance." alt="" coords="196,109,319,139"/>
+<area shape="rect" id="node12" href="$class_drawall.html#a9c57bca1e6e495cb092c78f735296470" title="Spécifie la position initiale du crayon." alt="" coords="188,163,327,192"/>
+<area shape="rect" id="node14" href="$class_drawall.html#a8d08b48bb1cd9830a08ea40ba935b486" title="Calcule la longueur du câble gauche pour la position [x ; y]." alt="" coords="160,216,355,245"/>
+<area shape="rect" id="node16" href="$class_drawall.html#a869f1b3e933a11ed5b3c0b3481c78049" title="Calcule la longueur du câble droit pour la position [x ; y]." alt="" coords="175,269,340,315"/>
+<area shape="rect" id="node18" href="$class_drawall.html#ad94d9073b19c19f82eebf15810692efc" title="Spécifie la vitesse du traçé." alt="" coords="193,339,321,368"/>
+<area shape="rect" id="node20" href="$class_drawall.html#a3c268820b5f8652743cde3fe515cacce" title="Alimente ou désalimente les moteurs." alt="" coords="403,308,512,337"/>
+<area shape="rect" id="node7" href="$class_drawall.html#ab35495b79410f6a37c48bd65fc07f0b8" title="Approche ou éloigne le crayon de la paroi." alt="" coords="561,141,663,171"/>
+</map>

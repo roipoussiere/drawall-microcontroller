@@ -1,6 +1,8 @@
 var NAVTREE =
 [
   [ "Drawall", "index.html", [
+    [ "Présentation", "index.html", null ],
+    [ "Liste des choses à faire", "todo.html", null ],
     [ "Liste des bogues", "bug.html", null ],
     [ "Classes", null, [
       [ "Liste des classes", "annotated.html", "annotated" ],
@@ -8,11 +10,17 @@ var NAVTREE =
       [ "Membres de classe", "functions.html", [
         [ "Tout", "functions.html", null ],
         [ "Fonctions", "functions_func.html", null ],
-        [ "Énumérations", "functions_enum.html", null ]
+        [ "Variables", "functions_vars.html", null ],
+        [ "Énumérations", "functions_enum.html", null ],
+        [ "Valeurs énumérées", "functions_eval.html", null ]
       ] ]
     ] ],
     [ "Fichiers", null, [
-      [ "Liste des fichiers", "files.html", "files" ]
+      [ "Liste des fichiers", "files.html", "files" ],
+      [ "Membres de fichier", "globals.html", [
+        [ "Tout", "globals.html", null ],
+        [ "Macros", "globals_defs.html", null ]
+      ] ]
     ] ]
   ] ]
 ];

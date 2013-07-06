@@ -1,0 +1,6 @@
+<map id="Drawall::isNumber" name="Drawall::isNumber">
+<area shape="rect" id="node3" href="$class_drawall.html#adb726f927bfd543e36f4244c4652ac4d" title="Récupere la valeur de l&#39;attribut attribute du fichier svg sous forme numérique (flotant)." alt="" coords="393,5,583,35"/>
+<area shape="rect" id="node7" href="$class_drawall.html#a554e3835c80aaf595f4b6c3f03ffbdd8" title="Dessine une figure vectorielle correspondant au contenu de l&#39;attribut d=&quot;...&quot; d&quot;une balise path..." alt="" coords="437,59,539,88"/>
+<area shape="rect" id="node10" href="$class_drawall.html#a4b36b2bd819a76e653fa65a36a313245" title="Récupère nbParams paramètres, les convertissent en float et les stoquent dans le tableau tabParams..." alt="" coords="185,108,343,137"/>
+<area shape="rect" id="node5" href="$class_drawall.html#a95b28763851b0f6d43d4ceb96fd01310" title="Trace un dessin vectoriel svg correspondant au fichier fileName sur la carte SD." alt="" coords="633,32,727,61"/>
+</map>

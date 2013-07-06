@@ -1,0 +1,8 @@
+<map id="Drawall::cubicCurve" name="Drawall::cubicCurve">
+<area shape="rect" id="node3" href="$class_drawall.html#a81fa3dc3d37f705936b3ff044b3363a0" title="Trace une courbe de Bézier cubique en position absolue." alt="" coords="199,5,337,35"/>
+<area shape="rect" id="node5" href="$class_drawall.html#aeb346762197c4953dfeb84fb5c71d3c1" title="Trace une courbe de Bézier cubique en position relative." alt="" coords="195,59,341,88"/>
+<area shape="rect" id="node7" href="$class_drawall.html#a554e3835c80aaf595f4b6c3f03ffbdd8" title="Dessine une figure vectorielle correspondant au contenu de l&#39;attribut d=&quot;...&quot; d&quot;une balise path..." alt="" coords="392,84,493,113"/>
+<area shape="rect" id="node11" href="$class_drawall.html#adc914972bbb800662e8b338727011b77" title="Trace une ellipse dont le centre est le point courant, le rayon horizontal est rX et le rayon vertica..." alt="" coords="213,163,323,192"/>
+<area shape="rect" id="node9" href="$class_drawall.html#a95b28763851b0f6d43d4ceb96fd01310" title="Trace un dessin vectoriel svg correspondant au fichier fileName sur la carte SD." alt="" coords="545,84,639,113"/>
+<area shape="rect" id="node13" href="$class_drawall.html#aeb159a729569e7c701c54d31b9d56b17" title="Trace un cercle dont le centre est le point courant et le rayon est r." alt="" coords="391,163,495,192"/>
+</map>
