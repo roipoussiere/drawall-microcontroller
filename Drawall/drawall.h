@@ -5,6 +5,14 @@ This work is licensed under the Creative Commons Attribution
 http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 */
 
+/**
+ * \file    drawall.h
+ * \author  Nathanaël Jourdane
+ * \version 1.0
+ * \date    28 septembre 2012
+ * \brief   Fichier d'en-tête de la bibliothèque
+ */
+ 
 #ifndef drawbot
 #define drawbot
 
@@ -17,6 +25,11 @@ http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
 class Drawall {
     public:
 
+    /**
+     * \brief Position sur la feuille
+     * \details Les différentes position pour accès rapide, correspondant aux 8 points cardinaux, plus le centre.
+     * \bug Ne fonctionne pas dans le sketch.
+     */
     enum Position {
         CENTER,
         UPPER_CENTER,
@@ -28,51 +41,83 @@ class Drawall {
         LOWER_LEFT,
         LOWER_RIGHT
     };
-    
-    /****************
-    ** construceurs **
-    ****************/
 
-    // dimentions de la surface (en mm)
+    /**
+     * \brief Initialise la librairie.
+     * \param distanceBetweenMotors Distance entre les deux moteurs.
+     * \param sheetWidth Largeur de la feuille.
+     * \param sheetHeight Hauteur de la feuille.
+     * \param sheetPositionX Position en X de la feuille par rapport au moteur de gauche.
+     * \param sheetPositionY Position en Y de la feuille par rapport au moteur de gauche.
+     */
     Drawall(int distanceBetweenMotors, int sheetWidth, int sheetHeight, int sheetPositionX, int sheetPositionY);
     
-    /**********************
-    ** getters & setters **
-    **********************/
+    /**
+     * \brief Démarre la librairie.
+     * \details \b Nécessaire au fonctionnement de la librairie. Réalise les procédures d'initialisation du robot.
+     */
+    void begin();
+   
+    /**
+     * \brief Finit le traçé.
+     * \details Utilisé à la fin du programme. Cela positionne le crayon en bas de la feuille, désalimente les moteurs et met en pause le programme.
+     */
+    void end();
     
-    // renvoie la position courante en X du crayon
+    /**
+     * \brief Renvoie la position horizontale actuelle du crayon.
+     * \return La position horizontale du crayon.
+     */
     float getPositionX();
     
-    // renvoie la position courante en Y du crayon
+    /**
+     * \brief Renvoie la position verticale actuelle du crayon.
+     * \return La position verticale du crayon.
+     */
     float getPositionY();
 
-    // initialise la position du curseur, à n'utiliser qu'au début.
-    void setPosition(float aX, float aY);
+    /**
+     * \brief Spécifie la position initiale du crayon.
+     * \details À utiliser avant de commencer à tracer.
+     * \param x La position horizontale du crayon.
+     * \param y La position verticale du crayon.
+     */
+    void setPosition(float x, float y);
+    
+    /**
+     * \brief Spécifie la position initiale du crayon.
+     * \details À utiliser avant de commencer à tracer.
+     * \param position La position du crayon (voir type enum \a Position).
+     * \bug Ne fonctionne pas sur le sketch.
+     */
     void setPosition(Position position);
     
-    // initialise la vitesse du crayon
-    void setSpeed(float vitesse);
+    /**
+     * \brief Spécifie la vitesse du traçé.
+     * \param speed La vitesse du traçé.
+     */
+    void setSpeed(float speed);
     
-    /*****************
-    ** alimentation **
-    *****************/
-    
-    // obligatoire, à placer en début de programme :
-    // réalise les procédures d'initialisation nécessaires au fonctionnement du robot.
-    void begin();
-            
-    /***********
-    ** Dessin **
-    ***********/
-
-    // Ces fonctions sont doublée pour desiner en absolu ou _relatif
-
+    /**
+     * \brief Déplace le crayon à un point donné absolu.
+     * \param x La position horizontale du point de destination du crayon.
+     * \param y La position verticale du point de destination du crayon.
+     */
     void move(float x, float y);
+    
+    /**
+     * \brief Déplace le crayon à un point donné absolu.
+     * \param position La position du point de destination du crayon (voir type enum \a Position)
+     */
     void move(Position position);
+    
+    /**
+     * \brief Déplace le crayon à un point donné relatif.
+     * \Details Une position relative correspond à la position d'un point par rapport à la position actuelle.
+     * \param x La position horizontale du point de destination du crayon.
+     * \param y La position verticale du point de destination du crayon.
+     */
     void _move(float x, float y);
-
-    void end();
-    // lignes droite:
     
     // trace une ligne droite, du point courant au point [x, y]
     void line(float x, float y);
