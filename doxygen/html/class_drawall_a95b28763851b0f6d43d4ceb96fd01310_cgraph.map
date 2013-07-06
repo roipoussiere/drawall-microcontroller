@@ -11,7 +11,7 @@
 <area shape="rect" id="node23" href="$class_drawall.html#acb43c0e3119660e47dc1cbdb55b8fead" title="Déplace le crayon à la position absolue [x ; y]." alt="" coords="831,656,937,685"/>
 <area shape="rect" id="node25" href="$class_drawall.html#a40ff3356f8911b4e8ea30e425cd6c1db" title="Trace une ligne droite, de la position actuelle à la position absolue [x; y]." alt="" coords="999,733,1092,763"/>
 <area shape="rect" id="node28" href="$class_drawall.html#a3aa2028c93df9ba4df0543b988095747" title="Déplace le crayon à la position relative [x ; y]." alt="" coords="633,616,745,645"/>
-<area shape="rect" id="node31" href="$class_drawall.html#a8f27a7944020d4f1738fef00fed9f75f" title="Fini la figure SVG en cours." alt="" coords="819,816,949,845"/>
+<area shape="rect" id="node31" href="$class_drawall.html#a594130daf0b3fa09c566a202277d2d24" title="Fini la figure SVG en cours." alt="" coords="819,816,949,845"/>
 <area shape="rect" id="node35" href="$class_drawall.html#aa4fd82c7254f35595fb44492b0c923a8" title="Trace une ligne droite, de la position actuelle à la position relative [x; y]." alt="" coords="833,881,935,911"/>
 <area shape="rect" id="node38" href="$class_drawall.html#a5a42dc6fb6006798c13eb02c5c024a46" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position absolue y..." alt="" coords="624,693,755,723"/>
 <area shape="rect" id="node42" href="$class_drawall.html#a4104d0212d72119ce8cc54da7754c043" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position relative y..." alt="" coords="407,655,543,684"/>

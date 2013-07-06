@@ -188,8 +188,8 @@ Fonctions membres publiques</h2></td></tr>
 <tr class="memdesc:ae4029ec471adbf055b59cec3f2b1c877"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trace une courbe de Bézier quadratique en position absolue.  <a href="#ae4029ec471adbf055b59cec3f2b1c877"></a><br/></td></tr>
 <tr class="memitem:a1bb514c208dae9e579cfdede743290ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a1bb514c208dae9e579cfdede743290ac">_quadraticCurve</a> (float pX, float pY)</td></tr>
 <tr class="memdesc:a1bb514c208dae9e579cfdede743290ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trace une courbe de Bézier quadratique en position relative.  <a href="#a1bb514c208dae9e579cfdede743290ac"></a><br/></td></tr>
-<tr class="memitem:a8f27a7944020d4f1738fef00fed9f75f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a8f27a7944020d4f1738fef00fed9f75f">endCurve</a> ()</td></tr>
-<tr class="memdesc:a8f27a7944020d4f1738fef00fed9f75f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fini la figure SVG en cours.  <a href="#a8f27a7944020d4f1738fef00fed9f75f"></a><br/></td></tr>
+<tr class="memitem:a594130daf0b3fa09c566a202277d2d24"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a594130daf0b3fa09c566a202277d2d24">endFigure</a> ()</td></tr>
+<tr class="memdesc:a594130daf0b3fa09c566a202277d2d24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fini la figure SVG en cours.  <a href="#a594130daf0b3fa09c566a202277d2d24"></a><br/></td></tr>
 <tr class="memitem:a393a47765d30fbf5b6d9c5333d2ffbc7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a393a47765d30fbf5b6d9c5333d2ffbc7">arc</a> (float a1, float a2, float a3, float a4, float a5, float a6, float a7)</td></tr>
 <tr class="memdesc:a393a47765d30fbf5b6d9c5333d2ffbc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trace un arc de cercle en position absolue.  <a href="#a393a47765d30fbf5b6d9c5333d2ffbc7"></a><br/></td></tr>
 <tr class="memitem:af14b608e7f1a02d5b0d69214c75a52f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#af14b608e7f1a02d5b0d69214c75a52f0">_arc</a> (float a1, float a2, float a3, float a4, float a5, float a6, float a7)</td></tr>
@@ -249,24 +249,37 @@ Fonctions membres privées</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2><a name="pri-attribs"></a>
 Attributs privés</h2></td></tr>
 <tr class="memitem:a1e576ad0bbb79b12e6b1cdc9c9a388d2"><td class="memItemLeft" align="right" valign="top">Servo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a1e576ad0bbb79b12e6b1cdc9c9a388d2">mServo</a></td></tr>
+<tr class="memdesc:a1e576ad0bbb79b12e6b1cdc9c9a388d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objet pour manipuler le servo-moteur, utilisé avec la librairie <em>Servo</em>.  <a href="#a1e576ad0bbb79b12e6b1cdc9c9a388d2"></a><br/></td></tr>
 <tr class="memitem:a444903e74202262ecd3d527a44be8b43"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a444903e74202262ecd3d527a44be8b43">mLeftLength</a></td></tr>
+<tr class="memdesc:a444903e74202262ecd3d527a44be8b43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Longueur du câble gauche (en pas).  <a href="#a444903e74202262ecd3d527a44be8b43"></a><br/></td></tr>
 <tr class="memitem:af0041877e24af2652fe113c43361caa8"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#af0041877e24af2652fe113c43361caa8">mRightLength</a></td></tr>
+<tr class="memdesc:af0041877e24af2652fe113c43361caa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Longueur du câble droit (en pas).  <a href="#af0041877e24af2652fe113c43361caa8"></a><br/></td></tr>
 <tr class="memitem:abbfe985e775b12767bbb2f6878351795"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#abbfe985e775b12767bbb2f6878351795">mDistanceBetweenMotors</a></td></tr>
-<tr class="memitem:ac6424c2762d23bbf5f27d450e383bbf6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#ac6424c2762d23bbf5f27d450e383bbf6">mSheetPositionX</a></td></tr>
-<tr class="memitem:a0bcf1c5ee08115d51d429bf8b2b7623b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a0bcf1c5ee08115d51d429bf8b2b7623b">mSheetPositionY</a></td></tr>
+<tr class="memdesc:abbfe985e775b12767bbb2f6878351795"><td class="mdescLeft">&#160;</td><td class="mdescRight">Distance entre les 2 moteurs (en mm).  <a href="#abbfe985e775b12767bbb2f6878351795"></a><br/></td></tr>
+<tr class="memitem:a2d6f9b433049207c2f9684cc6899f4f2"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a2d6f9b433049207c2f9684cc6899f4f2">mSheetPositionX</a></td></tr>
+<tr class="memdesc:a2d6f9b433049207c2f9684cc6899f4f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position horizontale de la feuille par rapport au moteur gauche (en mm).  <a href="#a2d6f9b433049207c2f9684cc6899f4f2"></a><br/></td></tr>
+<tr class="memitem:a1fc882f939a33a30e63ee47ac9b1e5a9"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a1fc882f939a33a30e63ee47ac9b1e5a9">mSheetPositionY</a></td></tr>
+<tr class="memdesc:a1fc882f939a33a30e63ee47ac9b1e5a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position verticale de la feuille par rapport au moteur gauche (en mm).  <a href="#a1fc882f939a33a30e63ee47ac9b1e5a9"></a><br/></td></tr>
 <tr class="memitem:a1566b93e292b5c25a390343552fae5de"><td class="memItemLeft" align="right" valign="top">File&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a1566b93e292b5c25a390343552fae5de">mFile</a></td></tr>
+<tr class="memdesc:a1566b93e292b5c25a390343552fae5de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Le fichier svg contenant le dessin vectoriel à reproduire.  <a href="#a1566b93e292b5c25a390343552fae5de"></a><br/></td></tr>
 <tr class="memitem:a1bb9abcc7adb0a5a4d87612b1fe9f787"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a1bb9abcc7adb0a5a4d87612b1fe9f787">mScale</a></td></tr>
+<tr class="memdesc:a1bb9abcc7adb0a5a4d87612b1fe9f787"><td class="mdescLeft">&#160;</td><td class="mdescRight">Échelle générée par les attributs width et height du fichier svg, pour que le dessin s'adapte à la largeur de la feuille.  <a href="#a1bb9abcc7adb0a5a4d87612b1fe9f787"></a><br/></td></tr>
 <tr class="memitem:af8cfa37d5adf5b5fa7b3a3b6098431eb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#af8cfa37d5adf5b5fa7b3a3b6098431eb">mPositionX</a></td></tr>
+<tr class="memdesc:af8cfa37d5adf5b5fa7b3a3b6098431eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position horizontale actuelle du crayon sur le plan.  <a href="#af8cfa37d5adf5b5fa7b3a3b6098431eb"></a><br/></td></tr>
 <tr class="memitem:acc13986923e1f4cbb85acdcaeb1b2024"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#acc13986923e1f4cbb85acdcaeb1b2024">mPositionY</a></td></tr>
+<tr class="memdesc:acc13986923e1f4cbb85acdcaeb1b2024"><td class="mdescLeft">&#160;</td><td class="mdescRight">Position verticale actuelle du crayon sur le plan.  <a href="#acc13986923e1f4cbb85acdcaeb1b2024"></a><br/></td></tr>
 <tr class="memitem:aedffc06c501abe86e271d4f3afef2542"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#aedffc06c501abe86e271d4f3afef2542">mFictivePosX</a></td></tr>
 <tr class="memitem:a53a6f5e6b8ea99e380951586e1e8ff87"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a53a6f5e6b8ea99e380951586e1e8ff87">mFictivePosY</a></td></tr>
 <tr class="memitem:a9d9f191979f1ccb22baffd87c7ede4c7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a9d9f191979f1ccb22baffd87c7ede4c7">mSheetWidth</a></td></tr>
+<tr class="memdesc:a9d9f191979f1ccb22baffd87c7ede4c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Largeur de la zone de dessin (en mm).  <a href="#a9d9f191979f1ccb22baffd87c7ede4c7"></a><br/></td></tr>
 <tr class="memitem:a52a38641245d9ac3242b7e2e8c33fb18"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a52a38641245d9ac3242b7e2e8c33fb18">mSheetHeight</a></td></tr>
+<tr class="memdesc:a52a38641245d9ac3242b7e2e8c33fb18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hauteur de la zone de dessin (en mm).  <a href="#a52a38641245d9ac3242b7e2e8c33fb18"></a><br/></td></tr>
 <tr class="memitem:ab2de4e422d5929bb63fa8a550a4fdcee"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#ab2de4e422d5929bb63fa8a550a4fdcee">mRatio</a></td></tr>
 <tr class="memitem:abfcfb4344d4abb0f7ff8b699f975b663"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#abfcfb4344d4abb0f7ff8b699f975b663">mDelay</a></td></tr>
 <tr class="memitem:a974a33e7f496cf4d32fa0f9b4033cd2b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a974a33e7f496cf4d32fa0f9b4033cd2b">mWriting</a></td></tr>
-<tr class="memitem:a7ecfc0124ecbcd8d1869178a76a84869"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a7ecfc0124ecbcd8d1869178a76a84869">mStartCurveX</a></td></tr>
-<tr class="memitem:acc57d4a60a5cf92f1af949fce28d5117"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#acc57d4a60a5cf92f1af949fce28d5117">mStartCurveY</a></td></tr>
+<tr class="memdesc:a974a33e7f496cf4d32fa0f9b4033cd2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Permet de déterminer si le robot est en train d'écrire (<em>true</em>) ou non (<em>false</em>).  <a href="#a974a33e7f496cf4d32fa0f9b4033cd2b"></a><br/></td></tr>
+<tr class="memitem:a9d75c75f22cdcfcdc43cc400eb8a92bb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a9d75c75f22cdcfcdc43cc400eb8a92bb">mStartFigureX</a></td></tr>
+<tr class="memitem:a10ce288fd8de6a3fe1f8e200ad648493"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a10ce288fd8de6a3fe1f8e200ad648493">mStartFigureY</a></td></tr>
 <tr class="memitem:aac3c0ee9f05ca075656057d3ceccebd7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#aac3c0ee9f05ca075656057d3ceccebd7">mCubicCurveX</a></td></tr>
 <tr class="memitem:a231bc5abeceac467a21e4e51009bafda"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a231bc5abeceac467a21e4e51009bafda">mCubicCurveY</a></td></tr>
 <tr class="memitem:a0d9963a353f0c9eb728fd8a79de0e104"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_drawall.html#a0d9963a353f0c9eb728fd8a79de0e104">mQuadraticCurveX</a></td></tr>
@@ -276,7 +289,7 @@ Attributs privés</h2></td></tr>
 <div class="textblock"><p>Classe principale de la librairie. </p>
 <dl class="bug"><dt><b><a class="el" href="bug.html#_bug000001">Bogue:</a></b></dt><dd>Corriger Warnings pour les conversions de texte en char* </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00058">58</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00056">56</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 </div><h2>Documentation des énumérations membres</h2>
 <a class="anchor" id="a54a615dd38dfa61317daba3359216bad"></a>
 <div class="memitem">
@@ -314,7 +327,7 @@ Attributs privés</h2></td></tr>
 </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00066">66</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00064">64</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -374,7 +387,7 @@ Attributs privés</h2></td></tr>
 </dl>
 <dl class="bug"><dt><b><a class="el" href="bug.html#_bug000003">Bogue:</a></b></dt><dd>Corriger Warning </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00011">11</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00007">7</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 </div>
 </div>
@@ -436,7 +449,7 @@ Attributs privés</h2></td></tr>
 <p>Trace un arc de cercle en position relative. </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">A faire:</a></b></dt><dd>Remplir la fonction. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00628">628</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00589">589</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
@@ -498,7 +511,7 @@ Voici le graphe des appelants de cette fonction :</div>
 </div><div class="memdoc">
 
 <p>Trace une courbe de Bézier cubique en position relative. </p>
-<p>Avec en point de départ la position actuelle, en point de destination [<em>pX</em> ; <em>pY</em>] et en points de contrôle P1 [<em>p1X</em> ; <em>p1Y</em>] et P2 [<em>p2X</em> ; <em>p2Y</em>]. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . </p>
+<p>La courbe est composée de 100 segments. Avec en point de départ la position actuelle, en point de destination [<em>pX</em> ; <em>pY</em>] et en points de contrôle P1 [<em>p1X</em> ; <em>p1Y</em>] et P2 [<em>p2X</em> ; <em>p2Y</em>]. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . </p>
 <dl class="params"><dt>Paramètres</dt><dd>
   <table class="params">
     <tr><td class="paramname">pX</td><td>La position relative horizontale du point de destination. </td></tr>
@@ -511,7 +524,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00563">563</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00531">531</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -570,7 +583,7 @@ Voici le graphe des appelants de cette fonction :</div>
 </div><div class="memdoc">
 
 <p>Trace une courbe de Bézier cubique en position relative. </p>
-<p>Avec en point de départ la position actuelle, en point de destination [<em>pX</em> ; <em>pY</em>] et point P2 [<em>p2X</em> ; <em>p2Y</em>]. Le point de contrôle P1 est l'image du point P2 de la dernière courbe de Bézier. Si la dernière figure n'en était pas une, il correspond au point courant. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . </p>
+<p>La courbe est composée de 100 segments. Avec en point de départ la position actuelle, en point de destination [<em>pX</em> ; <em>pY</em>] et point P2 [<em>p2X</em> ; <em>p2Y</em>]. Le point de contrôle P1 est l'image du point P2 de la dernière courbe de Bézier. Si la dernière figure n'en était pas une, il correspond au point courant. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . </p>
 <dl class="params"><dt>Paramètres</dt><dd>
   <table class="params">
     <tr><td class="paramname">pX</td><td>La position relative horizontale du point de destination. </td></tr>
@@ -581,7 +594,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00568">568</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00536">536</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -617,7 +630,7 @@ Voici le graphe d'appel pour cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00503">503</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00478">478</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -673,7 +686,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00469">469</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00444">444</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -729,7 +742,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00492">492</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00467">467</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -788,7 +801,7 @@ Voici le graphe des appelants de cette fonction :</div>
 </div><div class="memdoc">
 
 <p>Trace une courbe de Bézier quadratique en position relative. </p>
-<p>Avec en point de départ la position actuelle, en point de destination [<em>pX</em> ; <em>pY</em>] et en point de contrôle P1 [<em>p1X</em> ; <em>p1Y</em>]. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . </p>
+<p>La courbe est composée de 100 segments. Avec en point de départ la position actuelle, en point de destination [<em>pX</em> ; <em>pY</em>] et en point de contrôle P1 [<em>p1X</em> ; <em>p1Y</em>]. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . </p>
 <dl class="params"><dt>Paramètres</dt><dd>
   <table class="params">
     <tr><td class="paramname">pX</td><td>La position relative horizontale du point de destination. </td></tr>
@@ -799,7 +812,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00599">599</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00560">560</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -846,7 +859,7 @@ Voici le graphe des appelants de cette fonction :</div>
 </div><div class="memdoc">
 
 <p>Trace une courbe de Bézier quadratique en position relative. </p>
-<p>Avec en point de départ la position actuelle, en point de destination [<em>pX</em> ; <em>pY</em>]. Le point de contrôle P1 est l'image du point P2 de la dernière courbe de Bézier. Si la dernière figure n'en était pas une, il correspond au point courant. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . </p>
+<p>La courbe est composée de 100 segments. Avec en point de départ la position actuelle, en point de destination [<em>pX</em> ; <em>pY</em>]. Le point de contrôle P1 est l'image du point P2 de la dernière courbe de Bézier. Si la dernière figure n'en était pas une, il correspond au point courant. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . </p>
 <dl class="params"><dt>Paramètres</dt><dd>
   <table class="params">
     <tr><td class="paramname">pX</td><td>La position relative horizontale du point de destination. </td></tr>
@@ -855,7 +868,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00618">618</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00579">579</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -891,7 +904,7 @@ Voici le graphe d'appel pour cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00514">514</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00489">489</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -970,7 +983,7 @@ Voici le graphe des appelants de cette fonction :</div>
 <p>Trace un arc de cercle en position absolue. </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">A faire:</a></b></dt><dd>Remplir la fonction. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00623">623</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00584">584</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
@@ -999,7 +1012,7 @@ Voici le graphe des appelants de cette fonction :</div>
 <p>Démarre la librairie. </p>
 <p><b>Nécessaire</b> au fonctionnement de la librairie. Réalise les procédures d'initialisation du robot. </p>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00022">22</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00018">18</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -1034,7 +1047,7 @@ Voici le graphe d'appel pour cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00655">655</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00615">615</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -1096,7 +1109,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 </div><div class="memdoc">
 
 <p>Trace une courbe de Bézier cubique en position absolue. </p>
-<p>Avec au point de départ la position actuelle, aux point de destination [<em>pX</em> ; <em>pY</em>] et aux points de contrôle P1 [<em>p1X</em> ; <em>p1Y</em>] et P2 [<em>p2X</em> ; <em>p2Y</em>]. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . </p>
+<p>La courbe est composée de 100 segments. Avec en point de départ la position actuelle, en point de destination [<em>pX</em> ; <em>pY</em>] et en points de contrôle P1 [<em>p1X</em> ; <em>p1Y</em>] et P2 [<em>p2X</em> ; <em>p2Y</em>]. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . Équation de la courbe : B(t) = P0(1-t)^3 + 3*P1*t(1-t)^2 + 3*P2*t^2*(1-t) + P3*t^3. Avec t allant de 0 à 1. </p>
 <dl class="params"><dt>Paramètres</dt><dd>
   <table class="params">
     <tr><td class="paramname">pX</td><td>La position absolue horizontale du point de destination. </td></tr>
@@ -1109,7 +1122,7 @@ Voici le graphe d'appel pour cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00519">519</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00494">494</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -1168,7 +1181,7 @@ Voici le graphe des appelants de cette fonction :</div>
 </div><div class="memdoc">
 
 <p>Trace une courbe de Bézier cubique en position absolue. </p>
-<p>Avec en point de départ la position actuelle, en point de destination [<em>pX</em> ; <em>pY</em>] et point P2 [<em>p2X</em> ; <em>p2Y</em>]. Le point de contrôle P1 est l'image du point P2 de la dernière courbe de Bézier. Si la dernière figure n'en était pas une, il correspond au point courant. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . </p>
+<p>La courbe est composée de 100 segments. Avec en point de départ la position actuelle, en point de destination [<em>pX</em> ; <em>pY</em>] et point P2 [<em>p2X</em> ; <em>p2Y</em>]. Le point de contrôle P1 est l'image du point P2 de la dernière courbe de Bézier. Si la dernière figure n'en était pas une, il correspond au point courant. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . </p>
 <dl class="params"><dt>Paramètres</dt><dd>
   <table class="params">
     <tr><td class="paramname">pX</td><td>La absolue relative horizontale du point de destination. </td></tr>
@@ -1179,7 +1192,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00548">548</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00516">516</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -1216,14 +1229,14 @@ Voici le graphe d'appel pour cette fonction :</div>
 <p>Dessine une figure vectorielle correspondant au contenu de l'attribut d="..." d"une balise <em>path</em>. </p>
 <p>Le curseur doit être positionné au début du contenu de d"..." </p>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00849">849</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00789">789</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
 <div class="dyncontent">
 <div class="center"><img src="class_drawall_a554e3835c80aaf595f4b6c3f03ffbdd8_cgraph.png" border="0" usemap="#class_drawall_a554e3835c80aaf595f4b6c3f03ffbdd8_cgraph" alt=""/></div>
 <map name="class_drawall_a554e3835c80aaf595f4b6c3f03ffbdd8_cgraph" id="class_drawall_a554e3835c80aaf595f4b6c3f03ffbdd8_cgraph">
-<area shape="rect" id="node3" href="class_drawall.html#a4b36b2bd819a76e653fa65a36a313245" title="Récupère nbParams paramètres, les convertissent en float et les stoquent dans le tableau tabParams..." alt="" coords="164,54,321,83"/><area shape="rect" id="node5" href="class_drawall.html#ab303d5d3e84e6970fc71d2c6011228e5" title="Informe si le caractère car est un chiffre." alt="" coords="392,28,523,58"/><area shape="rect" id="node7" href="class_drawall.html#acb43c0e3119660e47dc1cbdb55b8fead" title="Déplace le crayon à la position absolue [x ; y]." alt="" coords="599,308,705,338"/><area shape="rect" id="node9" href="class_drawall.html#a40ff3356f8911b4e8ea30e425cd6c1db" title="Trace une ligne droite, de la position actuelle à la position absolue [x; y]." alt="" coords="767,438,860,467"/><area shape="rect" id="node12" href="class_drawall.html#a3aa2028c93df9ba4df0543b988095747" title="Déplace le crayon à la position relative [x ; y]." alt="" coords="401,158,513,187"/><area shape="rect" id="node15" href="class_drawall.html#a8f27a7944020d4f1738fef00fed9f75f" title="Fini la figure SVG en cours." alt="" coords="587,463,717,492"/><area shape="rect" id="node19" href="class_drawall.html#aa4fd82c7254f35595fb44492b0c923a8" title="Trace une ligne droite, de la position actuelle à la position relative [x; y]." alt="" coords="601,516,703,546"/><area shape="rect" id="node22" href="class_drawall.html#a5a42dc6fb6006798c13eb02c5c024a46" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position absolue y..." alt="" coords="392,308,523,338"/><area shape="rect" id="node26" href="class_drawall.html#a4104d0212d72119ce8cc54da7754c043" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position relative y..." alt="" coords="175,310,311,339"/><area shape="rect" id="node29" href="class_drawall.html#aa03c49c30d73341c8c3a52ceac2ee4fa" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position absolue x..." alt="" coords="400,386,515,415"/><area shape="rect" id="node33" href="class_drawall.html#adb72b4634385f2d01c8dff23e3594ddb" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position relative x..." alt="" coords="181,414,304,443"/><area shape="rect" id="node36" href="class_drawall.html#a1f45c76d8f67dc282c493cb7041bd2e6" title="Trace une courbe de Bézier cubique en position absolue." alt="" coords="388,568,527,598"/><area shape="rect" id="node39" href="class_drawall.html#aeb346762197c4953dfeb84fb5c71d3c1" title="Trace une courbe de Bézier cubique en position relative." alt="" coords="169,619,316,648"/><area shape="rect" id="node42" href="class_drawall.html#af6b2f076155d06af7e89723c3fde1519" title="Trace une courbe de Bézier quadratique en position absolue." alt="" coords="376,671,539,700"/><area shape="rect" id="node45" href="class_drawall.html#a8d1a610bcb0f719edb52033f9ea97647" title="Trace une courbe de Bézier quadratique en position relative." alt="" coords="159,723,327,752"/><area shape="rect" id="node48" href="class_drawall.html#a393a47765d30fbf5b6d9c5333d2ffbc7" title="Trace un arc de cercle en position absolue." alt="" coords="197,776,288,806"/><area shape="rect" id="node50" href="class_drawall.html#af14b608e7f1a02d5b0d69214c75a52f0" title="Trace un arc de cercle en position relative." alt="" coords="193,830,292,859"/><area shape="rect" id="node52" href="class_drawall.html#a614483922fcc5d3711d7ffde0634abaf" title="À appeler lorsque une erreur se produit." alt="" coords="193,883,292,912"/><area shape="rect" id="node54" href="class_drawall.html#ab35495b79410f6a37c48bd65fc07f0b8" title="Approche ou éloigne le crayon de la paroi." alt="" coords="407,883,508,912"/></map>
+<area shape="rect" id="node3" href="class_drawall.html#a4b36b2bd819a76e653fa65a36a313245" title="Récupère nbParams paramètres, les convertissent en float et les stoquent dans le tableau tabParams..." alt="" coords="164,54,321,83"/><area shape="rect" id="node5" href="class_drawall.html#ab303d5d3e84e6970fc71d2c6011228e5" title="Informe si le caractère car est un chiffre." alt="" coords="392,28,523,58"/><area shape="rect" id="node7" href="class_drawall.html#acb43c0e3119660e47dc1cbdb55b8fead" title="Déplace le crayon à la position absolue [x ; y]." alt="" coords="599,308,705,338"/><area shape="rect" id="node9" href="class_drawall.html#a40ff3356f8911b4e8ea30e425cd6c1db" title="Trace une ligne droite, de la position actuelle à la position absolue [x; y]." alt="" coords="767,438,860,467"/><area shape="rect" id="node12" href="class_drawall.html#a3aa2028c93df9ba4df0543b988095747" title="Déplace le crayon à la position relative [x ; y]." alt="" coords="401,158,513,187"/><area shape="rect" id="node15" href="class_drawall.html#a594130daf0b3fa09c566a202277d2d24" title="Fini la figure SVG en cours." alt="" coords="587,463,717,492"/><area shape="rect" id="node19" href="class_drawall.html#aa4fd82c7254f35595fb44492b0c923a8" title="Trace une ligne droite, de la position actuelle à la position relative [x; y]." alt="" coords="601,516,703,546"/><area shape="rect" id="node22" href="class_drawall.html#a5a42dc6fb6006798c13eb02c5c024a46" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position absolue y..." alt="" coords="392,308,523,338"/><area shape="rect" id="node26" href="class_drawall.html#a4104d0212d72119ce8cc54da7754c043" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position relative y..." alt="" coords="175,310,311,339"/><area shape="rect" id="node29" href="class_drawall.html#aa03c49c30d73341c8c3a52ceac2ee4fa" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position absolue x..." alt="" coords="400,386,515,415"/><area shape="rect" id="node33" href="class_drawall.html#adb72b4634385f2d01c8dff23e3594ddb" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position relative x..." alt="" coords="181,414,304,443"/><area shape="rect" id="node36" href="class_drawall.html#a1f45c76d8f67dc282c493cb7041bd2e6" title="Trace une courbe de Bézier cubique en position absolue." alt="" coords="388,568,527,598"/><area shape="rect" id="node39" href="class_drawall.html#aeb346762197c4953dfeb84fb5c71d3c1" title="Trace une courbe de Bézier cubique en position relative." alt="" coords="169,619,316,648"/><area shape="rect" id="node42" href="class_drawall.html#af6b2f076155d06af7e89723c3fde1519" title="Trace une courbe de Bézier quadratique en position absolue." alt="" coords="376,671,539,700"/><area shape="rect" id="node45" href="class_drawall.html#a8d1a610bcb0f719edb52033f9ea97647" title="Trace une courbe de Bézier quadratique en position relative." alt="" coords="159,723,327,752"/><area shape="rect" id="node48" href="class_drawall.html#a393a47765d30fbf5b6d9c5333d2ffbc7" title="Trace un arc de cercle en position absolue." alt="" coords="197,776,288,806"/><area shape="rect" id="node50" href="class_drawall.html#af14b608e7f1a02d5b0d69214c75a52f0" title="Trace un arc de cercle en position relative." alt="" coords="193,830,292,859"/><area shape="rect" id="node52" href="class_drawall.html#a614483922fcc5d3711d7ffde0634abaf" title="À appeler lorsque une erreur se produit." alt="" coords="193,883,292,912"/><area shape="rect" id="node54" href="class_drawall.html#ab35495b79410f6a37c48bd65fc07f0b8" title="Approche ou éloigne le crayon de la paroi." alt="" coords="407,883,508,912"/></map>
 </div>
 </p>
 
@@ -1271,7 +1284,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00633">633</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00594">594</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -1309,7 +1322,7 @@ Voici le graphe des appelants de cette fonction :</div>
 <p>Finit le traçé. </p>
 <p>Utilisé à la fin du programme. Cela positionne le crayon en bas de la feuille, désalimente les moteurs et met en pause le programme. </p>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l01174">1174</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l01095">1095</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -1322,12 +1335,12 @@ Voici le graphe d'appel pour cette fonction :</div>
 
 </div>
 </div>
-<a class="anchor" id="a8f27a7944020d4f1738fef00fed9f75f"></a>
+<a class="anchor" id="a594130daf0b3fa09c566a202277d2d24"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Drawall::endCurve </td>
+          <td class="memname">void Drawall::endFigure </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1338,13 +1351,13 @@ Voici le graphe d'appel pour cette fonction :</div>
 <p>Fini la figure SVG en cours. </p>
 <p>Trâce une ligne droite jusqu'à la position du point cible du dernier déplacement, de manière a faire des formes "finies". </p>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00474">474</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00449">449</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
 <div class="dyncontent">
-<div class="center"><img src="class_drawall_a8f27a7944020d4f1738fef00fed9f75f_cgraph.png" border="0" usemap="#class_drawall_a8f27a7944020d4f1738fef00fed9f75f_cgraph" alt=""/></div>
-<map name="class_drawall_a8f27a7944020d4f1738fef00fed9f75f_cgraph" id="class_drawall_a8f27a7944020d4f1738fef00fed9f75f_cgraph">
+<div class="center"><img src="class_drawall_a594130daf0b3fa09c566a202277d2d24_cgraph.png" border="0" usemap="#class_drawall_a594130daf0b3fa09c566a202277d2d24_cgraph" alt=""/></div>
+<map name="class_drawall_a594130daf0b3fa09c566a202277d2d24_cgraph" id="class_drawall_a594130daf0b3fa09c566a202277d2d24_cgraph">
 <area shape="rect" id="node3" href="class_drawall.html#a40ff3356f8911b4e8ea30e425cd6c1db" title="Trace une ligne droite, de la position actuelle à la position absolue [x; y]." alt="" coords="185,5,279,35"/></map>
 </div>
 </p>
@@ -1352,8 +1365,8 @@ Voici le graphe d'appel pour cette fonction :</div>
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
 <div class="dyncontent">
-<div class="center"><img src="class_drawall_a8f27a7944020d4f1738fef00fed9f75f_icgraph.png" border="0" usemap="#class_drawall_a8f27a7944020d4f1738fef00fed9f75f_icgraph" alt=""/></div>
-<map name="class_drawall_a8f27a7944020d4f1738fef00fed9f75f_icgraph" id="class_drawall_a8f27a7944020d4f1738fef00fed9f75f_icgraph">
+<div class="center"><img src="class_drawall_a594130daf0b3fa09c566a202277d2d24_icgraph.png" border="0" usemap="#class_drawall_a594130daf0b3fa09c566a202277d2d24_icgraph" alt=""/></div>
+<map name="class_drawall_a594130daf0b3fa09c566a202277d2d24_icgraph" id="class_drawall_a594130daf0b3fa09c566a202277d2d24_icgraph">
 <area shape="rect" id="node3" href="class_drawall.html#a554e3835c80aaf595f4b6c3f03ffbdd8" title="Dessine une figure vectorielle correspondant au contenu de l&#39;attribut d=&quot;...&quot; d&quot;une balise path..." alt="" coords="185,5,287,35"/><area shape="rect" id="node5" href="class_drawall.html#a95b28763851b0f6d43d4ceb96fd01310" title="Trace un dessin vectoriel svg correspondant au fichier fileName sur la carte SD." alt="" coords="337,5,431,35"/></map>
 </div>
 </p>
@@ -1384,9 +1397,9 @@ Voici le graphe des appelants de cette fonction :</div>
 
 <p>À appeler lorsque une erreur se produit. </p>
 <p>Envoie le code d'erreur <em>errNumber</em> à Processing, qui se charge d'afficher sa description. Éloigne le stylo de la paroi et stoppe le programme. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">A faire:</a></b></dt><dd>Mettre en pause le traçé, quand la pause sera opérationnelle. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">A faire:</a></b></dt><dd>Mettre en pause le traçé, quand la pause sera opérationnelle. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l01072">1072</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00993">993</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -1449,11 +1462,11 @@ Voici le graphe des appelants de cette fonction :</div>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">A faire:</a></b></dt><dd><p class="startdd">Détecter le '&gt;' pour chercher uniquement dans la balise. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">A faire:</a></b></dt><dd><p class="startdd">Détecter le '&gt;' pour chercher uniquement dans la balise. </p>
 <p class="enddd">Voir pourquoi pas de char* en sortie. </p>
 </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00675">675</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00630">630</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -1499,7 +1512,7 @@ Voici le graphe des appelants de cette fonction :</div>
 <p>Renvoie la longueur actuelle du câble gauche. </p>
 <dl class="section return"><dt>Renvoie</dt><dd>La longueur actuelle du câble gauche, en nombre de pas. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00190">190</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00181">181</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 </div>
 </div>
@@ -1533,8 +1546,9 @@ Voici le graphe des appelants de cette fonction :</div>
   </table>
   </dd>
 </dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">A faire:</a></b></dt><dd>Convertir les unités en mm, pas en px. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00732">732</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00679">679</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -1597,9 +1611,9 @@ Voici le graphe des appelants de cette fonction :</div>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">A faire:</a></b></dt><dd>Voir si on peut renvoyer le tableau. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000011">A faire:</a></b></dt><dd>Voir si on peut renvoyer le tableau. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l01146">1146</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l01067">1067</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -1637,7 +1651,7 @@ Voici le graphe des appelants de cette fonction :</div>
 <p>Renvoie la position horizontale actuelle du crayon. </p>
 <dl class="section return"><dt>Renvoie</dt><dd>La position horizontale du crayon. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00123">123</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00114">114</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 </div>
 </div>
@@ -1657,7 +1671,7 @@ Voici le graphe des appelants de cette fonction :</div>
 <p>Renvoie la position verticale actuelle du crayon. </p>
 <dl class="section return"><dt>Renvoie</dt><dd>La position verticale du crayon. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00128">128</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00119">119</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 </div>
 </div>
@@ -1685,7 +1699,7 @@ Voici le graphe des appelants de cette fonction :</div>
 <p>Renvoie la longueur actuelle du câble droit. </p>
 <dl class="section return"><dt>Renvoie</dt><dd>La longueur actuelle du câble droit, en nombre de pas. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00195">195</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00186">186</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 </div>
 </div>
@@ -1711,7 +1725,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00497">497</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00472">472</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -1755,10 +1769,10 @@ Voici le graphe des appelants de cette fonction :</div>
 </div><div class="memdoc">
 
 <p>Initialise le ratio entre le nombre de pas et la distance. </p>
-<p>xx(mm)*ratio &ndash;&gt; xx(pas) - xx(pas)/ratio &ndash;&gt; xx(mm) </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">A faire:</a></b></dt><dd>Inverser le ratio car le nombre de pas est une valeur entière, éviter de le diviser. </dd></dl>
+<p>Le ratio est calculé en fonction du diametre moteur et du nombre de pas. xx(mm)*ratio &ndash;&gt; xx(pas) xx(pas)/ratio &ndash;&gt; xx(mm) </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">A faire:</a></b></dt><dd>Inverser le ratio car le nombre de pas est une valeur entière, éviter de le diviser. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00200">200</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00191">191</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
@@ -1802,7 +1816,7 @@ Voici le graphe des appelants de cette fonction :</div>
 </dl>
 <dl class="section return"><dt>Renvoie</dt><dd>Renvoie <em>true</em> si le caractère est un chiffre, <em>false</em> sinon. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00713">713</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00664">664</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
@@ -1837,9 +1851,11 @@ Voici le graphe des appelants de cette fonction :</div>
 </div><div class="memdoc">
 
 <p>Rotation du moteur gauche d'un pas. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">A faire:</a></b></dt><dd>La direction en paramètre ou en argument de classe. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">A faire:</a></b></dt><dd><p class="startdd">La direction en paramètre ou en argument de classe. </p>
+<p class="enddd">Il faudrait ne pas faire de pause pour ne pas influencer sur le traçé </p>
+</dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00417">417</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00395">395</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
@@ -1885,14 +1901,14 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00432">432</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00410">410</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
 <div class="dyncontent">
 <div class="center"><img src="class_drawall_a40ff3356f8911b4e8ea30e425cd6c1db_icgraph.png" border="0" usemap="#class_drawall_a40ff3356f8911b4e8ea30e425cd6c1db_icgraph" alt=""/></div>
 <map name="class_drawall_a40ff3356f8911b4e8ea30e425cd6c1db_icgraph" id="class_drawall_a40ff3356f8911b4e8ea30e425cd6c1db_icgraph">
-<area shape="rect" id="node3" href="class_drawall.html#aa4fd82c7254f35595fb44492b0c923a8" title="Trace une ligne droite, de la position actuelle à la position relative [x; y]." alt="" coords="169,213,271,243"/><area shape="rect" id="node5" href="class_drawall.html#a554e3835c80aaf595f4b6c3f03ffbdd8" title="Dessine une figure vectorielle correspondant au contenu de l&#39;attribut d=&quot;...&quot; d&quot;une balise path..." alt="" coords="769,367,871,396"/><area shape="rect" id="node9" href="class_drawall.html#a8f27a7944020d4f1738fef00fed9f75f" title="Fini la figure SVG en cours." alt="" coords="155,267,285,296"/><area shape="rect" id="node12" href="class_drawall.html#acb43c0e3119660e47dc1cbdb55b8fead" title="Déplace le crayon à la position absolue [x ; y]." alt="" coords="167,444,273,473"/><area shape="rect" id="node19" href="class_drawall.html#a5a42dc6fb6006798c13eb02c5c024a46" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position absolue y..." alt="" coords="355,315,485,344"/><area shape="rect" id="node25" href="class_drawall.html#aa03c49c30d73341c8c3a52ceac2ee4fa" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position absolue x..." alt="" coords="363,576,477,605"/><area shape="rect" id="node40" href="class_drawall.html#a1f45c76d8f67dc282c493cb7041bd2e6" title="Trace une courbe de Bézier cubique en position absolue." alt="" coords="151,683,289,712"/><area shape="rect" id="node49" href="class_drawall.html#af6b2f076155d06af7e89723c3fde1519" title="Trace une courbe de Bézier quadratique en position absolue." alt="" coords="339,71,501,100"/><area shape="rect" id="node7" href="class_drawall.html#a95b28763851b0f6d43d4ceb96fd01310" title="Trace un dessin vectoriel svg correspondant au fichier fileName sur la carte SD." alt="" coords="921,367,1015,396"/><area shape="rect" id="node14" href="class_drawall.html#a38848bdcb6ecd7cfe5671f35403b8135" title="Déplace le crayon à la position absolue position." alt="" coords="367,523,473,552"/><area shape="rect" id="node16" href="class_drawall.html#a3aa2028c93df9ba4df0543b988095747" title="Déplace le crayon à la position relative [x ; y]." alt="" coords="579,419,691,448"/><area shape="rect" id="node31" href="class_drawall.html#adc914972bbb800662e8b338727011b77" title="Trace une ellipse dont le centre est le point courant, le rayon horizontal est rX et le rayon vertica..." alt="" coords="365,629,475,659"/><area shape="rect" id="node36" href="class_drawall.html#a02232c69b50b8eed9b06d08852f3400b" title="Finit le traçé." alt="" coords="373,469,467,499"/><area shape="rect" id="node21" href="class_drawall.html#a4104d0212d72119ce8cc54da7754c043" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position relative y..." alt="" coords="567,315,703,344"/><area shape="rect" id="node27" href="class_drawall.html#adb72b4634385f2d01c8dff23e3594ddb" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position relative x..." alt="" coords="573,524,696,553"/><area shape="rect" id="node33" href="class_drawall.html#aeb159a729569e7c701c54d31b9d56b17" title="Trace un cercle dont le centre est le point courant et le rayon est r." alt="" coords="583,629,687,659"/><area shape="rect" id="node42" href="class_drawall.html#a81fa3dc3d37f705936b3ff044b3363a0" title="Trace une courbe de Bézier cubique en position absolue." alt="" coords="351,683,489,712"/><area shape="rect" id="node44" href="class_drawall.html#aeb346762197c4953dfeb84fb5c71d3c1" title="Trace une courbe de Bézier cubique en position relative." alt="" coords="561,708,708,737"/><area shape="rect" id="node51" href="class_drawall.html#a8d1a610bcb0f719edb52033f9ea97647" title="Trace une courbe de Bézier quadratique en position relative." alt="" coords="551,5,719,35"/><area shape="rect" id="node54" href="class_drawall.html#ae4029ec471adbf055b59cec3f2b1c877" title="Trace une courbe de Bézier quadratique en position absolue." alt="" coords="553,109,716,139"/></map>
+<area shape="rect" id="node3" href="class_drawall.html#aa4fd82c7254f35595fb44492b0c923a8" title="Trace une ligne droite, de la position actuelle à la position relative [x; y]." alt="" coords="169,213,271,243"/><area shape="rect" id="node5" href="class_drawall.html#a554e3835c80aaf595f4b6c3f03ffbdd8" title="Dessine une figure vectorielle correspondant au contenu de l&#39;attribut d=&quot;...&quot; d&quot;une balise path..." alt="" coords="769,367,871,396"/><area shape="rect" id="node9" href="class_drawall.html#a594130daf0b3fa09c566a202277d2d24" title="Fini la figure SVG en cours." alt="" coords="155,267,285,296"/><area shape="rect" id="node12" href="class_drawall.html#acb43c0e3119660e47dc1cbdb55b8fead" title="Déplace le crayon à la position absolue [x ; y]." alt="" coords="167,444,273,473"/><area shape="rect" id="node19" href="class_drawall.html#a5a42dc6fb6006798c13eb02c5c024a46" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position absolue y..." alt="" coords="355,315,485,344"/><area shape="rect" id="node25" href="class_drawall.html#aa03c49c30d73341c8c3a52ceac2ee4fa" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position absolue x..." alt="" coords="363,576,477,605"/><area shape="rect" id="node40" href="class_drawall.html#a1f45c76d8f67dc282c493cb7041bd2e6" title="Trace une courbe de Bézier cubique en position absolue." alt="" coords="151,683,289,712"/><area shape="rect" id="node49" href="class_drawall.html#af6b2f076155d06af7e89723c3fde1519" title="Trace une courbe de Bézier quadratique en position absolue." alt="" coords="339,71,501,100"/><area shape="rect" id="node7" href="class_drawall.html#a95b28763851b0f6d43d4ceb96fd01310" title="Trace un dessin vectoriel svg correspondant au fichier fileName sur la carte SD." alt="" coords="921,367,1015,396"/><area shape="rect" id="node14" href="class_drawall.html#a38848bdcb6ecd7cfe5671f35403b8135" title="Déplace le crayon à la position absolue position." alt="" coords="367,523,473,552"/><area shape="rect" id="node16" href="class_drawall.html#a3aa2028c93df9ba4df0543b988095747" title="Déplace le crayon à la position relative [x ; y]." alt="" coords="579,419,691,448"/><area shape="rect" id="node31" href="class_drawall.html#adc914972bbb800662e8b338727011b77" title="Trace une ellipse dont le centre est le point courant, le rayon horizontal est rX et le rayon vertica..." alt="" coords="365,629,475,659"/><area shape="rect" id="node36" href="class_drawall.html#a02232c69b50b8eed9b06d08852f3400b" title="Finit le traçé." alt="" coords="373,469,467,499"/><area shape="rect" id="node21" href="class_drawall.html#a4104d0212d72119ce8cc54da7754c043" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position relative y..." alt="" coords="567,315,703,344"/><area shape="rect" id="node27" href="class_drawall.html#adb72b4634385f2d01c8dff23e3594ddb" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position relative x..." alt="" coords="573,524,696,553"/><area shape="rect" id="node33" href="class_drawall.html#aeb159a729569e7c701c54d31b9d56b17" title="Trace un cercle dont le centre est le point courant et le rayon est r." alt="" coords="583,629,687,659"/><area shape="rect" id="node42" href="class_drawall.html#a81fa3dc3d37f705936b3ff044b3363a0" title="Trace une courbe de Bézier cubique en position absolue." alt="" coords="351,683,489,712"/><area shape="rect" id="node44" href="class_drawall.html#aeb346762197c4953dfeb84fb5c71d3c1" title="Trace une courbe de Bézier cubique en position relative." alt="" coords="561,708,708,737"/><area shape="rect" id="node51" href="class_drawall.html#a8d1a610bcb0f719edb52033f9ea97647" title="Trace une courbe de Bézier quadratique en position relative." alt="" coords="551,5,719,35"/><area shape="rect" id="node54" href="class_drawall.html#ae4029ec471adbf055b59cec3f2b1c877" title="Trace une courbe de Bézier quadratique en position absolue." alt="" coords="553,109,716,139"/></map>
 </div>
 </p>
 
@@ -1946,8 +1962,9 @@ Voici le graphe des appelants de cette fonction :</div>
   </table>
   </dd>
 </dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">A faire:</a></b></dt><dd>Trop long, éclater la méthode. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00270">270</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00250">250</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -1993,7 +2010,7 @@ Voici le graphe d'appel pour cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00479">479</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00454">454</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -2037,7 +2054,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00487">487</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00462">462</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -2092,7 +2109,7 @@ Voici le graphe d'appel pour cette fonction :</div>
 </dl>
 <dl class="section return"><dt>Renvoie</dt><dd>La longueur du câble gauche pour cette position, en nombre de pas. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00214">214</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00202">202</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
@@ -2147,7 +2164,7 @@ Voici le graphe des appelants de cette fonction :</div>
 </dl>
 <dl class="section return"><dt>Renvoie</dt><dd>La longueur du câble droit pour cette position, en nombre de pas. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00220">220</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00208">208</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
@@ -2192,7 +2209,7 @@ Voici le graphe des appelants de cette fonction :</div>
 </dl>
 <dl class="section return"><dt>Renvoie</dt><dd>La position verticale de <em>position</em>. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00144">144</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00135">135</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
@@ -2237,7 +2254,7 @@ Voici le graphe des appelants de cette fonction :</div>
 </dl>
 <dl class="section return"><dt>Renvoie</dt><dd>La position verticale de <em>position</em>. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00167">167</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00158">158</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
@@ -2281,7 +2298,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00226">226</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00214">214</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -2340,7 +2357,7 @@ Voici le graphe des appelants de cette fonction :</div>
 </div><div class="memdoc">
 
 <p>Trace une courbe de Bézier quadratique en position absolue. </p>
-<p>Avec en point de départ la position actuelle, en point de destination [<em>pX</em> ; <em>pY</em>] et en point de contrôle P1 [<em>p1X</em> ; <em>p1Y</em>]. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . </p>
+<p>La courbe est composée de 100 segments. Avec en point de départ la position actuelle, en point de destination [<em>pX</em> ; <em>pY</em>] et en point de contrôle P1 [<em>p1X</em> ; <em>p1Y</em>]. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . Équation de la courbe : B(t) = P0*(1-t)^2 + 2*P1*t(1-t) + P2*t^2. Avec t allant de 0 à 1. </p>
 <dl class="params"><dt>Paramètres</dt><dd>
   <table class="params">
     <tr><td class="paramname">pX</td><td>La position absolue horizontale du point de destination. </td></tr>
@@ -2351,7 +2368,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00573">573</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00541">541</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -2398,7 +2415,7 @@ Voici le graphe des appelants de cette fonction :</div>
 </div><div class="memdoc">
 
 <p>Trace une courbe de Bézier quadratique en position absolue. </p>
-<p>Avec en point de départ la position actuelle et en point de destination [<em>pX</em> ; <em>pY</em>]. Le point de contrôle P1 est l'image du point P2 de la dernière courbe de Bézier. Si la dernière figure n'en était pas une, il correspond au point courant. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . </p>
+<p>La courbe est composée de 100 segments. Avec en point de départ la position actuelle et en point de destination [<em>pX</em> ; <em>pY</em>]. Le point de contrôle P1 est l'image du point P2 de la dernière courbe de Bézier. Si la dernière figure n'en était pas une, il correspond au point courant. Cf l'article Wikipédia sur les courbes de Bézier : <em><a href="http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier">http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier</a></em> . </p>
 <dl class="params"><dt>Paramètres</dt><dd>
   <table class="params">
     <tr><td class="paramname">pX</td><td>La position absolue horizontale du point de destination. </td></tr>
@@ -2407,7 +2424,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00604">604</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00565">565</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -2442,9 +2459,11 @@ Voici le graphe d'appel pour cette fonction :</div>
 </div><div class="memdoc">
 
 <p>Rotation du moteur droit d'un pas. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">A faire:</a></b></dt><dd>La direction en paramètre ou en argument de classe. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">A faire:</a></b></dt><dd><p class="startdd">La direction en paramètre ou en argument de classe. </p>
+<p class="enddd">Il faudrait ne pas faire de pause pour ne pas influencer sur le traçé </p>
+</dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00425">425</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00403">403</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
@@ -2489,7 +2508,7 @@ Voici le graphe des appelants de cette fonction :</div>
 </dl>
 <dl class="section return"><dt>Renvoie</dt><dd>Renvoie <em>false</em> si le mot n'a pas été trouvé. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00820">820</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00760">760</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
@@ -2526,7 +2545,7 @@ Voici le graphe des appelants de cette fonction :</div>
 <p>initialise de la carte SD. </p>
 <p>Peut générer l'erreur 01 : Carte absente ou non reconnue. </p>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00664">664</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00620">620</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -2582,7 +2601,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00133">133</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00124">124</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
@@ -2619,7 +2638,7 @@ Voici le graphe des appelants de cette fonction :</div>
 </dl>
 <dl class="bug"><dt><b><a class="el" href="bug.html#_bug000004">Bogue:</a></b></dt><dd>Ne fonctionne pas sur le sketch. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00139">139</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00130">130</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -2666,9 +2685,9 @@ Voici le graphe d'appel pour cette fonction :</div>
 
 <p>Modifie l'échelle pour s'adapter à la largeur <em>width</em> et la hauteur <em>height</em> du dessin. </p>
 <p>Les dimentions du dessin sont récupérées sur le fichier svg. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">A faire:</a></b></dt><dd>Changer le nom et retourner l'échelle plutôt que de la modifier directement. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">A faire:</a></b></dt><dd>Changer le nom et retourner l'échelle plutôt que de la modifier directement. </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l01081">1081</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l01002">1002</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
@@ -2703,7 +2722,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00207">207</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00196">196</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
@@ -2739,14 +2758,14 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l01105">1105</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l01026">1026</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
 <div class="dyncontent">
 <div class="center"><img src="class_drawall_a95b28763851b0f6d43d4ceb96fd01310_cgraph.png" border="0" usemap="#class_drawall_a95b28763851b0f6d43d4ceb96fd01310_cgraph" alt=""/></div>
 <map name="class_drawall_a95b28763851b0f6d43d4ceb96fd01310_cgraph" id="class_drawall_a95b28763851b0f6d43d4ceb96fd01310_cgraph">
-<area shape="rect" id="node3" href="class_drawall.html#a614483922fcc5d3711d7ffde0634abaf" title="À appeler lorsque une erreur se produit." alt="" coords="425,135,524,164"/><area shape="rect" id="node7" href="class_drawall.html#a0d877651832d5b48e933fbd2d00bc8ad" title="Cherche le mot word dans le fichier." alt="" coords="633,5,745,35"/><area shape="rect" id="node9" href="class_drawall.html#a8bdde448dad14f9f2b1e8734d3637a16" title="Modifie l&#39;échelle pour s&#39;adapter à la largeur width et la hauteur height du dessin." alt="" coords="183,580,308,609"/><area shape="rect" id="node11" href="class_drawall.html#adb726f927bfd543e36f4244c4652ac4d" title="Récupere la valeur de l&#39;attribut attribute du fichier svg sous forme numérique (flotant)." alt="" coords="151,83,340,112"/><area shape="rect" id="node18" href="class_drawall.html#a554e3835c80aaf595f4b6c3f03ffbdd8" title="Dessine une figure vectorielle correspondant au contenu de l&#39;attribut d=&quot;...&quot; d&quot;une balise path..." alt="" coords="195,527,296,556"/><area shape="rect" id="node5" href="class_drawall.html#ab35495b79410f6a37c48bd65fc07f0b8" title="Approche ou éloigne le crayon de la paroi." alt="" coords="639,135,740,164"/><area shape="rect" id="node13" href="class_drawall.html#ad1302f3d9035d964cf0b49fd473142c0" title="Récupere la valeur de l&#39;attribut attribute du fichier svg sous forme textuelle." alt="" coords="404,31,545,60"/><area shape="rect" id="node16" href="class_drawall.html#ab303d5d3e84e6970fc71d2c6011228e5" title="Informe si le caractère car est un chiffre." alt="" coords="624,292,755,321"/><area shape="rect" id="node20" href="class_drawall.html#a4b36b2bd819a76e653fa65a36a313245" title="Récupère nbParams paramètres, les convertissent en float et les stoquent dans le tableau tabParams..." alt="" coords="396,343,553,372"/><area shape="rect" id="node23" href="class_drawall.html#acb43c0e3119660e47dc1cbdb55b8fead" title="Déplace le crayon à la position absolue [x ; y]." alt="" coords="831,656,937,685"/><area shape="rect" id="node25" href="class_drawall.html#a40ff3356f8911b4e8ea30e425cd6c1db" title="Trace une ligne droite, de la position actuelle à la position absolue [x; y]." alt="" coords="999,733,1092,763"/><area shape="rect" id="node28" href="class_drawall.html#a3aa2028c93df9ba4df0543b988095747" title="Déplace le crayon à la position relative [x ; y]." alt="" coords="633,616,745,645"/><area shape="rect" id="node31" href="class_drawall.html#a8f27a7944020d4f1738fef00fed9f75f" title="Fini la figure SVG en cours." alt="" coords="819,816,949,845"/><area shape="rect" id="node35" href="class_drawall.html#aa4fd82c7254f35595fb44492b0c923a8" title="Trace une ligne droite, de la position actuelle à la position relative [x; y]." alt="" coords="833,881,935,911"/><area shape="rect" id="node38" href="class_drawall.html#a5a42dc6fb6006798c13eb02c5c024a46" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position absolue y..." alt="" coords="624,693,755,723"/><area shape="rect" id="node42" href="class_drawall.html#a4104d0212d72119ce8cc54da7754c043" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position relative y..." alt="" coords="407,655,543,684"/><area shape="rect" id="node45" href="class_drawall.html#aa03c49c30d73341c8c3a52ceac2ee4fa" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position absolue x..." alt="" coords="632,759,747,788"/><area shape="rect" id="node49" href="class_drawall.html#adb72b4634385f2d01c8dff23e3594ddb" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position relative x..." alt="" coords="413,759,536,788"/><area shape="rect" id="node52" href="class_drawall.html#a1f45c76d8f67dc282c493cb7041bd2e6" title="Trace une courbe de Bézier cubique en position absolue." alt="" coords="620,964,759,993"/><area shape="rect" id="node55" href="class_drawall.html#aeb346762197c4953dfeb84fb5c71d3c1" title="Trace une courbe de Bézier cubique en position relative." alt="" coords="401,964,548,993"/><area shape="rect" id="node58" href="class_drawall.html#af6b2f076155d06af7e89723c3fde1519" title="Trace une courbe de Bézier quadratique en position absolue." alt="" coords="608,239,771,268"/><area shape="rect" id="node61" href="class_drawall.html#a8d1a610bcb0f719edb52033f9ea97647" title="Trace une courbe de Bézier quadratique en position relative." alt="" coords="391,188,559,217"/><area shape="rect" id="node64" href="class_drawall.html#a393a47765d30fbf5b6d9c5333d2ffbc7" title="Trace un arc de cercle en position absolue." alt="" coords="429,396,520,425"/><area shape="rect" id="node66" href="class_drawall.html#af14b608e7f1a02d5b0d69214c75a52f0" title="Trace un arc de cercle en position relative." alt="" coords="425,449,524,479"/></map>
+<area shape="rect" id="node3" href="class_drawall.html#a614483922fcc5d3711d7ffde0634abaf" title="À appeler lorsque une erreur se produit." alt="" coords="425,135,524,164"/><area shape="rect" id="node7" href="class_drawall.html#a0d877651832d5b48e933fbd2d00bc8ad" title="Cherche le mot word dans le fichier." alt="" coords="633,5,745,35"/><area shape="rect" id="node9" href="class_drawall.html#a8bdde448dad14f9f2b1e8734d3637a16" title="Modifie l&#39;échelle pour s&#39;adapter à la largeur width et la hauteur height du dessin." alt="" coords="183,580,308,609"/><area shape="rect" id="node11" href="class_drawall.html#adb726f927bfd543e36f4244c4652ac4d" title="Récupere la valeur de l&#39;attribut attribute du fichier svg sous forme numérique (flotant)." alt="" coords="151,83,340,112"/><area shape="rect" id="node18" href="class_drawall.html#a554e3835c80aaf595f4b6c3f03ffbdd8" title="Dessine une figure vectorielle correspondant au contenu de l&#39;attribut d=&quot;...&quot; d&quot;une balise path..." alt="" coords="195,527,296,556"/><area shape="rect" id="node5" href="class_drawall.html#ab35495b79410f6a37c48bd65fc07f0b8" title="Approche ou éloigne le crayon de la paroi." alt="" coords="639,135,740,164"/><area shape="rect" id="node13" href="class_drawall.html#ad1302f3d9035d964cf0b49fd473142c0" title="Récupere la valeur de l&#39;attribut attribute du fichier svg sous forme textuelle." alt="" coords="404,31,545,60"/><area shape="rect" id="node16" href="class_drawall.html#ab303d5d3e84e6970fc71d2c6011228e5" title="Informe si le caractère car est un chiffre." alt="" coords="624,292,755,321"/><area shape="rect" id="node20" href="class_drawall.html#a4b36b2bd819a76e653fa65a36a313245" title="Récupère nbParams paramètres, les convertissent en float et les stoquent dans le tableau tabParams..." alt="" coords="396,343,553,372"/><area shape="rect" id="node23" href="class_drawall.html#acb43c0e3119660e47dc1cbdb55b8fead" title="Déplace le crayon à la position absolue [x ; y]." alt="" coords="831,656,937,685"/><area shape="rect" id="node25" href="class_drawall.html#a40ff3356f8911b4e8ea30e425cd6c1db" title="Trace une ligne droite, de la position actuelle à la position absolue [x; y]." alt="" coords="999,733,1092,763"/><area shape="rect" id="node28" href="class_drawall.html#a3aa2028c93df9ba4df0543b988095747" title="Déplace le crayon à la position relative [x ; y]." alt="" coords="633,616,745,645"/><area shape="rect" id="node31" href="class_drawall.html#a594130daf0b3fa09c566a202277d2d24" title="Fini la figure SVG en cours." alt="" coords="819,816,949,845"/><area shape="rect" id="node35" href="class_drawall.html#aa4fd82c7254f35595fb44492b0c923a8" title="Trace une ligne droite, de la position actuelle à la position relative [x; y]." alt="" coords="833,881,935,911"/><area shape="rect" id="node38" href="class_drawall.html#a5a42dc6fb6006798c13eb02c5c024a46" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position absolue y..." alt="" coords="624,693,755,723"/><area shape="rect" id="node42" href="class_drawall.html#a4104d0212d72119ce8cc54da7754c043" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position relative y..." alt="" coords="407,655,543,684"/><area shape="rect" id="node45" href="class_drawall.html#aa03c49c30d73341c8c3a52ceac2ee4fa" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position absolue x..." alt="" coords="632,759,747,788"/><area shape="rect" id="node49" href="class_drawall.html#adb72b4634385f2d01c8dff23e3594ddb" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position relative x..." alt="" coords="413,759,536,788"/><area shape="rect" id="node52" href="class_drawall.html#a1f45c76d8f67dc282c493cb7041bd2e6" title="Trace une courbe de Bézier cubique en position absolue." alt="" coords="620,964,759,993"/><area shape="rect" id="node55" href="class_drawall.html#aeb346762197c4953dfeb84fb5c71d3c1" title="Trace une courbe de Bézier cubique en position relative." alt="" coords="401,964,548,993"/><area shape="rect" id="node58" href="class_drawall.html#af6b2f076155d06af7e89723c3fde1519" title="Trace une courbe de Bézier quadratique en position absolue." alt="" coords="608,239,771,268"/><area shape="rect" id="node61" href="class_drawall.html#a8d1a610bcb0f719edb52033f9ea97647" title="Trace une courbe de Bézier quadratique en position relative." alt="" coords="391,188,559,217"/><area shape="rect" id="node64" href="class_drawall.html#a393a47765d30fbf5b6d9c5333d2ffbc7" title="Trace un arc de cercle en position absolue." alt="" coords="429,396,520,425"/><area shape="rect" id="node66" href="class_drawall.html#af14b608e7f1a02d5b0d69214c75a52f0" title="Trace un arc de cercle en position relative." alt="" coords="425,449,524,479"/></map>
 </div>
 </p>
 
@@ -2774,7 +2793,7 @@ Voici le graphe d'appel pour cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00508">508</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00483">483</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe d'appel pour cette fonction :</div>
@@ -2826,7 +2845,7 @@ Voici le graphe des appelants de cette fonction :</div>
   </dd>
 </dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00244">244</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8cpp_source.html#l00227">227</a> du fichier <a class="el" href="drawall_8cpp_source.html">drawall.cpp</a>.</p>
 
 <p><div class="dynheader">
 Voici le graphe des appelants de cette fonction :</div>
@@ -2857,8 +2876,10 @@ Voici le graphe des appelants de cette fonction :</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Position horizontale du point de contrôle P2 de la dernière courbe de Bézier cubique traçée.</p>
+<p>Nécessaire pour tracer une courbe de Bézier cubique qui dépend de la précédente (appel de la fonction avec un seul point de contrôle). </p>
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00525">525</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00586">586</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -2879,8 +2900,10 @@ Voici le graphe des appelants de cette fonction :</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Position horizontale du point de contrôle P2 de la dernière courbe de Bézier cubique traçée.</p>
+<p>Nécessaire pour tracer une courbe de Bézier cubique qui dépend de la précédente (avec un point de contrôle en moins). </p>
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00525">525</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00590">590</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -2901,8 +2924,10 @@ Voici le graphe des appelants de cette fonction :</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Delai initial entre chaque pas du moteur qui a la plus grande distance à parcourir, (en µs).</p>
+<p>Le délai de l'autre moteur est calculé pour que les 2 moteurs arrivent au point de destination simultanément. </p>
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00519">519</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00571">571</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -2924,7 +2949,9 @@ Voici le graphe des appelants de cette fonction :</div>
 </table>
 </div><div class="memdoc">
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00501">501</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Distance entre les 2 moteurs (en mm). </p>
+
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00533">533</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -2946,7 +2973,7 @@ Voici le graphe des appelants de cette fonction :</div>
 </table>
 </div><div class="memdoc">
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00513">513</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00554">554</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -2968,7 +2995,7 @@ Voici le graphe des appelants de cette fonction :</div>
 </table>
 </div><div class="memdoc">
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00513">513</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00557">557</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -2990,7 +3017,9 @@ Voici le graphe des appelants de cette fonction :</div>
 </table>
 </div><div class="memdoc">
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00506">506</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Le fichier svg contenant le dessin vectoriel à reproduire. </p>
+
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00542">542</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -3012,7 +3041,9 @@ Voici le graphe des appelants de cette fonction :</div>
 </table>
 </div><div class="memdoc">
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00499">499</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Longueur du câble gauche (en pas). </p>
+
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00527">527</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -3034,7 +3065,9 @@ Voici le graphe des appelants de cette fonction :</div>
 </table>
 </div><div class="memdoc">
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00510">510</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Position horizontale actuelle du crayon sur le plan. </p>
+
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00548">548</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -3056,7 +3089,9 @@ Voici le graphe des appelants de cette fonction :</div>
 </table>
 </div><div class="memdoc">
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00510">510</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Position verticale actuelle du crayon sur le plan. </p>
+
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00551">551</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -3077,8 +3112,10 @@ Voici le graphe des appelants de cette fonction :</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Position horizontale du point de contrôle P1 de la dernière courbe de Bézier quadratique traçée.</p>
+<p>Nécessaire pour tracer une courbe de Bézier quadratique qui dépend de la précédente (appel de la fonction avec aucun point de contrôle). </p>
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00526">526</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00594">594</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -3099,8 +3136,10 @@ Voici le graphe des appelants de cette fonction :</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Position verticale du point de contrôle P1 de la dernière courbe de Bézier quadratique traçée.</p>
+<p>Nécessaire pour tracer une courbe de Bézier quadratique qui dépend de la précédente (appel de la fonction avec aucun point de contrôle). </p>
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00526">526</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00598">598</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -3121,8 +3160,10 @@ Voici le graphe des appelants de cette fonction :</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Ratio entre le nb de pas et la distance (nombre de pas dans un mm). </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">A faire:</a></b></dt><dd>Renommer en mStepLength et inverser le ratio </dd></dl>
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00517">517</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00567">567</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -3144,7 +3185,9 @@ Voici le graphe des appelants de cette fonction :</div>
 </table>
 </div><div class="memdoc">
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00499">499</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Longueur du câble droit (en pas). </p>
+
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00530">530</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -3166,7 +3209,9 @@ Voici le graphe des appelants de cette fonction :</div>
 </table>
 </div><div class="memdoc">
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00508">508</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Échelle générée par les attributs width et height du fichier svg, pour que le dessin s'adapte à la largeur de la feuille. </p>
+
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00545">545</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -3188,7 +3233,9 @@ Voici le graphe des appelants de cette fonction :</div>
 </table>
 </div><div class="memdoc">
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00497">497</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Objet pour manipuler le servo-moteur, utilisé avec la librairie <em>Servo</em>. </p>
+
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00524">524</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -3210,11 +3257,13 @@ Voici le graphe des appelants de cette fonction :</div>
 </table>
 </div><div class="memdoc">
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00515">515</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Hauteur de la zone de dessin (en mm). </p>
+
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00563">563</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ac6424c2762d23bbf5f27d450e383bbf6"></a>
+<a class="anchor" id="a2d6f9b433049207c2f9684cc6899f4f2"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -3222,7 +3271,7 @@ Voici le graphe des appelants de cette fonction :</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Drawall::mSheetPositionX</td>
+          <td class="memname">unsigned int Drawall::mSheetPositionX</td>
         </tr>
       </table>
   </td>
@@ -3232,11 +3281,13 @@ Voici le graphe des appelants de cette fonction :</div>
 </table>
 </div><div class="memdoc">
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00503">503</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Position horizontale de la feuille par rapport au moteur gauche (en mm). </p>
+
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00536">536</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a0bcf1c5ee08115d51d429bf8b2b7623b"></a>
+<a class="anchor" id="a1fc882f939a33a30e63ee47ac9b1e5a9"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -3244,7 +3295,7 @@ Voici le graphe des appelants de cette fonction :</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Drawall::mSheetPositionY</td>
+          <td class="memname">unsigned int Drawall::mSheetPositionY</td>
         </tr>
       </table>
   </td>
@@ -3254,7 +3305,9 @@ Voici le graphe des appelants de cette fonction :</div>
 </table>
 </div><div class="memdoc">
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00503">503</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Position verticale de la feuille par rapport au moteur gauche (en mm). </p>
+
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00539">539</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -3276,11 +3329,13 @@ Voici le graphe des appelants de cette fonction :</div>
 </table>
 </div><div class="memdoc">
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00515">515</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Largeur de la zone de dessin (en mm). </p>
+
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00560">560</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a7ecfc0124ecbcd8d1869178a76a84869"></a>
+<a class="anchor" id="a9d75c75f22cdcfcdc43cc400eb8a92bb"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -3288,7 +3343,7 @@ Voici le graphe des appelants de cette fonction :</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">float Drawall::mStartCurveX</td>
+          <td class="memname">float Drawall::mStartFigureX</td>
         </tr>
       </table>
   </td>
@@ -3297,12 +3352,14 @@ Voici le graphe des appelants de cette fonction :</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Position horizontale du point de départ d'une figure (ligne, courbe, ...).</p>
+<p>Nécessaire pour finir le traçé avec <a class="el" href="class_drawall.html#a594130daf0b3fa09c566a202277d2d24" title="Fini la figure SVG en cours.">endFigure()</a>. </p>
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00523">523</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00578">578</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="acc57d4a60a5cf92f1af949fce28d5117"></a>
+<a class="anchor" id="a10ce288fd8de6a3fe1f8e200ad648493"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -3310,7 +3367,7 @@ Voici le graphe des appelants de cette fonction :</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">float Drawall::mStartCurveY</td>
+          <td class="memname">float Drawall::mStartFigureY</td>
         </tr>
       </table>
   </td>
@@ -3319,8 +3376,10 @@ Voici le graphe des appelants de cette fonction :</div>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Position verticale du point de départ d'une figure (ligne, courbe, ...).</p>
+<p>Nécessaire pour finir le traçé avec <a class="el" href="class_drawall.html#a594130daf0b3fa09c566a202277d2d24" title="Fini la figure SVG en cours.">endFigure()</a>. </p>
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00523">523</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00582">582</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -3342,7 +3401,9 @@ Voici le graphe des appelants de cette fonction :</div>
 </table>
 </div><div class="memdoc">
 
-<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00521">521</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
+<p>Permet de déterminer si le robot est en train d'écrire (<em>true</em>) ou non (<em>false</em>). </p>
+
+<p>Définition à la ligne <a class="el" href="drawall_8h_source.html#l00574">574</a> du fichier <a class="el" href="drawall_8h_source.html">drawall.h</a>.</p>
 
 </div>
 </div>
@@ -3356,7 +3417,7 @@ Voici le graphe des appelants de cette fonction :</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="class_drawall.html">Drawall</a></li>
-    <li class="footer">Généré le Samedi Juillet 6 2013 15:01:29 pour Drawall par
+    <li class="footer">Généré le Samedi Juillet 6 2013 20:04:47 pour Drawall par
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
