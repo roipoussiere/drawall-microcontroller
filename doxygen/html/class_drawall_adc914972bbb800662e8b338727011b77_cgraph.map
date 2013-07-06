@@ -1,0 +1,5 @@
+<map id="Drawall::ellipse" name="Drawall::ellipse">
+<area shape="rect" id="node3" href="$class_drawall.html#acb43c0e3119660e47dc1cbdb55b8fead" title="Déplace le crayon à la position absolue [x ; y]." alt="" coords="183,5,289,35"/>
+<area shape="rect" id="node7" href="$class_drawall.html#a1f45c76d8f67dc282c493cb7041bd2e6" title="Trace une courbe de Bézier cubique en position absolue." alt="" coords="167,59,305,88"/>
+<area shape="rect" id="node5" href="$class_drawall.html#a40ff3356f8911b4e8ea30e425cd6c1db" title="Trace une ligne droite, de la position actuelle à la position absolue [x; y]." alt="" coords="356,32,449,61"/>
+</map>

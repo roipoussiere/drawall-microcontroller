@@ -1,0 +1,21 @@
+<map id="Drawall::draw" name="Drawall::draw">
+<area shape="rect" id="node3" href="$class_drawall.html#a4b36b2bd819a76e653fa65a36a313245" title="Récupère nbParams paramètres, les convertissent en float et les stoquent dans le tableau tabParams..." alt="" coords="164,54,321,83"/>
+<area shape="rect" id="node5" href="$class_drawall.html#ab303d5d3e84e6970fc71d2c6011228e5" title="Informe si le caractère car est un chiffre." alt="" coords="392,28,523,58"/>
+<area shape="rect" id="node7" href="$class_drawall.html#acb43c0e3119660e47dc1cbdb55b8fead" title="Déplace le crayon à la position absolue [x ; y]." alt="" coords="599,308,705,338"/>
+<area shape="rect" id="node9" href="$class_drawall.html#a40ff3356f8911b4e8ea30e425cd6c1db" title="Trace une ligne droite, de la position actuelle à la position absolue [x; y]." alt="" coords="767,438,860,467"/>
+<area shape="rect" id="node12" href="$class_drawall.html#a3aa2028c93df9ba4df0543b988095747" title="Déplace le crayon à la position relative [x ; y]." alt="" coords="401,158,513,187"/>
+<area shape="rect" id="node15" href="$class_drawall.html#a8f27a7944020d4f1738fef00fed9f75f" title="Fini la figure SVG en cours." alt="" coords="587,463,717,492"/>
+<area shape="rect" id="node19" href="$class_drawall.html#aa4fd82c7254f35595fb44492b0c923a8" title="Trace une ligne droite, de la position actuelle à la position relative [x; y]." alt="" coords="601,516,703,546"/>
+<area shape="rect" id="node22" href="$class_drawall.html#a5a42dc6fb6006798c13eb02c5c024a46" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position absolue y..." alt="" coords="392,308,523,338"/>
+<area shape="rect" id="node26" href="$class_drawall.html#a4104d0212d72119ce8cc54da7754c043" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position relative y..." alt="" coords="175,310,311,339"/>
+<area shape="rect" id="node29" href="$class_drawall.html#aa03c49c30d73341c8c3a52ceac2ee4fa" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position absolue x..." alt="" coords="400,386,515,415"/>
+<area shape="rect" id="node33" href="$class_drawall.html#adb72b4634385f2d01c8dff23e3594ddb" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position relative x..." alt="" coords="181,414,304,443"/>
+<area shape="rect" id="node36" href="$class_drawall.html#a1f45c76d8f67dc282c493cb7041bd2e6" title="Trace une courbe de Bézier cubique en position absolue." alt="" coords="388,568,527,598"/>
+<area shape="rect" id="node39" href="$class_drawall.html#aeb346762197c4953dfeb84fb5c71d3c1" title="Trace une courbe de Bézier cubique en position relative." alt="" coords="169,619,316,648"/>
+<area shape="rect" id="node42" href="$class_drawall.html#af6b2f076155d06af7e89723c3fde1519" title="Trace une courbe de Bézier quadratique en position absolue." alt="" coords="376,671,539,700"/>
+<area shape="rect" id="node45" href="$class_drawall.html#a8d1a610bcb0f719edb52033f9ea97647" title="Trace une courbe de Bézier quadratique en position relative." alt="" coords="159,723,327,752"/>
+<area shape="rect" id="node48" href="$class_drawall.html#a393a47765d30fbf5b6d9c5333d2ffbc7" title="Trace un arc de cercle en position absolue." alt="" coords="197,776,288,806"/>
+<area shape="rect" id="node50" href="$class_drawall.html#af14b608e7f1a02d5b0d69214c75a52f0" title="Trace un arc de cercle en position relative." alt="" coords="193,830,292,859"/>
+<area shape="rect" id="node52" href="$class_drawall.html#a614483922fcc5d3711d7ffde0634abaf" title="À appeler lorsque une erreur se produit." alt="" coords="193,883,292,912"/>
+<area shape="rect" id="node54" href="$class_drawall.html#ab35495b79410f6a37c48bd65fc07f0b8" title="Approche ou éloigne le crayon de la paroi." alt="" coords="407,883,508,912"/>
+</map>

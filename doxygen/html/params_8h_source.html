@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>Drawall:  Fichier source de Drawall/params.h</title>
+<title>Drawall:  Fichier source de /home/natha/Bricolage/Drawall/git/Drawall/params.h</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -30,7 +30,7 @@
    <div id="projectname">Drawall
    &#160;<span id="projectnumber">1.0</span>
    </div>
-   <div id="projectbrief">Le robot qui dessine sur les murs.</div>
+   <div id="projectbrief">Le robot qui dessine sur les murs</div>
   </td>
  </tr>
  </tbody>
@@ -68,6 +68,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Recherche');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>Liste&#160;des&#160;fichiers</span></a></li>
+      <li><a href="globals.html"><span>Membres&#160;de&#160;fichier</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -90,7 +91,7 @@ $(document).ready(function(){initNavTree('params_8h_source.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>Tout</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Fichiers</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Fonctions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Énumérations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>Tout</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Fichiers</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Fonctions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Énumérations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Valeurs énumérées</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -104,100 +105,101 @@ $(document).ready(function(){initNavTree('params_8h_source.html','');});
 <div class="title">params.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
+<a href="params_8h.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">This work is licensed under the Creative Commons Attribution</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">- Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">3.0 France License. To view a copy of this license, see COPYING.txt</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">file or visit http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">/**********************</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">* Définition des pins *</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">***********************/</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// Pins 0 et 1 : utilisées par le port série (communication avec Processing)</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// Capteurs fin de course</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#define PIN_LEFT_CAPTOR 2 // gauche</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define PIN_RIGHT_CAPTOR 3 // droite</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// desactivation des moteurs (pin /en sur pololu)</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define PIN_OFF_MOTORS 4</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// pin de commande du servo-moteur</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#define PIN_SERVO 5</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// moteur gauche</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#define PIN_LEFT_MOTOR_STEP 6 // vitesse</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define PIN_LEFT_MOTOR_DIR 7 // direction</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">/**********************</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">* Définition des pins *</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">**********************/</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// Pins 0 et 1 : utilisées par le port série (communication avec Processing)</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="code" href="params_8h.html#a59b7e182e4e0efd32adc6446dff1c585">   23</a></span>&#160;<span class="preprocessor">#define PIN_LEFT_CAPTOR 2</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="code" href="params_8h.html#ac074b0b36598ff61a882c4437286703f">   26</a></span>&#160;<span class="preprocessor">#define PIN_RIGHT_CAPTOR 3</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// moteur droit</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define PIN_RIGHT_MOTOR_STEP 8 // vitesse</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define PIN_RIGHT_MOTOR_DIR 9 // direction</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// pin CS de la carte SD</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// Snootlab et Adafruit : 10 - Sparkfun : 8</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define PIN_SD_CS 10</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Pins 11, 12 et 13 : utilisés par la carte SD (MOSI, MISO, SCK)</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// Diode IR pour télécommande</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define PIN_REMOTE A0</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">// Écran LCD</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#define PIN_SCREEN_SCE A1</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define PIN_SCREEN_RST A2</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define PIN_SCREEN_DC A3</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define PIN_SCREEN_SDIN A4</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define PIN_SCREEN_SCLK A5</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">/*************</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">* paramètres *</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">**************/</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="code" href="params_8h.html#ace46617846c34a81a4d8dfa7fa6606a1">   29</a></span>&#160;<span class="preprocessor">#define PIN_OFF_MOTORS 4</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="code" href="params_8h.html#a683a2f1ac846d9e7c7f68fd29130ee1a">   32</a></span>&#160;<span class="preprocessor">#define PIN_SERVO 5</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="code" href="params_8h.html#a44fd4fe46faedbf4c253231199f1f2dd">   35</a></span>&#160;<span class="preprocessor">#define PIN_LEFT_MOTOR_STEP 6</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="code" href="params_8h.html#ab9223525e5769e826f5213280b67796f">   38</a></span>&#160;<span class="preprocessor">#define PIN_LEFT_MOTOR_DIR 7</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="params_8h.html#afc1f9cb770d7ff56f46b409286a878e8">   41</a></span>&#160;<span class="preprocessor">#define PIN_RIGHT_MOTOR_STEP 8 //</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="code" href="params_8h.html#a4b2c03feec3357940ff6899993d44bf9">   44</a></span>&#160;<span class="preprocessor">#define PIN_RIGHT_MOTOR_DIR 9</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="code" href="params_8h.html#aa30910e372ddbd6b08bf8be280af2600">   48</a></span>&#160;<span class="preprocessor">#define PIN_SD_CS 10</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// Pins 11, 12 et 13 : utilisés par la carte SD (MOSI, MISO, SCK)</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">// servo-moteur :</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#define MIN_SERVO 30 // position lorsque le robot n&#39;écrit pas (en degrés)</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define MAX_SERVO 90 // position lorsque le robot écrit (en degrés)</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#define DELAY_BEFORE_SERVO 200 // Pause avant chaque déplacement (en ms)</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define DELAY_AFTER_SERVO 200 // Pause après chaque déplacement (en ms)</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">// moteurs :</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">// nombre de (micros-)pas</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#define STEPS 400</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">// Diamètre du pignon</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#define DIAMETER 12</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">// Direction des moteurs</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#define LEFT_DIRECTION true</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define RIGHT_DIRECTION true</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">/*********************</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">* Autres variables *</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">**********************/</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="code" href="params_8h.html#ae5984b4bcf7ee84f840ed39ab8904247">   53</a></span>&#160;<span class="preprocessor">#define PIN_REMOTE A0</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="code" href="params_8h.html#a81b3d50054c3e616c4855d79a046d520">   56</a></span>&#160;<span class="preprocessor">#define PIN_SCREEN_SCE A1</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="code" href="params_8h.html#aa1d7dd4f2a2473f50f1097f74aa0dfcd">   59</a></span>&#160;<span class="preprocessor">#define PIN_SCREEN_RST A2</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="code" href="params_8h.html#a270b8449b4c02631059f54cb624b0220">   62</a></span>&#160;<span class="preprocessor">#define PIN_SCREEN_DC A3</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="code" href="params_8h.html#a067a961ad671f5397224c76077ec4e32">   65</a></span>&#160;<span class="preprocessor">#define PIN_SCREEN_SDIN A4</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="code" href="params_8h.html#a20f0c613404df35065811000d47bba9b">   68</a></span>&#160;<span class="preprocessor">#define PIN_SCREEN_SCLK A5</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">/*************</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">* paramètres *</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">*************/</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">/***** du servo-moteur *****/</span></div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#define DELAY_BEFORE_STARTING 2000 // Pause avant de commencer à desiner</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#define SERIAL_BAUDS 9600</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#define SCALE_X 1.5</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define SCALE_Y 1.5</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#define OFFSET_X 0</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define OFFSET_Y -100</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#define DEFAULT_SPEED 10</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define DEFAULT_POSITION CENTER</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno"><a class="code" href="params_8h.html#a104df749bd51b5924bbfcd67313773c3">   77</a></span>&#160;<span class="preprocessor">#define MIN_SERVO 30</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="code" href="params_8h.html#a6225ed2d3ed40a4841073e5b6b0b4166">   80</a></span>&#160;<span class="preprocessor">#define MAX_SERVO 90</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="code" href="params_8h.html#a0321db918cd925d0eea65bb13b50017f">   83</a></span>&#160;<span class="preprocessor">#define DELAY_BEFORE_SERVO 200</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="code" href="params_8h.html#aa5c52440774b2b364ede8d2ab75317b3">   86</a></span>&#160;<span class="preprocessor">#define DELAY_AFTER_SERVO 200</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">/***** des moteurs *****/</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="code" href="params_8h.html#a1ca9f64427b2bc5b538fe2fa2501c639">   91</a></span>&#160;<span class="preprocessor">#define STEPS 400</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="code" href="params_8h.html#adb83c7833483d493482487e6dc748303">   94</a></span>&#160;<span class="preprocessor">#define DIAMETER 12</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="code" href="params_8h.html#af00d32577d01b39032883bed48caa2db">   97</a></span>&#160;<span class="preprocessor">#define LEFT_DIRECTION true</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="code" href="params_8h.html#ae731f2bde8232777e6c6201ba77ea6cb">  100</a></span>&#160;<span class="preprocessor">#define RIGHT_DIRECTION true</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">/*******************</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">* Autres variables *</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">*******************/</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="code" href="params_8h.html#a65d7f02d4c8cd56a0595a5ea6618520b">  107</a></span>&#160;<span class="preprocessor">#define DELAY_BEFORE_STARTING 2000</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="code" href="params_8h.html#a4ab14f7ca0edaefdcad106cc2c26c5b2">  110</a></span>&#160;<span class="preprocessor">#define SERIAL_BAUDS 9600</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="code" href="params_8h.html#a6c6ee811e086c6e6989e2135b998d81c">  113</a></span>&#160;<span class="preprocessor">#define SCALE_X 1.5</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="code" href="params_8h.html#ab60c1deed549a7d8f54d93191a41176e">  116</a></span>&#160;<span class="preprocessor">#define SCALE_Y 1.5</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="code" href="params_8h.html#ae3a0d5a32051fef2a946a99914e711f8">  119</a></span>&#160;<span class="preprocessor">#define OFFSET_X 0</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="code" href="params_8h.html#a701197e83c96ca5814113ebe72527a68">  122</a></span>&#160;<span class="preprocessor">#define OFFSET_Y -100</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="code" href="params_8h.html#afc945b2e8394478f97e2aabc7aebaf0e">  125</a></span>&#160;<span class="preprocessor">#define DEFAULT_SPEED 10</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00128"></a><span class="lineno"><a class="code" href="params_8h.html#a67987705d25cfdf0095bd06b044e9eb4">  128</a></span>&#160;<span class="preprocessor">#define DEFAULT_POSITION CENTER</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_45b86aea4808f0ff45a126f7e1b8c275.html">Drawall</a></li><li class="navelem"><b>params.h</b></li>
-    <li class="footer">Généré le Samedi Juillet 6 2013 02:08:47 pour Drawall par
+    <li class="navelem"><a class="el" href="dir_45b86aea4808f0ff45a126f7e1b8c275.html">Drawall</a></li><li class="navelem"><a class="el" href="params_8h.html">params.h</a></li>
+    <li class="footer">Généré le Samedi Juillet 6 2013 15:01:29 pour Drawall par
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

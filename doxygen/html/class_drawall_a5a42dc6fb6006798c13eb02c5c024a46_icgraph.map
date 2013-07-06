@@ -1,0 +1,5 @@
+<map id="Drawall::horizontal" name="Drawall::horizontal">
+<area shape="rect" id="node3" href="$class_drawall.html#a4104d0212d72119ce8cc54da7754c043" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position relative y..." alt="" coords="185,5,321,35"/>
+<area shape="rect" id="node5" href="$class_drawall.html#a554e3835c80aaf595f4b6c3f03ffbdd8" title="Dessine une figure vectorielle correspondant au contenu de l&#39;attribut d=&quot;...&quot; d&quot;une balise path..." alt="" coords="372,32,473,61"/>
+<area shape="rect" id="node7" href="$class_drawall.html#a95b28763851b0f6d43d4ceb96fd01310" title="Trace un dessin vectoriel svg correspondant au fichier fileName sur la carte SD." alt="" coords="524,32,617,61"/>
+</map>

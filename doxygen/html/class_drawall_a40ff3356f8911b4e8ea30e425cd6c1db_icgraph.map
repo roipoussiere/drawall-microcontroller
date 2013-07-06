@@ -1,0 +1,22 @@
+<map id="Drawall::line" name="Drawall::line">
+<area shape="rect" id="node3" href="$class_drawall.html#aa4fd82c7254f35595fb44492b0c923a8" title="Trace une ligne droite, de la position actuelle à la position relative [x; y]." alt="" coords="169,213,271,243"/>
+<area shape="rect" id="node5" href="$class_drawall.html#a554e3835c80aaf595f4b6c3f03ffbdd8" title="Dessine une figure vectorielle correspondant au contenu de l&#39;attribut d=&quot;...&quot; d&quot;une balise path..." alt="" coords="769,367,871,396"/>
+<area shape="rect" id="node9" href="$class_drawall.html#a8f27a7944020d4f1738fef00fed9f75f" title="Fini la figure SVG en cours." alt="" coords="155,267,285,296"/>
+<area shape="rect" id="node12" href="$class_drawall.html#acb43c0e3119660e47dc1cbdb55b8fead" title="Déplace le crayon à la position absolue [x ; y]." alt="" coords="167,444,273,473"/>
+<area shape="rect" id="node19" href="$class_drawall.html#a5a42dc6fb6006798c13eb02c5c024a46" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position absolue y..." alt="" coords="355,315,485,344"/>
+<area shape="rect" id="node25" href="$class_drawall.html#aa03c49c30d73341c8c3a52ceac2ee4fa" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position absolue x..." alt="" coords="363,576,477,605"/>
+<area shape="rect" id="node40" href="$class_drawall.html#a1f45c76d8f67dc282c493cb7041bd2e6" title="Trace une courbe de Bézier cubique en position absolue." alt="" coords="151,683,289,712"/>
+<area shape="rect" id="node49" href="$class_drawall.html#af6b2f076155d06af7e89723c3fde1519" title="Trace une courbe de Bézier quadratique en position absolue." alt="" coords="339,71,501,100"/>
+<area shape="rect" id="node7" href="$class_drawall.html#a95b28763851b0f6d43d4ceb96fd01310" title="Trace un dessin vectoriel svg correspondant au fichier fileName sur la carte SD." alt="" coords="921,367,1015,396"/>
+<area shape="rect" id="node14" href="$class_drawall.html#a38848bdcb6ecd7cfe5671f35403b8135" title="Déplace le crayon à la position absolue position." alt="" coords="367,523,473,552"/>
+<area shape="rect" id="node16" href="$class_drawall.html#a3aa2028c93df9ba4df0543b988095747" title="Déplace le crayon à la position relative [x ; y]." alt="" coords="579,419,691,448"/>
+<area shape="rect" id="node31" href="$class_drawall.html#adc914972bbb800662e8b338727011b77" title="Trace une ellipse dont le centre est le point courant, le rayon horizontal est rX et le rayon vertica..." alt="" coords="365,629,475,659"/>
+<area shape="rect" id="node36" href="$class_drawall.html#a02232c69b50b8eed9b06d08852f3400b" title="Finit le traçé." alt="" coords="373,469,467,499"/>
+<area shape="rect" id="node21" href="$class_drawall.html#a4104d0212d72119ce8cc54da7754c043" title="Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position relative y..." alt="" coords="567,315,703,344"/>
+<area shape="rect" id="node27" href="$class_drawall.html#adb72b4634385f2d01c8dff23e3594ddb" title="Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position relative x..." alt="" coords="573,524,696,553"/>
+<area shape="rect" id="node33" href="$class_drawall.html#aeb159a729569e7c701c54d31b9d56b17" title="Trace un cercle dont le centre est le point courant et le rayon est r." alt="" coords="583,629,687,659"/>
+<area shape="rect" id="node42" href="$class_drawall.html#a81fa3dc3d37f705936b3ff044b3363a0" title="Trace une courbe de Bézier cubique en position absolue." alt="" coords="351,683,489,712"/>
+<area shape="rect" id="node44" href="$class_drawall.html#aeb346762197c4953dfeb84fb5c71d3c1" title="Trace une courbe de Bézier cubique en position relative." alt="" coords="561,708,708,737"/>
+<area shape="rect" id="node51" href="$class_drawall.html#a8d1a610bcb0f719edb52033f9ea97647" title="Trace une courbe de Bézier quadratique en position relative." alt="" coords="551,5,719,35"/>
+<area shape="rect" id="node54" href="$class_drawall.html#ae4029ec471adbf055b59cec3f2b1c877" title="Trace une courbe de Bézier quadratique en position absolue." alt="" coords="553,109,716,139"/>
+</map>

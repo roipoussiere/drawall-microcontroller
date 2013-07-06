@@ -1,0 +1,4 @@
+<map id="Drawall::positionToX" name="Drawall::positionToX">
+<area shape="rect" id="node3" href="$class_drawall.html#a63034c0beb13bf6280aa76cfa98ebe5b" title="Spécifie la position initiale du crayon." alt="" coords="197,5,336,35"/>
+<area shape="rect" id="node5" href="$class_drawall.html#a38848bdcb6ecd7cfe5671f35403b8135" title="Déplace le crayon à la position absolue position." alt="" coords="213,59,320,88"/>
+</map>

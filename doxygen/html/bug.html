@@ -30,7 +30,7 @@
    <div id="projectname">Drawall
    &#160;<span id="projectnumber">1.0</span>
    </div>
-   <div id="projectbrief">Le robot qui dessine sur les murs.</div>
+   <div id="projectbrief">Le robot qui dessine sur les murs</div>
   </td>
  </tr>
  </tbody>
@@ -85,7 +85,7 @@ $(document).ready(function(){initNavTree('bug.html','');});
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>Tout</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Fichiers</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Fonctions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Énumérations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>Tout</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Fichiers</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Fonctions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Énumérations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Valeurs énumérées</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -100,9 +100,13 @@ $(document).ready(function(){initNavTree('bug.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt><a class="anchor" id="_bug000001"></a>Membre <a class="el" href="class_drawall.html#a54a615dd38dfa61317daba3359216bad">Drawall::Position</a>  </dt>
+<dt><a class="anchor" id="_bug000001"></a>Classe <a class="el" href="class_drawall.html">Drawall</a>  </dt>
+<dd>Corriger Warnings pour les conversions de texte en char*  </dd>
+<dt><a class="anchor" id="_bug000003"></a>Membre <a class="el" href="class_drawall.html#a9b60669eec22f9f5116c6b5f09a51b3f">Drawall::Drawall</a>  (int distanceBetweenMotors, int sheetWidth, int sheetHeight, int sheetPositionX, int sheetPositionY)</dt>
+<dd>Corriger Warning  </dd>
+<dt><a class="anchor" id="_bug000002"></a>Membre <a class="el" href="class_drawall.html#a54a615dd38dfa61317daba3359216bad">Drawall::Position</a>  </dt>
 <dd>Ne fonctionne pas dans le sketch.  </dd>
-<dt><a class="anchor" id="_bug000002"></a>Membre <a class="el" href="class_drawall.html#a63034c0beb13bf6280aa76cfa98ebe5b">Drawall::setPosition</a>  (Position position)</dt>
+<dt><a class="anchor" id="_bug000004"></a>Membre <a class="el" href="class_drawall.html#a63034c0beb13bf6280aa76cfa98ebe5b">Drawall::setPosition</a>  (Position position)</dt>
 <dd>Ne fonctionne pas sur le sketch. </dd>
 </dl>
 </div></div><!-- contents -->
@@ -110,7 +114,7 @@ $(document).ready(function(){initNavTree('bug.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Généré le Samedi Juillet 6 2013 02:08:47 pour Drawall par
+    <li class="footer">Généré le Samedi Juillet 6 2013 15:01:29 pour Drawall par
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

@@ -1,0 +1,4 @@
+<map id="Drawall::sdInit" name="Drawall::sdInit">
+<area shape="rect" id="node3" href="$class_drawall.html#a614483922fcc5d3711d7ffde0634abaf" title="À appeler lorsque une erreur se produit." alt="" coords="161,5,260,35"/>
+<area shape="rect" id="node5" href="$class_drawall.html#ab35495b79410f6a37c48bd65fc07f0b8" title="Approche ou éloigne le crayon de la paroi." alt="" coords="311,5,412,35"/>
+</map>
