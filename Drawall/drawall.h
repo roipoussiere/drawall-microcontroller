@@ -28,9 +28,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * \mainpage Présentation
 
 Drawall est un projet libre de robot autonomme qui dessine sur les murs.
-Ce projet est libre : vous pouvez le redistribuer ou le modifier suivant les termes de la GNU GPL. Pour plus de détails, consultez la GNU General Public License, dont vous trouverez une copie sur le fichier COPYING.txt dans le dépot GitHub.
 
-L'ensemble du projet est publié sous cette licence, comprenant l'intégralité du code-source, les schémas électroniques, les schémas du matériel et la documentation.
+Ce projet est libre : vous pouvez le redistribuer ou le modifier suivant les termes de la GNU GPL. L'ensemble du projet est publié sous cette licence, ce qui inclut l'intégralité du code-source, les schémas électroniques, les schémas du matériel et toute la documentation. Pour plus de détails, consultez la GNU General Public License, dont vous trouverez une copie sur le fichier COPYING.txt dans le dépot GitHub. La documentation détaillée du code source est disponible sur http://drawall.cc/. 
 
 Ce robot utilise une carte Arduino et nécessite donc le logiciel Arduino pour fonctionner. Vous trouverez de l'aide pour son installation et utilisation sur le site officiel http://arduino.cc/fr/.
 
@@ -42,11 +41,13 @@ La librairie contient tous les calculs nécessaire à l'execution du robot, les 
 Il est possible de commander le robot par des fonctions simples (lignes, courbes, ...), ou par l'intermédiaire d'un fichier svg qu'il va interpréter.
 Les fonctions svg ne sont pas encore toutes interprétées, certains dessins ne seront don pas correctement reproduits. Vous pouvez vous référer au fichier d'exemple drawbot.svg dans le dossier examples.
 
-Le projet comporte également un simulateur, qui permet de simuler le fonctionnement du robot sans le brancher. En augmentant la vitesse de traçé, une estimation du dessin est rapidement visualisable.
-Ce simulateur interprette directement les impulsions envoyées aux moteurs, il vous faut donc un minimum de matériel pour lancer une simulation : une carte arduino munie d'un port sd, avec une carte contenant une image svg.
-Ce simulteur utilise l'environnement de développement Processing, qu'il vous faudra aussi installer : https://www.processing.org/download/. Une aide à l'installation sur Linux est disponible sur le dépot GitHub.
+Le projet comporte également un simulateur, permetant de tester le bon
+fonctionnement d'un programe de dessin avant de le reproduire et faciliter le développement du projet.
+Il nécessite l'environnement de développement Processing : http://www.processing.org/. Ce simulateur reproduit le dessin que réalise le robot, en interpretant en temps réel les impulsions envoyées aux moteurs.
 
-Ce projet est libre et évoluera en fonction des retours des utilisateurs. Questions, demande d'informations et suggestions sont donc les bienvenues.
+Pour le faire fonctionner il vous faut donc connecter à votre ordinateur au minimum une carte arduino munie d'un lecteur SD et y insérer une carte contenant une image svg valide. Toutes les fonctions svg ne sont pas encore interprétées. Pour plus d'informations sur la conformité du fichier svg, référez-vous au document documentation/valid_svg.txt du dépot GitHub. Une aide à l'installation sur Linux est également disponible sur le dépot.
+
+Ce projet est libre et évoluera en grâce aux retours des utilisateurs. Questions, demande d'informations et suggestions sont donc les bienvenues.
 
 Copyright (c) 2012-2013 Nathanaël Jourdane
 
@@ -70,13 +71,19 @@ Une vidéo de démonstration du robot : http://www.youtube.com/watch?v=ewhZ9wcrR
 
 /**
  * \brief Classe principale de la librairie
- * \bug Corriger Warnings pour les conversions de texte en char*
+ * \todo Faire une simulation complète très rapide au début avant de commencer le traçé.
+ * \todo Ajouter méthode rect.
+ * \todo Processing : Tracer les mouvement sur un calque séparé (derrière).
+ * \todo Processing : Gestion des warnings.
+ * \bug Processing : Affiche une mauvais position à la fin du traçé (même pendant ?)
+ * \bug Processing : Afficher toujours déplacement en cours à la fin du traçé
+ * \bug Système de limites très foireux.
  */
 class Drawall {
     public:
 
     /**
-     * \brief Position sur la feuille
+     * \brief Position sur la zone de dessin
      * \details Les différentes position pour accès rapide, correspondant aux 8 points cardinaux, plus le centre.
      * \bug Ne fonctionne pas dans le sketch.
      */
@@ -95,13 +102,13 @@ class Drawall {
     /**
      * \brief Initialise la librairie.
      * \param distanceBetweenMotors Distance entre les deux moteurs.
-     * \param sheetWidth Largeur de la feuille.
-     * \param sheetHeight Hauteur de la feuille.
-     * \param sheetPositionX Position en X de la feuille par rapport au moteur de gauche.
-     * \param sheetPositionY Position en Y de la feuille par rapport au moteur de gauche.
+     * \param areaWidth Largeur de la zone de dessin.
+     * \param areaHeight Hauteur de la zone de dessin.
+     * \param areaPositionX Position en X de la zone de dessin par rapport au moteur de gauche.
+     * \param areaPositionY Position en Y de la zone de dessin par rapport au moteur de gauche.
      * \bug Corriger Warning
      */
-    Drawall(int distanceBetweenMotors, int sheetWidth, int sheetHeight, int sheetPositionX, int sheetPositionY);
+    Drawall(unsigned int distanceBetweenMotors, unsigned int areaWidth, unsigned int areaHeight, unsigned int areaPositionX, unsigned int areaPositionY);
     
     /**
      * \brief Démarre la librairie.
@@ -111,7 +118,7 @@ class Drawall {
    
     /**
      * \brief Finit le traçé.
-     * \details Utilisé à la fin du programme. Cela positionne le crayon en bas de la feuille, désalimente les moteurs et met en pause le programme.
+     * \details Utilisé à la fin du programme. Cela positionne le crayon en bas de la zone de dessin, désalimente les moteurs et met en pause le programme.
      */
     void end();
     
@@ -148,10 +155,12 @@ class Drawall {
     void setPosition(Position position);
     
     /**
-     * \brief Spécifie la vitesse du traçé.
+     * \brief Spécifie la vitesse du traçé (en mm/s).
+     * \details Cette vitesse correspond à la vitesse de déplacement de la courroie qui effectue la plus grande distance entre 2 points (Cf. \a mDelay). La vitesse réelle du dessin sera donc plus lente.
      * \param speed La vitesse du traçé.
+     * \bug La vitesse diminue si on augmente le nombre de pas.
      */
-    void setSpeed(float speed);
+    void setSpeed(unsigned int speed);
     
     /**********************
     * Fonctions de dessin *
@@ -194,26 +203,46 @@ class Drawall {
     void _line(float x, float y);
 
     /**
-     * \brief Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position absolue \a y.
+     * \brief Trace un rectangle, avec pour point haut-gauche la position actuelle et point bas-droit absolue [\a x; \a y].
+     * \param x La position absolue horizontale du point bas-droit du rectangle.
+     * \param y La position absolue verticale du point bas-droit du rectangle.
+     */
+    void rect(float x, float y);
+
+    /**
+     * \brief Trace un rectangle, avec pour point haut-gauche la position actuelle et point bas-droit relative [\a x; \a y].
+     * \details Une position relative correspond à la position d'un point par rapport à la position actuelle.
+     * \param x La position relative horizontale du point bas-droit du rectangle.
+     * \param y La position relative verticale du point bas-droit du rectangle.
+     */
+    void _rect(float x, float y);
+    
+    /**
+     * \brief Trace un rectangle représentant les limites de la zone de dessin.
+     */
+    void area();
+    
+    /**
+     * \brief Trace une ligne droite horizontale sur toute la largeur de la zone de dessin, à la position absolue \a y.
      * \param y La position absolue verticale de la ligne.
      */
     void horizontal(float y);
     
     /**
-     * \brief Trace une ligne droite horizontale sur toute la largeur de la feuille, à la position relative \a y.
+     * \brief Trace une ligne droite horizontale sur toute la largeur de la zone de dessin, à la position relative \a y.
      * \details Une position relative correspond à la position d'un point par rapport à la position actuelle.
      * \param y La position relative verticale de la ligne.
      */
     void _horizontal(float y);
 
     /**
-     * \brief Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position absolue \a x.
+     * \brief Trace une ligne droite verticale sur toute la hauteur de la zone de dessin, à la position absolue \a x.
      * \param x La position absolue horizontale de la ligne.
      */
     void vertical(float x);
     
     /**
-     * \brief Trace une ligne droite verticale sur toute la hauteur de la feuille, à la position relative \a x.
+     * \brief Trace une ligne droite verticale sur toute la hauteur de la zone de dessin, à la position relative \a x.
      * \details Une position relative correspond à la position d'un point par rapport à la position actuelle.
      * \param x La position absolue horizontale de la ligne.
      */
@@ -320,13 +349,7 @@ class Drawall {
      * \param pY La position relative verticale du point de destination.
      */
     void _quadraticCurve(float pX, float pY);
-    
-    /**
-     * \brief Fini la figure SVG en cours.
-     * \details Trâce une ligne droite jusqu'à la position du point cible du dernier déplacement, de manière a faire des formes "finies".
-     */
-    void endFigure();
-    
+        
     /**
      * \brief Trace un arc de cercle en position absolue.
      * \todo Remplir la fonction.
@@ -353,13 +376,33 @@ class Drawall {
     void circle(float r);
     
     /**
+     * \brief Fini la figure SVG en cours.
+     * \details Trâce une ligne droite jusqu'à la position du point cible du dernier déplacement, de manière a faire des formes "finies".
+     */
+    void endFigure();
+
+    /**
+     * \brief Trace un rectangle correspondant à la zone de dessin du fichier svg \a fileName.
+     * \details Le robot doit être muni d'un lecteur de carte SD et le fichier vectoriel doit être copié sur celle-ci.
+     * \param fileName Le nom du fichier.
+     */
+    void drawingArea(const char* nomFichier);
+
+    /**
      * \brief Trace un dessin vectoriel svg correspondant au fichier \a fileName sur la carte SD.
      * \details Le robot doit être muni d'un lecteur de carte SD et le fichier vectoriel doit être copié sur celle-ci.
      * \param fileName Le nom du fichier à dessiner.
      */
-    void svg(char* fileName);
+    void svg(const char* fileName);
     
     private:
+
+    /**
+     * \brief Détermine si la position désirée se trouve dans la zone de dessin (\a true) ou non (\a false).
+     * \details Envoie un warning si c'est le cas.
+     * \return \a true si la position désirée se trouve dans la zone de dessin, \a false sinon
+     */
+    bool positionInsideArea(float x, float y);
 
     /**
      * \brief Trace une ligne à bas niveau, de la position actuelle à la position absolue [\a x; \a y], en écrivant (\a writing) ou pas.
@@ -404,7 +447,7 @@ class Drawall {
      * \details Envoie le code d'erreur \a errNumber à Processing, qui se charge d'afficher sa description. Éloigne le stylo de la paroi et stoppe le programme.
      * \todo Mettre en pause le traçé, quand la pause sera opérationnelle.
      */
-    void error(char* errNumber);
+    void error(const char* errNumber);
 
     /***********************
     * Commande du matériel *
@@ -542,46 +585,28 @@ class Drawall {
     /// Objet pour manipuler le servo-moteur, utilisé avec la librairie \a Servo.
     Servo mServo;
 
-    /// Longueur du câble gauche (en pas).
-    unsigned int mLeftLength;
+    /// Longueur du câble gauche, en pas.
+    unsigned long mLeftLength;
     
-    /// Longueur du câble droit (en pas).
-    unsigned int mRightLength;
+    /// Longueur du câble droit, en pas.
+    unsigned long mRightLength;
 
-    /// Distance entre les 2 moteurs (en mm).
-    int mDistanceBetweenMotors;
-    
-    /// Position horizontale de la feuille par rapport au moteur gauche (en mm).
-    unsigned int mSheetPositionX;
-
-    /// Position verticale de la feuille par rapport au moteur gauche (en mm).
-    unsigned int mSheetPositionY;
-    
+    /// Distance entre les 2 moteurs, en mm.
+    unsigned int mDistanceBetweenMotors;
+       
     /// Le fichier svg contenant le dessin vectoriel à reproduire.
     File mFile;
     
-    /// Échelle générée par les attributs width et height du fichier svg, pour que le dessin s'adapte à la largeur de la feuille.
+    /// Échelle générée par les attributs width et height du fichier svg, afin que le dessin s'adapte aux dimentions de la zone de dessin.
     float mScale;
-    
-    /// Position horizontale actuelle du crayon sur le plan.
-    float mPositionX;
-    
-    /// Position verticale actuelle du crayon sur le plan.
-    float mPositionY;
-    
-    // Position horizontale du point d'arrivée fictif qui n'est pas modifié par les limites, pour que le traçé ne subisse pas de transformation.
-    float mFictivePosX;
-    
-    // Position verticale du point d'arrivée fictif qui n'est pas modifié par les limites, pour que le traçé ne subisse pas de transformation.    
-    float mFictivePosY;
 
-    /// Largeur de la zone de dessin (en mm).
-    float mSheetWidth;
+    /// Largeur de la zone de dessin, en mm.
+    unsigned int mAreaWidth;
     
-    /// Hauteur de la zone de dessin (en mm).
-    float mSheetHeight;
+    /// Hauteur de la zone de dessin, en mm.
+    unsigned int mAreaHeight;
     
-    /// Ratio entre le nb de pas et la distance (nombre de pas dans un mm).
+    /// Longueur d'un pas (distance parcourue par le câble en 1 pas, en mm.
     float mStepLength;
     
     /// Delai initial entre chaque pas du moteur qui a la plus grande distance à parcourir, (en µs).
@@ -591,6 +616,28 @@ class Drawall {
     /// Permet de déterminer si le robot est en train d'écrire (\a true) ou non (\a false).    
     bool mWriting;
     
+    /************
+    * Positions *
+    ************/    
+
+    /// Position horizontale du point [0 ; 0] (haut-gauche) de la zone de dessin par rapport au moteur gauche, en mm.
+    unsigned int mAreaPositionX;
+
+    /// Position verticale du point  [0 ; 0] (haut-gauche) de la zone de dessin par rapport au moteur gauche, en mm.
+    unsigned int mAreaPositionY;
+
+    /// Position horizontale actuelle du crayon sur le plan.
+    float mPositionX;
+    
+    /// Position verticale actuelle du crayon sur le plan.
+    float mPositionY;
+        
+    /// Position horizontale du point d'arrivée fictif qui n'est pas modifié par les limites, de manière à ce que le traçé ne subisse pas de transformation.
+    float mFictivePosX;
+    
+    /// Position verticale du point d'arrivée fictif qui n'est pas modifié par les limites, de manière à ce que le traçé ne subisse pas de transformation.    
+    float mFictivePosY;
+
     /// Position horizontale du point de départ d'une figure (ligne, courbe, ...).
     /// \details Nécessaire pour finir le traçé avec endFigure().
     float mStartFigureX;

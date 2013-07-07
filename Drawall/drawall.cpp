@@ -20,14 +20,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <drawall.h>
 
-Drawall::Drawall(int distanceBetweenMotors,
-    int sheetWidth, int sheetHeight,
-    int sheetPositionX, int sheetPositionY) :
-        mSheetWidth(sheetWidth),
-        mSheetHeight(sheetHeight),
+Drawall::Drawall(unsigned int distanceBetweenMotors,
+    unsigned int areaWidth, unsigned int areaHeight,
+    unsigned int areaPositionX, unsigned int areaPositionY) :
         mDistanceBetweenMotors(distanceBetweenMotors),
-        mSheetPositionX(sheetPositionX),
-        mSheetPositionY(sheetPositionY)
+        mAreaWidth(areaWidth),
+        mAreaHeight(areaHeight),
+        mAreaPositionX(areaPositionX),
+        mAreaPositionY(areaPositionY)
 {
 }
 
@@ -61,7 +61,7 @@ void Drawall::begin()
     
     mScale = 1;
     
-    if (mDistanceBetweenMotors < mSheetWidth + mSheetPositionX) {
+    if (mDistanceBetweenMotors < mAreaWidth + mAreaPositionX) {
         error("20");
     }
 
@@ -91,6 +91,10 @@ void Drawall::begin()
     Serial.print(" , droite = ");
     Serial.println(mRightLength);
 
+    Serial.print("Taille d'un pas = ");
+    Serial.print(mStepLength * 1000);
+    Serial.print("µm.");
+
     // *** envoi des données d'initialisation à Processing ***
 
     // caractère pour commencer l'init
@@ -99,14 +103,14 @@ void Drawall::begin()
     Serial.print(mDistanceBetweenMotors);
     Serial.print(',');
     
-    Serial.print(mSheetPositionX);
+    Serial.print(mAreaPositionX);
     Serial.print(',');
-    Serial.print(mSheetPositionY);    
+    Serial.print(mAreaPositionY);    
     Serial.print(',');
     
-    Serial.print(mSheetWidth);
+    Serial.print(mAreaWidth);
     Serial.print(',');
-    Serial.print(mSheetHeight);
+    Serial.print(mAreaHeight);
     Serial.print(',');
 
     Serial.print(mLeftLength);
@@ -114,7 +118,7 @@ void Drawall::begin()
     Serial.print(mRightLength);
     Serial.print(',');
     
-    Serial.print(mStepLength);
+    Serial.print(mStepLength * 1000);
     
     // caractère de fin d'init
     Serial.print('\n');
@@ -150,20 +154,23 @@ void Drawall::setPosition(Position position)
 
 float Drawall::positionToX(Position position)
 {
-    float x;
+    float x = 0;
     
     switch (position) {
         case UPPER_LEFT:
         case LEFT_CENTER:
-        case LOWER_LEFT: x = 0; break;
+        case LOWER_LEFT: x = 0;
+        break;
 
         case UPPER_CENTER:
         case CENTER:
-        case LOWER_CENTER: x = mSheetWidth / 2; break;
+        case LOWER_CENTER: x = mAreaWidth / 2;
+        break;
         
         case UPPER_RIGHT:
         case RIGHT_CENTER:
-        case LOWER_RIGHT: x = mSheetWidth; break;
+        case LOWER_RIGHT: x = mAreaWidth;
+        break;
         
         default: break;
     }
@@ -173,20 +180,23 @@ float Drawall::positionToX(Position position)
 
 float Drawall::positionToY(Position position)
 {
-    float y;
+    float y = 0;
     
     switch (position) {
         case UPPER_LEFT:
         case UPPER_CENTER:
-        case UPPER_RIGHT: y = 0; break;
+        case UPPER_RIGHT: y = 0;
+        break;
 
         case LEFT_CENTER:
         case CENTER:        
-        case RIGHT_CENTER: y = mSheetHeight/2; break;
+        case RIGHT_CENTER: y = mAreaHeight/2;
+        break;
 
         case LOWER_LEFT: 
         case LOWER_CENTER:
-        case LOWER_RIGHT: y = mSheetHeight; break;
+        case LOWER_RIGHT: y = mAreaHeight;
+        break;
                 
         default: break;
     }
@@ -209,21 +219,21 @@ void Drawall::initStepLength()
     mStepLength = (PI * DIAMETER) / float(STEPS);
 }
 
-void Drawall::setSpeed(float speed)
+void Drawall::setSpeed(unsigned int speed)
 {
-    mDelay = (60000000) / (speed * float(STEPS));
+    mDelay = 1000000 * mStepLength/float(speed);
 }
 
 long Drawall::positionToLeftLength(float positionX, float positionY)
 {
-    return sqrt ( pow((mSheetPositionX + positionX) / mStepLength, 2)
-    + pow((mSheetPositionY + positionY) / mStepLength, 2) );
+    return sqrt ( pow((mAreaPositionX + positionX) / mStepLength, 2)
+    + pow((mAreaPositionY + positionY) / mStepLength, 2) );
 }
 
 long Drawall::positionToRightLength(float positionX, float positionY)
 {
-    return sqrt ( pow((mDistanceBetweenMotors - mSheetPositionX - positionX) / mStepLength, 2)
-    + pow((mSheetPositionY + positionY) / mStepLength, 2) );
+    return sqrt ( pow((mDistanceBetweenMotors - mAreaPositionX - positionX) / mStepLength, 2)
+    + pow((mAreaPositionY + positionY) / mStepLength, 2) );
 }
 
 void Drawall::power(bool alimenter)
@@ -262,6 +272,34 @@ void Drawall::write(bool write)
     }
 }
 
+bool Drawall::positionInsideArea(float x, float y)
+{
+    bool inside = false;
+    
+    if (x < 0) {
+        x = 0;
+        Serial.print("W50");
+    } else if (x > mAreaWidth) {
+        x = mAreaWidth;
+        Serial.print("W51");
+    } else if (y < 0) {
+        y = 0;
+        Serial.print("W52");
+    } else if (y > mAreaHeight) {
+        y = mAreaHeight;
+        Serial.print("W53");
+    } else {
+        inside = true;
+    }
+    
+    if (!inside) {
+        mFictivePosX = x;
+        mFictivePosY = y;
+    }
+    
+    return inside;
+}
+
 void Drawall::line(float bX, float bY, bool writing)
 {
     // aX, aY: Position du point courant
@@ -280,24 +318,9 @@ void Drawall::line(float bX, float bY, bool writing)
 
     // stoque la position voulue
     // avant qu'elle soit modifiée par les limites
-    mFictivePosX = bX;
-    mFictivePosY = bY;
-
-    // Contrôle des limites, n'ecrit pas si en dehors
-    if (bX < 0 || bX > mSheetWidth || bY < 0 || bY > mSheetHeight) {
-        if (bX < 0)
-            bX = 0;
-        else if (bX > mSheetWidth)
-            bX = mSheetWidth;
-        
-        if (bY < 0)
-            bY = 0;
-        else if (bY > mSheetHeight)
-            bY = mSheetHeight;
-
-        write(false);
-    } else {
-        // s'il est dedans et qu'il doit ecrire, écrit
+    
+    // si le crayon est dans la zone de dessin et qu'il doit écrire, écrit.
+    if (positionInsideArea(bX, bY)) {
         if (writing) {
             write(true);
         } else {
@@ -306,8 +329,8 @@ void Drawall::line(float bX, float bY, bool writing)
     }
     
     // longueur fils à la destination (en pas)
-    long bG = positionToLeftLength(bX * SCALE_X * mScale + OFFSET_X, bY * SCALE_X * mScale + OFFSET_Y);
-    long bD = positionToRightLength(bX * SCALE_X * mScale + OFFSET_X, bY * SCALE_X * mScale + OFFSET_Y);
+    unsigned long bG = positionToLeftLength(bX * SCALE_X * mScale + OFFSET_X, bY * SCALE_X * mScale + OFFSET_Y);
+    unsigned long bD = positionToRightLength(bX * SCALE_X * mScale + OFFSET_X, bY * SCALE_X * mScale + OFFSET_Y);
 
     // nombre de pas à faire
     long nbPasG = bG - mLeftLength;
@@ -319,8 +342,8 @@ void Drawall::line(float bX, float bY, bool writing)
     float delaiG;
     float delaiD;
 
-    long dernierTempsG;
-    long dernierTempsD;
+    unsigned long dernierTempsG;
+    unsigned long dernierTempsD;
 
     // calcul de la direction
     if (nbPasG < 0) {
@@ -331,8 +354,7 @@ void Drawall::line(float bX, float bY, bool writing)
         sensDHaut = false;
     }
 
-    // on a le sens
-    // donc on peut retirer le signe pour simplifier les calculs
+    // On a le sens, donc on peut retirer le signe pour simplifier les calculs
     nbPasG = fabs(nbPasG);
     nbPasD = fabs(nbPasD);
 
@@ -461,6 +483,28 @@ void Drawall::_line(float x, float y)
     line(mPositionX + x , mPositionY + y);
 }
 
+void Drawall::rect(float x, float y)
+{
+    float initX = mPositionX;
+    float initY = mPositionY;
+    
+    line(x, initY);
+    line(x, y);
+    line(initX, y);
+    line(initX, initY);
+}
+
+void Drawall::_rect(float x, float y)
+{
+    rect(mPositionX + x, mPositionY + y);
+}
+
+void Drawall::area()
+{
+    move(0, 0);
+    rect(mAreaWidth, mAreaHeight);
+}
+
 void Drawall::endFigure()
 {
     line(mStartFigureX, mStartFigureY);
@@ -487,7 +531,7 @@ void Drawall::_move(float x, float y)
 void Drawall::horizontal(float y)
 {
     move(0, y);
-    line(mSheetWidth, y);
+    line(mAreaWidth, y);
 }
 
 void Drawall::_horizontal(float y)
@@ -498,7 +542,7 @@ void Drawall::_horizontal(float y)
 void Drawall::vertical(float x)
 {
     move(x, 0);
-    line(x, mSheetHeight);
+    line(x, mAreaHeight);
 }
 
 void Drawall::_vertical(float x)
@@ -1005,7 +1049,7 @@ void Drawall::draw()
     return;
 }
 
-void Drawall::error(char* errNumber)
+void Drawall::error(const char* errNumber)
 {
     Serial.print('E');
     Serial.print(errNumber);
@@ -1016,11 +1060,11 @@ void Drawall::error(char* errNumber)
 
 void Drawall::setScale(int width, int height)
 {
-    /*Serial.print("_scale = ");
+    Serial.print("_scale = ");
     Serial.println(mScale);
 
-    float scaleX = mSheetWidth / width;
-    float scaleY = mSheetHeight / height;
+    float scaleX = mAreaWidth / width;
+    float scaleY = mAreaHeight / height;
 
     Serial.print("_scaleX = ");
     Serial.println(scaleX);
@@ -1035,10 +1079,37 @@ void Drawall::setScale(int width, int height)
     }
     
     Serial.print("_scale = ");
-    Serial.println(mScale);*/
+    Serial.println(mScale);
 }
 
-void Drawall::svg(char* nomFichier)
+void Drawall::drawingArea(const char* nomFichier)
+{
+    mFile = SD.open(nomFichier);
+
+    if (!mFile) {
+        // Err. 02 : Erreur d'ouverture de fichier.
+        error("02");
+        return;
+    }
+
+    // se positionne en début de fichier
+    mFile.seek(0);
+
+    // Se positionne jusqu'à la balise SVG
+    // Si on ne la trouve pas, on renvoie une erreur
+    if (! sdFind("<svg") ) {
+        // Err. 12 : Le fichier n'est pas un fichier svg.
+        error("12");
+        return;
+    }
+    
+    move(0,0);
+    rect(getNumericAttribute("width"), getNumericAttribute("height"));
+    
+    mFile.close();
+}
+
+void Drawall::svg(const char* nomFichier)
 {
     mFile = SD.open(nomFichier);
 
