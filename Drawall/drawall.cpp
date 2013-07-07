@@ -451,7 +451,7 @@ void Drawall::line(float x, float y)
     mCubicCurveX = 0;
     mCubicCurveY = 0;
     
-    int longmax = 20;
+    int longmax = 5;
     
     float longX = abs(x-mPositionX);
     float longY = abs(y-mPositionY);
@@ -1103,6 +1103,7 @@ void Drawall::drawingArea(const char* nomFichier)
         return;
     }
     
+    setScale(int(getNumericAttribute("width")), int(getNumericAttribute("height")));
     move(0,0);
     rect(getNumericAttribute("width"), getNumericAttribute("height"));
     
@@ -1111,17 +1112,18 @@ void Drawall::drawingArea(const char* nomFichier)
 
 void Drawall::svg(const char* nomFichier)
 {
+    mScale = 1;
     mFile = SD.open(nomFichier);
-
+    
     if (!mFile) {
         // Err. 02 : Erreur d'ouverture de fichier.
         error("02");
         return;
     }
-
+    
     // se positionne en début de fichier
     mFile.seek(0);
-
+    
     // Se positionne jusqu'à la balise SVG
     // Si on ne la trouve pas, on renvoie une erreur
     if (! sdFind("<svg") ) {
@@ -1139,7 +1141,7 @@ void Drawall::svg(const char* nomFichier)
         error("13");
         return;
     }
-
+    
     // tant que l'on trouve le début des données d'un traçé, on dessine
     while ( sdFind("d=\"") ) {
         draw();
