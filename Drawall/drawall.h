@@ -71,13 +71,20 @@ Une vidéo de démonstration du robot : http://www.youtube.com/watch?v=ewhZ9wcrR
 
 /**
  * \brief Classe principale de la librairie
- * \todo Faire une simulation complète très rapide au début avant de commencer le traçé.
+ * \todo Faire une simulation complète très rapide au début avant de commencer le traçé (possible ?) ou créer méthode test(bool testing) pour activer le mode de test.
  * \todo Ajouter méthode rect.
  * \todo Processing : Tracer les mouvement sur un calque séparé (derrière).
  * \todo Processing : Gestion des warnings.
  * \bug Processing : Affiche une mauvais position à la fin du traçé (même pendant ?)
  * \bug Processing : Afficher toujours déplacement en cours à la fin du traçé
  * \bug Système de limites très foireux.
+ * \bug Processing : L'affichage de la position de tient pas compte de la position de la feuille.
+ * \bug Le crayon va très en bas en fin de traçé (en dehors de limite basse).
+ * \bug Moteurs gauche et droit non synchronisés pour les déplacements.
+ * \bug Voir quel est le problème avec le dessin de Drawall, il fait n'importe quoi + non détection de la limite basse (cf. capture).
+ * \bug Il y a une légère marge en haut du dessin.
+ * \bug Pour les surfaces larges, pas de marge en bas du dessin, sans doute lié au bug ci-dessus.
+ * \bug Dessin pas centré pour les surfaces larges.
  */
 class Drawall {
     public:
@@ -191,6 +198,7 @@ class Drawall {
      * \brief Trace une ligne droite, de la position actuelle à la position absolue [\a x; \a y].
      * \param x La position absolue horizontale du point de destination.
      * \param y La position absolue verticale du point de destination.
+     * \bug Fait des escaliers dans certains cas (?).
      */
     void line(float x, float y);
 
@@ -385,8 +393,9 @@ class Drawall {
      * \brief Trace un rectangle correspondant à la zone de dessin du fichier svg \a fileName.
      * \details Le robot doit être muni d'un lecteur de carte SD et le fichier vectoriel doit être copié sur celle-ci.
      * \param fileName Le nom du fichier.
+     * \bug Le rectangle sort de la zone de dessin dans certains cas (testé aux valeurs 4810, 3950, 2830, 430, 640) + limite droite non-détectée.
      */
-    void drawingArea(const char* nomFichier);
+    void drawingArea(const char* fileName);
 
     /**
      * \brief Trace un dessin vectoriel svg correspondant au fichier \a fileName sur la carte SD.
@@ -428,7 +437,7 @@ class Drawall {
      * \details Les dimentions du dessin sont récupérées sur le fichier svg.
      * \todo Changer le nom et retourner l'échelle plutôt que de la modifier directement.
      */
-    void setScale(int width, int height);
+    void setDrawingScale(float width, float height);
     
     /**
      * \brief Renvoie la longueur actuelle du câble gauche.
@@ -598,7 +607,13 @@ class Drawall {
     File mFile;
     
     /// Échelle générée par les attributs width et height du fichier svg, afin que le dessin s'adapte aux dimentions de la zone de dessin.
-    float mScale;
+    float mDrawingScale;
+    
+    /// Offset horizontal généré par l'attribut width du fichier svg, afin que le dessin soit centré sur la zone de dessin.
+    unsigned int mDrawingOffsetX;
+
+    /// Offset vertical généré par l'attribut height du fichier svg, afin que le dessin soit centré sur la zone de dessin.
+    unsigned int mDrawingOffsetY;
 
     /// Largeur de la zone de dessin, en mm.
     unsigned int mAreaWidth;

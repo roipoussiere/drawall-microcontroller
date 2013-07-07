@@ -59,7 +59,9 @@ void Drawall::begin()
     // pour que write() fonctionne la 1ere fois
     mWriting = true;
     
-    mScale = 1;
+    mDrawingScale = 1;
+    mDrawingOffsetX = 0;
+    mDrawingOffsetY = 0;
     
     if (mDistanceBetweenMotors < mAreaWidth + mAreaPositionX) {
         error("20");
@@ -328,9 +330,18 @@ void Drawall::line(float bX, float bY, bool writing)
         }
     }
     
-    // longueur fils à la destination (en pas)
-    unsigned long bG = positionToLeftLength(bX * SCALE_X * mScale + OFFSET_X, bY * SCALE_X * mScale + OFFSET_Y);
-    unsigned long bD = positionToRightLength(bX * SCALE_X * mScale + OFFSET_X, bY * SCALE_X * mScale + OFFSET_Y);
+    // Calcul de la longueur fils à la destination (en pas)
+    
+    // échelle
+    float sX = SCALE_X * mDrawingScale;
+    float sY = SCALE_Y * mDrawingScale;
+
+    // offset
+    float oX = OFFSET_X + mDrawingOffsetX;
+    float oY = OFFSET_Y + mDrawingOffsetY;
+    
+    unsigned long bG = positionToLeftLength(bX*sX + oX, bY*sY + oY);
+    unsigned long bD = positionToRightLength(bX*sX + oX, bY*sY + oY);
 
     // nombre de pas à faire
     long nbPasG = bG - mLeftLength;
@@ -1058,33 +1069,31 @@ void Drawall::error(const char* errNumber)
     while(true) {}
 }
 
-void Drawall::setScale(int width, int height)
+void Drawall::setDrawingScale(float width, float height)
 {
-    Serial.print("_scale = ");
-    Serial.println(mScale);
-
     float scaleX = mAreaWidth / width;
     float scaleY = mAreaHeight / height;
 
-    Serial.print("_scaleX = ");
-    Serial.println(scaleX);
-    Serial.print("_scaleY = ");
-    Serial.println(scaleY);
-
     if (scaleX > scaleY)
     {
-        mScale = scaleY;
+        mDrawingScale = scaleY;
+        mDrawingOffsetX = mAreaWidth / 2 - width*scaleY / 2;
     } else {
-        mScale = scaleX;
+        mDrawingScale = scaleX;
+        mDrawingOffsetY = mAreaHeight / 2 - height*scaleX / 2;
     }
     
-    Serial.print("_scale = ");
-    Serial.println(mScale);
+    Serial.print("_drawing scale = ");
+    Serial.println(mDrawingScale);
+    Serial.print("_drawing offset X = ");
+    Serial.println(mDrawingOffsetX);
+    Serial.print("_drawing offset Y = ");
+    Serial.println(mDrawingOffsetY);
 }
 
-void Drawall::drawingArea(const char* nomFichier)
+void Drawall::drawingArea(const char* fileName)
 {
-    mFile = SD.open(nomFichier);
+    mFile = SD.open(fileName);
 
     if (!mFile) {
         // Err. 02 : Erreur d'ouverture de fichier.
@@ -1103,17 +1112,19 @@ void Drawall::drawingArea(const char* nomFichier)
         return;
     }
     
-    setScale(int(getNumericAttribute("width")), int(getNumericAttribute("height")));
+    setDrawingScale(getNumericAttribute("width"), getNumericAttribute("height"));
     move(0,0);
     rect(getNumericAttribute("width"), getNumericAttribute("height"));
     
     mFile.close();
 }
 
-void Drawall::svg(const char* nomFichier)
+void Drawall::svg(const char* fileName)
 {
-    mScale = 1;
-    mFile = SD.open(nomFichier);
+    mDrawingScale = 1;
+    mDrawingOffsetX = 0;
+    mDrawingOffsetY = 0;
+    mFile = SD.open(fileName);
     
     if (!mFile) {
         // Err. 02 : Erreur d'ouverture de fichier.
@@ -1132,7 +1143,7 @@ void Drawall::svg(const char* nomFichier)
         return;
     }
     
-    setScale(int(getNumericAttribute("width")), int(getNumericAttribute("height")));
+    setDrawingScale(int(getNumericAttribute("width")), int(getNumericAttribute("height")));
     
     // Se positionne jusqu'à la balise PATH
     // Si on ne la trouve pas, on renvoie une erreur

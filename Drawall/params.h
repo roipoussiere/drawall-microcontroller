@@ -104,7 +104,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define STEPS 200
 
 /// Diamètre du pignon (en mm)
-#define DIAMETER 12
+#define DIAMETER 17
 
 /// Direction du moteur gauche
 #define LEFT_DIRECTION true
