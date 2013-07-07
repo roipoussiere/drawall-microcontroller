@@ -1,5 +1,21 @@
 /*
-Ce travail est sous licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 3.0 France License. Pour voir voir une copie de cette licence, ouvrez le fichier LIENCE.txt ou connectez-vous sur http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
+This file is part of Drawall, a project for a robot which draws on walls.
+See http://drawall.cc/ and https://github.com/roipoussiere/Drawall/.
+
+Copyright (c) 2012-2013 Nathanaël Jourdane
+
+Drawall is free software : you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /**
@@ -107,10 +123,10 @@ Ce travail est sous licence Creative Commons Attribution - Pas d’Utilisation C
 #define SERIAL_BAUDS 9600
 
 /// Échelle horizontale appliquée au dessin, permetant de le calibrer.
-#define SCALE_X 1.5
+#define SCALE_X 1
 
 /// Échelle verticale appliquée au dessin, permetant de le calibrer.
-#define SCALE_Y 1.5
+#define SCALE_Y 1
 
 /// Offset horizontal appliqué au dessin, permetant de le décaler.
 #define OFFSET_X 0

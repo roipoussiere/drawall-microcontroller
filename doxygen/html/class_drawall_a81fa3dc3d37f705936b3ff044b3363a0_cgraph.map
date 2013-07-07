@@ -1,4 +1,0 @@
-<map id="Drawall::cubicCurve" name="Drawall::cubicCurve">
-<area shape="rect" id="node3" href="$class_drawall.html#a1f45c76d8f67dc282c493cb7041bd2e6" title="Trace une courbe de Bézier cubique en position absolue." alt="" coords="196,5,335,35"/>
-<area shape="rect" id="node5" href="$class_drawall.html#a40ff3356f8911b4e8ea30e425cd6c1db" title="Trace une ligne droite, de la position actuelle à la position absolue [x; y]." alt="" coords="385,5,479,35"/>
-</map>

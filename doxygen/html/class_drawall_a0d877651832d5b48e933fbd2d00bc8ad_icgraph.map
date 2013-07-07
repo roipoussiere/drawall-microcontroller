@@ -1,5 +1,0 @@
-<map id="Drawall::sdFind" name="Drawall::sdFind">
-<area shape="rect" id="node3" href="$class_drawall.html#ad1302f3d9035d964cf0b49fd473142c0" title="Récupere la valeur de l&#39;attribut attribute du fichier svg sous forme textuelle." alt="" coords="168,5,309,35"/>
-<area shape="rect" id="node7" href="$class_drawall.html#a95b28763851b0f6d43d4ceb96fd01310" title="Trace un dessin vectoriel svg correspondant au fichier fileName sur la carte SD." alt="" coords="599,32,692,61"/>
-<area shape="rect" id="node5" href="$class_drawall.html#adb726f927bfd543e36f4244c4652ac4d" title="Récupere la valeur de l&#39;attribut attribute du fichier svg sous forme numérique (flotant)." alt="" coords="359,5,548,35"/>
-</map>

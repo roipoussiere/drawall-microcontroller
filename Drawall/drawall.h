@@ -1,5 +1,21 @@
 /*
-Ce travail est sous licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 3.0 France License. Pour voir voir une copie de cette licence, ouvrez le fichier LIENCE.txt ou connectez-vous sur http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
+This file is part of Drawall, a project for a robot which draws on walls.
+See http://drawall.cc/ and https://github.com/roipoussiere/Drawall/.
+
+Copyright (c) 2012-2013 Nathanaël Jourdane
+
+Drawall is free software : you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /**
@@ -11,25 +27,28 @@ Ce travail est sous licence Creative Commons Attribution - Pas d’Utilisation C
  *
  * \mainpage Présentation
 
-Drawall est un projet libre de robot autonomme qui dessine sur les murs. Son code source est disponible sur GitHub (voir lien en bas de page).
+Drawall est un projet libre de robot autonomme qui dessine sur les murs.
+Ce projet est libre : vous pouvez le redistribuer ou le modifier suivant les termes de la GNU GPL. Pour plus de détails, consultez la GNU General Public License, dont vous trouverez une copie sur le fichier COPYING.txt dans le dépot GitHub.
 
-Ce travail est sous licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 3.0 France License. Pour voir voir une copie de cette licence, ouvrez le fichier LIENCE.txt du dépot GitHub, ou connectez-vous sur http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
+L'ensemble du projet est publié sous cette licence, comprenant l'intégralité du code-source, les schémas électroniques, les schémas du matériel et la documentation.
 
 Ce robot utilise une carte Arduino et nécessite donc le logiciel Arduino pour fonctionner. Vous trouverez de l'aide pour son installation et utilisation sur le site officiel http://arduino.cc/fr/.
 
-La partie logicielle est une librairie Arduino. Elle est composée d'un fichier principal drawall.cpp, d'un fichier header drawall.h et d'un fichier de paramètres params.h. Ce dernier permet de spécifier tous les paramètres concernant le robot. Vous dervrez l'éditer avant d'utiliser la librairie.
-La librairie est utilisée par l'intermédiaire d'un "sketch" Arduino, (fichier .ino), dont vous trouverez des exemples dans le répertoire de la librairie. La librairie contient tous les calculs nécessaire à l'execution du robot, les sketchs ne servent qu'à le commander, ils sont très courts et simples à utiliser.
+La partie logicielle est une librairie Arduino. Elle est composée d'un fichier principal drawall.cpp, d'un fichier header drawall.h et d'un fichier de paramètres params.h. Ce dernier permet de spécifier tous les paramètres concernant le robot. Vous devrez l'éditer avant d'utiliser la librairie.
+La librairie est utilisée par l'intermédiaire d'un "sketch" Arduino, (fichier .ino), dont vous trouverez des exemples dans le répertoire de la librairie.
+
+La librairie contient tous les calculs nécessaire à l'execution du robot, les sketchs ne servent qu'à le commander, ils sont très courts et simples à utiliser.
 
 Il est possible de commander le robot par des fonctions simples (lignes, courbes, ...), ou par l'intermédiaire d'un fichier svg qu'il va interpréter.
 Les fonctions svg ne sont pas encore toutes interprétées, certains dessins ne seront don pas correctement reproduits. Vous pouvez vous référer au fichier d'exemple drawbot.svg dans le dossier examples.
 
 Le projet comporte également un simulateur, qui permet de simuler le fonctionnement du robot sans le brancher. En augmentant la vitesse de traçé, une estimation du dessin est rapidement visualisable.
 Ce simulateur interprette directement les impulsions envoyées aux moteurs, il vous faut donc un minimum de matériel pour lancer une simulation : une carte arduino munie d'un port sd, avec une carte contenant une image svg.
-Ce simulteur utilise l'environnement de développement Processing, qu'il vous faudra aussi installer : https://www.processing.org/download/. Une aide à l'installation sur Linux est disponible sur le dépot.
+Ce simulteur utilise l'environnement de développement Processing, qu'il vous faudra aussi installer : https://www.processing.org/download/. Une aide à l'installation sur Linux est disponible sur le dépot GitHub.
 
-Ce projet est libre et évoluera en fonction des retours des utilisateurs. Questions, demande d'informations, et suggestions sont donc les bienvenues.
+Ce projet est libre et évoluera en fonction des retours des utilisateurs. Questions, demande d'informations et suggestions sont donc les bienvenues.
 
-Le logiciel et le matériel ont été intégralement développé par Nathanaël Jourdane.
+Copyright (c) 2012-2013 Nathanaël Jourdane
 
 Adresse de contact : nathanael[AT]jourdane[DOT]net.
 
@@ -359,7 +378,7 @@ class Drawall {
      * xx(pas)/ratio --> xx(mm)
      * \todo Inverser le ratio car le nombre de pas est une valeur entière, éviter de le diviser.
      */
-    void initRatio();
+    void initStepLength();
 
     /**
      * \brief Modifie l'échelle pour s'adapter à la largeur \a width et la hauteur \a height du dessin.
@@ -563,8 +582,7 @@ class Drawall {
     float mSheetHeight;
     
     /// Ratio entre le nb de pas et la distance (nombre de pas dans un mm).
-    /// \todo Renommer en mStepLength et inverser le ratio
-    float mRatio;
+    float mStepLength;
     
     /// Delai initial entre chaque pas du moteur qui a la plus grande distance à parcourir, (en µs).
     /// \details Le délai de l'autre moteur est calculé pour que les 2 moteurs arrivent au point de destination simultanément.

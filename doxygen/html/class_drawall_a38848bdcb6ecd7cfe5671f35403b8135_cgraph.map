@@ -1,6 +1,0 @@
-<map id="Drawall::move" name="Drawall::move">
-<area shape="rect" id="node3" href="$class_drawall.html#acb43c0e3119660e47dc1cbdb55b8fead" title="Déplace le crayon à la position absolue [x ; y]." alt="" coords="179,5,285,35"/>
-<area shape="rect" id="node7" href="$class_drawall.html#a72c2747235f285fd3beeaa7c2cc95068" title="Récupère la position horizontale de position." alt="" coords="161,59,303,88"/>
-<area shape="rect" id="node9" href="$class_drawall.html#a20c2fd8f2ecbf36d11dfec803f45b0e9" title="Récupère la position verticale de position." alt="" coords="161,112,303,141"/>
-<area shape="rect" id="node5" href="$class_drawall.html#a40ff3356f8911b4e8ea30e425cd6c1db" title="Trace une ligne droite, de la position actuelle à la position absolue [x; y]." alt="" coords="353,5,447,35"/>
-</map>

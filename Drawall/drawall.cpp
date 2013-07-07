@@ -1,5 +1,21 @@
 /*
-Ce travail est sous licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 3.0 France License. Pour voir voir une copie de cette licence, ouvrez le fichier LIENCE.txt ou connectez-vous sur http://creativecommons.org/licenses/by-nc-sa/3.0/fr/.
+This file is part of Drawall, a project for a robot which draws on walls.
+See http://drawall.cc/ and https://github.com/roipoussiere/Drawall/.
+
+Copyright (c) 2012-2013 Nathanaël Jourdane
+
+Drawall is free software : you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <drawall.h>
@@ -43,13 +59,13 @@ void Drawall::begin()
     // pour que write() fonctionne la 1ere fois
     mWriting = true;
     
-    mScale = 1;  
+    mScale = 1;
     
     if (mDistanceBetweenMotors < mSheetWidth + mSheetPositionX) {
         error("20");
     }
 
-    initRatio();
+    initStepLength();
 
     setPosition(DEFAULT_POSITION);
 
@@ -98,7 +114,7 @@ void Drawall::begin()
     Serial.print(mRightLength);
     Serial.print(',');
     
-    Serial.print(mRatio);
+    Serial.print(mStepLength);
     
     // caractère de fin d'init
     Serial.print('\n');
@@ -188,9 +204,9 @@ long Drawall::getRightLength()
     return mRightLength;
 }
 
-void Drawall::initRatio()
+void Drawall::initStepLength()
 {
-    mRatio = float(STEPS) / (PI * DIAMETER);
+    mStepLength = (PI * DIAMETER) / float(STEPS);
 }
 
 void Drawall::setSpeed(float speed)
@@ -198,17 +214,16 @@ void Drawall::setSpeed(float speed)
     mDelay = (60000000) / (speed * float(STEPS));
 }
 
-// TODO : Ne pas placer SCALE et OFFSET ici pour ne pas influencer sur la position initiale
 long Drawall::positionToLeftLength(float positionX, float positionY)
 {
-    return sqrt ( pow((mSheetPositionX + positionX) * mRatio, 2)
-    + pow((mSheetPositionY + positionY) * mRatio, 2) );
+    return sqrt ( pow((mSheetPositionX + positionX) / mStepLength, 2)
+    + pow((mSheetPositionY + positionY) / mStepLength, 2) );
 }
 
 long Drawall::positionToRightLength(float positionX, float positionY)
 {
-    return sqrt ( pow((mDistanceBetweenMotors - mSheetPositionX - positionX) * mRatio, 2)
-    + pow((mSheetPositionY + positionY) * mRatio, 2) );
+    return sqrt ( pow((mDistanceBetweenMotors - mSheetPositionX - positionX) / mStepLength, 2)
+    + pow((mSheetPositionY + positionY) / mStepLength, 2) );
 }
 
 void Drawall::power(bool alimenter)
@@ -1000,8 +1015,8 @@ void Drawall::error(char* errNumber)
 }
 
 void Drawall::setScale(int width, int height)
-{/*
-    Serial.print("_scale = ");
+{
+    /*Serial.print("_scale = ");
     Serial.println(mScale);
 
     float scaleX = mSheetWidth / width;

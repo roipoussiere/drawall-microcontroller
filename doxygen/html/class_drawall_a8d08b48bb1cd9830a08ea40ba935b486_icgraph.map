@@ -1,4 +1,0 @@
-<map id="Drawall::positionToLeftLength" name="Drawall::positionToLeftLength">
-<area shape="rect" id="node3" href="$class_drawall.html#a6c8942a1d4c1c356a20257ef60b666f7" title="Démarre la librairie." alt="" coords="249,5,353,35"/>
-<area shape="rect" id="node5" href="$class_drawall.html#a4247b7668cdd7ec6cdd98b9e25d369f7" title="Trace une ligne à bas niveau, de la position actuelle à la position absolue [x; y], en écrivant (writing) ou pas." alt="" coords="255,59,348,88"/>
-</map>
