@@ -1,5 +1,0 @@
-<map id="Drawall::setPosition" name="Drawall::setPosition">
-<area shape="rect" id="node3" href="$class_drawall.html#a9c57bca1e6e495cb092c78f735296470" title="Spécifie la position initiale du crayon." alt="" coords="195,5,333,35"/>
-<area shape="rect" id="node5" href="$class_drawall.html#a72c2747235f285fd3beeaa7c2cc95068" title="Récupère la position horizontale de position." alt="" coords="193,59,335,88"/>
-<area shape="rect" id="node7" href="$class_drawall.html#a20c2fd8f2ecbf36d11dfec803f45b0e9" title="Récupère la position verticale de position." alt="" coords="193,112,335,141"/>
-</map>

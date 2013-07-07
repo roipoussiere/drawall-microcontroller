@@ -1,4 +1,0 @@
-<map id="Drawall::quadraticCurve" name="Drawall::quadraticCurve">
-<area shape="rect" id="node3" href="$class_drawall.html#af6b2f076155d06af7e89723c3fde1519" title="Trace une courbe de Bézier quadratique en position absolue." alt="" coords="216,5,379,35"/>
-<area shape="rect" id="node5" href="$class_drawall.html#a40ff3356f8911b4e8ea30e425cd6c1db" title="Trace une ligne droite, de la position actuelle à la position absolue [x; y]." alt="" coords="428,5,521,35"/>
-</map>

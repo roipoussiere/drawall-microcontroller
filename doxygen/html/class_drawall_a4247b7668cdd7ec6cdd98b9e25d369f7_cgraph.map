@@ -1,7 +1,0 @@
-<map id="Drawall::line" name="Drawall::line">
-<area shape="rect" id="node3" href="$class_drawall.html#ab35495b79410f6a37c48bd65fc07f0b8" title="Approche ou éloigne le crayon de la paroi." alt="" coords="196,5,297,35"/>
-<area shape="rect" id="node5" href="$class_drawall.html#a8d08b48bb1cd9830a08ea40ba935b486" title="Calcule la longueur du câble gauche pour la position [x ; y]." alt="" coords="149,59,344,88"/>
-<area shape="rect" id="node7" href="$class_drawall.html#a869f1b3e933a11ed5b3c0b3481c78049" title="Calcule la longueur du câble droit pour la position [x ; y]." alt="" coords="164,111,329,158"/>
-<area shape="rect" id="node9" href="$class_drawall.html#aeed2040ed275b0923354df9922213f5f" title="Rotation du moteur gauche d&#39;un pas." alt="" coords="188,181,305,211"/>
-<area shape="rect" id="node11" href="$class_drawall.html#ae8e2e37e7319a7a0e0ea90602f8d8acd" title="Rotation du moteur droit d&#39;un pas." alt="" coords="184,235,309,264"/>
-</map>
