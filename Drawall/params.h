@@ -100,8 +100,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /***** des moteurs *****/
 
-/// nombre de pas (prendre en compte les micros-pas générés par le driver-moteur)
-#define STEPS 400
+/// nombre de pas (prendre en compte les micros-pas effectués par le driver-moteur)
+#define STEPS 200
 
 /// Diamètre du pignon (en mm)
 #define DIAMETER 12

@@ -41,6 +41,8 @@ void setup() {
 }
 
 void loop() {
+  d.area();
+  d.drawingArea("drawbot.svg");
   d.svg("drawbot.svg"); // Draw the vectorial picture from the "drawbot.svg" file.
   d.end(); // Finish the drawing.
 }
