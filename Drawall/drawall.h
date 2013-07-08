@@ -85,6 +85,9 @@ Une vidéo de démonstration du robot : http://www.youtube.com/watch?v=ewhZ9wcrR
  * \bug Il y a une légère marge en haut du dessin.
  * \bug Pour les surfaces larges, pas de marge en bas du dessin, sans doute lié au bug ci-dessus.
  * \bug Dessin pas centré pour les surfaces larges.
+ * \todo Afficher distance tracé + distance move + distance totale + taux d'optimisation (distance tracé / distance totale).
+ * \todo Afficher durée + heure de fin estimée.
+ * \todo Processing : Mettre au clair variables globales.
  */
 class Drawall {
     public:
@@ -401,6 +404,7 @@ class Drawall {
      * \brief Trace un dessin vectoriel svg correspondant au fichier \a fileName sur la carte SD.
      * \details Le robot doit être muni d'un lecteur de carte SD et le fichier vectoriel doit être copié sur celle-ci.
      * \param fileName Le nom du fichier à dessiner.
+     * \todo Ajouter paramètre Position position (CENTER, ...).
      */
     void svg(const char* fileName);
     
@@ -456,7 +460,7 @@ class Drawall {
      * \details Envoie le code d'erreur \a errNumber à Processing, qui se charge d'afficher sa description. Éloigne le stylo de la paroi et stoppe le programme.
      * \todo Mettre en pause le traçé, quand la pause sera opérationnelle.
      */
-    void error(const char* errNumber);
+    void error(char errNumber);
 
     /***********************
     * Commande du matériel *
@@ -522,12 +526,13 @@ class Drawall {
     /*******************
     * Lecture carte SD *
     *******************/
-    
+
     /**
-     * \brief initialise de la carte SD.
+     * \brief Initialise de la carte SD.
      * \details Peut générer l'erreur 01 : Carte absente ou non reconnue.
+     *
      */
-    void sdInit();
+    void sdInit(const char* filName);
 
     /**
      * \brief Récupere la valeur de l'attribut \a attribute du fichier svg sous forme textuelle.

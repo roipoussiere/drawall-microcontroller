@@ -101,7 +101,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /***** des moteurs *****/
 
 /// nombre de pas (prendre en compte les micros-pas effectués par le driver-moteur)
-#define STEPS 200
+#define STEPS 100
 
 /// Diamètre du pignon (en mm)
 #define DIAMETER 17
@@ -120,7 +120,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DELAY_BEFORE_STARTING 2000
 
 /// Vitesse de la communication série (en bauds)
-#define SERIAL_BAUDS 9600
+#define SERIAL_BAUDS 57600
 
 /// Échelle horizontale appliquée au dessin, permetant de le calibrer.
 #define SCALE_X 1
