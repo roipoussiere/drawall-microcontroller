@@ -51,11 +51,14 @@ void Drawall::begin()
     pinMode(PIN_SCREEN_DC, OUTPUT);
     pinMode(PIN_SCREEN_SDIN, OUTPUT);
     pinMode(PIN_SCREEN_SCLK, OUTPUT);
-    // pin CS au moment de la lecture de la carte
+    pinMode(PIN_SD_CS, OUTPUT);
     
     mServo.attach(PIN_SERVO);
-    sdInit();
     
+    if (!SD.begin(PIN_SD_CS)) {
+        error(1); // Err 01 : Carte absente ou non reconnue.
+    }
+
     // pour que write() fonctionne la 1ere fois
     mWriting = true;
     
@@ -64,7 +67,7 @@ void Drawall::begin()
     mDrawingOffsetY = 0;
     
     if (mDistanceBetweenMotors < mAreaWidth + mAreaPositionX) {
-        error("20");
+        error(30); // Err 30 : La distance entre les 2 moteurs est inférieure à la largeur de la feuille + position.
     }
 
     initStepLength();
@@ -80,51 +83,32 @@ void Drawall::begin()
     mStartFigureY = mPositionY;
     
     setSpeed(DEFAULT_SPEED);
-
-    // *** Affichage des informations concernant le robot ***
     
-    Serial.print("Position : ");
-    Serial.print(mPositionX);
-    Serial.print(" , ");
-    Serial.println(mPositionY);
-    
-    Serial.print("Longueur des câbles : gauche = ");
-    Serial.print(mLeftLength);
-    Serial.print(" , droite = ");
-    Serial.println(mRightLength);
-
-    Serial.print("Taille d'un pas = ");
-    Serial.print(mStepLength * 1000);
-    Serial.print("µm.");
-
     // *** envoi des données d'initialisation à Processing ***
-
-    // caractère pour commencer l'init
-    Serial.print('\t');
+    Serial.write('\n'); // Début d'init
 
     Serial.print(mDistanceBetweenMotors);
-    Serial.print(',');
+    Serial.write(',');
     
     Serial.print(mAreaPositionX);
-    Serial.print(',');
+    Serial.write(',');
     Serial.print(mAreaPositionY);    
-    Serial.print(',');
+    Serial.write(',');
     
     Serial.print(mAreaWidth);
-    Serial.print(',');
+    Serial.write(',');
     Serial.print(mAreaHeight);
-    Serial.print(',');
+    Serial.write(',');
 
     Serial.print(mLeftLength);
-    Serial.print(',');
+    Serial.write(',');
     Serial.print(mRightLength);
-    Serial.print(',');
+    Serial.write(',');
     
     Serial.print(mStepLength * 1000);
     
-    // caractère de fin d'init
-    Serial.print('\n');
-
+    Serial.write('\n'); // Fin d'init
+    
     // Pause jusqu'à l'appui sur le BP.
     // Serial.println("_Appuyez sur le bouton pour commencer");
     // while(digitalRead(PIN_BP) == LOW) {}
@@ -242,12 +226,12 @@ void Drawall::power(bool alimenter)
 {
     if (alimenter) {
         digitalWrite(PIN_OFF_MOTORS, LOW);
-        Serial.print('a'); // Processing: a = alimenter
+        Serial.write('a'); // Processing: a = alimenter
     }
     else {
         digitalWrite(PIN_OFF_MOTORS, HIGH);
         write(false);
-        Serial.print('b'); // Processing: b = désalimenter
+        Serial.write('b'); // Processing: b = désalimenter
     }
 }
 
@@ -259,7 +243,7 @@ void Drawall::write(bool write)
         mServo.write(MIN_SERVO);
         delay(DELAY_AFTER_SERVO);
         
-        Serial.print('w'); // Processing: w = ecrire
+        Serial.write('w'); // Processing: w = ecrire
         mWriting = true;
     }
     
@@ -269,7 +253,7 @@ void Drawall::write(bool write)
         mServo.write(MAX_SERVO);
         delay(DELAY_AFTER_SERVO);
 
-        Serial.print('x'); // Processing: x = ne pas ecrire
+        Serial.write('x'); // Processing: x = ne pas ecrire
         mWriting = false;
     }
 }
@@ -280,16 +264,20 @@ bool Drawall::positionInsideArea(float x, float y)
     
     if (x < 0) {
         x = 0;
-        Serial.print("W50");
+        Serial.write('W');
+        Serial.write(50);
     } else if (x > mAreaWidth) {
         x = mAreaWidth;
-        Serial.print("W51");
+        Serial.write('W');
+        Serial.write(51);
     } else if (y < 0) {
         y = 0;
-        Serial.print("W52");
+        Serial.write('W');
+        Serial.write(52);
     } else if (y > mAreaHeight) {
         y = mAreaHeight;
-        Serial.print("W53");
+        Serial.write('W');
+        Serial.write(53);
     } else {
         inside = true;
     }
@@ -402,10 +390,10 @@ void Drawall::line(float bX, float bY, bool writing)
             // incremente ou decremente (en fonction de la direction)
             if (sensGHaut) {
                 mLeftLength++;
-                Serial.print('L');
+                Serial.write('L');
             } else {
                 mLeftLength--;
-                Serial.print('l');
+                Serial.write('l');
             }
             
             // decremente le nb de pas restants
@@ -422,10 +410,10 @@ void Drawall::line(float bX, float bY, bool writing)
             // incremente ou decremente (en fonction de la direction)
             if (sensDHaut) {
                 mRightLength++;
-                Serial.print('R');
+                Serial.write('R');
             } else {
                 mRightLength--;
-                Serial.print('r');
+                Serial.write('r');
             }
             
             // decremente le nb de pas restants
@@ -442,17 +430,12 @@ void Drawall::line(float bX, float bY, bool writing)
 
 void Drawall::leftStep()
 {
-    digitalWrite(PIN_LEFT_MOTOR_STEP, true);
-    delayMicroseconds(50);
-    digitalWrite(PIN_LEFT_MOTOR_STEP, false);
-    
+    digitalWrite(PIN_LEFT_MOTOR_STEP, mLeftLength%2);
 }
 
 void Drawall::rightStep()
 {
-    digitalWrite(PIN_RIGHT_MOTOR_STEP, true);
-    delayMicroseconds(50);
-    digitalWrite(PIN_RIGHT_MOTOR_STEP, false);
+    digitalWrite(PIN_LEFT_MOTOR_STEP, mLeftLength%2);
 }
 
 void Drawall::line(float x, float y)
@@ -685,16 +668,6 @@ void Drawall::ellipse(float rx, float ry)
 void Drawall::circle(float r)
 {
     ellipse(r, r);
-}
-
-void Drawall::sdInit()
-{
-    // pin CS en sortie pour etre sur qu'il ne sera pas utilisé
-    pinMode(PIN_SD_CS, OUTPUT);
-
-    if (!SD.begin(PIN_SD_CS)) {
-        error("01"); // Err 01 : Carte absente ou non reconnue.
-    }
 }
 
 void Drawall::getAttribute(const char * attribute, char * value)
@@ -1042,10 +1015,12 @@ void Drawall::draw()
             case '\n':
             break;
             
-            // si la lettre n'est pas reconnue            
+            // Warning si la lettre n'est pas reconnue
             default:
-                Serial.print("_Warning : fonction SVG non-reconnue : '");
-                Serial.print(car);
+                Serial.write('W');
+                Serial.write(60);
+                Serial.print("_'");
+                Serial.write(car);
                 Serial.println("'.");
             break;
         }
@@ -1056,17 +1031,16 @@ void Drawall::draw()
     // sans trouver le (") de fin de la balise (d) : fail
 
     // Err. 11 : Le fichier svg est incomplet.
-    error("11");
-    return;
+    error(11);
 }
 
-void Drawall::error(const char* errNumber)
+void Drawall::error(char errNumber)
 {
-    Serial.print('E');
-    Serial.print(errNumber);
+    Serial.write('E');
+    Serial.write(errNumber);
     delay(1000);
     write(false);
-    while(true) {}
+    while(true);
 }
 
 void Drawall::setDrawingScale(float width, float height)
@@ -1082,23 +1056,15 @@ void Drawall::setDrawingScale(float width, float height)
         mDrawingScale = scaleX;
         mDrawingOffsetY = mAreaHeight / 2 - height*scaleX / 2;
     }
-    
-    Serial.print("_drawing scale = ");
-    Serial.println(mDrawingScale);
-    Serial.print("_drawing offset X = ");
-    Serial.println(mDrawingOffsetX);
-    Serial.print("_drawing offset Y = ");
-    Serial.println(mDrawingOffsetY);
 }
 
-void Drawall::drawingArea(const char* fileName)
+void Drawall::sdInit(const char* fileName)
 {
     mFile = SD.open(fileName);
 
     if (!mFile) {
         // Err. 02 : Erreur d'ouverture de fichier.
-        error("02");
-        return;
+        error(2);
     }
 
     // se positionne en début de fichier
@@ -1108,13 +1074,18 @@ void Drawall::drawingArea(const char* fileName)
     // Si on ne la trouve pas, on renvoie une erreur
     if (! sdFind("<svg") ) {
         // Err. 12 : Le fichier n'est pas un fichier svg.
-        error("12");
-        return;
+        error(12);
     }
-    
-    setDrawingScale(getNumericAttribute("width"), getNumericAttribute("height"));
+}
+
+void Drawall::drawingArea(const char* fileName)
+{
+    sdInit(fileName);
+    float width = getNumericAttribute("width");
+    float height = getNumericAttribute("height");
+    setDrawingScale(width, height);
     move(0,0);
-    rect(getNumericAttribute("width"), getNumericAttribute("height"));
+    rect(width, height);
     
     mFile.close();
 }
@@ -1124,24 +1095,8 @@ void Drawall::svg(const char* fileName)
     mDrawingScale = 1;
     mDrawingOffsetX = 0;
     mDrawingOffsetY = 0;
-    mFile = SD.open(fileName);
     
-    if (!mFile) {
-        // Err. 02 : Erreur d'ouverture de fichier.
-        error("02");
-        return;
-    }
-    
-    // se positionne en début de fichier
-    mFile.seek(0);
-    
-    // Se positionne jusqu'à la balise SVG
-    // Si on ne la trouve pas, on renvoie une erreur
-    if (! sdFind("<svg") ) {
-        // Err. 12 : Le fichier n'est pas un fichier svg.
-        error("12");
-        return;
-    }
+    sdInit(fileName);
     
     setDrawingScale(int(getNumericAttribute("width")), int(getNumericAttribute("height")));
     
@@ -1149,8 +1104,7 @@ void Drawall::svg(const char* fileName)
     // Si on ne la trouve pas, on renvoie une erreur
     if (! sdFind("<path") ) {
         // Err. 13 : Le fichier svg n'inclut aucune donnée de dessin.
-        error("13");
-        return;
+        error(13);
     }
     
     // tant que l'on trouve le début des données d'un traçé, on dessine
@@ -1160,7 +1114,7 @@ void Drawall::svg(const char* fileName)
     
     // Fin du dessin svg
     mFile.close();    
-    Serial.print("n");
+    Serial.write('n');
 }
 
 void Drawall::getParameters(float * tNb, int nbParams)
