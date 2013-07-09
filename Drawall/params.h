@@ -101,7 +101,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /***** des moteurs *****/
 
 /// nombre de pas (prendre en compte les micros-pas effectués par le driver-moteur)
-#define STEPS 100
+#define STEPS 800
 
 /// Diamètre du pignon (en mm)
 #define DIAMETER 17
@@ -110,7 +110,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define LEFT_DIRECTION true
 
 /// Direction du moteur droit
-#define RIGHT_DIRECTION true
+#define RIGHT_DIRECTION false
 
 /*******************
 * Autres variables *
