@@ -435,7 +435,7 @@ void Drawall::leftStep()
 
 void Drawall::rightStep()
 {
-    digitalWrite(PIN_LEFT_MOTOR_STEP, mLeftLength%2);
+    digitalWrite(PIN_RIGHT_MOTOR_STEP, mRightLength%2);
 }
 
 void Drawall::line(float x, float y)
