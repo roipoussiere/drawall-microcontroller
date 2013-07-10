@@ -92,7 +92,7 @@ void Drawall::begin()
     
     Serial.print(mAreaPositionX);
     Serial.write(',');
-    Serial.print(mAreaPositionY);    
+    Serial.print(mAreaPositionY);
     Serial.write(',');
     
     Serial.print(mAreaWidth);
@@ -190,19 +190,10 @@ float Drawall::positionToY(Position position)
     return y;
 }
 
-long Drawall::getLeftLength()
-{
-    return mLeftLength;
-}
-
-long Drawall::getRightLength()
-{
-    return mRightLength;
-}
-
 void Drawall::initStepLength()
 {
-    mStepLength = (PI * DIAMETER) / float(STEPS);
+    // STEPS*2 car c'est seulement le front montant qui contôle le moteur
+    mStepLength = (PI * DIAMETER) / float(STEPS*2);
 }
 
 void Drawall::setSpeed(unsigned int speed)
@@ -212,14 +203,14 @@ void Drawall::setSpeed(unsigned int speed)
 
 long Drawall::positionToLeftLength(float positionX, float positionY)
 {
-    return sqrt ( pow((mAreaPositionX + positionX) / mStepLength, 2)
-    + pow((mAreaPositionY + positionY) / mStepLength, 2) );
+    return sqrt ( pow((float(mAreaPositionX) + positionX) / mStepLength, 2)
+    + pow((float(mAreaPositionY) + positionY) / mStepLength, 2) );
 }
 
 long Drawall::positionToRightLength(float positionX, float positionY)
 {
-    return sqrt ( pow((mDistanceBetweenMotors - mAreaPositionX - positionX) / mStepLength, 2)
-    + pow((mAreaPositionY + positionY) / mStepLength, 2) );
+    return sqrt ( pow((float(mDistanceBetweenMotors) - float(mAreaPositionX) - positionX) / mStepLength, 2)
+    + pow((float(mAreaPositionY) + positionY) / mStepLength, 2) );
 }
 
 void Drawall::power(bool alimenter)
@@ -240,6 +231,10 @@ void Drawall::write(bool write)
     // Si on souhaite écrire et que le stylo n'ecrit pas
     if (write && !mWriting) {
         delay(DELAY_BEFORE_SERVO);
+        for(int i=MAX_SERVO; i<MIN_SERVO; i--) {
+            mServo.write(i);
+            delay(10);
+        }
         mServo.write(MIN_SERVO);
         delay(DELAY_AFTER_SERVO);
         
@@ -325,8 +320,8 @@ void Drawall::line(float bX, float bY, bool writing)
     float sY = SCALE_Y * mDrawingScale;
 
     // offset
-    float oX = OFFSET_X + mDrawingOffsetX;
-    float oY = OFFSET_Y + mDrawingOffsetY;
+    float oX = float(OFFSET_X) + mDrawingOffsetX;
+    float oY = float(OFFSET_Y) + mDrawingOffsetY;
     
     unsigned long bG = positionToLeftLength(bX*sX + oX, bY*sY + oY);
     unsigned long bD = positionToRightLength(bX*sX + oX, bY*sY + oY);
@@ -1147,7 +1142,7 @@ void Drawall::getParameters(float * tNb, int nbParams)
 
 void Drawall::end()
 {
-    move(LOWER_CENTER);
+    move(END_POSITION);
     power(false);
     while(true) {};
 }
