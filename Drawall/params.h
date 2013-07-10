@@ -93,10 +93,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MAX_SERVO 90
 
 /// Pause avant chaque déplacement (en ms)
-#define DELAY_BEFORE_SERVO 200
+#define DELAY_BEFORE_SERVO 100
 
 /// Pause après chaque déplacement (en ms)
-#define DELAY_AFTER_SERVO 200
+#define DELAY_AFTER_SERVO 1000
 
 /***** des moteurs *****/
 
@@ -104,7 +104,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define STEPS 800
 
 /// Diamètre du pignon (en mm)
-#define DIAMETER 17
+#define DIAMETER 17.51
 
 /// Direction du moteur gauche
 #define LEFT_DIRECTION true
@@ -117,7 +117,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *******************/
 
 /// Pause avant de commencer à desiner (en ms)
-#define DELAY_BEFORE_STARTING 2000
+#define DELAY_BEFORE_STARTING 5000
 
 /// Vitesse de la communication série (en bauds)
 #define SERIAL_BAUDS 57600
@@ -126,16 +126,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SCALE_X 1
 
 /// Échelle verticale appliquée au dessin, permetant de le calibrer.
-#define SCALE_Y 1
+#define SCALE_Y 1.0256
 
 /// Offset horizontal appliqué au dessin, permetant de le décaler.
-#define OFFSET_X 0
+#define OFFSET_X -65
 
 /// Offset vertical appliqué au dessin, permetant de le décaler.
-#define OFFSET_Y 0
+#define OFFSET_Y -38
 
 /// Vitesse par défaut du crayon, avant l'appel éventuel de setSpeed() (en m/s).
 #define DEFAULT_SPEED 10
 
 /// Position par défaut du point de départ du crayon, avant l'appel éventuel de setPosition().
 #define DEFAULT_POSITION CENTER
+
+/// Position du point d'arrivée du crayon
+#define END_POSITION CENTER

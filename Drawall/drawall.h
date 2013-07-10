@@ -88,6 +88,8 @@ Une vidéo de démonstration du robot : http://www.youtube.com/watch?v=ewhZ9wcrR
  * \todo Afficher distance tracé + distance move + distance totale + taux d'optimisation (distance tracé / distance totale).
  * \todo Afficher durée + heure de fin estimée.
  * \todo Processing : Mettre au clair variables globales.
+ * \todo Processing : Afficher erreur de communication série quand c'est le cas.
+ * \todo Tester tous les fichiers avant de commencer à tracer.
  */
 class Drawall {
     public:
@@ -442,19 +444,7 @@ class Drawall {
      * \todo Changer le nom et retourner l'échelle plutôt que de la modifier directement.
      */
     void setDrawingScale(float width, float height);
-    
-    /**
-     * \brief Renvoie la longueur actuelle du câble gauche.
-     * \return La longueur actuelle du câble gauche, en nombre de pas.
-     */
-    long getLeftLength();
 
-    /**
-     * \brief Renvoie la longueur actuelle du câble droit.
-     * \return La longueur actuelle du câble droit, en nombre de pas.
-     */
-    long getRightLength();
-    
     /**
      * \brief À appeler lorsque une erreur se produit.
      * \details Envoie le code d'erreur \a errNumber à Processing, qui se charge d'afficher sa description. Éloigne le stylo de la paroi et stoppe le programme.
