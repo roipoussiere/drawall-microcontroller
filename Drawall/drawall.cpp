@@ -150,12 +150,12 @@ float Drawall::positionToX(Position position)
 
         case UPPER_CENTER:
         case CENTER:
-        case LOWER_CENTER: x = mAreaWidth / 2;
+        case LOWER_CENTER: x = float(mAreaWidth) / 2;
         break;
         
         case UPPER_RIGHT:
         case RIGHT_CENTER:
-        case LOWER_RIGHT: x = mAreaWidth;
+        case LOWER_RIGHT: x = float(mAreaWidth);
         break;
         
         default: break;
@@ -176,12 +176,12 @@ float Drawall::positionToY(Position position)
 
         case LEFT_CENTER:
         case CENTER:        
-        case RIGHT_CENTER: y = mAreaHeight/2;
+        case RIGHT_CENTER: y = float(mAreaHeight)/2;
         break;
 
         case LOWER_LEFT: 
         case LOWER_CENTER:
-        case LOWER_RIGHT: y = mAreaHeight;
+        case LOWER_RIGHT: y = float(mAreaHeight);
         break;
                 
         default: break;
@@ -193,7 +193,7 @@ float Drawall::positionToY(Position position)
 void Drawall::initStepLength()
 {
     // STEPS*2 car c'est seulement le front montant qui contôle le moteur
-    mStepLength = (PI * DIAMETER) / float(STEPS*2);
+    mStepLength = (PI * float(DIAMETER)) / float(STEPS*2);
 }
 
 void Drawall::setSpeed(unsigned int speed)
@@ -231,11 +231,7 @@ void Drawall::write(bool write)
     // Si on souhaite écrire et que le stylo n'ecrit pas
     if (write && !mWriting) {
         delay(DELAY_BEFORE_SERVO);
-        for(int i=MAX_SERVO; i<MIN_SERVO; i--) {
-            mServo.write(i);
-            delay(10);
-        }
-        mServo.write(MIN_SERVO);
+        mServo.write(SERVO_ON);
         delay(DELAY_AFTER_SERVO);
         
         Serial.write('w'); // Processing: w = ecrire
@@ -245,7 +241,7 @@ void Drawall::write(bool write)
     // si on ne veut pas ecrire et que le stylo ecrit
     else if (!write && mWriting) {
         delay(DELAY_BEFORE_SERVO);
-        mServo.write(MAX_SERVO);
+        mServo.write(SERVO_OFF);
         delay(DELAY_AFTER_SERVO);
 
         Serial.write('x'); // Processing: x = ne pas ecrire
@@ -316,12 +312,12 @@ void Drawall::line(float bX, float bY, bool writing)
     // Calcul de la longueur fils à la destination (en pas)
     
     // échelle
-    float sX = SCALE_X * mDrawingScale;
-    float sY = SCALE_Y * mDrawingScale;
+    float sX = float(SCALE_X) * mDrawingScale;
+    float sY = float(SCALE_Y) * mDrawingScale;
 
     // offset
-    float oX = float(OFFSET_X) + mDrawingOffsetX;
-    float oY = float(OFFSET_Y) + mDrawingOffsetY;
+    int oX = int(OFFSET_X) + mDrawingOffsetX;
+    int oY = int(OFFSET_Y) + mDrawingOffsetY;
     
     unsigned long bG = positionToLeftLength(bX*sX + oX, bY*sY + oY);
     unsigned long bD = positionToRightLength(bX*sX + oX, bY*sY + oY);
@@ -433,7 +429,7 @@ void Drawall::rightStep()
     digitalWrite(PIN_RIGHT_MOTOR_STEP, mRightLength%2);
 }
 
-void Drawall::line(float x, float y)
+void Drawall::lineAbs(float x, float y)
 {
     mQuadraticCurveX = 0;
     mQuadraticCurveY = 0;
@@ -467,39 +463,36 @@ void Drawall::line(float x, float y)
     line(x, y, true);
 }
 
-void Drawall::_line(float x, float y)
+void Drawall::lineRel(float x, float y)
 {
-    line(mPositionX + x , mPositionY + y);
+    lineAbs(mPositionX + x , mPositionY + y);
 }
 
-void Drawall::rect(float x, float y)
+void Drawall::rectangle(float x, float y)
 {
-    float initX = mPositionX;
-    float initY = mPositionY;
-    
-    line(x, initY);
-    line(x, y);
-    line(initX, y);
-    line(initX, initY);
+    lineRel(x, 0);
+    lineAbs(0, y);
+    lineAbs(-x, 0);
+    lineAbs(0, -y);
 }
 
-void Drawall::_rect(float x, float y)
+void Drawall::square(float x)
 {
-    rect(mPositionX + x, mPositionY + y);
+    rectangle(x, x);
 }
 
 void Drawall::area()
 {
-    move(0, 0);
-    rect(mAreaWidth, mAreaHeight);
+    moveAbs(0, 0);
+    rectangle(mAreaWidth, mAreaHeight);
 }
 
 void Drawall::endFigure()
 {
-    line(mStartFigureX, mStartFigureY);
+    lineAbs(mStartFigureX, mStartFigureY);
 }
 
-void Drawall::move(float x, float y)
+void Drawall::moveAbs(float x, float y)
 {
     line(x, y, false);
     
@@ -509,37 +502,37 @@ void Drawall::move(float x, float y)
 
 void Drawall::move(Position position)
 {
-    move(positionToX(position), positionToY(position));
+    moveAbs(positionToX(position), positionToY(position));
 }
 
-void Drawall::_move(float x, float y)
+void Drawall::moveRel(float x, float y)
 {
-    move(mPositionX + x, mPositionY + y);
+    moveAbs(mPositionX + x, mPositionY + y);
 }
 
-void Drawall::horizontal(float y)
+void Drawall::horizontalAbs(float y)
 {
-    move(0, y);
-    line(mAreaWidth, y);
+    moveAbs(0, y);
+    lineAbs(mAreaWidth, y);
 }
 
-void Drawall::_horizontal(float y)
+void Drawall::horizontalRel(float y)
 {
-    horizontal(mPositionY+y);
+    horizontalAbs(mPositionY+y);
 }
 
-void Drawall::vertical(float x)
+void Drawall::verticalAbs(float x)
 {
-    move(x, 0);
-    line(x, mAreaHeight);
+    moveAbs(x, 0);
+    lineAbs(x, mAreaHeight);
 }
 
-void Drawall::_vertical(float x)
+void Drawall::verticalRel(float x)
 {
-    vertical(mPositionX+x);
+    verticalAbs(mPositionX+x);
 }
 
-void Drawall::cubicCurve(float x1, float y1, float x2, float y2, float x, float y)
+void Drawall::cubicCurveAbs(float x1, float y1, float x2, float y2, float x, float y)
 {
     float x0 = mPositionX;
     float y0 = mPositionY;
@@ -561,7 +554,12 @@ void Drawall::cubicCurve(float x1, float y1, float x2, float y2, float x, float 
     mCubicCurveY = y2;
 }
 
-void Drawall::cubicCurve(float x2, float y2, float x, float y)
+void Drawall::cubicCurveRel(float x1, float y1, float x2, float y2, float x, float y)
+{
+    cubicCurveAbs(mPositionX+x1, mPositionY+y1, mPositionX+x2, mPositionY+y2, mPositionX+x, mPositionY+y);
+}
+
+void Drawall::cubicCurveAbs(float x2, float y2, float x, float y)
 {
     float x1, y1;
     
@@ -573,20 +571,15 @@ void Drawall::cubicCurve(float x2, float y2, float x, float y)
         y1 = 2*mFictivePosY-mCubicCurveY;
     }
     
-    cubicCurve(x1, y1, x2, y2, x, y);
+    cubicCurveAbs(x1, y1, x2, y2, x, y);
 }
 
-void Drawall::_cubicCurve(float x1, float y1, float x2, float y2, float x, float y)
+void Drawall::cubicCurveRel(float x2, float y2, float x, float y)
 {
-    cubicCurve(mPositionX+x1, mPositionY+y1, mPositionX+x2, mPositionY+y2, mPositionX+x, mPositionY+y);
+    cubicCurveAbs(mPositionX+x2, mPositionY+y2, mPositionX+x, mPositionY+y);
 }
 
-void Drawall::_cubicCurve(float x2, float y2, float x, float y)
-{
-    cubicCurve(mPositionX+x2, mPositionY+y2, mPositionX+x, mPositionY+y);
-}
-
-void Drawall::quadraticCurve(float x1, float y1, float x, float y)
+void Drawall::quadraticCurveAbs(float x1, float y1, float x, float y)
 {
     float x0 = mPositionX;
     float y0 = mPositionY;
@@ -605,12 +598,12 @@ void Drawall::quadraticCurve(float x1, float y1, float x, float y)
     mQuadraticCurveY = y1;
 }
 
-void Drawall::_quadraticCurve(float x1, float y1, float x, float y)
+void Drawall::quadraticCurveRel(float x1, float y1, float x, float y)
 {
-    quadraticCurve(mPositionX+x1, mPositionY+y1, mPositionX+x, mPositionY+y);
+    quadraticCurveAbs(mPositionX+x1, mPositionY+y1, mPositionX+x, mPositionY+y);
 }
 
-void Drawall::quadraticCurve(float x, float y)
+void Drawall::quadraticCurveAbs(float x, float y)
 {
     float x1, y1;
     if(mQuadraticCurveX == 0 && mQuadraticCurveY == 0) {
@@ -621,20 +614,20 @@ void Drawall::quadraticCurve(float x, float y)
         y1 = 2*mFictivePosY - mQuadraticCurveY;
     }
 
-    quadraticCurve(x1, y1, x, y);
+    quadraticCurveAbs(x1, y1, x, y);
 }
 
-void Drawall::_quadraticCurve(float x, float y)
+void Drawall::quadraticCurveRel(float x, float y)
 {
-    quadraticCurve(mPositionX+x, mPositionY+y);
+    quadraticCurveAbs(mPositionX+x, mPositionY+y);
 }
 
-void Drawall::arc(float a1, float a2, float a3, float a4, float a5, float a6, float a7)
+void Drawall::arcAbs(float a1, float a2, float a3, float a4, float a5, float a6, float a7)
 {
     // à compléter
 }
 
-void Drawall::_arc(float a1, float a2, float a3, float a4, float a5, float a6, float a7)
+void Drawall::arcRel(float a1, float a2, float a3, float a4, float a5, float a6, float a7)
 {
     // à compléter
 }
@@ -644,20 +637,16 @@ void Drawall::ellipse(float rx, float ry)
     // ratio pour déterminer la distance du point de controle en fonction du rayon
     float k = 0.551915;
 
-    // raccourci pour simplifier les formules
-    float x = mPositionX;
-    float y = mPositionY;
-
     // se déplace à gauche du cercle
-    move(x-rx, y);
+    moveRel(-rx, 0);
 
-    cubicCurve(x-rx,y-ry*k , x-rx*k,y-ry , x,y-ry);
-    cubicCurve(x+rx,y-ry*k , x+rx,y);
-    cubicCurve(x+rx*k,y+ry , x,y+ry);
-    cubicCurve(x-rx,y+ry*k , x-rx,y);
+    cubicCurveRel(-rx, -ry*k , -rx*k, -ry , 0, -ry);
+    cubicCurveRel(rx, -ry*k  , rx, 0);
+    cubicCurveRel(rx*k, ry   , 0, ry);
+    cubicCurveRel(-rx, ry*k  , -rx, 0);
 
     // revient au centre du cercle
-    move(x, y);
+    moveRel(rx, 0);
 }
 
 void Drawall::circle(float r)
@@ -847,7 +836,7 @@ void Drawall::draw()
                     getParameters(tNb, 2);
 
                     // appel de la fonction
-                    move(tNb[0], tNb[1]);
+                    moveAbs(tNb[0], tNb[1]);
                 }
                 // teste le prochain car (le curseur ne bouge pas)
                 while(isNumber(mFile.peek()));
@@ -857,15 +846,12 @@ void Drawall::draw()
             case 'm':
                 do {
                     getParameters(tNb, 2);
-                    _move(tNb[0], tNb[1]);
+                    moveRel(tNb[0], tNb[1]);
                 }
                 while(isNumber(mFile.peek()));
             break;
 
             case 'Z':
-                endFigure();
-            break;
-
             case 'z':
                 endFigure();
             break;
@@ -873,7 +859,7 @@ void Drawall::draw()
             case 'L':
                 do {
                     getParameters(tNb, 2);
-                    line(tNb[0], tNb[1]);
+                    lineAbs(tNb[0], tNb[1]);
                 }
                 while(isNumber(mFile.peek()));
 
@@ -882,7 +868,7 @@ void Drawall::draw()
             case 'l':
                 do {
                     getParameters(tNb, 2);
-                    _line(tNb[0], tNb[1]);
+                    lineRel(tNb[0], tNb[1]);
                 }
                 while(isNumber(mFile.peek()));
             break;
@@ -890,7 +876,7 @@ void Drawall::draw()
             case 'H':
                 do {
                     getParameters(tNb, 1);
-                    horizontal(tNb[0]);
+                    horizontalAbs(tNb[0]);
                 }
                 while(isNumber(mFile.peek()));
             break;
@@ -898,7 +884,7 @@ void Drawall::draw()
             case 'h':
                 do {
                     getParameters(tNb, 1);
-                    _horizontal(tNb[0]);
+                    horizontalRel(tNb[0]);
                 }
                 while(isNumber(mFile.peek()));
             break;
@@ -906,7 +892,7 @@ void Drawall::draw()
             case 'V':
                 do {
                     getParameters(tNb, 1);
-                    vertical(tNb[0]);
+                    verticalAbs(tNb[0]);
                 }
                 while(isNumber(mFile.peek()));
             break;
@@ -914,7 +900,7 @@ void Drawall::draw()
             case 'v':
                 do {
                     getParameters(tNb, 1);
-                    _vertical(tNb[0]);
+                    verticalRel(tNb[0]);
                 }
                 while(isNumber(mFile.peek()));
             break;
@@ -922,7 +908,7 @@ void Drawall::draw()
             case 'C':
                 do {
                     getParameters(tNb, 6);
-                    cubicCurve(tNb[0], tNb[1], tNb[2], tNb[3], tNb[4], tNb[5]);
+                    cubicCurveAbs(tNb[0], tNb[1], tNb[2], tNb[3], tNb[4], tNb[5]);
                 }
                 while(isNumber(mFile.peek()));
             break;
@@ -930,7 +916,7 @@ void Drawall::draw()
             case 'c':
                 do {
                     getParameters(tNb, 6);
-                    _cubicCurve(tNb[0], tNb[1], tNb[2], tNb[3], tNb[4], tNb[5]);
+                    cubicCurveRel(tNb[0], tNb[1], tNb[2], tNb[3], tNb[4], tNb[5]);
                 }
                 while(isNumber(mFile.peek()));
             break;
@@ -938,7 +924,7 @@ void Drawall::draw()
             case 'S':
                 do {
                     getParameters(tNb, 4);
-                    cubicCurve(tNb[0], tNb[1], tNb[2], tNb[3]);
+                    cubicCurveAbs(tNb[0], tNb[1], tNb[2], tNb[3]);
                 }
                 while(isNumber(mFile.peek()));
             break;
@@ -946,7 +932,7 @@ void Drawall::draw()
             case 's':
                 do {
                     getParameters(tNb, 4);
-                    _cubicCurve(tNb[0], tNb[1], tNb[2], tNb[3]);
+                    cubicCurveRel(tNb[0], tNb[1], tNb[2], tNb[3]);
                 }
                 while(isNumber(mFile.peek()));
             break;
@@ -954,7 +940,7 @@ void Drawall::draw()
             case 'Q':
                 do {
                     getParameters(tNb, 4);
-                    quadraticCurve(tNb[0], tNb[1], tNb[2], tNb[3]);
+                    quadraticCurveAbs(tNb[0], tNb[1], tNb[2], tNb[3]);
                 }
                 while(isNumber(mFile.peek()));
             break;
@@ -962,7 +948,7 @@ void Drawall::draw()
             case 'q':
                 do {
                     getParameters(tNb, 4);
-                    _quadraticCurve(tNb[0], tNb[1], tNb[2], tNb[3]);
+                    quadraticCurveRel(tNb[0], tNb[1], tNb[2], tNb[3]);
                 }
                 while(isNumber(mFile.peek()));
             break;
@@ -970,7 +956,7 @@ void Drawall::draw()
             case 'T':
                 do {
                     getParameters(tNb, 2);
-                    quadraticCurve(tNb[0], tNb[1]);
+                    quadraticCurveAbs(tNb[0], tNb[1]);
                 }
                 while ( isNumber(mFile.peek()) );
             break;
@@ -978,7 +964,7 @@ void Drawall::draw()
             case 't':
                 do {
                     getParameters(tNb, 2);
-                    _quadraticCurve(tNb[0], tNb[1]);
+                    quadraticCurveRel(tNb[0], tNb[1]);
                 }
                 while(isNumber(mFile.peek()));
             break;
@@ -986,7 +972,7 @@ void Drawall::draw()
             case 'A':
                 do {
                     getParameters(tNb, 7);
-                    arc(tNb[0], tNb[1], tNb[2], tNb[3], tNb[4], tNb[5], tNb[6]);
+                    arcAbs(tNb[0], tNb[1], tNb[2], tNb[3], tNb[4], tNb[5], tNb[6]);
                 }
                 while(isNumber(mFile.peek()));
             break;
@@ -994,7 +980,7 @@ void Drawall::draw()
             case 'a':
                 do {
                     getParameters(tNb, 7);
-                    _arc(tNb[0], tNb[1], tNb[2], tNb[3], tNb[4], tNb[5], tNb[6]);
+                    arcRel(tNb[0], tNb[1], tNb[2], tNb[3], tNb[4], tNb[5], tNb[6]);
                 }
                 while(isNumber(mFile.peek()));
             break;
@@ -1038,18 +1024,18 @@ void Drawall::error(char errNumber)
     while(true);
 }
 
-void Drawall::setDrawingScale(float width, float height)
+void Drawall::setDrawingScale(int width, int height)
 {
-    float scaleX = mAreaWidth / width;
-    float scaleY = mAreaHeight / height;
+    float scaleX = float(mAreaWidth) / float(width);
+    float scaleY = float(mAreaHeight) / float(height);
 
     if (scaleX > scaleY)
     {
         mDrawingScale = scaleY;
-        mDrawingOffsetX = mAreaWidth / 2 - width*scaleY / 2;
+        mDrawingOffsetX = float(mAreaWidth) / 2 - float(width)*scaleY / 2;
     } else {
         mDrawingScale = scaleX;
-        mDrawingOffsetY = mAreaHeight / 2 - height*scaleX / 2;
+        mDrawingOffsetY = float(mAreaHeight) / 2 - float(height)*scaleX / 2;
     }
 }
 
@@ -1079,8 +1065,8 @@ void Drawall::drawingArea(const char* fileName)
     float width = getNumericAttribute("width");
     float height = getNumericAttribute("height");
     setDrawingScale(width, height);
-    move(0,0);
-    rect(width, height);
+    moveAbs(0,0);
+    rectangle(width, height);
     
     mFile.close();
 }
@@ -1093,7 +1079,7 @@ void Drawall::svg(const char* fileName)
     
     sdInit(fileName);
     
-    setDrawingScale(int(getNumericAttribute("width")), int(getNumericAttribute("height")));
+    setDrawingScale(getNumericAttribute("width"), getNumericAttribute("height"));
     
     // Se positionne jusqu'à la balise PATH
     // Si on ne la trouve pas, on renvoie une erreur

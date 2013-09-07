@@ -34,15 +34,13 @@ Before uploading this sketch, copy the drawbot.svg file into your SD card.
 // Initialise the library with :
 // Distance between the motors, sheet size (width and height) and sheet position (X and Y)
 Drawall d(4800, 3930, 2850, 430, 60);
-// Drawall d(1200, 1100, 1100, 50, 50);
 
 void setup() {
   d.begin(); // Start the library.
-  d.setSpeed(20); // Set speed.
+  d.setSpeed(10); // Set speed.
 }
 
 void loop() {
-  d.svg("boitier.svg");
-  d.svg("boitier.svg"); // Draw the vectorial picture from the "drawbot.svg" file.  
-  d.end(); // Finish the drawing.
+  d.svg("drawall.svg");
+ d.end(); // Finish the drawing.
 }
