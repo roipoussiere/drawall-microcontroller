@@ -87,16 +87,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /***** du servo-moteur *****/
 
 /// position lorsque le robot n'écrit pas (en degrés)
-#define MIN_SERVO 30
+#define SERVO_OFF 36
 
 /// position lorsque le robot écrit (en degrés)
-#define MAX_SERVO 90
+#define SERVO_ON 50
 
 /// Pause avant chaque déplacement (en ms)
 #define DELAY_BEFORE_SERVO 100
 
 /// Pause après chaque déplacement (en ms)
-#define DELAY_AFTER_SERVO 1000
+#define DELAY_AFTER_SERVO 500
 
 /***** des moteurs *****/
 
@@ -126,13 +126,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SCALE_X 1
 
 /// Échelle verticale appliquée au dessin, permetant de le calibrer.
-#define SCALE_Y 1.0256
+#define SCALE_Y 1
 
 /// Offset horizontal appliqué au dessin, permetant de le décaler.
-#define OFFSET_X -65
+#define OFFSET_X -64
 
 /// Offset vertical appliqué au dessin, permetant de le décaler.
-#define OFFSET_Y -38
+#define OFFSET_Y 3
 
 /// Vitesse par défaut du crayon, avant l'appel éventuel de setSpeed() (en m/s).
 #define DEFAULT_SPEED 10
