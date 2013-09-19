@@ -41,7 +41,6 @@ void Drawall::begin(
 	EIMSK = B01;				// Interruption INT0 déclenchée à l'appui sur le BP pause : INT0 (pin2) = B01 ou INT1 (pin3) = B10 sur Atmega328.
 	EICRA = B0011;				// Interruption déclenchée sur le front montant pour INT0 : état bas = B00, changement d'état = B01, front descendant = B10, front montant = B11
 
-
 	// pins d'entrée
 	pinMode(PIN_LEFT_CAPTOR, INPUT);
 	pinMode(PIN_RIGHT_CAPTOR, INPUT);
@@ -68,7 +67,7 @@ void Drawall::begin(
 	mServo.attach(PIN_SERVO);
 
 	if (!SD.begin(PIN_SD_CS)) {
-		error(1);				// Err 01 : Carte absente ou non reconnue.
+		error(CARD_NOT_FOUND);
 	}
 	// pour que write() fonctionne la 1ere fois
 	mWriting = true;
@@ -82,7 +81,7 @@ void Drawall::begin(
 	mDrawingOffsetY = 0;
 
 	if (mpSpan < mpAreaWidth + mpAreaPositionX) {
-		error(30);				// Err 30 : La distance entre les 2 moteurs est inférieure à la largeur de la feuille + position.
+		error(TOO_LONG_SPAN);
 	}
 
 	initStepLength();
@@ -546,17 +545,25 @@ void Drawall::rectangle(
 	lineAbs(0, -y);
 }
 
-void Drawall::square(
-			float x)
-{
-	rectangle(x, x);
-}
-
 void Drawall::area(
 			)
 {
 	moveAbs(0, 0);
 	rectangle(mpAreaWidth, mpAreaHeight);
+}
+
+void Drawall::drawingArea(
+			const char *fileName)
+{
+	sdInit(fileName);
+	float width = getNumericAttribute("width");
+	float height = getNumericAttribute("height");
+
+	setDrawingScale(width, height);
+	moveAbs(0, 0);
+	rectangle(width, height);
+
+	mFile.close();
 }
 
 void Drawall::endFigure(
@@ -586,32 +593,6 @@ void Drawall::moveRel(
 			float y)
 {
 	moveAbs(mPositionX + x, mPositionY + y);
-}
-
-void Drawall::horizontalAbs(
-			float y)
-{
-	moveAbs(0, y);
-	lineAbs(mpAreaWidth, y);
-}
-
-void Drawall::horizontalRel(
-			float y)
-{
-	horizontalAbs(mPositionY + y);
-}
-
-void Drawall::verticalAbs(
-			float x)
-{
-	moveAbs(x, 0);
-	lineAbs(x, mpAreaHeight);
-}
-
-void Drawall::verticalRel(
-			float x)
-{
-	verticalAbs(mPositionX + x);
 }
 
 void Drawall::cubicCurveAbs(
@@ -740,55 +721,6 @@ void Drawall::quadraticCurveRel(
 			float y)
 {
 	quadraticCurveAbs(mPositionX + x, mPositionY + y);
-}
-
-void Drawall::arcAbs(
-			float a1,
-			float a2,
-			float a3,
-			float a4,
-			float a5,
-			float a6,
-			float a7)
-{
-	// à compléter
-}
-
-void Drawall::arcRel(
-			float a1,
-			float a2,
-			float a3,
-			float a4,
-			float a5,
-			float a6,
-			float a7)
-{
-	// à compléter
-}
-
-void Drawall::ellipse(
-			float rx,
-			float ry)
-{
-	// ratio pour déterminer la distance du point de controle en fonction du rayon
-	float k = 0.551915;
-
-	// se déplace à gauche du cercle
-	moveRel(-rx, 0);
-
-	cubicCurveRel(-rx, -ry * k, -rx * k, -ry, 0, -ry);
-	cubicCurveRel(rx, -ry * k, rx, 0);
-	cubicCurveRel(rx * k, ry, 0, ry);
-	cubicCurveRel(-rx, ry * k, -rx, 0);
-
-	// revient au centre du cercle
-	moveRel(rx, 0);
-}
-
-void Drawall::circle(
-			float r)
-{
-	ellipse(r, r);
 }
 
 void Drawall::getAttribute(
@@ -1017,38 +949,6 @@ void Drawall::draw(
 			while (isNumber(mFile.peek()));
 			break;
 
-		case 'H':
-			do {
-				getParameters(tNb, 1);
-				horizontalAbs(tNb[0]);
-			}
-			while (isNumber(mFile.peek()));
-			break;
-
-		case 'h':
-			do {
-				getParameters(tNb, 1);
-				horizontalRel(tNb[0]);
-			}
-			while (isNumber(mFile.peek()));
-			break;
-
-		case 'V':
-			do {
-				getParameters(tNb, 1);
-				verticalAbs(tNb[0]);
-			}
-			while (isNumber(mFile.peek()));
-			break;
-
-		case 'v':
-			do {
-				getParameters(tNb, 1);
-				verticalRel(tNb[0]);
-			}
-			while (isNumber(mFile.peek()));
-			break;
-
 		case 'C':
 			do {
 				getParameters(tNb, 6);
@@ -1115,24 +1015,6 @@ void Drawall::draw(
 			while (isNumber(mFile.peek()));
 			break;
 
-		case 'A':
-			do {
-				getParameters(tNb, 7);
-				arcAbs(tNb[0], tNb[1], tNb[2], tNb[3], tNb[4], tNb[5],
-							tNb[6]);
-			}
-			while (isNumber(mFile.peek()));
-			break;
-
-		case 'a':
-			do {
-				getParameters(tNb, 7);
-				arcRel(tNb[0], tNb[1], tNb[2], tNb[3], tNb[4], tNb[5],
-							tNb[6]);
-			}
-			while (isNumber(mFile.peek()));
-			break;
-
 			// si on détecte la fin du contenu de "d"
 			// on a parcouru toute les données, ça a reeussi !!
 		case '"':
@@ -1159,18 +1041,22 @@ void Drawall::draw(
 	// si on est là c'est qu'on a parcouru tout le fichier
 	// sans trouver le (") de fin de la balise (d) : fail
 
-	// Err. 11 : Le fichier svg est incomplet.
-	error(11);
+	error(INCOMPLETE_SVG);
 }
 
 void Drawall::error(
-			char errNumber)
+			Error errNumber)
 {
-	Serial.write('E');
-	Serial.write(errNumber);
-	delay(1000);
-	write(false);
-	while (true) ;
+	if (errNumber < 100) {		// Gestion Erreurs
+		Serial.write('E');
+		Serial.write((byte) errNumber);
+		delay(1000);
+		write(false);
+		while (true) ;
+	} else {					// Gestion Warnings
+		Serial.write('W');
+		Serial.write((byte) errNumber);
+	}
 }
 
 void Drawall::setDrawingScale(
@@ -1204,7 +1090,7 @@ void Drawall::sdInit(
 
 	if (!mFile) {
 		// Err. 02 : Erreur d'ouverture de fichier.
-		error(2);
+		error(FILE_NOT_FOUND);
 	}
 	// se positionne en début de fichier
 	mFile.seek(0);
@@ -1213,22 +1099,8 @@ void Drawall::sdInit(
 	// Si on ne la trouve pas, on renvoie une erreur
 	if (!sdFind("<svg")) {
 		// Err. 12 : Le fichier n'est pas un fichier svg.
-		error(12);
+		error(NOT_SVG_FILE);
 	}
-}
-
-void Drawall::drawingArea(
-			const char *fileName)
-{
-	sdInit(fileName);
-	float width = getNumericAttribute("width");
-	float height = getNumericAttribute("height");
-
-	setDrawingScale(width, height);
-	moveAbs(0, 0);
-	rectangle(width, height);
-
-	mFile.close();
 }
 
 void Drawall::svg(
@@ -1246,8 +1118,7 @@ void Drawall::svg(
 	// Se positionne jusqu'à la balise PATH
 	// Si on ne la trouve pas, on renvoie une erreur
 	if (!sdFind("<path")) {
-		// Err. 13 : Le fichier svg n'inclut aucune donnée de dessin.
-		error(13);
+		error(NOT_SVG_PATH);
 	}
 	// tant que l'on trouve le début des données d'un traçé, on dessine
 	while (sdFind("d=\"")) {
@@ -1300,22 +1171,20 @@ void Drawall::end(
 void Drawall::loadParameters(
 			const char *fileName)
 {
-	const byte BUFFER_SIZE = 32; // Taille buffer
+	const byte BUFFER_SIZE = 32;	// Taille buffer
 
-	char buffer[BUFFER_SIZE]; // Stocke une ligne du fichier
-    char* key; // Chaine pour la clé
-    char* value; // Chaine pour la valeur
+	char buffer[BUFFER_SIZE];	// Stocke une ligne du fichier
+	char *key;					// Chaine pour la clé
+	char *value;				// Chaine pour la valeur
 
-	byte i; // Itérateur
-    byte line_lenght; // Longueur de la ligne
-    byte line_counter = 0; // Compteur de lignes
+	byte i;						// Itérateur
+	byte line_lenght;			// Longueur de la ligne
+	byte line_counter = 0;		// Compteur de lignes
 
 	// Initialise la carte SD
 	pinMode(PIN_SD_CS, OUTPUT);
 
-
-    // Ici, problème avec la communication avec Processing !!!
-
+	// Ici, problème avec la communication avec Processing !!!
 
 	// Test existence fichier
 	/*if(!SD.exists(fileName)) {
@@ -1329,11 +1198,8 @@ void Drawall::loadParameters(
 	File configFile = SD.open(fileName, FILE_READ);
 
 	if (!configFile) {
-		Serial.println("Le fichier ne peut pas être ouvert.");
-		while (true) {
-		};
+		error(FILE_NOT_READABLE);
 	}
-
 	// Tant que non fin de fichier
 	while (configFile.available() > 0) {
 		// Récupère une ligne entière dans le buffer
@@ -1362,13 +1228,11 @@ void Drawall::loadParameters(
 		if (buffer[0] == '\0' || buffer[0] == '#') {
 			continue;
 		}
-
 		// Gestion des lignes trop grande
 		if (i == BUFFER_SIZE) {
-			Serial.print("Ligne trop longue à la ligne ");
-			Serial.println(line_counter, DEC);
+			error(W_TOO_LONG_LINE);
+			// Serial.println(line_counter, DEC);
 		}
-
 		// Cherche l'emplacement de la clef en ignorant les espaces et les tabulations en début de ligne
 		i = 0;
 		while (buffer[i] == ' ' || buffer[i] == '\t') {
@@ -1383,12 +1247,12 @@ void Drawall::loadParameters(
 		}
 		key = &buffer[i];
 
-		// Cherche l'emplacement du séparateur = en ignorant les espaces et les tabulations âpres la clef
+		// Cherche l'emplacement du séparateur = en ignorant les espaces et les tabulations apres la clé
 		while (buffer[i] != ' ' && buffer[i] != '\t') {
 			if (++i == line_lenght) {
-				Serial.print("Ligne mal forme a la ligne ");
-				Serial.println(line_counter, DEC);
-				break;			// Ignore les lignes mal formé
+				error(W_WRONG_LINE);
+				// Serial.println(line_counter, DEC);
+				break;			// Ignore les lignes mal formées
 			}
 		}
 
@@ -1401,8 +1265,8 @@ void Drawall::loadParameters(
 		// Cherche l'emplacement de la valeur en ignorant les espaces et les tabulations âpres le séparateur
 		while (buffer[i] == ' ' || buffer[i] == '\t') {
 			if (++i == line_lenght) {
-				Serial.print("Ligne mal forme a la ligne ");
-				Serial.println(line_counter, DEC);
+				error(W_WRONG_LINE);
+				// Serial.println(line_counter, DEC);
 				break;			// Ignore les lignes mal formées
 			}
 		}
@@ -1472,64 +1336,64 @@ void Drawall::loadParameters(
 }
 
 /*void Drawall::printParameters()
-{
-	Serial.print("fileName = ");
-	Serial.println(mpFileName);
-
-	Serial.print("span = ");
-	Serial.println(mpSpan);
-
-	Serial.print("areaWidth = ");
-	Serial.println(mpAreaWidth);
-
-	Serial.print("areaHeight = ");
-	Serial.println(mpAreaHeight);
-
-	Serial.print("areaPositionX = ");
-	Serial.println(mpAreaPositionX);
-
-	Serial.print("areaPositionY = ");
-	Serial.println(mpAreaPositionY);
-
-	Serial.print("servoOff = ");
-	Serial.println(mpServoOff);
-
-	Serial.print("servoOn = ");
-	Serial.println(mpServoOn);
-
-	Serial.print("preServoDelay = ");
-	Serial.println(mpPreServoDelay);
-
-	Serial.print("postServoDelay = ");
-	Serial.println(mpPostServoDelay);
-
-	Serial.print("steps = ");
-	Serial.println(mpSteps);
-
-	Serial.print("mpDiameter = ");
-	Serial.println(mpDiameter);
-
-	Serial.print("leftDirection = ");
-	Serial.println(mpLeftDirection);
-
-	Serial.print("rightDirection = ");
-	Serial.println(mpRightDirection);
-
-	Serial.print("initialDelay = ");
-	Serial.println(mpInitialDelay);
-
-	Serial.print("scaleX = ");
-	Serial.println(mpScaleX);
-
-	Serial.print("scaleY = ");
-	Serial.println(mpScaleY);
-
-	Serial.print("offsetX = ");
-	Serial.println(mpOffsetX);
-
-	Serial.print("offsetY = ");
-	Serial.println(mpOffsetY);
-
-	Serial.print("defaultSpeed = ");
-	Serial.println(mpDefaultSpeed);
-}*/
+ * {
+ * Serial.print("fileName = ");
+ * Serial.println(mpFileName);
+ * 
+ * Serial.print("span = ");
+ * Serial.println(mpSpan);
+ * 
+ * Serial.print("areaWidth = ");
+ * Serial.println(mpAreaWidth);
+ * 
+ * Serial.print("areaHeight = ");
+ * Serial.println(mpAreaHeight);
+ * 
+ * Serial.print("areaPositionX = ");
+ * Serial.println(mpAreaPositionX);
+ * 
+ * Serial.print("areaPositionY = ");
+ * Serial.println(mpAreaPositionY);
+ * 
+ * Serial.print("servoOff = ");
+ * Serial.println(mpServoOff);
+ * 
+ * Serial.print("servoOn = ");
+ * Serial.println(mpServoOn);
+ * 
+ * Serial.print("preServoDelay = ");
+ * Serial.println(mpPreServoDelay);
+ * 
+ * Serial.print("postServoDelay = ");
+ * Serial.println(mpPostServoDelay);
+ * 
+ * Serial.print("steps = ");
+ * Serial.println(mpSteps);
+ * 
+ * Serial.print("mpDiameter = ");
+ * Serial.println(mpDiameter);
+ * 
+ * Serial.print("leftDirection = ");
+ * Serial.println(mpLeftDirection);
+ * 
+ * Serial.print("rightDirection = ");
+ * Serial.println(mpRightDirection);
+ * 
+ * Serial.print("initialDelay = ");
+ * Serial.println(mpInitialDelay);
+ * 
+ * Serial.print("scaleX = ");
+ * Serial.println(mpScaleX);
+ * 
+ * Serial.print("scaleY = ");
+ * Serial.println(mpScaleY);
+ * 
+ * Serial.print("offsetX = ");
+ * Serial.println(mpOffsetX);
+ * 
+ * Serial.print("offsetY = ");
+ * Serial.println(mpOffsetY);
+ * 
+ * Serial.print("defaultSpeed = ");
+ * Serial.println(mpDefaultSpeed);
+ * } */

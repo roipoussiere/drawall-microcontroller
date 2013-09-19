@@ -24,7 +24,7 @@
  * \author  Nathanaël Jourdane
  * \brief   Fichier d'en-tête de la bibliothèque
  * \details L'ensemble du code a été indenté avec le programme indent (sudo apt-get install indent) avec les paramètres suivants :
-indent -kr -bad -bbb -sc -ncdw -ss -bfda -blf -ts4 -ut -sob -nlp -ci12 -fc1 nom_du_programme
+indent -kr -bad -bbb -sc -ncdw -ss -bfda -blf -ts4 -ut -sob -nlp -ci12 -fc1 drawall.cpp drawall.h pins.h
 
 // finit le dernier trajet au cas ou ça ne tombe pas juste
 
@@ -98,21 +98,27 @@ Vidéos de démonstration du robot : http://www.youtube.com/watch?v=ewhZ9wcrR2s 
  * \todo Processing : Afficher erreur de communication série quand c'est le cas.
  * \todo Tester tous les fichiers avant de commencer à tracer.
  * \todo Utiliser un programme d'indentation, comme indent ou bcpp
+ * \todo Avoir la possibilité d'insérer une variable dans les codes d'erreurs
  */
 class Drawall {
 
   private:
 
 	/**
-	* \brief Erreurs et warnings
-	* \details Les différentes erreurs et warnings pouvant survenir pendant l'execution du programme. Les erreurs commencent à 0 tandis que les warnings commencent à 100.
+	* \brief Liste des erreurs et warnings
+	* \details Les différentes erreurs ou warnings pouvant survenir pendant l'execution du programme. Les erreurs commencent à l'indice 0 tandis que les warnings commencent à l'indice 100.
 	*/
 	enum Error {
-		E_CARD_NOT_FOUND = 0,
-		E_FILE_NOT_FOUND,
-		E_FILE_NOT_READABLE,
+		CARD_NOT_FOUND,			// La carte SD n'a pas été trouvée ou est illisible.
+		FILE_NOT_FOUND,			// Le fichier n'existe pas.
+		FILE_NOT_READABLE,		// Erreur d'ouverture du fichier.
+		TOO_LONG_SPAN,			// La distance entre les 2 moteurs est inférieure à la largeur de la feuille et sa position horizontale.
+		INCOMPLETE_SVG,			// Le fichier svg est incomplet.
+		NOT_SVG_FILE,			// Le fichier n'est pas un fichier svg.
+		NOT_SVG_PATH,			// Le fichier svg n'inclut aucune donnée de dessin.
 
-		W_BLABLA = 100
+		W_WRONG_LINE = 100,		// Ligne mal formée dans le fichier de configuration.
+		W_TOO_LONG_LINE			// Ligne trop longue dans le fichier de configuration.
 	};
 
 	/**
@@ -216,7 +222,7 @@ class Drawall {
 	*************/
 
 	// Initialisation avant loadParameters()
-    // Commencent par mp, pour "member" et "parameter".
+	// Commencent par mp, pour "member" et "parameter".
 
 	/// Nom du fichier ouvert par defaut
 	char *mpFileName = "drawall.svg";
@@ -325,7 +331,8 @@ class Drawall {
 	 * xx(pas)/ratio --> xx(mm)
 	 * \todo Inverser le ratio car le nombre de pas est une valeur entière, éviter de le diviser.
 	 */
-	void initStepLength();
+	void initStepLength(
+				);
 
 	/**
 	 * \brief Modifie l'échelle pour s'adapter à la largeur \a width et la hauteur \a height du dessin.
@@ -337,12 +344,12 @@ class Drawall {
 				int height);
 
 	/**
-	 * \brief À appeler lorsque une erreur se produit.
-	 * \details Envoie le code d'erreur \a errNumber à Processing, qui se charge d'afficher sa description. Éloigne le stylo de la paroi et stoppe le programme.
+	 * \brief À appeler lorsque une erreur ou un warning se produit.
+	 * \details Envoie le code d'erreur ou du warning \a errNumber à Processing, qui se charge d'afficher sa description. Si c'est une erreur, éloigne le stylo de la paroi et stoppe le programme.
 	 * \todo Mettre en pause le traçé, quand la pause sera opérationnelle.
 	 */
 	void error(
-				char errNumber);
+				Error errNumber);
 
 	/***********************
 	* Commande du matériel *
@@ -353,14 +360,16 @@ class Drawall {
 	 * \todo La direction en paramètre ou en argument de classe.
 	 * \todo Il faudrait ne pas faire de pause pour ne pas influencer sur le traçé
 	 */
-	void leftStep();
+	void leftStep(
+				);
 
 	/**
 	 * \brief Rotation du moteur droit d'un pas.
 	 * \todo La direction en paramètre ou en argument de classe.
 	 * \todo Il faudrait ne pas faire de pause pour ne pas influencer sur le traçé
 	 */
-	void rightStep();
+	void rightStep(
+				);
 
 	/**
 	 * \brief Alimente ou désalimente les moteurs.
@@ -482,7 +491,8 @@ class Drawall {
 	 * \brief Dessine une figure vectorielle correspondant au contenu de l'attribut d="..." d"une balise \a path.
 	 * \details Le curseur doit être positionné au début du contenu de d"..."
 	 */
-	void draw();
+	void draw(
+				);
 
 	/**
 	 * \brief Approche ou éloigne le crayon de la paroi.
@@ -497,7 +507,8 @@ class Drawall {
 	 * \brief Initialise la librairie.
 	 * \bug Corriger Warning
 	 */
-	 Drawall();
+	 Drawall(
+				);
 
 	/**
 	 * \brief Démarre la librairie.
@@ -511,7 +522,8 @@ class Drawall {
 	 * \brief Finit le traçé.
 	 * \details Utilisé à la fin du programme. Cela positionne le crayon en bas de la zone de dessin, désalimente les moteurs et met en pause le programme.
 	 */
-	void end();
+	void end(
+				);
 
 	/********************
 	* Getters & setters *
@@ -620,47 +632,20 @@ class Drawall {
 				float y);
 
 	/**
-	 * \brief Trace un carré de largeur \a x, avec pour point haut-gauche la position actuelle et point bas-droit relative [\a x; \a y].
-	 * \param x La taille des arrêtes du carré.
-	 */
-	void square(
-				float x);
-
-	/**
 	 * \brief Trace un rectangle représentant les limites de la zone de dessin.
 	 */
-	void area();
+	void area(
+				);
 
 	/**
-	 * \brief Trace une ligne droite horizontale sur toute la largeur de la zone de dessin, à la position absolue \a y.
-	 * \param y La position absolue verticale de la ligne.
+	 * \brief Trace un rectangle correspondant à la zone de dessin du fichier svg \a fileName.
+	 * \details Le robot doit être muni d'un lecteur de carte SD et le fichier vectoriel doit être copié sur celle-ci.
+	 * \param fileName Le nom du fichier.
+	 * \bug Le rectangle sort de la zone de dessin dans certains cas (testé aux valeurs 4810, 3950, 2830, 430, 640) + limite droite non-détectée.
 
 	 */
-	void horizontalAbs(
-				float y);
-
-	/**
-	 * \brief Trace une ligne droite horizontale sur toute la largeur de la zone de dessin, à la position relative \a y.
-	 * \details Une position relative correspond à la position d'un point par rapport à la position actuelle.
-	 * \param y La position relative verticale de la ligne.
-	 */
-	void horizontalRel(
-				float y);
-
-	/**
-	 * \brief Trace une ligne droite verticale sur toute la hauteur de la zone de dessin, à la position absolue \a x.
-	 * \param x La position absolue horizontale de la ligne.
-	 */
-	void verticalAbs(
-				float x);
-
-	/**
-	 * \brief Trace une ligne droite verticale sur toute la hauteur de la zone de dessin, à la position relative \a x.
-	 * \details Une position relative correspond à la position d'un point par rapport à la position actuelle.
-	 * \param x La position absolue horizontale de la ligne.
-	 */
-	void verticalRel(
-				float x);
+	void drawingArea(
+				const char *fileName);
 
 	/**
 	 * \brief Trace une courbe de Bézier cubique en position absolue.
@@ -799,65 +784,11 @@ class Drawall {
 				float pY);
 
 	/**
-	 * \brief Trace un arc de cercle en position absolue.
-	 * \todo Remplir la fonction.
-	 */
-	void arcAbs(
-				float a1,
-				float a2,
-				float a3,
-				float a4,
-				float a5,
-				float a6,
-				float a7);
-
-	/**
-	 * \brief Trace un arc de cercle en position relative.
-	 * \todo Remplir la fonction.
-	 */
-	void arcRel(
-				float a1,
-				float a2,
-				float a3,
-				float a4,
-				float a5,
-				float a6,
-				float a7);
-
-	/**
-	 * \brief Trace une ellipse dont le centre est le point courant, le rayon horizontal est \a rX et le rayon vertical est \a rY.
-
-	 * \param rX Le rayon horizontal de l'ellipse.
-	 * \param rY Le rayon vertical de l'ellipse.
-	 */
-	void ellipse(
-				float rX,
-				float rY);
-
-	/**
-	 * \brief Trace un cercle dont le centre est le point courant et le rayon est \a r.
-
-	 * \param r Le rayon du cercle.
-	 */
-	void circle(
-				float r);
-
-	/**
 	 * \brief Fini la figure SVG en cours.
 	 * \details Trâce une ligne droite jusqu'à la position du point cible du dernier déplacement, de manière a faire des formes "finies".
 	 */
 	void endFigure(
 				);
-
-	/**
-	 * \brief Trace un rectangle correspondant à la zone de dessin du fichier svg \a fileName.
-	 * \details Le robot doit être muni d'un lecteur de carte SD et le fichier vectoriel doit être copié sur celle-ci.
-	 * \param fileName Le nom du fichier.
-	 * \bug Le rectangle sort de la zone de dessin dans certains cas (testé aux valeurs 4810, 3950, 2830, 430, 640) + limite droite non-détectée.
-
-	 */
-	void drawingArea(
-				const char *fileName);
 
 	/**
 	 * \brief Trace un dessin vectoriel svg correspondant au fichier \a fileName sur la carte SD.
@@ -878,7 +809,8 @@ class Drawall {
 	/**
 	 * \Brief Imprime sur la liaison série les paramètres actuels.
 	*/
-    void printParameters();
+	void printParameters(
+				);
 };
 
 #endif
