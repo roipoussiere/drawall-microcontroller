@@ -34,20 +34,22 @@ Drawall::Drawall()
 void Drawall::begin(
 			const char *fileName)
 {
-	Serial.begin(SERIAL_BAUDS);
+	// Chargement des paramètres à partir du fichier de configuration
+	loadParameters(fileName);
 
 	// Gestion de l'interruption à l'appui sur le BP pause.
 	SREG |= 128;				// Interruptions globales ok
 	EIMSK = B01;				// Interruption INT0 déclenchée à l'appui sur le BP pause : INT0 (pin2) = B01 ou INT1 (pin3) = B10 sur Atmega328.
 	EICRA = B0011;				// Interruption déclenchée sur le front montant pour INT0 : état bas = B00, changement d'état = B01, front descendant = B10, front montant = B11
 
+	Serial.begin(SERIAL_BAUDS);
 
 	// pins d'entrée
 	pinMode(PIN_LEFT_CAPTOR, INPUT);
 	pinMode(PIN_RIGHT_CAPTOR, INPUT);
 	// pinMode(PIN_REMOTE, INPUT);
 
-	// Activation des pullup internes pour les boutons
+	// Activation des pullup internes
 	digitalWrite(2, HIGH);		// INT0 (pour BP pause) est sur pin 2
 	digitalWrite(PIN_LEFT_CAPTOR, HIGH);
 	digitalWrite(PIN_RIGHT_CAPTOR, HIGH);
@@ -72,10 +74,6 @@ void Drawall::begin(
 	}
 	// pour que write() fonctionne la 1ere fois
 	mWriting = true;
-
-	// Chargement des paramètres à partir du fichier de configuration
-	loadParameters(fileName);
-	// printParameters();
 
 	mDrawingScale = 1;
 	mDrawingOffsetX = 0;
@@ -254,9 +252,8 @@ long Drawall::positionToLeftLength(
 			float positionX,
 			float positionY)
 {
-	float width = ((float) mpAreaPositionX + positionX) / mStepLength;
-	float height = ((float) mpAreaPositionY + positionY) / mStepLength;
-
+    float width = ( (float) mpAreaPositionX + positionX) / mStepLength;
+    float height = ( (float) mpAreaPositionY + positionY) / mStepLength;
 	return sqrt(pow(width, 2) + pow(height, 2));
 }
 
@@ -264,11 +261,8 @@ long Drawall::positionToRightLength(
 			float positionX,
 			float positionY)
 {
-	float width =
-				((float) mpSpan - (float) mpAreaPositionX -
-				positionX) / mStepLength;
-	float height = ((float) mpAreaPositionY + positionY) / mStepLength;
-
+    float width = ( (float) mpSpan - (float) mpAreaPositionX - positionX) / mStepLength;
+    float height = ( (float) mpAreaPositionY + positionY) / mStepLength;
 	return sqrt(pow(width, 2) + pow(height, 2));
 }
 
@@ -413,10 +407,10 @@ void Drawall::line(
 
 	if (nbPasG > nbPasD) {
 		delaiG = mDelay;
-		delaiD = mDelay * ((float) nbPasG / (float) nbPasD);
+		delaiD = mDelay * ( (float) nbPasG / (float) nbPasD);
 	} else {
 		delaiD = mDelay;
-		delaiG = mDelay * ((float) nbPasD / (float) nbPasG);
+		delaiG = mDelay * ( (float) nbPasD / (float) nbPasG);
 	}
 
 	dernierTempsG = micros();
@@ -1294,30 +1288,34 @@ void Drawall::end(
 {
 	move(mpEndPosition);
 	power(false);
-	while (true) ;
+	while (true) {
+	};
 }
 
-void Drawall::loadParameters(
+void loadParameters(
 			const char *fileName)
 {
-	const byte BUFFER_SIZE = 32; // Taille buffer
+	/* Taille du buffer */
+	const byte BUFFER_SIZE = 32;
 
-	char buffer[BUFFER_SIZE]; // Stocke une ligne du fichier
-    char* key; // Chaine pour la clé
-    char* value; // Chaine pour la valeur
+	/* Déclare le buffer qui stockera une ligne du fichier, ainsi que les deux pointeurs key et value */
+	char buffer[BUFFER_SIZE], *key, *value;
 
-	byte i; // Itérateur
-    byte line_lenght; // Longueur de la ligne
-    byte line_counter = 0; // Compteur de lignes
+	/* Déclare l'itérateur et la longueur de la ligne et le compteur de lignes */
+	byte i, line_lenght, line_counter = 0;
 
-	// Initialise la carte SD
-	pinMode(PIN_SD_CS, OUTPUT);
+	Serial.begin(9600);
 
+	/* Initialise la carte SD */
+	pinMode(10, OUTPUT);
 
-    // Ici, problème avec la communication avec Processing !!!
+	if (!SD.begin(10)) {
+		Serial.println("Carte SD absente ou non-reconnue.");
+		while (true) {
+		};
+	}
 
-
-	// Test existence fichier
+	/* Test existence fichier */
 	/*if(!SD.exists(fileName)) {
 	 * Serial.print("Le fichier '");
 	 * Serial.print(fileName);
@@ -1325,51 +1323,51 @@ void Drawall::loadParameters(
 	 * while(true){};
 	 * } */
 
-	// Ouvre le fichier de configuration
-	File configFile = SD.open(fileName, FILE_READ);
+	/* Ouvre le fichier de configuration */
+	File config_file = SD.open(fileName, FILE_READ);
 
-	if (!configFile) {
+	if (!config_file) {
 		Serial.println("Le fichier ne peut pas être ouvert.");
 		while (true) {
 		};
 	}
 
-	// Tant que non fin de fichier
-	while (configFile.available() > 0) {
-		// Récupère une ligne entière dans le buffer
+	/* Tant que non fin de fichier */
+	while (config_file.available() > 0) {
+		/* Récupère une ligne entière dans le buffer */
 		i = 0;
-		while ((buffer[i++] = configFile.read()) != '\n') {
+		while ((buffer[i++] = config_file.read()) != '\n') {
 
-			// Si la ligne dépasse la taille du buffer
+			/* Si la ligne dépasse la taille du buffer */
 			if (i == BUFFER_SIZE) {
-				// On finit de lire la ligne mais sans stocker les données
-				while (configFile.read() != '\n') {
+				/* On finit de lire la ligne mais sans stocker les données */
+				while (config_file.read() != '\n') {
 				};
 				break;			// Et on arrête la lecture de cette ligne
 			}
 		}
 
-		// On garde de côté le nombre de char stocké dans le buffer
+		/* On garde de côté le nombre de char stocké dans le buffer */
 		line_lenght = i;
 
-		// Finalise la chaine de caractéres ASCIIZ en supprimant le \n au passage
+		/* Finalise la chaine de caractéres ASCIIZ en supprimant le \n au passage */
 		buffer[--i] = '\0';
 
-		// Incrémente le compteur de lignes
+		/* Incrémente le compteur de lignes */
 		++line_counter;
 
-		// Ignore les lignes vides ou les lignes de commentaires
+		/* Ignore les lignes vides ou les lignes de commentaires */
 		if (buffer[0] == '\0' || buffer[0] == '#') {
 			continue;
 		}
 
-		// Gestion des lignes trop grande
+		/* Gestion des lignes trop grande */
 		if (i == BUFFER_SIZE) {
 			Serial.print("Ligne trop longue à la ligne ");
 			Serial.println(line_counter, DEC);
 		}
 
-		// Cherche l'emplacement de la clef en ignorant les espaces et les tabulations en début de ligne
+		/* Cherche l'emplacement de la clef en ignorant les espaces et les tabulations en début de ligne */
 		i = 0;
 		while (buffer[i] == ' ' || buffer[i] == '\t') {
 			if (++i == line_lenght) {
@@ -1383,8 +1381,12 @@ void Drawall::loadParameters(
 		}
 		key = &buffer[i];
 
-		// Cherche l'emplacement du séparateur = en ignorant les espaces et les tabulations âpres la clef
+		/* Cherche l'emplacement du séparateur = en ignorant les espaces et les tabulations âpres la clef */
 		while (buffer[i] != ' ' && buffer[i] != '\t') {
+
+			/* Ignore les espaces et les tabulations */
+			// if(buffer[i] == ' ' || buffer[i] == '\t') buffer[i] = '\0';
+
 			if (++i == line_lenght) {
 				Serial.print("Ligne mal forme a la ligne ");
 				Serial.println(line_counter, DEC);
@@ -1395,10 +1397,10 @@ void Drawall::loadParameters(
 		if (i == line_lenght) {
 			continue;			// Gère les lignes mal formé
 		}
-		// Transforme le séparateur en \0 et continue
+		/* Transforme le séparateur en \0 et continue */
 		buffer[i++] = '\0';
 
-		// Cherche l'emplacement de la valeur en ignorant les espaces et les tabulations âpres le séparateur
+		/* Cherche l'emplacement de la valeur en ignorant les espaces et les tabulations âpres le séparateur */
 		while (buffer[i] == ' ' || buffer[i] == '\t') {
 			if (++i == line_lenght) {
 				Serial.print("Ligne mal forme a la ligne ");
@@ -1413,9 +1415,9 @@ void Drawall::loadParameters(
 
 		value = &buffer[i];
 
-		// Transforme les données texte en valeur utilisable
+				// Transforme les données texte en valeur utilisable
 		if (!strcmp(key, "fileName")) {
-			strcpy(this->mpFileName, value);
+			strcpy(mpFileName, value);
 		} else if (!strcmp(key, "span")) {
 			mpSpan = atoi(value);
 		} else if (!strcmp(key, "areaWidth")) {
@@ -1436,8 +1438,8 @@ void Drawall::loadParameters(
 			mpPostServoDelay = atoi(value);
 		} else if (!strcmp(key, "steps")) {
 			mpSteps = atoi(value);
-		} else if (!strcmp(key, "diameter")) {
-			mpDiameter = atof(value);
+		} else if (!strcmp(key, "mpDiameter")) {
+			mpmpDiameter = atof(value);
 		} else if (!strcmp(key, "leftDirection")) {
 			mpLeftDirection = false;
 			if (!strcmp(value, "true")) {
@@ -1460,19 +1462,17 @@ void Drawall::loadParameters(
 			mpOffsetY = atoi(value);
 		} else if (!strcmp(key, "defaultSpeed")) {
 			mpDefaultSpeed = atoi(value);
-		} else {
+		} else {				// Default 
 			Serial.print("Cle inconnue : ");
 			Serial.println(key);
 		}
 
 	}
 
-	// Ferme le fichier de configuration
-	configFile.close();
-}
+	/* Ferme le fichier de configuration */
+	config_file.close();
 
-/*void Drawall::printParameters()
-{
+	/* Affiche le résultat de la configuration */
 	Serial.print("fileName = ");
 	Serial.println(mpFileName);
 
@@ -1507,7 +1507,7 @@ void Drawall::loadParameters(
 	Serial.println(mpSteps);
 
 	Serial.print("mpDiameter = ");
-	Serial.println(mpDiameter);
+	Serial.println(mpmpDiameter);
 
 	Serial.print("leftDirection = ");
 	Serial.println(mpLeftDirection);
@@ -1532,4 +1532,4 @@ void Drawall::loadParameters(
 
 	Serial.print("defaultSpeed = ");
 	Serial.println(mpDefaultSpeed);
-}*/
+}

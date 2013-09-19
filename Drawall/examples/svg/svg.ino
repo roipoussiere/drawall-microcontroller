@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /*
 Drawall library - svg test
 
-This example shows how use the svg function on the Drawall library.
+This example shows how to use the svg function on the Drawall library.
 Please see and edit the params.h file to set the drawall parameters, like the pins location.
 Before uploading this sketch, copy the drawbot.svg file into your SD card.
 */
@@ -31,16 +31,15 @@ Before uploading this sketch, copy the drawbot.svg file into your SD card.
 #include <Servo.h>
 #include <drawall.h>
 
-// Initialise the library with :
-// Distance between the motors, sheet size (width and height) and sheet position (X and Y)
-Drawall d(4800, 3930, 2850, 430, 60);
+// Initialise the library.
+Drawall d;
 
 void setup() {
-  d.begin(); // Start the library.
-  d.setSpeed(10); // Set speed.
+  d.begin("drawall.dcf"); // Start the library.
+  d.setSpeed(50); // Set speed.
 }
 
 void loop() {
-  d.svg("drawall.svg");
- d.end(); // Finish the drawing.
+  d.svg("drawbot.svg");
+  d.end(); // Finish the drawing.
 }
