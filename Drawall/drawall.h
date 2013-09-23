@@ -3,7 +3,7 @@
  * This file is part of Drawall, a project for a robot which draws on walls.
  * See http://drawall.cc/ and https://github.com/roipoussiere/Drawall/.
  * 
- * Copyright (c) 2012-2013 NathanaÃ«l Jourdane
+ * Copyright (c) 2012-2013 Nathanaël Jourdane
  * 
  * Drawall is free software : you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,48 +21,48 @@
 
 /**
  * \file	drawall.h
- * \author  NathanaÃ«l Jourdane
- * \brief   Fichier d'en-tÃªte de la bibliothÃ¨que
- * \details L'ensemble du code a Ã©tÃ© indentÃ© avec le programme indent (sudo apt-get install indent) avec les paramÃ¨tres suivants :
+ * \author  Nathanaël Jourdane
+ * \brief   Fichier d'en-tête de la bibliothèque
+ * \details L'ensemble du code a été indenté avec le programme indent (sudo apt-get install indent) avec les paramètres suivants :
 indent -kr -bad -bbb -sc -ncdw -ss -bfda -blf -ts4 -ut -sob -nlp -ci12 -fc1 drawall.cpp drawall.h pins.h
 
-// finit le dernier trajet au cas ou Ã§a ne tombe pas juste
+// finit le dernier trajet au cas ou ça ne tombe pas juste
 
- * \mainpage PrÃ©sentation
+ * \mainpage Présentation
 
 Drawall est un projet libre de robot autonome qui dessine sur les murs.
 
-Ce projet est libre : vous pouvez le redistribuer ou le modifier suivant les termes de la GNU GPL. L'ensemble du projet est publiÃ© sous cette licence, ce qui inclut l'intÃ©gralitÃ© du code-source, les schÃ©mas Ã©lectroniques, les schÃ©mas du matÃ©riel et toute la documentation. Pour plus de dÃ©tails, consultez la GNU General Public License, dont vous trouverez une copie sur le fichier COPYING.txt dans le dÃ©pot GitHub. La documentation dÃ©taillÃ©e du code source est disponible sur http://drawall.cc/. 
+Ce projet est libre : vous pouvez le redistribuer ou le modifier suivant les termes de la GNU GPL. L'ensemble du projet est publié sous cette licence, ce qui inclut l'intégralité du code-source, les schémas électroniques, les schémas du matériel et toute la documentation. Pour plus de détails, consultez la GNU General Public License, dont vous trouverez une copie sur le fichier COPYING.txt dans le dépot GitHub. La documentation détaillée du code source est disponible sur http://drawall.cc/. 
 
-Ce robot utilise une carte Arduino et nÃ©cessite donc le logiciel Arduino pour fonctionner. Vous trouverez de l'aide pour son installation et utilisation sur le site officiel http://arduino.cc/fr/.
+Ce robot utilise une carte Arduino et nécessite donc le logiciel Arduino pour fonctionner. Vous trouverez de l'aide pour son installation et utilisation sur le site officiel http://arduino.cc/fr/.
 
-La partie logicielle est une librairie Arduino. Elle est composÃ©e d'un fichier principal drawall.cpp, d'un fichier header drawall.h et d'un fichier de paramÃ¨tres params.h. Ce dernier permet de spÃ©cifier tous les paramÃ¨tres concernant le robot. Vous devrez l'Ã©diter avant d'utiliser la librairie.
-La librairie est utilisÃ©e par l'intermÃ©diaire d'un "sketch" Arduino, (fichier .ino), dont vous trouverez des exemples dans le rÃ©pertoire de la librairie.
+La partie logicielle est une librairie Arduino. Elle est composée d'un fichier principal drawall.cpp, d'un fichier header drawall.h et d'un fichier de paramètres params.h. Ce dernier permet de spécifier tous les paramètres concernant le robot. Vous devrez l'éditer avant d'utiliser la librairie.
+La librairie est utilisée par l'intermédiaire d'un "sketch" Arduino, (fichier .ino), dont vous trouverez des exemples dans le répertoire de la librairie.
 
-La librairie contient tous les calculs nÃ©cessaire Ã  l'execution du robot, les sketchs ne servent qu'Ã  le commander, ils sont trÃ¨s courts et simples Ã  utiliser.
+La librairie contient tous les calculs nécessaire à l'execution du robot, les sketchs ne servent qu'à le commander, ils sont très courts et simples à utiliser.
 
-Il est possible de commander le robot par des fonctions simples (lignes, courbes, ...), ou par l'intermÃ©diaire d'un fichier svg qu'il va interprÃ©ter.
-Les fonctions svg ne sont pas encore toutes interprÃ©tÃ©es, certains dessins ne seront don pas correctement reproduits. Vous pouvez vous rÃ©fÃ©rer au fichier d'exemple drawbot.svg dans le dossier examples.
+Il est possible de commander le robot par des fonctions simples (lignes, courbes, ...), ou par l'intermédiaire d'un fichier svg qu'il va interpréter.
+Les fonctions svg ne sont pas encore toutes interprétées, certains dessins ne seront don pas correctement reproduits. Vous pouvez vous référer au fichier d'exemple drawbot.svg dans le dossier examples.
 
-Le projet comporte Ã©galement un simulateur, permetant de tester le bon
-fonctionnement d'un programe de dessin avant de le reproduire et faciliter le dÃ©veloppement du projet.
-Il nÃ©cessite l'environnement de dÃ©veloppement Processing : http://www.processing.org/. Ce simulateur reproduit le dessin que rÃ©alise le robot, en interpretant en temps rÃ©el les impulsions envoyÃ©es aux moteurs.
+Le projet comporte également un simulateur, permetant de tester le bon
+fonctionnement d'un programe de dessin avant de le reproduire et faciliter le développement du projet.
+Il nécessite l'environnement de développement Processing : http://www.processing.org/. Ce simulateur reproduit le dessin que réalise le robot, en interpretant en temps réel les impulsions envoyées aux moteurs.
 
-Pour le faire fonctionner il vous faut donc connecter Ã  votre ordinateur au minimum une carte arduino munie d'un lecteur SD et y insÃ©rer une carte contenant une image svg valide. Toutes les fonctions svg ne sont pas encore interprÃ©tÃ©es. Pour plus d'informations sur la conformitÃ© du fichier svg, rÃ©fÃ©rez-vous au document documentation/valid_svg.txt du dÃ©pot GitHub. Une aide Ã  l'installation sur Linux est Ã©galement disponible sur le dÃ©pot.
+Pour le faire fonctionner il vous faut donc connecter à votre ordinateur au minimum une carte arduino munie d'un lecteur SD et y insérer une carte contenant une image svg valide. Toutes les fonctions svg ne sont pas encore interprétées. Pour plus d'informations sur la conformité du fichier svg, référez-vous au document documentation/valid_svg.txt du dépot GitHub. Une aide à l'installation sur Linux est également disponible sur le dépot.
 
-Ce projet est libre et Ã©voluera en grÃ¢ce aux retours des utilisateurs. Questions, demande d'informations et suggestions sont donc les bienvenues.
+Ce projet est libre et évoluera en grâce aux retours des utilisateurs. Questions, demande d'informations et suggestions sont donc les bienvenues.
 
-Copyright (c) 2012-2013 NathanaÃ«l Jourdane
+Copyright (c) 2012-2013 Nathanaël Jourdane
 
 Adresse de contact : nathanael[AT]jourdane[DOT]net.
 
 Site du projet : http://roipoussiere.github.io/Drawall
 
-DÃ©pÃ´t GitHub : https://github.com/roipoussiere/Drawall
+Dépôt GitHub : https://github.com/roipoussiere/Drawall
 
 Documentation du projet : http://drawall.cc/
 
-VidÃ©os de dÃ©monstration du robot : http://www.youtube.com/watch?v=ewhZ9wcrR2s - 2Ã¨me version : http://www.youtube.com/watch?v=p4oQWtzjBI0&feature=youtu.be
+Vidéos de démonstration du robot : http://www.youtube.com/watch?v=ewhZ9wcrR2s - 2ème version : http://www.youtube.com/watch?v=p4oQWtzjBI0&feature=youtu.be
 
 \image html thedrawall.jpg
  */
@@ -78,52 +78,80 @@ VidÃ©os de dÃ©monstration du robot : http://www.youtube.com/watch?v=ewhZ9wcrR2s 
 
 /**
  * \brief Classe principale de la librairie
- * \todo Faire une simulation complÃ¨te trÃ¨s rapide au dÃ©but avant de commencer le traÃ§Ã© (possible ?) ou crÃ©er mÃ©thode test(bool testing) pour activer le mode de test.
- * \todo Ajouter mÃ©thode rect.
- * \todo Processing : Tracer les mouvement sur un calque sÃ©parÃ© (derriÃ¨re).
+ * \todo Faire une simulation complète très rapide au début avant de commencer le traçé (possible ?) ou créer méthode test(bool testing) pour activer le mode de test.
+ * \todo Ajouter méthode rect.
+ * \todo Processing : Tracer les mouvement sur un calque séparé (derrière).
  * \todo Processing : Gestion des warnings.
- * \bug Processing : Affiche une mauvais position Ã  la fin du traÃ§Ã© (mÃªme pendant ?)
- * \bug Processing : Afficher toujours dÃ©placement en cours Ã  la fin du traÃ§Ã©
- * \bug SystÃ¨me de limites trÃ¨s foireux.
+ * \bug Processing : Affiche une mauvais position à la fin du traçé (même pendant ?)
+ * \bug Processing : Afficher toujours déplacement en cours à la fin du traçé
+ * \bug Système de limites très foireux.
  * \bug Processing : L'affichage de la position de tient pas compte de la position de la feuille.
- * \bug Le crayon va trÃ¨s en bas en fin de traÃ§Ã© (en dehors de limite basse).
- * \bug Moteurs gauche et droit non synchronisÃ©s pour les dÃ©placements.
- * \bug Voir quel est le problÃ¨me avec le dessin de Drawall, il fait n'importe quoi + non dÃ©tection de la limite basse (cf. capture).
- * \bug Il y a une lÃ©gÃ¨re marge en haut du dessin.
- * \bug Pour les surfaces larges, pas de marge en bas du dessin, sans doute liÃ© au bug ci-dessus.
- * \bug Dessin pas centrÃ© pour les surfaces larges.
- * \todo Afficher distance tracÃ© + distance move + distance totale + taux d'optimisation (distance tracÃ© / distance totale).
- * \todo Afficher durÃ©e + heure de fin estimÃ©e.
+ * \bug Le crayon va très en bas en fin de traçé (en dehors de limite basse).
+ * \bug Moteurs gauche et droit non synchronisés pour les déplacements.
+ * \bug Voir quel est le problème avec le dessin de Drawall, il fait n'importe quoi + non détection de la limite basse (cf. capture).
+ * \bug Il y a une légère marge en haut du dessin.
+ * \bug Pour les surfaces larges, pas de marge en bas du dessin, sans doute lié au bug ci-dessus.
+ * \bug Dessin pas centré pour les surfaces larges.
+ * \todo Afficher distance tracé + distance move + distance totale + taux d'optimisation (distance tracé / distance totale).
+ * \todo Afficher durée + heure de fin estimée.
  * \todo Processing : Mettre au clair variables globales.
- * \todo Processing : Afficher erreur de communication sÃ©rie quand c'est le cas.
- * \todo Tester tous les fichiers avant de commencer Ã  tracer.
+ * \todo Processing : Afficher erreur de communication série quand c'est le cas.
+ * \todo Tester tous les fichiers avant de commencer à tracer.
  * \todo Utiliser un programme d'indentation, comme indent ou bcpp
- * \todo Avoir la possibilitÃ© d'insÃ©rer une variable dans les codes d'erreurs
+ * \todo Avoir la possibilité d'insérer une variable dans les codes d'erreurs
  */
 class Drawall {
 
   private:
 
 	/**
-	* \brief Liste des erreurs et warnings
-	* \details Les diffÃ©rentes erreurs ou warnings pouvant survenir pendant l'execution du programme. Les erreurs commencent Ã  l'indice 0 tandis que les warnings commencent Ã  l'indice 100.
+	 * \brief Liste des données envoyées au pc via le port série.
+	*/
+	enum SerialData {
+		BEGIN_INSTRUCTIONS,		// Début d'envoi des données d'initialisation.
+		END_INSTRUCTIONS,		// Fin d'envoi des données d'initialisation.
+		BEGIN_MESSAGE,			// Début d'envoi d'un message à afficher.
+		END_MESSAGE,			// Fin d'envoi d'un message à afficher.
+		ENABLE_MOTORS,			// Alimentation des moteurs.
+		DISABLE_MOTORS,			// Désalimentation des moteurs.
+		WRITE,					// Le stylo dessine.
+		MOVE,					// Le stylo se déplace (ne dessine pas).
+		PUSH_LEFT,				// Relâche la courroie gauche d'un cran.
+		PULL_LEFT,				// Tire la courroie gauche d'un cran.
+		PUSH_RIGHT,				// Relâche la courroie droite d'un cran.
+		PULL_RIGHT,				// Tire la courroie droite d'un cran.
+		ERROR,					// Erreur (suivie du code d'erreur).
+		WARNING,				// Warning (suivie du code de warning).
+		END						// Fin du tracé.
+	};
+
+	/**
+	* \brief Liste des erreurs et warnings pouvant survenir pendant l'execution du programme.
+	* \details Les erreurs commencent à l'indice 0 tandis que les warnings commencent à l'indice 100.
 	*/
 	enum Error {
-		CARD_NOT_FOUND,			// La carte SD n'a pas Ã©tÃ© trouvÃ©e ou est illisible.
+		CARD_NOT_FOUND,			// La carte SD n'a pas été trouvée ou est illisible.
 		FILE_NOT_FOUND,			// Le fichier n'existe pas.
 		FILE_NOT_READABLE,		// Erreur d'ouverture du fichier.
-		TOO_LONG_SPAN,			// La distance entre les 2 moteurs est infÃ©rieure Ã  la largeur de la feuille et sa position horizontale.
+		TOO_LONG_SPAN,			// La distance entre les 2 moteurs est inférieure à la largeur de la feuille et sa position horizontale.
 		INCOMPLETE_SVG,			// Le fichier svg est incomplet.
 		NOT_SVG_FILE,			// Le fichier n'est pas un fichier svg.
-		NOT_SVG_PATH,			// Le fichier svg n'inclut aucune donnÃ©e de dessin.
+		SVG_PATH_NOT_FOUND,		// Le fichier svg n'inclut aucune donnée de dessin.
 
-		W_WRONG_LINE = 100,		// Ligne mal formÃ©e dans le fichier de configuration.
-		W_TOO_LONG_LINE			// Ligne trop longue dans le fichier de configuration.
+		// * Warnings *
+		WRONG_LINE = 100,		// Ligne mal formée dans le fichier de configuration.
+		TOO_LONG_LINE,			// Ligne trop longue dans le fichier de configuration.
+		UNKNOWN_SVG_FUNCTION,	// Fonction svg inconnue.
+		UNKNOWN_SERIAL_CODE,	// Caractère envoyé au port série non reconnu. Utilisé uniquement sur le programme PC, jamais sur l'Arduino (mais il est préférable que les listes soient identiques).
+		LEFT_LIMIT,				// Le crayon a atteint la limite gauche.
+		RIGHT_LIMIT,			// Le crayon a atteint la limite droite.
+		UPPER_LIMIT,			// Le crayon a atteint la limite haute.
+		LOWER_LIMIT				// Le crayon a atteint la limite basse.
 	};
 
 	/**
 	 * \brief Position sur la zone de dessin
-	 * \details Les diffÃ©rentes position pour accÃ¨s rapide, correspondant aux 8 points cardinaux, plus le centre.
+	 * \details Les différentes position pour accès rapide, correspondant aux 8 points cardinaux, plus le centre.
 	 * \bug Ne fonctionne pas dans le sketch.
 	 */
 	enum Position {
@@ -146,35 +174,35 @@ class Drawall {
 	************/
 	// Commencent par m, pour "member".
 
-	/// Objet pour manipuler le servo-moteur, utilisÃ© avec la librairie \a Servo.
+	/// Objet pour manipuler le servo-moteur, utilisé avec la librairie \a Servo.
 	Servo mServo;
 
-	/// Longueur du cÃ¢ble gauche, en pas.
+	/// Longueur du câble gauche, en pas.
 	unsigned long mLeftLength;
 
-	/// Longueur du cÃ¢ble droit, en pas.
+	/// Longueur du câble droit, en pas.
 	unsigned long mRightLength;
 
-	/// Le fichier svg contenant le dessin vectoriel Ã  reproduire.
+	/// Le fichier svg contenant le dessin vectoriel à reproduire.
 	File mFile;
 
-	/// Ã‰chelle gÃ©nÃ©rÃ©e par les attributs width et height du fichier svg, afin que le dessin s'adapte aux dimentions de la zone de dessin.
+	/// Échelle générée par les attributs width et height du fichier svg, afin que le dessin s'adapte aux dimentions de la zone de dessin.
 	float mDrawingScale;
 
-	/// Offset horizontal gÃ©nÃ©rÃ© par l'attribut width du fichier svg, afin que le dessin soit centrÃ© sur la zone de dessin.
+	/// Offset horizontal généré par l'attribut width du fichier svg, afin que le dessin soit centré sur la zone de dessin.
 	unsigned int mDrawingOffsetX;
 
-	/// Offset vertical gÃ©nÃ©rÃ© par l'attribut height du fichier svg, afin que le dessin soit centrÃ© sur la zone de dessin.
+	/// Offset vertical généré par l'attribut height du fichier svg, afin que le dessin soit centré sur la zone de dessin.
 	unsigned int mDrawingOffsetY;
 
-	/// Longueur d'un pas (distance parcourue par le cÃ¢ble en 1 pas, en mm.
+	/// Longueur d'un pas (distance parcourue par le câble en 1 pas, en mm.
 	float mStepLength;
 
-	/// Delai initial entre chaque pas du moteur qui a la plus grande distance Ã  parcourir, (en Âµs).
-	/// \details Le dÃ©lai de l'autre moteur est calculÃ© pour que les 2 moteurs arrivent au point de destination simultanÃ©ment.
+	/// Delai initial entre chaque pas du moteur qui a la plus grande distance à parcourir, (en µs).
+	/// \details Le délai de l'autre moteur est calculé pour que les 2 moteurs arrivent au point de destination simultanément.
 	float mDelay;
 
-	/// Permet de dÃ©terminer si le robot est en train d'Ã©crire (\a true) ou non (\a false).   
+	/// Permet de déterminer si le robot est en train d'écrire (\a true) ou non (\a false).   
 	bool mWriting;
 
 	/************
@@ -187,38 +215,38 @@ class Drawall {
 	/// Position verticale actuelle du crayon sur le plan.
 	float mPositionY;
 
-	/// Position horizontale du point d'arrivÃ©e fictif qui n'est pas modifiÃ© par les limites, de maniÃ¨re Ã  ce que le traÃ§Ã© ne subisse pas de transformation.
+	/// Position horizontale du point d'arrivée fictif qui n'est pas modifié par les limites, de manière à ce que le traçé ne subisse pas de transformation.
 	float mFictivePosX;
 
-	/// Position verticale du point d'arrivÃ©e fictif qui n'est pas modifiÃ© par les limites, de maniÃ¨re Ã  ce que le traÃ§Ã© ne subisse pas de transformation.    
+	/// Position verticale du point d'arrivée fictif qui n'est pas modifié par les limites, de manière à ce que le traçé ne subisse pas de transformation.    
 	float mFictivePosY;
 
-	/// Position horizontale du point de dÃ©part d'une figure (ligne, courbe, ...).
-	/// \details NÃ©cessaire pour finir le traÃ§Ã© avec endFigure().
+	/// Position horizontale du point de départ d'une figure (ligne, courbe, ...).
+	/// \details Nécessaire pour finir le traçé avec endFigure().
 	float mStartFigureX;
 
-	/// Position verticale du point de dÃ©part d'une figure (ligne, courbe, ...).
-	/// \details NÃ©cessaire pour finir le traÃ§Ã© avec endFigure().
+	/// Position verticale du point de départ d'une figure (ligne, courbe, ...).
+	/// \details Nécessaire pour finir le traçé avec endFigure().
 	float mStartFigureY;
 
-	/// Position horizontale du point de contrÃ´le P2 de la derniÃ¨re courbe de BÃ©zier cubique traÃ§Ã©e.
-	/// \details NÃ©cessaire pour tracer une courbe de BÃ©zier cubique qui dÃ©pend de la prÃ©cÃ©dente (appel de la fonction avec un seul point de contrÃ´le).
+	/// Position horizontale du point de contrôle P2 de la dernière courbe de Bézier cubique traçée.
+	/// \details Nécessaire pour tracer une courbe de Bézier cubique qui dépend de la précédente (appel de la fonction avec un seul point de contrôle).
 	float mCubicCurveX;
 
-	/// Position horizontale du point de contrÃ´le P2 de la derniÃ¨re courbe de BÃ©zier cubique traÃ§Ã©e.
-	/// \details NÃ©cessaire pour tracer une courbe de BÃ©zier cubique qui dÃ©pend de la prÃ©cÃ©dente (avec un point de contrÃ´le en moins).
+	/// Position horizontale du point de contrôle P2 de la dernière courbe de Bézier cubique traçée.
+	/// \details Nécessaire pour tracer une courbe de Bézier cubique qui dépend de la précédente (avec un point de contrôle en moins).
 	float mCubicCurveY;
 
-	/// Position horizontale du point de contrÃ´le P1 de la derniÃ¨re courbe de BÃ©zier quadratique traÃ§Ã©e.
-	/// \details NÃ©cessaire pour tracer une courbe de BÃ©zier quadratique qui dÃ©pend de la prÃ©cÃ©dente (appel de la fonction avec aucun point de contrÃ´le).
+	/// Position horizontale du point de contrôle P1 de la dernière courbe de Bézier quadratique traçée.
+	/// \details Nécessaire pour tracer une courbe de Bézier quadratique qui dépend de la précédente (appel de la fonction avec aucun point de contrôle).
 	float mQuadraticCurveX;
 
-	/// Position verticale du point de contrÃ´le P1 de la derniÃ¨re courbe de BÃ©zier quadratique traÃ§Ã©e.
-	/// \details NÃ©cessaire pour tracer une courbe de BÃ©zier quadratique qui dÃ©pend de la prÃ©cÃ©dente (appel de la fonction avec aucun point de contrÃ´le).
+	/// Position verticale du point de contrôle P1 de la dernière courbe de Bézier quadratique traçée.
+	/// \details Nécessaire pour tracer une courbe de Bézier quadratique qui dépend de la précédente (appel de la fonction avec aucun point de contrôle).
 	float mQuadraticCurveY;
 
 	/*************
-	* ParamÃ¨tres *
+	* Paramètres *
 	*************/
 
 	// Initialisation avant loadParameters()
@@ -236,88 +264,89 @@ class Drawall {
 	/// Hauteur de la feuille
 	unsigned int mpAreaHeight = 500;
 
-	/// Position horizontale du coin supÃ©rieur gauche de la feuille par rapport au moteur gauche
+	/// Position horizontale du coin supérieur gauche de la feuille par rapport au moteur gauche
 	unsigned int mpAreaPositionX = 175;
 
-	/// Position verticale du coin supÃ©rieur gauche de la feuille par rapport au moteur gauche
+	/// Position verticale du coin supérieur gauche de la feuille par rapport au moteur gauche
 	unsigned int mpAreaPositionY = 250;
 
-	// Servo-moteur
+	// * Servo-moteur *
 
-	/// Position lorsque le robot n'Ã©crit pas (en degrÃ©s)
+	/// Position lorsque le robot n'écrit pas (en degrés)
 	unsigned int mpServoOff = 36;
 
-	/// Position lorsque le robot Ã©crit (en degrÃ©s)
+	/// Position lorsque le robot écrit (en degrés)
 	unsigned int mpServoOn = 50;
 
-	/// Pause avant le dÃ©placement du servo (en ms)
+	/// Pause avant le déplacement du servo (en ms)
 	unsigned int mpPreServoDelay = 100;
 
-	/// Pause aprÃ¨s le dÃ©placement du servo (en ms)
+	/// Pause après le déplacement du servo (en ms)
 	unsigned int mpPostServoDelay = 500;
 
 	// * Moteurs *
 
-	/// Nombre de pas (prendre en compte les micros-pas effectuÃ©s par le driver-moteur)
+	/// Nombre de pas (prendre en compte les micros-pas effectués par le driver moteur)
 	unsigned int mpSteps = 800;
 
-	/// DiamÃ¨tre du pignon (en Âµm)
+	/// Diamètre du pignon (en µm)
 	float mpDiameter = 17.51;
 
-	/// Direction du moteur gauche
+	/// Direction du moteur gauche : \a true pour relâcher la courroie lorsque le moteur tourne dans le sens horaire et \a false dans le cas contraire.
 	boolean mpLeftDirection = false;
 
-	/// Direction du moteur droit
+	/// Direction du moteur droit : \a true pour relâcher la courroie lorsque le moteur tourne dans le sens horaire et \a false dans le cas contraire.
 	boolean mpRightDirection = true;
 
 	// * Divers *
 
-	/// Pause avant de commencer Ã  desiner (en ms)
+	/// Pause avant de commencer à desiner (en ms)
 	unsigned int mpInitialDelay = 5000;
 
-	/// Ã‰chelle horizontale appliquÃ©e au dessin, permetant de le calibrer.
+	/// Échelle horizontale appliquée au dessin, permetant de le calibrer.
 	float mpScaleX = 1;
 
-	/// Ã‰chelle verticale appliquÃ©e au dessin, permetant de le calibrer.
+	/// Échelle verticale appliquée au dessin, permetant de le calibrer.
 	float mpScaleY = 1;
 
-	/// Offset horizontal appliquÃ© au dessin, permetant de le dÃ©caler.
+	/// Offset horizontal appliqué au dessin, permetant de le décaler.
 	int mpOffsetX = -64;
 
-	/// Offset vertical appliquÃ© au dessin, permetant de le dÃ©caler.
+	/// Offset vertical appliqué au dessin, permetant de le décaler.
 	int mpOffsetY = 3;
 
-	/// Vitesse par dÃ©faut du crayon, avant l'appel Ã©ventuel de setSpeed() (en m/s).
-	unsigned int mpDefaultSpeed = 10;
+	/// Vitesse par défaut du crayon, avant l'appel éventuel de setSpeed() (en m/s).
+	unsigned int mpDefaultSpeed = 20;
 
-	/// Position par dÃ©faut du point de dÃ©part du crayon, avant l'appel Ã©ventuel de setPosition().
-	/// Todo Prendre en charge dans le fichier de paramÃ¨tres.
+	/// Position par défaut du point de départ du crayon, avant l'appel éventuel de setPosition().
+	/// Todo Prendre en charge dans le fichier de paramètres.
 	Position mpDefaultPosition = CENTER;
 
-	/// Position du point d'arrivÃ©e du crayon
-	/// Todo Prendre en charge dans le fichier de paramÃ¨tres.
+	/// Position du point d'arrivée du crayon
+	/// Todo Prendre en charge dans le fichier de paramètres.
 	Position mpEndPosition = CENTER;
 
 	/***********
-	* MÃ©thodes *
+	* Méthodes *
 	***********/
 
 	/**
-	 * \brief DÃ©termine si la position dÃ©sirÃ©e se trouve dans la zone de dessin (\a true) ou non (\a false).
+	 * \brief Détermine si la position désirée se trouve dans la zone de dessin (\a true) ou non (\a false).
 	 * \details Envoie un warning si c'est le cas.
-	 * \return \a true si la position dÃ©sirÃ©e se trouve dans la zone de dessin, \a false sinon
+	 * \return \a true si la position désirée se trouve dans la zone de dessin, \a false sinon
+	 * \todo Possibilité de désactiver la correction de trajectoire si en dehors des limites.
 	 */
 	bool positionInsideArea(
 				float x,
 				float y);
 
 	/**
-	 * \brief Trace une ligne Ã  bas niveau, de la position actuelle Ã  la position absolue [\a x; \a y], en Ã©crivant (\a writing) ou pas.
-	 * \details Ne compense pas le courbure naturelle de la ligne. N'initialise pas les variables pour les courbes Bezier, Ã  la diffÃ©rence de line(float x, float y).
+	 * \brief Trace une ligne à bas niveau, de la position actuelle à la position absolue [\a x; \a y], en écrivant (\a writing) ou pas.
+	 * \details Ne compense pas le courbure naturelle de la ligne. N'initialise pas les variables pour les courbes Bezier, à la différence de line(float x, float y).
 	 * \param pX La position absolue horizontale du point de destination.
 	 * \param pY La position absolue verticale du point de destination.
-	 * \param writing \a true pour Ã©crire pendant le dÃ©placement, \a false pour ne pas Ã©crire.
-	 * \todo Trop long, Ã©clater la mÃ©thode.
+	 * \param writing \a true pour écrire pendant le déplacement, \a false pour ne pas écrire.
+	 * \todo Trop long, éclater la méthode.
 	 */
 	void line(
 				float pX,
@@ -326,55 +355,62 @@ class Drawall {
 
 	/**
 	 * \brief Initialise le ratio entre le nombre de pas et la distance.
-	 * \details Le ratio est calculÃ© en fonction du diametre moteur et du nombre de pas.
+	 * \details Le ratio est calculé en fonction du diametre moteur et du nombre de pas.
 	 * xx(mm)*ratio --> xx(pas)
 	 * xx(pas)/ratio --> xx(mm)
-	 * \todo Inverser le ratio car le nombre de pas est une valeur entiÃ¨re, Ã©viter de le diviser.
+	 * \todo Inverser le ratio car le nombre de pas est une valeur entière, éviter de le diviser.
 	 */
 	void initStepLength(
 				);
 
 	/**
-	 * \brief Modifie l'Ã©chelle pour s'adapter Ã  la largeur \a width et la hauteur \a height du dessin.
-	 * \details Les dimentions du dessin sont rÃ©cupÃ©rÃ©es sur le fichier svg.
-	 * \todo Changer le nom et retourner l'Ã©chelle plutÃ´t que de la modifier directement.
+	 * \brief Modifie l'échelle pour s'adapter à la largeur \a width et la hauteur \a height du dessin.
+	 * \details Les dimentions du dessin sont récupérées sur le fichier svg.
+	 * \todo Changer le nom et retourner l'échelle plutôt que de la modifier directement.
 	 */
 	void setDrawingScale(
 				int width,
 				int height);
 
 	/**
-	 * \brief Ã€ appeler lorsque une erreur ou un warning se produit.
-	 * \details Envoie le code d'erreur ou du warning \a errNumber Ã  Processing, qui se charge d'afficher sa description. Si c'est une erreur, Ã©loigne le stylo de la paroi et stoppe le programme.
-	 * \todo Mettre en pause le traÃ§Ã©, quand la pause sera opÃ©rationnelle.
+	 * \brief Fonction appelée lorsque une erreur se produit.
+	 * \details Éloigne le stylo de la paroi et stoppe le programme. Envoie le code d'erreur \a errNumber au PC, qui se charge d'afficher sa description. 
+	 * \todo Mettre en pause le traçé, quand la pause sera opérationnelle.
 	 */
 	void error(
-				Error errNumber);
+				Error errorNumber);
+
+	/**
+	 * \brief Fonction appelée lorsque un warning se produit.
+	 * \details Envoie le code de warning \a errNumber à Processing, qui se charge d'afficher sa description sans affecter le déroulement du programme.
+	 * \todo Mettre en pause le traçé, quand la pause sera opérationnelle.
+	 */
+	void warning(
+				Error warningNumber);
 
 	/***********************
-	* Commande du matÃ©riel *
+	* Commande du matériel *
 	***********************/
 
 	/**
 	 * \brief Rotation du moteur gauche d'un pas.
-	 * \todo La direction en paramÃ¨tre ou en argument de classe.
-	 * \todo Il faudrait ne pas faire de pause pour ne pas influencer sur le traÃ§Ã©
+	 * \param pull Sens du pas a effectuer : \a true pour tirer, \a false pour relacher.
 	 */
 	void leftStep(
-				);
+				bool pull);
 
 	/**
 	 * \brief Rotation du moteur droit d'un pas.
-	 * \todo La direction en paramÃ¨tre ou en argument de classe.
-	 * \todo Il faudrait ne pas faire de pause pour ne pas influencer sur le traÃ§Ã©
+	 * \param pull Sens du pas a effectuer : \a true pour tirer, \a false pour relacher.
 	 */
 	void rightStep(
-				);
+				bool pull);
 
 	/**
-	 * \brief Alimente ou dÃ©salimente les moteurs.
-	 * \details Ã‰loigne le stylo de la paroi avant la dÃ©salimentation pour Ã©viter de dessiner pendant la chute Ã©ventuelle du moteur.
-	 * \param power \a true pour alimenter le moteur, \a false pour le dÃ©salimenter.
+	 * \brief Alimente ou désalimente les moteurs.
+	 * \details Éloigne le stylo de la paroi avant la désalimentation pour éviter de dessiner pendant la chute éventuelle du moteur.
+	 * \param power \a true pour alimenter le moteur, \a false pour le désalimenter.
+ 	* \todo Séparer la désactivation moteur gauche et moteur droit.
 	 */
 	void power(
 				bool power);
@@ -384,7 +420,7 @@ class Drawall {
 	**************/
 
 	/**
-	 * \brief RÃ©cupÃ¨re la position horizontale de \a position.
+	 * \brief Récupère la position horizontale de \a position.
 	 * \details Cf. type enum \a Position.
 	 * \param position La position a convertir, de type \a Position.
 	 * \return La position verticale de \a position.
@@ -393,7 +429,7 @@ class Drawall {
 				Position position);
 
 	/**
-	 * \brief RÃ©cupÃ¨re la position verticale de \a position.
+	 * \brief Récupère la position verticale de \a position.
 	 * \details Cf. type enum \a Position.
 	 * \param position La position a convertir, de type \a Position.
 	 * \return La position verticale de \a position.
@@ -402,20 +438,20 @@ class Drawall {
 				Position position);
 
 	/**
-	 * \brief Calcule la longueur du cÃ¢ble gauche pour la position [\a x ; \a y]
+	 * \brief Calcule la longueur du câble gauche pour la position [\a x ; \a y]
 	 * \param x La position absolue horizontale du point.
 	 * \param y La position absolue horizontale du point.
-	 * \return La longueur du cÃ¢ble gauche pour cette position, en nombre de pas.
+	 * \return La longueur du câble gauche pour cette position, en nombre de pas.
 	 */
 	long positionToLeftLength(
 				float x,
 				float y);
 
 	/**
-	 * \brief Calcule la longueur du cÃ¢ble droit pour la position [\a x ; \a y]
+	 * \brief Calcule la longueur du câble droit pour la position [\a x ; \a y]
 	 * \param x La position absolue horizontale du point.
 	 * \param y La position absolue horizontale du point.
-	 * \return La longueur du cÃ¢ble droit pour cette position, en nombre de pas.
+	 * \return La longueur du câble droit pour cette position, en nombre de pas.
 	 */
 	long positionToRightLength(
 				float x,
@@ -427,21 +463,21 @@ class Drawall {
 
 	/**
 	 * \brief Initialise de la carte SD.
-	 * \details Peut gÃ©nÃ©rer l'erreur 01 : Carte absente ou non reconnue.
-	 * \param fileName Le nom du fichier Ã  lire.
-	 * \todo : si erreur et nom fichier > 8 car, proposer de vÃ©rifer si carte formatÃ©e en fat16.
+	 * \details Peut générer l'erreur 01 : Carte absente ou non reconnue.
+	 * \param fileName Le nom du fichier à lire.
+	 * \todo : si erreur et nom fichier > 8 car, proposer de vérifer si carte formatée en fat16.
 	 */
 	void sdInit(
 				const char *fileName);
 
 	/**
-	 * \brief RÃ©cupere la valeur de l'attribut \a attribute du fichier svg sous forme textuelle.
-	 * \details RÃ©cupÃ¨re le prochain mot correspondant Ã  la chaÃ®ne spÃ©cifiÃ©e.
+	 * \brief Récupere la valeur de l'attribut \a attribute du fichier svg sous forme textuelle.
+	 * \details Récupère le prochain mot correspondant à la chaîne spécifiée.
 	 * Ex.1 : "width" --> "21cm"
 	 * Ex.2 : "style" --> "fill:none;stroke:#000000"
-	 * \param attribute Le nom de l'attribut Ã  lire, ex : "width".
-	 * \param value ChaÃ®ne dans laquelle copier la valeur de l'attribut.
-	 * \todo DÃ©tecter le '>' pour chercher uniquement dans la balise.
+	 * \param attribute Le nom de l'attribut à lire, ex : "width".
+	 * \param value Chaîne dans laquelle copier la valeur de l'attribut.
+	 * \todo Détecter le '>' pour chercher uniquement dans la balise.
 	 * \todo Voir pourquoi pas de char* en sortie.
 	 */
 	void getAttribute(
@@ -449,38 +485,38 @@ class Drawall {
 				char *value);
 
 	/**
-	 * \brief RÃ©cupere la valeur de l'attribut \a attribute du fichier svg sous forme numÃ©rique (flotant).
-	 * \details RÃ©cupÃ¨re le prochain mot correspondant Ã  la chaÃ®ne spÃ©cifiÃ©e et le convertit en flotant en prenant en compte son unitÃ© (cm, mm, ...).
+	 * \brief Récupere la valeur de l'attribut \a attribute du fichier svg sous forme numérique (flotant).
+	 * \details Récupère le prochain mot correspondant à la chaîne spécifiée et le convertit en flotant en prenant en compte son unité (cm, mm, ...).
 	 * Ex.1 : width --> 210
-	 * \param attribute Le nom de l'attribut Ã  lire.
-	 * \todo Convertir les unitÃ©s en mm, pas en px.
+	 * \param attribute Le nom de l'attribut à lire.
+	 * \todo Convertir les unités en mm, pas en px.
 	 */
 	float getNumericAttribute(
 				const char *attribute);
 
 	/**
-	 * \brief Informe si le caractÃ¨re \a car est un chiffre.
-	 * \param car Le caractÃ¨re Ã  tester.
-	 * \return Renvoie \a true si le caractÃ¨re est un chiffre, \a false sinon.
+	 * \brief Informe si le caractère \a car est un chiffre.
+	 * \param car Le caractère à tester.
+	 * \return Renvoie \a true si le caractère est un chiffre, \a false sinon.
 	 */
 	bool isNumber(
 				char car);
 
 	/**
 	 * \brief Cherche le mot \a word dans le fichier.
-	 * \details Une fois trouvÃ©, le curseur sera positionnÃ© Ã  la fin du mot.
-	 * \param word Le mot Ã  chercher.
-	 * \return Renvoie \a false si le mot n'a pas Ã©tÃ© trouvÃ©.
+	 * \details Une fois trouvé, le curseur sera positionné à la fin du mot.
+	 * \param word Le mot à chercher.
+	 * \return Renvoie \a false si le mot n'a pas été trouvé.
 	 */
 	bool sdFind(
 				const char *word);
 
 	/**
-	 * \brief RÃ©cupÃ¨re \a nbParams paramÃ¨tres, les convertissent en float et les stoquent dans le tableau \a tabParams.
-	 * \details Les paramÃ¨tres sont des nombres sÃ©parÃ©s par un espace ou une virgule.
+	 * \brief Récupère \a nbParams paramètres, les convertissent en float et les stoquent dans le tableau \a tabParams.
+	 * \details Les paramètres sont des nombres séparés par un espace ou une virgule.
 	 * Ex : d="m 150.0 10.0, l 20 20"
-	 * \param tabParams Le tableau de paramÃ¨tres dans lequel seront stoquÃ© les nombres.
-	 * \param nbParams Le nombre de paramÃ¨tres.
+	 * \param tabParams Le tableau de paramètres dans lequel seront stoqué les nombres.
+	 * \param nbParams Le nombre de paramètres.
 	 * \todo Voir si on peut renvoyer le tableau.
 	 */
 	void getParameters(
@@ -489,14 +525,14 @@ class Drawall {
 
 	/**
 	 * \brief Dessine une figure vectorielle correspondant au contenu de l'attribut d="..." d"une balise \a path.
-	 * \details Le curseur doit Ãªtre positionnÃ© au dÃ©but du contenu de d"..."
+	 * \details Le curseur doit être positionné au début du contenu de d"..."
 	 */
 	void draw(
 				);
 
 	/**
-	 * \brief Approche ou Ã©loigne le crayon de la paroi.
-	 * \param write \a true pour plaquer le crayon contre la paroi (traÃ§Ã©), \a false pour l'Ã©loigner (dÃ©placement)
+	 * \brief Approche ou éloigne le crayon de la paroi.
+	 * \param write \a true pour plaquer le crayon contre la paroi (traçé), \a false pour l'éloigner (déplacement)
 	 */
 	void write(
 				bool write);
@@ -511,16 +547,16 @@ class Drawall {
 				);
 
 	/**
-	 * \brief DÃ©marre la librairie.
-	 * \details \b NÃ©cessaire au fonctionnement de la librairie. RÃ©alise les procÃ©dures d'initialisation du robot.
-	 * \param fileName Nom du fichier de configuration Ã  charger.
+	 * \brief Démarre la librairie.
+	 * \details \b Nécessaire au fonctionnement de la librairie. Réalise les procédures d'initialisation du robot.
+	 * \param fileName Nom du fichier de configuration à charger.
 	 */
 	void begin(
 				const char *fileName);
 
 	/**
-	 * \brief Finit le traÃ§Ã©.
-	 * \details UtilisÃ© Ã  la fin du programme. Cela positionne le crayon en bas de la zone de dessin, dÃ©salimente les moteurs et met en pause le programme.
+	 * \brief Finit le traçé.
+	 * \details Utilisé à la fin du programme. Cela positionne le crayon en bas de la zone de dessin, désalimente les moteurs et met en pause le programme.
 	 */
 	void end(
 				);
@@ -544,8 +580,8 @@ class Drawall {
 				);
 
 	/**
-	 * \brief SpÃ©cifie la position initiale du crayon.
-	 * \details Ã€ utiliser avant de commencer Ã  tracer.
+	 * \brief Spécifie la position initiale du crayon.
+	 * \details À utiliser avant de commencer à tracer.
 	 * \param x La position horizontale du crayon.
 	 * \param y La position verticale du crayon.
 	 */
@@ -554,8 +590,8 @@ class Drawall {
 				float y);
 
 	/**
-	 * \brief SpÃ©cifie la position initiale du crayon.
-	 * \details Ã€ utiliser avant de commencer Ã  tracer.
+	 * \brief Spécifie la position initiale du crayon.
+	 * \details À utiliser avant de commencer à tracer.
 	 * \param position La position du crayon (voir type enum \a Position).
 	 * \bug Ne fonctionne pas sur le sketch.
 	 */
@@ -563,10 +599,10 @@ class Drawall {
 				Position position);
 
 	/**
-	 * \brief SpÃ©cifie la vitesse du traÃ§Ã© (en mm/s).
-	 * \details Cette vitesse correspond Ã  la vitesse de dÃ©placement de la courroie qui effectue la plus grande distance entre 2 points (Cf. \a mDelay). La vitesse rÃ©elle du dessin sera donc plus lente.
+	 * \brief Spécifie la vitesse du traçé (en mm/s).
+	 * \details Cette vitesse correspond à la vitesse de déplacement de la courroie qui effectue la plus grande distance entre 2 points (Cf. \a mDelay). La vitesse réelle du dessin sera donc plus lente.
 
-	 * \param speed La vitesse du traÃ§Ã©.
+	 * \param speed La vitesse du traçé.
 	 * \bug La vitesse diminue si on augmente le nombre de pas.
 	 */
 	void setSpeed(
@@ -577,7 +613,7 @@ class Drawall {
 	**********************/
 
 	/**
-	 * \brief DÃ©place le crayon Ã  la position absolue [\a x ; \a y].
+	 * \brief Déplace le crayon à la position absolue [\a x ; \a y].
 	 * \param x La position absolue horizontale du point de destination.
 	 * \param y La position absolue verticale du point de destination.
 	 */
@@ -586,15 +622,15 @@ class Drawall {
 				float y);
 
 	/**
-	 * \brief DÃ©place le crayon Ã  la position absolue \a position.
+	 * \brief Déplace le crayon à la position absolue \a position.
 	 * \param position La position absolue du point de destination (Cf type enum \a Position)
 	 */
 	void move(
 				Position position);
 
 	/**
-	 * \brief DÃ©place le crayon Ã  la position relative [\a x ; \a y].
-	 * \details Une position relative correspond Ã  la position d'un point par rapport Ã  la position actuelle.
+	 * \brief Déplace le crayon à la position relative [\a x ; \a y].
+	 * \details Une position relative correspond à la position d'un point par rapport à la position actuelle.
 	 * \param x La position relative horizontale du point de destination.
 	 * \param y La position relative verticale du point de destination.
 	 */
@@ -603,7 +639,7 @@ class Drawall {
 				float y);
 
 	/**
-	 * \brief Trace une ligne droite, de la position actuelle Ã  la position absolue [\a x; \a y].
+	 * \brief Trace une ligne droite, de la position actuelle à la position absolue [\a x; \a y].
 	 * \param x La position absolue horizontale du point de destination.
 	 * \param y La position absolue verticale du point de destination.
 	 * \bug Fait des escaliers dans certains cas (?).
@@ -613,8 +649,8 @@ class Drawall {
 				float y);
 
 	/**
-	 * \brief Trace une ligne droite, de la position actuelle Ã  la position relative [\a x; \a y].
-	 * \details Une position relative correspond Ã  la position d'un point par rapport Ã  la position actuelle.
+	 * \brief Trace une ligne droite, de la position actuelle à la position relative [\a x; \a y].
+	 * \details Une position relative correspond à la position d'un point par rapport à la position actuelle.
 	 * \param x La position relative horizontale du point de destination.
 	 * \param y La position relative verticale du point de destination.
 	 */
@@ -624,42 +660,42 @@ class Drawall {
 
 	/**
 	 * \brief Trace un rectangle de largeur \a x et de hauteur \a y, avec pour point haut-gauche la position actuelle.
-	 * \param x La taille des arrÃªtes horizontales.
-	 * \param y La taille des arrÃªtes verticales.
+	 * \param x La taille des arrêtes horizontales.
+	 * \param y La taille des arrêtes verticales.
 	 */
 	void rectangle(
 				float x,
 				float y);
 
 	/**
-	 * \brief Trace un rectangle reprÃ©sentant les limites de la zone de dessin.
+	 * \brief Trace un rectangle représentant les limites de la zone de dessin.
 	 */
 	void area(
 				);
 
 	/**
-	 * \brief Trace un rectangle correspondant Ã  la zone de dessin du fichier svg \a fileName.
-	 * \details Le robot doit Ãªtre muni d'un lecteur de carte SD et le fichier vectoriel doit Ãªtre copiÃ© sur celle-ci.
+	 * \brief Trace un rectangle correspondant à la zone de dessin du fichier svg \a fileName.
+	 * \details Le robot doit être muni d'un lecteur de carte SD et le fichier vectoriel doit être copié sur celle-ci.
 	 * \param fileName Le nom du fichier.
-	 * \bug Le rectangle sort de la zone de dessin dans certains cas (testÃ© aux valeurs 4810, 3950, 2830, 430, 640) + limite droite non-dÃ©tectÃ©e.
+	 * \bug Le rectangle sort de la zone de dessin dans certains cas (testé aux valeurs 4810, 3950, 2830, 430, 640) + limite droite non-détectée.
 
 	 */
 	void drawingArea(
 				const char *fileName);
 
 	/**
-	 * \brief Trace une courbe de BÃ©zier cubique en position absolue.
-	 * \details La courbe est composÃ©e de 100 segments.
-	 * Avec en point de dÃ©part la position actuelle, en point de destination [\a pX ; \a pY] et en points de contrÃ´le P1 [\a p1X ; \a p1Y] et P2 [\a p2X ; \a p2Y].
-	 * Cf l'article WikipÃ©dia sur les courbes de BÃ©zier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
-	 * Ã‰quation de la courbe : B(t) = P0(1-t)^3 + 3*P1*t(1-t)^2 + 3*P2*t^2*(1-t) + P3*t^3. Avec t allant de 0 Ã  1.
+	 * \brief Trace une courbe de Bézier cubique en position absolue.
+	 * \details La courbe est composée de 100 segments.
+	 * Avec en point de départ la position actuelle, en point de destination [\a pX ; \a pY] et en points de contrôle P1 [\a p1X ; \a p1Y] et P2 [\a p2X ; \a p2Y].
+	 * Cf l'article Wikipédia sur les courbes de Bézier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
+	 * Équation de la courbe : B(t) = P0(1-t)^3 + 3*P1*t(1-t)^2 + 3*P2*t^2*(1-t) + P3*t^3. Avec t allant de 0 à 1.
 	 * \param pX La position absolue horizontale du point de destination.
 	 * \param pY La position absolue verticale du point de destination.
 
-	 * \param p1X La position absolue horizontale du point de contrÃ´le P1.
-	 * \param p1Y La position absolue verticale du point de contrÃ´le P1.
-	 * \param p2X La position absolue horizontale du point de contrÃ´le P2.
-	 * \param p2Y La position absolue verticale du point de contrÃ´le P2.
+	 * \param p1X La position absolue horizontale du point de contrôle P1.
+	 * \param p1Y La position absolue verticale du point de contrôle P1.
+	 * \param p2X La position absolue horizontale du point de contrôle P2.
+	 * \param p2Y La position absolue verticale du point de contrôle P2.
 	 */
 	void cubicCurveAbs(
 				float pX,
@@ -670,16 +706,16 @@ class Drawall {
 				float p2Y);
 
 	/**
-	 * \brief Trace une courbe de BÃ©zier cubique en position relative.
-	 * \details La courbe est composÃ©e de 100 segments.
-	 * Avec en point de dÃ©part la position actuelle, en point de destination [\a pX ; \a pY] et en points de contrÃ´le P1 [\a p1X ; \a p1Y] et P2 [\a p2X ; \a p2Y].
-	 * Cf l'article WikipÃ©dia sur les courbes de BÃ©zier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
+	 * \brief Trace une courbe de Bézier cubique en position relative.
+	 * \details La courbe est composée de 100 segments.
+	 * Avec en point de départ la position actuelle, en point de destination [\a pX ; \a pY] et en points de contrôle P1 [\a p1X ; \a p1Y] et P2 [\a p2X ; \a p2Y].
+	 * Cf l'article Wikipédia sur les courbes de Bézier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
 	 * \param pX La position relative horizontale du point de destination.
 	 * \param pY La position relative verticale du point de destination.
-	 * \param p1X La position relative horizontale du point de contrÃ´le P1.
-	 * \param p1Y La position relative verticale du point de contrÃ´le P1.
-	 * \param p2X La position relative horizontale du point de contrÃ´le P2.
-	 * \param p2Y La position relative verticale du point de contrÃ´le P2.
+	 * \param p1X La position relative horizontale du point de contrôle P1.
+	 * \param p1Y La position relative verticale du point de contrôle P1.
+	 * \param p2X La position relative horizontale du point de contrôle P2.
+	 * \param p2Y La position relative verticale du point de contrôle P2.
 	 */
 	void cubicCurveRel(
 				float pX,
@@ -690,15 +726,15 @@ class Drawall {
 				float p2Y);
 
 	/**
-	 * \brief Trace une courbe de BÃ©zier cubique en position absolue.
-	 * \details La courbe est composÃ©e de 100 segments.
-	 * Avec en point de dÃ©part la position actuelle, en point de destination [\a pX ; \a pY] et point P2 [\a p2X ; \a p2Y].
-	 * Le point de contrÃ´le P1 est l'image du point P2 de la derniÃ¨re courbe de BÃ©zier. Si la derniÃ¨re figure n'en Ã©tait pas une, il correspond au point courant.
-	 * Cf l'article WikipÃ©dia sur les courbes de BÃ©zier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
+	 * \brief Trace une courbe de Bézier cubique en position absolue.
+	 * \details La courbe est composée de 100 segments.
+	 * Avec en point de départ la position actuelle, en point de destination [\a pX ; \a pY] et point P2 [\a p2X ; \a p2Y].
+	 * Le point de contrôle P1 est l'image du point P2 de la dernière courbe de Bézier. Si la dernière figure n'en était pas une, il correspond au point courant.
+	 * Cf l'article Wikipédia sur les courbes de Bézier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
 	 * \param pX La absolue relative horizontale du point de destination.
 	 * \param pY La absolue relative verticale du point de destination.
-	 * \param p2X La absolue relative horizontale du point de contrÃ´le P2.
-	 * \param p2Y La absolue relative verticale du point de contrÃ´le P2.
+	 * \param p2X La absolue relative horizontale du point de contrôle P2.
+	 * \param p2Y La absolue relative verticale du point de contrôle P2.
 	 */
 	void cubicCurveAbs(
 				float pX,
@@ -707,15 +743,15 @@ class Drawall {
 				float p2Y);
 
 	/**
-	 * \brief Trace une courbe de BÃ©zier cubique en position relative.
-	 * \details La courbe est composÃ©e de 100 segments.
-	 * Avec en point de dÃ©part la position actuelle, en point de destination [\a pX ; \a pY] et point P2 [\a p2X ; \a p2Y].
-	 * Le point de contrÃ´le P1 est l'image du point P2 de la derniÃ¨re courbe de BÃ©zier. Si la derniÃ¨re figure n'en Ã©tait pas une, il correspond au point courant.
-	 * Cf l'article WikipÃ©dia sur les courbes de BÃ©zier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
+	 * \brief Trace une courbe de Bézier cubique en position relative.
+	 * \details La courbe est composée de 100 segments.
+	 * Avec en point de départ la position actuelle, en point de destination [\a pX ; \a pY] et point P2 [\a p2X ; \a p2Y].
+	 * Le point de contrôle P1 est l'image du point P2 de la dernière courbe de Bézier. Si la dernière figure n'en était pas une, il correspond au point courant.
+	 * Cf l'article Wikipédia sur les courbes de Bézier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
 	 * \param pX La position relative horizontale du point de destination.
 	 * \param pY La position relative verticale du point de destination.
-	 * \param p2X La position relative horizontale du point de contrÃ´le P2.
-	 * \param p2Y La position relative verticale du point de contrÃ´le P2.
+	 * \param p2X La position relative horizontale du point de contrôle P2.
+	 * \param p2Y La position relative verticale du point de contrôle P2.
 	 */
 	void cubicCurveRel(
 				float pX,
@@ -724,15 +760,15 @@ class Drawall {
 				float p2Y);
 
 	/**
-	 * \brief Trace une courbe de BÃ©zier quadratique en position absolue.
-	 * \details La courbe est composÃ©e de 100 segments.
-	 * Avec en point de dÃ©part la position actuelle, en point de destination [\a pX ; \a pY] et en point de contrÃ´le P1 [\a p1X ; \a p1Y].
-	 * Cf l'article WikipÃ©dia sur les courbes de BÃ©zier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
-	 * Ã‰quation de la courbe : B(t) = P0*(1-t)^2 + 2*P1*t(1-t) + P2*t^2. Avec t allant de 0 Ã  1.
+	 * \brief Trace une courbe de Bézier quadratique en position absolue.
+	 * \details La courbe est composée de 100 segments.
+	 * Avec en point de départ la position actuelle, en point de destination [\a pX ; \a pY] et en point de contrôle P1 [\a p1X ; \a p1Y].
+	 * Cf l'article Wikipédia sur les courbes de Bézier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
+	 * Équation de la courbe : B(t) = P0*(1-t)^2 + 2*P1*t(1-t) + P2*t^2. Avec t allant de 0 à 1.
 	 * \param pX La position absolue horizontale du point de destination.
 	 * \param pY La position absolue verticale du point de destination.
-	 * \param p1X La position absolue horizontale du point de contrÃ´le P1.
-	 * \param p1Y La position absolue verticale du point de contrÃ´le P1.
+	 * \param p1X La position absolue horizontale du point de contrôle P1.
+	 * \param p1Y La position absolue verticale du point de contrôle P1.
 	 */
 	void quadraticCurveAbs(
 				float pX,
@@ -741,14 +777,14 @@ class Drawall {
 				float p1Y);
 
 	/**
-	 * \brief Trace une courbe de BÃ©zier quadratique en position relative.
-	 * \details La courbe est composÃ©e de 100 segments.
-	 * Avec en point de dÃ©part la position actuelle, en point de destination [\a pX ; \a pY] et en point de contrÃ´le P1 [\a p1X ; \a p1Y].
-	 * Cf l'article WikipÃ©dia sur les courbes de BÃ©zier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
+	 * \brief Trace une courbe de Bézier quadratique en position relative.
+	 * \details La courbe est composée de 100 segments.
+	 * Avec en point de départ la position actuelle, en point de destination [\a pX ; \a pY] et en point de contrôle P1 [\a p1X ; \a p1Y].
+	 * Cf l'article Wikipédia sur les courbes de Bézier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
 	 * \param pX La position relative horizontale du point de destination.
 	 * \param pY La position relative verticale du point de destination.
-	 * \param p1X La position relative horizontale du point de contrÃ´le P1.
-	 * \param p1Y La position relative verticale du point de contrÃ´le P1.
+	 * \param p1X La position relative horizontale du point de contrôle P1.
+	 * \param p1Y La position relative verticale du point de contrôle P1.
 	 */
 	void quadraticCurveRel(
 				float pX,
@@ -757,11 +793,11 @@ class Drawall {
 				float p1Y);
 
 	/**
-	 * \brief Trace une courbe de BÃ©zier quadratique en position absolue.
-	 * \details La courbe est composÃ©e de 100 segments.
-	 * Avec en point de dÃ©part la position actuelle et en point de destination [\a pX ; \a pY].
-	 * Le point de contrÃ´le P1 est l'image du point P2 de la derniÃ¨re courbe de BÃ©zier. Si la derniÃ¨re figure n'en Ã©tait pas une, il correspond au point courant.
-	 * Cf l'article WikipÃ©dia sur les courbes de BÃ©zier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
+	 * \brief Trace une courbe de Bézier quadratique en position absolue.
+	 * \details La courbe est composée de 100 segments.
+	 * Avec en point de départ la position actuelle et en point de destination [\a pX ; \a pY].
+	 * Le point de contrôle P1 est l'image du point P2 de la dernière courbe de Bézier. Si la dernière figure n'en était pas une, il correspond au point courant.
+	 * Cf l'article Wikipédia sur les courbes de Bézier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
 
 	 * \param pX La position absolue horizontale du point de destination.
 	 * \param pY La position absolue verticale du point de destination.
@@ -771,11 +807,11 @@ class Drawall {
 				float pY);
 
 	/**
-	 * \brief Trace une courbe de BÃ©zier quadratique en position relative.
-	 * \details La courbe est composÃ©e de 100 segments.
-	 * Avec en point de dÃ©part la position actuelle, en point de destination [\a pX ; \a pY].
-	 * Le point de contrÃ´le P1 est l'image du point P2 de la derniÃ¨re courbe de BÃ©zier. Si la derniÃ¨re figure n'en Ã©tait pas une, il correspond au point courant.
-	 * Cf l'article WikipÃ©dia sur les courbes de BÃ©zier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
+	 * \brief Trace une courbe de Bézier quadratique en position relative.
+	 * \details La courbe est composée de 100 segments.
+	 * Avec en point de départ la position actuelle, en point de destination [\a pX ; \a pY].
+	 * Le point de contrôle P1 est l'image du point P2 de la dernière courbe de Bézier. Si la dernière figure n'en était pas une, il correspond au point courant.
+	 * Cf l'article Wikipédia sur les courbes de Bézier : \a http://fr.wikipedia.org/wiki/Courbe_de_B%C3%A9zier .
 	 * \param pX La position relative horizontale du point de destination.
 	 * \param pY La position relative verticale du point de destination.
 	 */
@@ -785,29 +821,29 @@ class Drawall {
 
 	/**
 	 * \brief Fini la figure SVG en cours.
-	 * \details TrÃ¢ce une ligne droite jusqu'Ã  la position du point cible du dernier dÃ©placement, de maniÃ¨re a faire des formes "finies".
+	 * \details Trâce une ligne droite jusqu'à la position du point cible du dernier déplacement, de manière a faire des formes "finies".
 	 */
 	void endFigure(
 				);
 
 	/**
 	 * \brief Trace un dessin vectoriel svg correspondant au fichier \a fileName sur la carte SD.
-	 * \details Le robot doit Ãªtre muni d'un lecteur de carte SD et le fichier vectoriel doit Ãªtre copiÃ© sur celle-ci.
-	 * \param fileName Le nom du fichier Ã  dessiner.
-	 * \todo Ajouter paramÃ¨tre Position position (CENTER, ...).
+	 * \details Le robot doit être muni d'un lecteur de carte SD et le fichier vectoriel doit être copié sur celle-ci.
+	 * \param fileName Le nom du fichier à dessiner.
+	 * \todo Ajouter paramètre Position position (CENTER, ...).
 	 */
 	void svg(
 				const char *fileName);
 
 	/**
-	 * \Brief Charge les paramÃ¨tres Ã  partir d'un fichier de configuration prÃ©sent sur la carte SD.
-	 * \param fileName Le nom du fichier de configuration Ã  charger.
+	 * \Brief Charge les paramètres à partir d'un fichier de configuration présent sur la carte SD.
+	 * \param fileName Le nom du fichier de configuration à charger.
 	*/
 	void loadParameters(
 				const char *fileName);
 
 	/**
-	 * \Brief Imprime sur la liaison sÃ©rie les paramÃ¨tres actuels.
+	 * \Brief Imprime sur la liaison série les paramètres actuels.
 	*/
 	void printParameters(
 				);

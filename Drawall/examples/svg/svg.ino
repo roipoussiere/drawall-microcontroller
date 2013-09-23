@@ -36,7 +36,7 @@ Drawall d;
 
 void setup() {
   d.begin("drawall.dcf"); // Start the library.
-  d.setSpeed(50); // Set speed.
+  d.setSpeed(100); // Set speed.
 }
 
 void loop() {
