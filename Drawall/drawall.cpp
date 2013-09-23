@@ -34,6 +34,8 @@ Drawall::Drawall()
 void Drawall::begin(
 			const char *fileName)
 {
+	// Début de la communication série.
+	// La vitesse du port est définie dans le fichier pins.h.
 	Serial.begin(SERIAL_BAUDS);
 
 	// Gestion de l'interruption à l'appui sur le BP pause.
@@ -41,7 +43,7 @@ void Drawall::begin(
 	EIMSK = B01;				// Interruption INT0 déclenchée à l'appui sur le BP pause : INT0 (pin2) = B01 ou INT1 (pin3) = B10 sur Atmega328.
 	EICRA = B0011;				// Interruption déclenchée sur le front montant pour INT0 : état bas = B00, changement d'état = B01, front descendant = B10, front montant = B11
 
-	// pins d'entrée
+	// Pins d'entrée
 	pinMode(PIN_LEFT_CAPTOR, INPUT);
 	pinMode(PIN_RIGHT_CAPTOR, INPUT);
 	// pinMode(PIN_REMOTE, INPUT);
@@ -51,7 +53,7 @@ void Drawall::begin(
 	digitalWrite(PIN_LEFT_CAPTOR, HIGH);
 	digitalWrite(PIN_RIGHT_CAPTOR, HIGH);
 
-	// pins de sortie
+	// Pins de sortie
 	pinMode(PIN_OFF_MOTORS, OUTPUT);
 	pinMode(PIN_LEFT_MOTOR_STEP, OUTPUT);
 	pinMode(PIN_LEFT_MOTOR_DIR, OUTPUT);
@@ -69,8 +71,8 @@ void Drawall::begin(
 	if (!SD.begin(PIN_SD_CS)) {
 		error(CARD_NOT_FOUND);
 	}
-	// pour que write() fonctionne la 1ere fois
-	mWriting = true;
+
+	mWriting = true;			// Pour que write() fonctionne la 1ere fois
 
 	// Chargement des paramètres à partir du fichier de configuration
 	loadParameters(fileName);
@@ -98,30 +100,17 @@ void Drawall::begin(
 
 	setSpeed(mpDefaultSpeed);
 
-	// *** envoi des données d'initialisation à Processing ***
-	Serial.write('\n');			// Début d'init
-
-	Serial.print(mpSpan);
-	Serial.write(',');
-
-	Serial.print(mpAreaPositionX);
-	Serial.write(',');
-	Serial.print(mpAreaPositionY);
-	Serial.write(',');
-
-	Serial.print(mpAreaWidth);
-	Serial.write(',');
-	Serial.print(mpAreaHeight);
-	Serial.write(',');
-
-	Serial.print(mLeftLength);
-	Serial.write(',');
-	Serial.print(mRightLength);
-	Serial.write(',');
-
-	Serial.print(mStepLength * 1000);
-
-	Serial.write('\n');			// Fin d'init
+	// Envoi des données d'initialisation à Processing
+	Serial.write(BEGIN_INSTRUCTIONS);
+	Serial.println(mpSpan);
+	Serial.println(mpAreaPositionX);
+	Serial.println(mpAreaPositionY);
+	Serial.println(mpAreaWidth);
+	Serial.println(mpAreaHeight);
+	Serial.println(mLeftLength);
+	Serial.println(mRightLength);
+	Serial.println(mStepLength * 1000);
+	Serial.write(END_INSTRUCTIONS);
 
 	// Pause jusqu'à l'appui sur le BP.
 	// Serial.println("_Appuyez sur le bouton pour commencer");
@@ -134,13 +123,13 @@ void Drawall::begin(
 // Routine d'interruption
 ISR(INT0_vect)
 {
-	EIMSK = 0;					// Bloquer INT0
+	EIMSK = 0;					// Bloquage de INT0
 
 	while (PIND & 4) {
-	};							// On attend que le pin soit à '1'
+	};							// Attente que le pin soit à '1'
 	while (!(PIND & 4)) {
-	};							// On attend que le pin soit à '0'
-	// Pour un front descendant, inverser les 2 lignes.
+	};							// Attente que le pin soit à '0'
+	// (Pour un front descendant, inverser les 2 lignes).
 
 	EIMSK = 1;					// Réautorisation de INT0
 	EIFR = 1;					// Flag de INT0 remis à '0'
@@ -276,11 +265,11 @@ void Drawall::power(
 {
 	if (alimenter) {
 		digitalWrite(PIN_OFF_MOTORS, LOW);
-		Serial.write('a');		// Processing: a = alimenter
+		Serial.write(ENABLE_MOTORS);	// Processing: a = alimenter
 	} else {
 		digitalWrite(PIN_OFF_MOTORS, HIGH);
+		Serial.write(DISABLE_MOTORS);	// Processing: b = désalimenter
 		write(false);
-		Serial.write('b');		// Processing: b = désalimenter
 	}
 }
 
@@ -293,7 +282,7 @@ void Drawall::write(
 		mServo.write(mpServoOn);
 		delay(mpPostServoDelay);
 
-		Serial.write('w');		// Processing: w = ecrire
+		Serial.write(WRITE);	// Processing: w = ecrire
 		mWriting = true;
 	}
 	// si on ne veut pas ecrire et que le stylo ecrit
@@ -302,7 +291,7 @@ void Drawall::write(
 		mServo.write(mpServoOff);
 		delay(mpPostServoDelay);
 
-		Serial.write('x');		// Processing: x = ne pas ecrire
+		Serial.write(MOVE);		// Processing: x = ne pas ecrire
 		mWriting = false;
 	}
 }
@@ -315,20 +304,16 @@ bool Drawall::positionInsideArea(
 
 	if (x < 0) {
 		x = 0;
-		Serial.write('W');
-		Serial.write(50);
+		error(LEFT_LIMIT);
 	} else if (x > mpAreaWidth) {
 		x = mpAreaWidth;
-		Serial.write('W');
-		Serial.write(51);
+		error(RIGHT_LIMIT);
 	} else if (y < 0) {
 		y = 0;
-		Serial.write('W');
-		Serial.write(52);
+		error(UPPER_LIMIT);
 	} else if (y > mpAreaHeight) {
 		y = mpAreaHeight;
-		Serial.write('W');
-		Serial.write(53);
+		error(LOWER_LIMIT);
 	} else {
 		inside = true;
 	}
@@ -389,8 +374,8 @@ void Drawall::line(
 	long nbPasG = bG - mLeftLength;
 	long nbPasD = bD - mRightLength;
 
-	bool sensGHaut = true;
-	bool sensDHaut = true;
+	bool pullLeft = false;
+	bool pullRight = false;
 
 	float delaiG;
 	float delaiD;
@@ -400,11 +385,11 @@ void Drawall::line(
 
 	// calcul de la direction
 	if (nbPasG < 0) {
-		sensGHaut = false;
+		pullLeft = true;
 	}
 
 	if (nbPasD < 0) {
-		sensDHaut = false;
+		pullRight = true;
 	}
 	// On a le sens, donc on peut retirer le signe pour simplifier les calculs
 	nbPasG = fabs(nbPasG);
@@ -421,58 +406,30 @@ void Drawall::line(
 	dernierTempsG = micros();
 	dernierTempsD = micros();
 
-	if (sensGHaut) {
+	if (pullLeft) {
 		digitalWrite(PIN_LEFT_MOTOR_DIR, mpLeftDirection);
 	} else {
 		digitalWrite(PIN_LEFT_MOTOR_DIR, !mpLeftDirection);
 	}
 
-	if (sensDHaut) {
+	if (pullRight) {
 		digitalWrite(PIN_RIGHT_MOTOR_DIR, mpRightDirection);
 	} else {
 		digitalWrite(PIN_RIGHT_MOTOR_DIR, !mpRightDirection);
 	}
 
 	while (nbPasG > 0 || nbPasD > 0) {
-		// si le delai est franchi et qu'il reste des pas à faire
+		// Si le delai est franchi et qu'il reste des pas à faire
 		if ((nbPasG > 0) && (micros() - dernierTempsG >= delaiG)) {
-			// stoque le temps actuel dans lastTimer
-			dernierTempsG = micros();
-
-			// incremente ou decremente (en fonction de la direction)
-			if (sensGHaut) {
-				mLeftLength++;
-				Serial.write('L');
-			} else {
-				mLeftLength--;
-				Serial.write('l');
-			}
-
-			// decremente le nb de pas restants
-			nbPasG--;
-
-			// Effectue le pas
-			leftStep();
+			dernierTempsG = micros();	// Stoque le temps actuel dans lastTimer
+			leftStep(pullLeft);	// Effectue le pas
+			nbPasG--;			// Décremente le nb de pas restants
 		}
 
 		if ((nbPasD > 0) && (micros() - dernierTempsD >= delaiD)) {
-			// stoque le temps actuel dans lastTimer
-			dernierTempsD = micros();
-
-			// incremente ou decremente (en fonction de la direction)
-			if (sensDHaut) {
-				mRightLength++;
-				Serial.write('R');
-			} else {
-				mRightLength--;
-				Serial.write('r');
-			}
-
-			// decremente le nb de pas restants
-			nbPasD--;
-
-			// Effectue le pas
-			rightStep();
+			dernierTempsD = micros();	// stoque le temps actuel dans lastTimer   
+			nbPasD--;			// decremente le nb de pas restants    
+			rightStep(pullRight);	// Effectue le pas
 		}
 	}
 
@@ -481,14 +438,30 @@ void Drawall::line(
 }
 
 void Drawall::leftStep(
-			)
+			bool pull)
 {
+	if (pull) {
+		mLeftLength--;
+		Serial.write(PULL_LEFT);
+	} else {
+		mLeftLength++;
+		Serial.write(PUSH_LEFT);
+	}
+
 	digitalWrite(PIN_LEFT_MOTOR_STEP, mLeftLength % 2);
 }
 
 void Drawall::rightStep(
-			)
+			bool pull)
 {
+	if (pull) {
+		mRightLength--;
+		Serial.write(PULL_RIGHT);
+	} else {
+		mRightLength++;
+		Serial.write(PUSH_RIGHT);
+	}
+
 	digitalWrite(PIN_RIGHT_MOTOR_STEP, mRightLength % 2);
 }
 
@@ -616,8 +589,7 @@ void Drawall::cubicCurveAbs(
 		line(ptx, pty, true);
 	}
 
-	// finit le dernier trajet au cas ou ça ne tombe pas juste
-	line(x, y, true);
+	line(x, y, true);			// Fin du dernier segment si ça ne tombe pas juste.
 
 	mQuadraticCurveX = 0;
 	mQuadraticCurveY = 0;
@@ -772,86 +744,59 @@ bool Drawall::isNumber(
 		}
 	}
 
-	// Aucun chiffre n'a été trouvé, renvoie faux
-	return false;
+	return false;				// Aucun chiffre n'a été trouvé, renvoie faux
 }
 
 float Drawall::getNumericAttribute(
 			const char *attribute)
 {
-	// nombre de max 20 caractères
-	char chaine[20 + 1];
+	char chaine[20 + 1];		// Le nombre fait max 20 caractères.
 
-	// se positionne en début de fichier
-	mFile.seek(0);
-
-	// recuperation des valeurs sous forme de chaine
-	getAttribute(attribute, chaine);
-
-	// unité de mesure de la valeur, ex cm ou mm
-	char unite[3];
-
-	// chaine contenant le nombre, ex : -3456.345
-	char nbCh[strlen(chaine)];
-
-	// chaine convertie en float
-	float nbFl;
-
+	mFile.seek(0);				// Se positionne en début de fichier.
+	getAttribute(attribute, chaine);	// Recuperation des valeurs sous forme de chaine.
+	char nbCh[strlen(chaine)];	// Chaine contenant le nombre, ex : "-3456.345".
+	char unit[3];				// Unité de mesure de la valeur, ex : "cm" ou "mm".
+	float nbFl;					// Chaine convertie en float
 	int i;
 
-	// taille des 2 chaines
+	// Taille des 2 chaines
 	int tNbCh = 0;
-	int tUnite = 0;
+	int tUnit = 0;
 
-	// parcourt toute la chaine.
+	// Parcourt toute la chaine
 	for (i = 0; chaine[i] != '\0'; i++) {
 		if (isNumber(chaine[i])) {
-			// remplit nbCh avec les chiffres
-			nbCh[tNbCh] = chaine[i];
+			nbCh[tNbCh] = chaine[i];	// Remplit nbCh avec les chiffres.
 
 			tNbCh++;
 		}
 
 		else {
-			unite[tUnite] = chaine[i];
-			tUnite++;
+			unit[tUnit] = chaine[i];
+			tUnit++;
 		}
 	}
 
-	// met la fin de chaine
+	// Ajoute les fins de chaine.
 	nbCh[tNbCh] = '\0';
-	unite[tUnite] = '\0';
+	unit[tUnit] = '\0';
 
-	// Conversion de la chaine en float
-	nbFl = atof(nbCh);
+	nbFl = atof(nbCh);			// Conversion de la chaine en float.
 
-	// Conversion des unités en mm :
-
-	if (!strcmp(unite, "px")) {
+	// Conversion des unités en mm
+	if (!strcmp(unit, "px")) {
 		nbFl *= 1;
-	}
-
-	else if (!strcmp(unite, "pt")) {
+	} else if (!strcmp(unit, "pt")) {
 		nbFl *= 1.25;
-	}
-
-	else if (!strcmp(unite, "pc")) {
+	} else if (!strcmp(unit, "pc")) {
 		nbFl *= 15;
-	}
-
-	else if (!strcmp(unite, "mm")) {
+	} else if (!strcmp(unit, "mm")) {
 		nbFl *= 3.543307;
-	}
-
-	else if (!strcmp(unite, "cm")) {
+	} else if (!strcmp(unit, "cm")) {
 		nbFl *= 35.43307;
-	}
-
-	else if (!strcmp(unite, "in")) {
+	} else if (!strcmp(unit, "in")) {
 		nbFl *= 90;
-	}
-
-	else {
+	} else {
 		nbFl *= 1;
 	}
 
@@ -864,27 +809,26 @@ bool Drawall::sdFind(
 	int i = 0;
 	char car;
 
-	// tant qu'il y a qqch à lire
+	// Tant qu'il y a qqch à lire
 	while (mFile.available()) {
 		car = mFile.read();
 
-		// si le caractère correspond, passe au suivant
+		// Si le caractère correspond, passe au suivant
 		if (car == word[i]) {
 			i++;
 
-			// si fin du mot (mot trouvé)
+			// Si fin du mot (mot trouvé)
 			if (word[i] == '\0') {
-				// on s'est bien positionné, opération réeussie! :)
-				return true;
+				return true;	// On s'est bien positionné, opération réeussie! :)
 			}
 		}
-		// si un des car. n'est pas bon on reprends depuis le debut
+		// Si un des car. n'est pas bon on reprends depuis le debut
 		else {
 			i = 0;
 		}
 	}
 
-	// si on est là c'est qu'on a pas trouvé le mot, fail!
+	// Si on est là c'est qu'on a pas trouvé le mot, fail!
 	return false;
 }
 
@@ -893,11 +837,9 @@ void Drawall::draw(
 {
 	char car;
 
-	// tableau contenant les valeurs à lançer dans la requette
-	// (max 7 valeurs avec la fonction arc() )
-	float tNb[7];
+	float tNb[5];				// Tableau contenant les valeurs à lançer dans la requette
 
-	// tant qu'il y a qqch à lire
+	// Tant qu'il y a qqch à lire
 	while (mFile.available()) {
 		car = mFile.read();
 
@@ -905,16 +847,15 @@ void Drawall::draw(
 		switch (car) {
 
 		case 'M':				// deplacerABS (2 args)
-			// lis les paramètres tant qu'il y a des nombres
+			// Lis les paramètres tant qu'il y a des nombres
 			do {
 				// la fonction deplacerABS() attends 2 paramètres
-				// on les récupère sous forme de tableau (tNb)
-				getParameters(tNb, 2);
 
-				// appel de la fonction
-				moveAbs(tNb[0], tNb[1]);
+				// Récupèration de ces paramètres sous forme de tableau (tNb)
+				getParameters(tNb, 2);
+				moveAbs(tNb[0], tNb[1]);	// Appel de la fonction
 			}
-			// teste le prochain car (le curseur ne bouge pas)
+			// Teste du prochain caractère (le curseur ne bouge pas).
 			while (isNumber(mFile.peek()));
 
 			break;
@@ -1015,8 +956,8 @@ void Drawall::draw(
 			while (isNumber(mFile.peek()));
 			break;
 
-			// si on détecte la fin du contenu de "d"
-			// on a parcouru toute les données, ça a reeussi !!
+			// Si on détecte la fin du contenu de "d"
+			// On a parcouru toute les données, ça a reeussi !!
 		case '"':
 			return;
 			break;
@@ -1026,37 +967,39 @@ void Drawall::draw(
 		case '\n':
 			break;
 
-			// Warning si la lettre n'est pas reconnue
+			// Si la lettre n'est pas reconnue
 		default:
-			Serial.write('W');
-			Serial.write(60);
-			Serial.print("_'");
+			error(UNKNOWN_SVG_FUNCTION);
+			Serial.write(BEGIN_MESSAGE);
+			Serial.print("'");
 			Serial.write(car);
 			Serial.println("'.");
+			Serial.write(END_MESSAGE);
 			break;
 		}
 
 	}
 
-	// si on est là c'est qu'on a parcouru tout le fichier
-	// sans trouver le (") de fin de la balise (d) : fail
-
+	// Si on est là c'est qu'on a parcouru tout le fichier
+	// sans trouver le (") de fin de la balise (d) : fail.
 	error(INCOMPLETE_SVG);
 }
 
 void Drawall::error(
-			Error errNumber)
+			Error errorNumber)
 {
-	if (errNumber < 100) {		// Gestion Erreurs
-		Serial.write('E');
-		Serial.write((byte) errNumber);
-		delay(1000);
-		write(false);
-		while (true) ;
-	} else {					// Gestion Warnings
-		Serial.write('W');
-		Serial.write((byte) errNumber);
-	}
+	Serial.write(ERROR);
+	Serial.write((byte) errorNumber);
+	delay(1000);
+	write(false);
+	while (true) ;
+}
+
+void Drawall::warning(
+			Error warningNumber)
+{
+	Serial.write(WARNING);
+	Serial.write((byte) warningNumber);
 }
 
 void Drawall::setDrawingScale(
@@ -1089,16 +1032,13 @@ void Drawall::sdInit(
 	mFile = SD.open(fileName);
 
 	if (!mFile) {
-		// Err. 02 : Erreur d'ouverture de fichier.
 		error(FILE_NOT_FOUND);
 	}
-	// se positionne en début de fichier
-	mFile.seek(0);
+	mFile.seek(0);				// Se positionne en début de fichier.
 
-	// Se positionne jusqu'à la balise SVG
-	// Si on ne la trouve pas, on renvoie une erreur
+	// Se positionne jusqu'à la balise SVG,
+	// si on ne la trouve pas, on renvoie une erreur.
 	if (!sdFind("<svg")) {
-		// Err. 12 : Le fichier n'est pas un fichier svg.
 		error(NOT_SVG_FILE);
 	}
 }
@@ -1115,41 +1055,38 @@ void Drawall::svg(
 	setDrawingScale(getNumericAttribute("width"),
 				getNumericAttribute("height"));
 
-	// Se positionne jusqu'à la balise PATH
-	// Si on ne la trouve pas, on renvoie une erreur
+	// Se positionne jusqu'à la balise PATH,
+	// si on ne la trouve pas, on renvoie une erreur.
 	if (!sdFind("<path")) {
-		error(NOT_SVG_PATH);
+		error(SVG_PATH_NOT_FOUND);
 	}
-	// tant que l'on trouve le début des données d'un traçé, on dessine
+	// Tant que l'on trouve le début des données d'un traçé, on dessine.
 	while (sdFind("d=\"")) {
 		draw();
 	}
 
 	// Fin du dessin svg
 	mFile.close();
-	Serial.write('n');
+	Serial.write(END);
 }
 
 void Drawall::getParameters(
 			float *tNb,
 			int nbParams)
 {
-	// chaine qui va contenir le nombre à convertir en float
-	// ex: (23456.43532)
-	char valeur[20];
-
+	char valeur[20];			// Chaine qui va contenir le nombre à convertir en float, ex : "23456.43532".
 	char car;
 
 	int i, j;
 
 	for (i = 0; i < nbParams; i++) {
-		// passe les espaces et virgules
+		// Passe les espaces et virgules
 		do {
 			car = mFile.read();
 		}
 		while (car == ' ' || car == ',');
 
-		// tant que les car. sont des chiffres, lis et stoque dans une chaine
+		// Tant que les car. sont des chiffres, lis et stoque dans une chaine.
 		for (j = 0; isNumber(car); j++) {
 			valeur[j] = car;
 			car = mFile.read();
@@ -1181,8 +1118,7 @@ void Drawall::loadParameters(
 	byte line_lenght;			// Longueur de la ligne
 	byte line_counter = 0;		// Compteur de lignes
 
-	// Initialise la carte SD
-	pinMode(PIN_SD_CS, OUTPUT);
+	pinMode(PIN_SD_CS, OUTPUT);	// Initialisation de la carte SD.
 
 	// Ici, problème avec la communication avec Processing !!!
 
@@ -1200,7 +1136,7 @@ void Drawall::loadParameters(
 	if (!configFile) {
 		error(FILE_NOT_READABLE);
 	}
-	// Tant que non fin de fichier
+	// Tant qu'on est pas à la fin du fichier
 	while (configFile.available() > 0) {
 		// Récupère une ligne entière dans le buffer
 		i = 0;
@@ -1218,55 +1154,65 @@ void Drawall::loadParameters(
 		// On garde de côté le nombre de char stocké dans le buffer
 		line_lenght = i;
 
-		// Finalise la chaine de caractéres ASCIIZ en supprimant le \n au passage
+		// Finalise la chaine de caractéres ASCII en supprimant le \n au passage.
 		buffer[--i] = '\0';
 
-		// Incrémente le compteur de lignes
-		++line_counter;
+		++line_counter;			// Incrémente le compteur de lignes
 
-		// Ignore les lignes vides ou les lignes de commentaires
+		// Ignore les lignes vides ou les lignes de commentaires.
 		if (buffer[0] == '\0' || buffer[0] == '#') {
 			continue;
 		}
 		// Gestion des lignes trop grande
 		if (i == BUFFER_SIZE) {
-			error(W_TOO_LONG_LINE);
-			// Serial.println(line_counter, DEC);
+			error(TOO_LONG_LINE);
+			Serial.write(BEGIN_MESSAGE);
+			Serial.print(" on line ");
+			Serial.print(line_counter, DEC);
+			Serial.println(".");
+			Serial.write(END_MESSAGE);
 		}
-		// Cherche l'emplacement de la clef en ignorant les espaces et les tabulations en début de ligne
+		// Cherche l'emplacement de la clé en ignorant les espaces et les tabulations en début de ligne.
 		i = 0;
 		while (buffer[i] == ' ' || buffer[i] == '\t') {
 			if (++i == line_lenght) {
 				break;
 			}
-			// Ignore les lignes contenant uniquement des espaces et/ou des tabulations
+			// Ignore les lignes contenant uniquement des espaces et/ou des tabulations.
 		}
 
 		if (i == line_lenght) {
-			continue;			// Gère les lignes contenant uniquement des espaces et/ou des tabulations
+			continue;			// Gère les lignes contenant uniquement des espaces et/ou des tabulations.
 		}
 		key = &buffer[i];
 
-		// Cherche l'emplacement du séparateur = en ignorant les espaces et les tabulations apres la clé
+		// Cherche l'emplacement du séparateur = en ignorant les espaces et les tabulations apres la clé.
 		while (buffer[i] != ' ' && buffer[i] != '\t') {
 			if (++i == line_lenght) {
-				error(W_WRONG_LINE);
-				// Serial.println(line_counter, DEC);
+				error(WRONG_LINE);
+				Serial.write(BEGIN_MESSAGE);
+				Serial.print(" on line ");
+				Serial.print(line_counter, DEC);
+				Serial.println(".");
+				Serial.write(END_MESSAGE);
 				break;			// Ignore les lignes mal formées
 			}
 		}
 
 		if (i == line_lenght) {
-			continue;			// Gère les lignes mal formé
+			continue;			// Gère les lignes mal formées
 		}
-		// Transforme le séparateur en \0 et continue
-		buffer[i++] = '\0';
+		buffer[i++] = '\0';		// Transforme le séparateur en \0
 
-		// Cherche l'emplacement de la valeur en ignorant les espaces et les tabulations âpres le séparateur
+		// Cherche l'emplacement de la valeur en ignorant les espaces et les tabulations après le séparateur.
 		while (buffer[i] == ' ' || buffer[i] == '\t') {
 			if (++i == line_lenght) {
-				error(W_WRONG_LINE);
-				// Serial.println(line_counter, DEC);
+				error(WRONG_LINE);
+				Serial.write(BEGIN_MESSAGE);
+				Serial.print(" on line ");
+				Serial.print(line_counter, DEC);
+				Serial.println(".");
+				Serial.write(END_MESSAGE);
 				break;			// Ignore les lignes mal formées
 			}
 		}
@@ -1331,8 +1277,7 @@ void Drawall::loadParameters(
 
 	}
 
-	// Ferme le fichier de configuration
-	configFile.close();
+	configFile.close();			// Ferme le fichier de configuration
 }
 
 /*void Drawall::printParameters()
