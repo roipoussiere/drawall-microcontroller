@@ -1,9 +1,7 @@
-
 /*
- * This file is part of Drawall, a project for a robot which draws on walls.
- * See http://drawall.cc/ and https://github.com/roipoussiere/Drawall/.
+ * This file is part of Drawall, a vertical tracer (aka drawbot) - see http://drawall.fr/
  * 
- * Copyright (c) 2012-2013 Nathanaël Jourdane
+ * Copyright (c) 2012-2014 Nathanaël Jourdane
  * 
  * Drawall is free software : you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,13 +18,32 @@
  */
 
 /**
- * \file	pins.h
+ * \file	config.h
  * \author  Nathanaël Jourdane
- * \brief   Affectation des pins et de la vitesse de communication série.
+ * \brief   Affectation des pins, des modes de compilation et de la vitesse de communication série.
  */
+
+// *** Modes de compilation ***
+// Décommenter la ligne si la fonction n'est pas désirée
+
+/// Active le support des boutons.
+// #define BUTTONS true
+
+/// Active l'envoi d'informations par liason série
+#define SERIAL true
+
+/// Active l'envoi d'informations de deboguage.
+// #define DEBUG true
+
+/// Active le support de l'écran.
+// #define SCREEN true
+
+// *** Autre ***
 
 /// Vitesse de la communication série.
 #define SERIAL_BAUDS 57600
+
+// *** Affectation des pins ***
 
 // Pins 0 et 1 : utilisées par le port série (communication avec Processing)
 
@@ -41,17 +58,17 @@
 /// Pin de commande du servo-moteur.
 #define PIN_SERVO 5
 
-/// Pin STEP (les pas) du moteur gauche.
-#define PIN_LEFT_MOTOR_STEP 7
-
 /// Pin DIR (la direction) du moteur gauche.
 #define PIN_LEFT_MOTOR_DIR 6
 
-/// Pin STEP (les pas) du moteur droit.
-#define PIN_RIGHT_MOTOR_STEP 9
+/// Pin STEP (les pas) du moteur gauche.
+#define PIN_LEFT_MOTOR_STEP 7
 
 /// Pin DIR (la direction) du moteur droit.
 #define PIN_RIGHT_MOTOR_DIR 8
+
+/// Pin STEP (les pas) du moteur droit.
+#define PIN_RIGHT_MOTOR_STEP 9
 
 /// Pin CS de la carte SD.
 /// Snootlab et Adafruit : 10 - Sparkfun : 8
