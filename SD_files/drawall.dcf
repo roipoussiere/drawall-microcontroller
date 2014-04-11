@@ -84,7 +84,7 @@ absolutePosition true
 displayComments true
 
 # Position par défaut du point de départ du crayon, avant l'appel éventuel de setPosition() :
-#defaultPosition CENTER
+defaultPosition CENTER
 
 # Position du point d'arrivée du crayon :
-#endPosition CENTER
+endPosition LOWER_CENTER
