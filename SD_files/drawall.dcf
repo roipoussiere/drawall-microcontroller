@@ -2,14 +2,11 @@
 
 ## Dessin ##
 
-# Nom du fichier de dessin ouvert par défaut :
-fileName		test.svg
-
 # Distance entre les 2 moteurs :
 span			1000
 
 # Largeur de la feuille :
-sheetWidth		750
+sheetWidth		650
 
 # Hauteur de la feuille :
 sheetHeight		500
@@ -28,12 +25,6 @@ minServoAngle	75
 # Angle maximal du servo-moteur (en degrés) :
 maxServoAngle	85
 
-# Avancée minimale du crayon (en mm), avec 0 le point de contact du stylo avec le mur et un nombre positif correspondant à un stylo enfonçé vers la paroi :
-minPen			-10
-
-# Avancée maximale du crayon (en mm) :
-maxPen			10
-
 # Pause avant le déplacement du servo (en ms) :
 preServoDelay	100
 
@@ -43,7 +34,7 @@ postServoDelay	1000
 ## Moteurs ##
 
 # Nombre de pas (prendre en compte les micros-pas effectués par le driver-moteur) :
-steps			6400
+steps			200
 
 # Diamètre du pignon (en µm) :
 diameter		20
@@ -60,13 +51,13 @@ rightDirection	true
 initialDelay	5000
 
 # Échelle horizontale appliquée au dessin, permetant de le calibrer :
-scaleX			0.95
+scaleX			1
 
 # Échelle verticale appliquée au dessin, permetant de le calibrer :
-scaleY			-0.95
+scaleY			1
 
 # Offset horizontal appliqué au dessin, permetant de le décaler :
-offsetX			20
+offsetX			0
 
 # Offset vertical appliqué au dessin, permetant de le décaler :
 offsetY			0
@@ -74,17 +65,8 @@ offsetY			0
 # Vitesse par défaut du crayon, avant l'appel éventuel de setSpeed() (en m/s) :
 defaultSpeed	10
 
-# Unité utilisée par défaut pour le dessin (si aucune n'est spécifiée dans le fichier G-Code), avec métrique (milimètres) = true ; ou anglo-saxone (pouces) = false :
-metricUnit		true
-
-# Indique si le robot se déplace de manière absolue (par rapport au coin supérieur gauche de la feuille) : true, ou relative (par rapport à la dernière position) : false.
-absolutePosition true
-
-# Permet d'afficher (true) ou non (false) les commentaires présents dans le fichier gcode.
-displayComments true
-
 # Position par défaut du point de départ du crayon, avant l'appel éventuel de setPosition() :
 defaultPosition CENTER
 
 # Position du point d'arrivée du crayon :
-endPosition LOWER_CENTER
+endPosition CENTER
