@@ -62,11 +62,11 @@ offsetX			0
 # Offset vertical appliqué au dessin, permetant de le décaler :
 offsetY			0
 
-# Vitesse par défaut du crayon, avant l'appel éventuel de setSpeed() (en m/s) :
+# Vitesse du crayon, avant l'appel éventuel de setSpeed() (en m/s) :
 defaultSpeed	10
 
-# Position par défaut du point de départ du crayon, avant l'appel éventuel de setPosition() :
-defaultPosition CENTER
+# Position du point de départ du crayon, avant l'appel éventuel de setPosition() :
+initPosition CENTER
 
 # Position du point d'arrivée du crayon :
-endPosition CENTER
+endPosition LOWER_CENTER
