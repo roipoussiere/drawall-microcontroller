@@ -36,8 +36,8 @@ postServoDelay	1000
 # Nombre de pas (prendre en compte les micros-pas effectués par le driver-moteur) :
 steps			200
 
-# Diamètre du pignon (en µm) :
-diameter		20
+# Diamètre du pignon (en microns) :
+diameter		20000
 
 # Direction du moteur gauche :
 leftDirection	false
