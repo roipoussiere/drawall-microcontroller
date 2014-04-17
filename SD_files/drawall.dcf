@@ -20,10 +20,10 @@ sheetPositionY	200
 ##Servo-moteur##
 
 # Angle minimal du servo-moteur (en degrés) :
-minServoAngle	75
+servoWritingAngle	83
 
 # Angle maximal du servo-moteur (en degrés) :
-maxServoAngle	85
+servoMoovingAngle	77
 
 # Pause avant le déplacement du servo (en ms) :
 preServoDelay	100
@@ -34,16 +34,16 @@ postServoDelay	1000
 ## Moteurs ##
 
 # Nombre de pas (prendre en compte les micros-pas effectués par le driver-moteur) :
-steps			200
+steps			6400
 
 # Diamètre du pignon (en microns) :
 diameter		20000
 
 # Direction du moteur gauche :
-leftDirection	false
+leftDirection	true
 
 # Direction du moteur droit :
-rightDirection	true
+rightDirection	false
 
 ## Divers ##
 
