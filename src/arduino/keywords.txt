@@ -1,0 +1,38 @@
+#######################################
+# Syntax Coloring Map Drawall
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Drawall	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin			KEYWORD2
+end				KEYWORD2
+setPosition		KEYWORD2
+setSpeed		KEYWORD2
+move			KEYWORD2
+line			KEYWORD2
+fastLine		KEYWORD2
+area			KEYWORD2
+drawingArea		KEYWORD2
+draw			KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+CENTER          LITERAL1
+UPPER_CENTER    LITERAL1
+LOWER_CENTER    LITERAL1
+LEFT_CENTER     LITERAL1
+RIGHT_CENTER    LITERAL1
+UPPER_LEFT      LITERAL1
+UPPER_RIGHT     LITERAL1
+LOWER_LEFT      LITERAL1
+LOWER_RIGHT     LITERAL1
