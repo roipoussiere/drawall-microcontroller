@@ -1,18 +1,18 @@
 /*
  * This file is part of Drawall, a vertical tracer (aka drawbot) - see http://drawall.fr/
- * 
+ *
  * Copyright (c) 2012-2014 Nathanaël Jourdane
- * 
+ *
  * Drawall is free software : you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -272,7 +272,7 @@ class Drawall {
 	/// \details Le délai de l'autre moteur est calculé pour que les 2 moteurs arrivent au point de destination simultanément.
 	float mDelay;
 
-	/// Indique si le robot est en train d'écrire (\a true) ou non (\a false).   
+	/// Indique si le robot est en train d'écrire (\a true) ou non (\a false).
 	bool mIsWriting;
 
 	/// Fonction actuellement en cours d'execution dans le fichier Gcode, utile lorsque le nom de fonction n'est pas spécifié de nouveau (ex : G1 X10 X20). Lorsque aucune fonction n'est en cours, la valeur est 255.
@@ -414,7 +414,7 @@ class Drawall {
 
 	/**
 	 * \brief Fonction appelée lorsque une erreur se produit.
-	 * \details Éloigne le stylo de la paroi et stoppe le programme. Envoie le code d'erreur \a errNumber au PC, qui se charge d'afficher sa description. 
+	 * \details Éloigne le stylo de la paroi et stoppe le programme. Envoie le code d'erreur \a errNumber au PC, qui se charge d'afficher sa description.
 	 * \param p1 1er paramètre du warning (facultatif).
 	 * \param p2 2eme paramètre du warning (facultatif).
 	 * \todo Mettre en pause le traçé, quand la pause sera opérationnelle.

@@ -42,7 +42,7 @@ void loop() {
   move(stepR);
 }
 
-void move(int step_pin) {  
+void move(int step_pin) {
   for(int i=0 ; i<motors_steps ; i++) {
     digitalWrite(step_pin, HIGH);
     delayMicroseconds(step_delay);

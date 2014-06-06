@@ -1,18 +1,18 @@
 /*
  * This file is part of Drawall, a vertical tracer (aka drawbot) - see http://drawall.fr/
- * 
+ *
  * Copyright (c) 2012-2014 Nathanaël Jourdane
- * 
+ *
  * Drawall is free software : you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -31,7 +31,7 @@ Drawall::Drawall()
 
 void Drawall::begin(
 			char *fileName)
-{	
+{
 	// Affectation des pins des moteurs
 	pinMode(PIN_OFF_MOTORS, OUTPUT);
 	pinMode(PIN_LEFT_MOTOR_STEP, OUTPUT);
@@ -136,13 +136,13 @@ void Drawall::begin(
  * ISR(INT0_vect)
  * {
  * EIMSK = 0;                   // Bloquage de INT0
- * 
+ *
  * while (PIND & 4) {
  * };                           // Attente que le pin soit à '1'
  * while (!(PIND & 4)) {
  * };                           // Attente que le pin soit à '0'
  * // (Pour un front descendant, inverser les 2 lignes).
- * 
+ *
  * EIMSK = 1;                   // Réautorisation de INT0
  * EIFR = 1;                    // Flag de INT0 remis à '0'
  * };
@@ -429,7 +429,7 @@ void Drawall::processSDLine(
 		if (parameters[2] <= 0) {
 			line(parameters[0], parameters[1]);
 		} else {
-			move(parameters[0], parameters[1]);			
+			move(parameters[0], parameters[1]);
 		}
 	} else if (!strcmp(functionName, "G04")) {
 		delay(1000 * parameters[0]);
@@ -504,8 +504,8 @@ void Drawall::segment(
 		}
 
 		if ((nbPasD > 0) && (micros() - dernierTempsD >= delaiD)) {
-			dernierTempsD = micros();	// stoque le temps actuel dans lastTimer     
-			nbPasD--;			// decremente le nb de pas restants     
+			dernierTempsD = micros();	// stoque le temps actuel dans lastTimer
+			nbPasD--;			// decremente le nb de pas restants
 			rightStep(pullRight);	// Effectue le pas
 		}
 	}
@@ -625,7 +625,7 @@ void Drawall::drawingArea(
 	mDrawingHeight = processVar();
 	initScale(size);
 	initOffset(position);
-	
+
 	move(0, 0);
 	line(mDrawingWidth, 0);
 	line(mDrawingWidth, mDrawingHeight);
@@ -844,7 +844,7 @@ void Drawall::loadParameters(
 		}
 
 		value = &buffer[i];
-		
+
 		// Transforme les données texte en valeur utilisable
 		if (!strcmp(key, "span")) {
 			mpSpan = atoi(value);
@@ -917,7 +917,7 @@ void Drawall::loadParameters(
 	configFile.close();			// Ferme le fichier de configuration
 
 	if (nb_parsed != NB_PARAMETERS) {
-		error(TOO_FEW_PARAMETERS);		
+		error(TOO_FEW_PARAMETERS);
 	}
 }
 
