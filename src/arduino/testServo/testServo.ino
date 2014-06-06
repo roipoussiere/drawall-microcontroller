@@ -4,7 +4,7 @@
  * Copyright (c) 2012-2014 Nathanaël Jourdane
  */
 
-#include <Servo.h> 
+#include <Servo.h>
 
 #define PIN_SERVO 5
 
@@ -12,14 +12,14 @@
 #define MAX_SERVO 83
 
 Servo s;
- 
-void setup() 
-{ 
+
+void setup()
+{
   s.attach(PIN_SERVO);
   Serial.begin(57600);
-} 
- 
-void loop() 
+}
+
+void loop()
 {
   Serial.println("Mooving...");
   s.write(MIN_SERVO);
