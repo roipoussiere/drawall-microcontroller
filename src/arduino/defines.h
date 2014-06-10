@@ -48,6 +48,7 @@
 // Pins 0 et 1 : utilisées par le port série (communication avec Processing)
 
 // Pin 2 utilisé par l'interruption du bouton pause
+#define PIN_PAUSE 2
 
 /// Pin du capteur fin de course du moteur gauche.
 #define PIN_LEFT_CAPTOR 3

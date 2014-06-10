@@ -25,10 +25,6 @@
 
 #include <drawall.h>
 
-Drawall::Drawall()
-{
-}
-
 void Drawall::begin(
 			char *fileName)
 {
@@ -55,7 +51,7 @@ void Drawall::begin(
 		pinMode(PIN_REMOTE, INPUT);
 
 		// Activation des pullup internes pour les boutons
-		digitalWrite(2, HIGH);			// INT0 (pour BP pause) est sur pin 2
+		digitalWrite(PIN_PAUSE, HIGH);			// INT0 (pour BP pause) est sur pin 2
 
 		digitalWrite(PIN_LEFT_CAPTOR, HIGH);
 		digitalWrite(PIN_RIGHT_CAPTOR, HIGH);
@@ -690,23 +686,17 @@ int Drawall::processVar()
 	return atoi(buffer);
 }
 
-void Drawall::end(
-			)
+void Drawall::end()
 {
 	move(mpEndPosition);
 	power(false);
-	while (true) ;
+	while (true);
 }
 
 bool Drawall::atob(
 			char *value)
 {
-	bool booleanValue = false;
-
-	if (!strcmp(value, "true") || !strcmp(value, "yes")) {
-		booleanValue = true;
-	}
-	return booleanValue;
+	return !strcmp(value, "true") || !strcmp(value, "yes");
 }
 
 Drawall::Position Drawall::atop(char *str_pos)
@@ -749,7 +739,7 @@ void Drawall::loadParameters(
 	char *value;				// Chaine pour la valeur
 
 	byte i;						// Itérateur
-	byte line_lenght;			// Longueur de la ligne
+	byte line_length;			// Longueur de la ligne
 	byte line_counter = 0;		// Compteur de lignes
 	char err_buffer[3];			// Buffer pour affichage numéro de ligne si erreur
 	int nb_parsed = 0;
@@ -786,7 +776,7 @@ void Drawall::loadParameters(
 		}
 
 		// On garde de côté le nombre de char stocké dans le buffer
-		line_lenght = i;
+		line_length = i;
 
 		// Finalise la chaine de caractéres ASCII en supprimant le \n au passage.
 		buffer[--i] = '\0';
@@ -804,42 +794,38 @@ void Drawall::loadParameters(
 		}
 		// Cherche l'emplacement de la clé en ignorant les espaces et les tabulations en début de ligne.
 		i = 0;
-		while (buffer[i] == ' ' || buffer[i] == '\t') {
-			if (++i == line_lenght) {
-				break;
-			}
-			// Ignore les lignes contenant uniquement des espaces et/ou des tabulations.
-		}
+		// Ignore les lignes contenant uniquement des espaces et/ou des tabulations.
+		while (buffer[i] == ' ' || buffer[i] == '\t' && !(++i == line_length));
 
-		if (i == line_lenght) {
+		if (i == line_length) {
 			continue;			// Gère les lignes contenant uniquement des espaces et/ou des tabulations.
 		}
 		key = &buffer[i];
 
 		// Cherche l'emplacement du séparateur = en ignorant les espaces et les tabulations apres la clé.
 		while (buffer[i] != ' ' && buffer[i] != '\t') {
-			if (++i == line_lenght) {
+			if (++i == line_length) {
 				sprintf(err_buffer, "%d", line_counter);
 				warning(WRONG_CONFIG_LINE, err_buffer);
 				break;			// Ignore les lignes mal formées
 			}
 		}
 
-		if (i == line_lenght) {
+		if (i == line_length) {
 			continue;			// Gère les lignes mal formées
 		}
 		buffer[i++] = '\0';		// Transforme le séparateur en \0
 
 		// Cherche l'emplacement de la valeur en ignorant les espaces et les tabulations après le séparateur.
 		while (buffer[i] == ' ' || buffer[i] == '\t') {
-			if (++i == line_lenght) {
+			if (++i == line_length) {
 				sprintf(err_buffer, "%d", line_counter);
 				warning(WRONG_CONFIG_LINE, err_buffer);
 				break;			// Ignore les lignes mal formées
 			}
 		}
 
-		if (i == line_lenght) {
+		if (i == line_length) {
 			continue;			// Gère les lignes mal formées
 		}
 
@@ -921,58 +907,3 @@ void Drawall::loadParameters(
 	}
 }
 
-/*
- * void Drawall::printParameters()
- * {
- * #ifdef DEBUG
- * Serial.print("Span: ");
- * Serial.println(mpSpan);
- * Serial.print("SheetWidth: ");
- * Serial.println(mpSheetWidth);
- * Serial.print("SheetHeight: ");
- * Serial.println(mpSheetHeight);
- * Serial.print("SheetPositionX: ");
- * Serial.println(mpSheetPositionX);
- * Serial.print("SheetPositionY: ");
- * Serial.println(mpSheetPositionY);
- * Serial.print("MinServoAngle: ");
- * Serial.println(mpMinServoAngle);
- * Serial.print("MaxServoAngle: ");
- * Serial.println(mpMaxServoAngle);
- * Serial.print("MinPen: ");
- * Serial.println(mpMinPen);
- * Serial.print("MaxPen: ");
- * Serial.println(mpMaxPen);
- * Serial.print("PreServoDelay: ");
- * Serial.println(mpPreServoDelay);
- * Serial.print("PostServoDelay: ");
- * Serial.println(mpPostServoDelay);
- * Serial.print("Steps: ");
- * Serial.println(mpSteps);
- * Serial.print("Diameter: ");
- * Serial.println(mpDiameter);
- * Serial.print("LeftDirection: ");
- * Serial.println(mpLeftDirection);
- * Serial.print("RightDirection: ");
- * Serial.println(mpRightDirection);
- * Serial.print("InitialDelay: ");
- * Serial.println(mpInitialDelay);
- * Serial.print("ScaleX: ");
- * Serial.println(mpScaleX);
- * Serial.print("ScaleY: ");
- * Serial.println(mpScaleY);
- * Serial.print("OffsetX: ");
- * Serial.println(mpOffsetX);
- * Serial.print("OffsetY: ");
- * Serial.println(mpOffsetY);
- * Serial.print("DefaultSpeed: ");
- * Serial.println(mpDefaultSpeed);
- * Serial.print("MetricUnit: ");
- * Serial.println(mpMetricUnit);
- * Serial.print("AbsolutePosition: ");
- * Serial.println(mpAbsolutePosition);
- * Serial.print("DisplayComments: ");
- * Serial.println(mpDisplayComments);
- * #endif
- * }
- */
