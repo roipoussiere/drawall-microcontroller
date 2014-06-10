@@ -18,13 +18,13 @@
  */
 
 /**
- * \file	drawall.h
- * \author  Nathanaël Jourdane
- * \brief   Fichier d'en-tête de la bibliothèque
+ * \file   drawall.h
+ * \author Nathanaël Jourdane
+ * \brief  Fichier d'en-tête de la bibliothèque
  */
 
-#ifndef drawall
-#define drawall
+#ifndef _H_DRAWALL
+#define _H_DRAWALL
 
 #include "defines.h"
 #include <Arduino.h>
@@ -50,11 +50,12 @@
  */
 class Drawall {
 
-  public:
+	public:
 
 	/**
 	 * \brief Position sur la zone de dessin
-	 * \details Les différentes position pour accès rapide, correspondant aux 8 points cardinaux, plus le centre.
+	 * \details Les différentes position pour accès rapide, correspondant aux 8 points cardinaux,
+	 * plus le centre.
 	 */
 	typedef enum Position {
 		LOWER_LEFT,
@@ -74,62 +75,52 @@ class Drawall {
 	 * \brief modes de taille de l'image
 	 */
 	typedef enum DrawingSize {
-		ORIGINAL,				///< Image de la taille du dessin
-		FULL					///< Image de la taille de la zone de dessin
+		ORIGINAL, ///< Image de la taille du dessin
+		FULL,     ///< Image de la taille de la zone de dessin
 	};
 
 	/**
-	 * \brief Initialise la librairie.
-	 * \bug Corriger Warning
-	 */
-	 Drawall(
-				);
-
-	/**
 	 * \brief Démarre la librairie.
-	 * \details \b Nécessaire au fonctionnement de la librairie. Réalise les procédures d'initialisation du robot.
+	 * \details \b Nécessaire au fonctionnement de la librairie. Réalise les procédures
+	 * d'initialisation du robot.
 	 * \param fileName Nom du fichier de configuration à charger.
 	 */
-	void begin(
-				char *fileName);
+	void begin(char *fileName);
 
 	/**
 	 * \brief Finit le traçé.
-	 * \details Utilisé à la fin du programme. Cela positionne le crayon en bas de la zone de dessin, désalimente les moteurs et met en pause le programme.
+	 * \details Utilisé à la fin du programme. Cela positionne le crayon en bas de la zone de
+	 * dessin, désalimente les moteurs et met en pause le programme.
 	 */
-	void end(
-				);
+	void end();
 
 	/********************
 	* Getters & setters *
 	********************/
-
 	/**
 	 * \brief Spécifie la position initiale du crayon.
 	 * \details À utiliser avant de commencer à tracer.
 	 * \param x La position horizontale du crayon.
 	 * \param y La position verticale du crayon.
 	 */
-	void setPosition(
-				float x,
-				float y);
+	void setPosition(float x, float y);
 
 	/**
 	 * \brief Spécifie la position initiale du crayon.
 	 * \details À utiliser avant de commencer à tracer.
 	 * \param position La position du crayon (voir type enum \a Position).
 	 */
-	void setPosition(
-				Position position);
+	void setPosition(Position position);
 
 	/**
 	 * \brief Spécifie la vitesse du traçé (en mm/s).
-	 * \details Cette vitesse correspond à la vitesse de déplacement de la courroie qui effectue la plus grande distance entre 2 points (Cf. \a mDelay). La vitesse réelle du dessin sera donc plus lente.
-
+	 * \details Cette vitesse correspond à la vitesse de déplacement de la courroie qui effectue la
+	 * plus grande distance entre 2 points (Cf. \a mDelay). La vitesse réelle
+	 * du dessin sera donc plus lente.
 	 * \param speed La vitesse du traçé.
 	 * \bug La vitesse diminue si on augmente le nombre de pas.
 	 */
-	void setSpeed( unsigned int speed);
+	void setSpeed(unsigned int speed);
 
 	/**********************
 	* Fonctions de dessin *
@@ -140,16 +131,13 @@ class Drawall {
 	 * \param x La position absolue horizontale du point de destination.
 	 * \param y La position absolue verticale du point de destination.
 	 */
-	void move(
-				float x,
-				float y);
+	void move(float x, float y);
 
 	/**
 	 * \brief Déplace le crayon à la position absolue \a position.
 	 * \param position La position absolue du point de destination (Cf type enum \a Position)
 	 */
-	void move(
-				Position position);
+	void move(Position position);
 
 	/**
 	 * \brief Trace une ligne droite, de la position actuelle à la position absolue [\a x; \a y].
@@ -157,15 +145,12 @@ class Drawall {
 	 * \param y La position absolue verticale du point de destination.
 	 * \bug Fait des escaliers dans certains cas (?).
 	 */
-	void line(
-				float x,
-				float y);
+	void line(float x, float y);
 
 	/**
 	 * \brief Trace un rectangle représentant les limites du dessin.
 	 */
-	void drawingArea(
-				char *fileName, DrawingSize size = ORIGINAL, Position position = CENTER);
+	void drawingArea(char *fileName, DrawingSize size = ORIGINAL, Position position = CENTER);
 
 	/**
 	 * \brief Trace un dessin correspondant au fichier gcode \a fileName de la carte SD.
@@ -181,63 +166,65 @@ class Drawall {
 	 * \brief Liste des données envoyées au pc via le port série.
 	*/
 	typedef enum SerialData {
-		PUSH_LEFT,				///< Relâche la courroie gauche d'un cran.
-		PULL_LEFT,				///< Tire la courroie gauche d'un cran.
-		PUSH_RIGHT,				///< Relâche la courroie droite d'un cran.
-		PULL_RIGHT,				///< Tire la courroie droite d'un cran.
-		WRITING,				///< Le stylo dessine.
-		MOVING,					///< Le stylo se déplace (ne dessine pas).
-		START_MESSAGE,			///< Début d'envoie d'un message à afficher.
-		END_MESSAGE,			///< Début d'envoie d'un message à afficher.
-		ENABLE_MOTORS,			///< Alimentation des moteurs.
-		DISABLE_MOTORS,			///< Désalimentation des moteurs.
-		SLEEP,					///< Mise en pause du programme.
-		CHANGE_TOOL,			///< Pause pour changement d'outil
-		END_DRAWING,			///< Fin du dessin.
-		WARNING,				///< Warning (suivi du code de warning).
-		END_WARNING,			///< Fin du message de warning.
-		ERROR,					///< Erreur (suivi du code d'erreur).
-		END_ERROR,				///< Fin du message d'erreur.
-
-		START = 100,			///< Amorçage par liason série
-		START_INSTRUCTIONS,		///< Début d'envoi des données d'initialisation.
-		END_INSTRUCTIONS,		///< Fin d'envoi des données d'initialisation.
+		PUSH_LEFT,          ///< Relâche la courroie gauche d'un cran.
+		PULL_LEFT,          ///< Tire la courroie gauche d'un cran.
+		PUSH_RIGHT,         ///< Relâche la courroie droite d'un cran.
+		PULL_RIGHT,         ///< Tire la courroie droite d'un cran.
+		WRITING,            ///< Le stylo dessine.
+		MOVING,             ///< Le stylo se déplace (ne dessine pas).
+		START_MESSAGE,      ///< Début d'envoie d'un message à afficher.
+		END_MESSAGE,        ///< Début d'envoie d'un message à afficher.
+		ENABLE_MOTORS,      ///< Alimentation des moteurs.
+		DISABLE_MOTORS,     ///< Désalimentation des moteurs.
+		SLEEP,              ///< Mise en pause du programme.
+		CHANGE_TOOL,        ///< Pause pour changement d'outil
+		END_DRAWING,        ///< Fin du dessin.
+		WARNING,            ///< Warning (suivi du code de warning).
+		END_WARNING,        ///< Fin du message de warning.
+		ERROR,              ///< Erreur (suivi du code d'erreur).
+		END_ERROR,          ///< Fin du message d'erreur.
+		START = 100,        ///< Amorçage par liason série
+		START_INSTRUCTIONS, ///< Début d'envoi des données d'initialisation.
+		END_INSTRUCTIONS,   ///< Fin d'envoi des données d'initialisation.
 	};
 
 	/**
 	* \brief Liste des erreurs et warnings pouvant survenir pendant l'execution du programme.
-	* \details Les erreurs commencent à l'indice 0 tandis que les warnings commencent à l'indice 100.
-	* Les warnings sont des simples avertissement qui n'interfèrent pas la course du robot, tandis que
-	* les erreurs sont des anomalies critiques qui empèchent ou stoppent la course du robot.
+	* \details Les erreurs commencent à l'indice 0 tandis que les warnings
+	* commencent à l'indice 100. Les warnings sont des simples avertissement
+	* qui n'interfèrent pas la course du robot, tandis que les erreurs sont des
+	* anomalies critiques qui empèchent ou stoppent la course du robot.
 	*/
 	typedef enum Error {
-		CARD_NOT_FOUND,			///< La carte SD n'a pas été trouvée ou est illisible.
-		FILE_NOT_FOUND,			///< Le fichier n'existe pas.
-		FILE_NOT_READABLE,		///< Erreur d'ouverture du fichier.
-		TOO_SHORT_SPAN,			///< La distance entre les 2 moteurs est inférieure à la largeur de la feuille et sa position horizontale.
-		TOO_FEW_PARAMETERS,		///< Certains paramètres n'ont pas été lus dans le fichier de configuration.
+		CARD_NOT_FOUND,     ///< La carte SD n'a pas été trouvée ou est illisible.
+		FILE_NOT_FOUND,     ///< Le fichier n'existe pas.
+		FILE_NOT_READABLE,  ///< Erreur d'ouverture du fichier.
+		TOO_SHORT_SPAN,     ///< La distance entre les 2 moteurs est inférieure à la largeur.
+		                    ///< de la feuille et sa position horizontale.
+		TOO_FEW_PARAMETERS, ///< Certains paramètres n'ont pas été lus.
 
-		// * Warnings *
-
-		UNKNOWN_SERIAL_CODE = 100,	///< Caractère envoyé au port série non reconnu. Utilisé uniquement sur le programme PC, jamais sur l'Arduino (mais il est préférable que les listes soient identiques).
-		WRONG_CONFIG_LINE,		///< Ligne mal formée dans le fichier de configuration. Param : n° de la ligne.
-		TOO_LONG_CONFIG_LINE,	///< Ligne trop longue dans le fichier de configuration. Param : n° de la ligne.
-		UNKNOWN_CONFIG_KEY,		///< Clé inconnue dans le fichier de configuration. Params : clé, n° de la ligne.
-		UNKNOWN_CONFIG_POSITION,///< Position inconnue dans le fichier de configuration.
-		UNKNOWN_GCODE_FUNCTION,	///< Fonction gcode inconnue dans le fichier.
-		UNKNOWN_GCODE_PARAMETER,	///< Paramètre gcode inconnu.
-		WRONG_GCODE_PARAMETER,	///< Erreur lors de la lecture d'un paramètre. Params : paramètre, n° de la ligne.
-		LEFT_LIMIT,				///< Le traceur a atteint la limite gauche.
-		RIGHT_LIMIT,			///< Le traceur a atteint la limite droite.
-		UPPER_LIMIT,			///< Le traceur a atteint la limite haute.
-		LOWER_LIMIT,			///< Le traceur a atteint la limite basse.
+		// Warnings
+		UNKNOWN_SERIAL_CODE = 100, ///< Caractère envoyé au port série non reconnu.
+		WRONG_CONFIG_LINE,         ///< Ligne mal formée dans le fichier de configuration.
+		                           ///< Param : n° de la ligne.
+		TOO_LONG_CONFIG_LINE,      ///< Ligne trop longue dans le fichier de configuration.
+		                           ///< Param : n° de la ligne.
+		UNKNOWN_CONFIG_KEY,        ///< Clé inconnue dans le fichier de configuration.
+		                           ///< Params : clé, n° de la ligne.
+		UNKNOWN_CONFIG_POSITION,   ///< Position inconnue dans le fichier de configuration.
+		UNKNOWN_GCODE_FUNCTION,    ///< Fonction gcode inconnue dans le fichier.
+		UNKNOWN_GCODE_PARAMETER,   ///< Paramètre gcode inconnu.
+		WRONG_GCODE_PARAMETER,     ///< Erreur lors de la lecture d'un paramètre.
+		                           ///< Params : paramètre, n° de la ligne.
+		LEFT_LIMIT,                ///< Le traceur a atteint la limite gauche.
+		RIGHT_LIMIT,               ///< Le traceur a atteint la limite droite.
+		UPPER_LIMIT,               ///< Le traceur a atteint la limite haute.
+		LOWER_LIMIT,               ///< Le traceur a atteint la limite basse.
 	};
 
 	/************
 	* Attributs *
 	************/
-	// Commencent par m, pour "member".
-
 	/// Objet pour manipuler le servo-moteur, utilisé avec la librairie \a Servo.
 	Servo mServo;
 
@@ -268,20 +255,23 @@ class Drawall {
 	/// Longueur d'un pas (distance parcourue par la courroie en 1 pas, en mm).
 	float mStepLength;
 
-	/// Delai initial entre chaque pas du moteur qui a la plus grande distance à parcourir, (en micro-secondes).
-	/// \details Le délai de l'autre moteur est calculé pour que les 2 moteurs arrivent au point de destination simultanément.
+	/// Delai initial en micro-secondes entre chaque pas du moteur
+	/// ayant la plus grande distance à parcourir.
+	/// \details Le délai de l'autre moteur est calculé pour que les deux
+	/// moteurs arrivent au point de destination simultanément.
 	float mDelay;
 
 	/// Indique si le robot est en train d'écrire (\a true) ou non (\a false).
 	bool mIsWriting;
 
-	/// Fonction actuellement en cours d'execution dans le fichier Gcode, utile lorsque le nom de fonction n'est pas spécifié de nouveau (ex : G1 X10 X20). Lorsque aucune fonction n'est en cours, la valeur est 255.
+	/// Fonction actuellement en cours d'exécution dans le fichier Gcode.
+	/// utile lorsque le nom de fonction n'est pas spécifié de nouveau (ex : G1 X10 X20).
+	/// Lorsque aucune fonction n'est en cours, la valeur est 255.
 	byte mFunction;
 
 	/************
 	* Positions *
 	************/
-
 	/// Position horizontale actuelle du crayon sur le plan.
 	float mPositionX;
 
@@ -336,10 +326,12 @@ class Drawall {
 	/// Diamètre du pignon (en microns).
 	int mpDiameter;
 
-	/// Direction du moteur gauche : \a true pour relâcher la courroie lorsque le moteur tourne dans le sens horaire et \a false dans le cas contraire.
+	/// Direction du moteur gauche : \a true pour relâcher la courroie lorsque le moteur
+	/// tourne dans le sens horaire et \a false dans le cas contraire.
 	bool mpLeftDirection;
 
-	/// Direction du moteur droit : \a true pour relâcher la courroie lorsque le moteur tourne dans le sens horaire et \a false dans le cas contraire.
+	/// Direction du moteur droit : \a true pour relâcher la courroie lorsque le moteur tourne
+	/// dans le sens horaire et \a false dans le cas contraire.
 	bool mpRightDirection;
 
 	// * Divers *
@@ -373,13 +365,11 @@ class Drawall {
 	* Méthodes *
 	***********/
 
-	/**
-	 *
-	 */
 	int processVar();
 
 	/**
-	 * \brief initialise les offset X et Y en fonction du fichier de config et de la position désirée du dessin.
+	 * \brief initialise les offset X et Y en fonction du fichier de config
+	 * et de la position désirée du dessin.
 	 */
 	void initOffset(Position position);
 
@@ -390,8 +380,7 @@ class Drawall {
 
 	/**
 	 */
-	void waitUntil(
-				char msg);
+	void waitUntil(char msg);
 
 	/**
 	 * \brief Initialise le ratio entre le nombre de pas et la distance.
@@ -400,38 +389,33 @@ class Drawall {
 	 * xx(pas)/ratio --> xx(mm)
 	 * \todo Inverser le ratio car le nombre de pas est une valeur entière, éviter de le diviser.
 	 */
-	void initStepLength(
-				);
+	void initStepLength();
 
 	/**
-	 * \brief Modifie l'échelle pour s'adapter à la largeur \a width et la hauteur \a height du dessin.
+	 * \brief Modifie l'échelle pour s'adapter à la \a width et la \a height du dessin.
 	 * \details Les dimentions du dessin sont récupérées sur le fichier svg.
 	 * \todo Changer le nom et retourner l'échelle plutôt que de la modifier directement.
 	 */
-	void setDrawingScale(
-				int width,
-				int height);
+	void setDrawingScale(int width, int height);
 
 	/**
 	 * \brief Fonction appelée lorsque une erreur se produit.
-	 * \details Éloigne le stylo de la paroi et stoppe le programme. Envoie le code d'erreur \a errNumber au PC, qui se charge d'afficher sa description.
+	 * \details Éloigne le stylo de la paroi et stoppe le programme. Envoie le code d'erreur
+	 * \a errNumber au PC, qui se charge d'afficher sa description.
 	 * \param p1 1er paramètre du warning (facultatif).
 	 * \param p2 2eme paramètre du warning (facultatif).
 	 * \todo Mettre en pause le traçé, quand la pause sera opérationnelle.
 	 */
-	void error(
-				Error errorNumber,
-				char *msg = "");
+	void error(Error errorNumber, char *msg = "");
 
 	/**
 	 * \brief Fonction appelée lorsque un warning se produit.
-	 * \details Envoie le code de warning \a errNumber à Processing, qui se charge d'afficher sa description sans affecter le déroulement du programme.
+	 * \details Envoie le code de warning \a errNumber à Processing,
+	 * qui se charge d'afficher sa description sans affecter le déroulement du programme.
 	 * \param p1 1er paramètre du warning (facultatif).
 	 * \param p2 2eme paramètre du warning (facultatif).
 	 */
-	void warning(
-				Error warningNumber,
-				char *msg = "");
+	void warning(Error warningNumber, char *msg = "");
 
 	/***********************
 	* Commande du matériel *
@@ -441,24 +425,22 @@ class Drawall {
 	 * \brief Rotation du moteur gauche d'un pas.
 	 * \param pull Sens du pas a effectuer : \a true pour tirer, \a false pour relacher.
 	 */
-	void leftStep(
-				bool shouldPull);
+	void leftStep(bool shouldPull);
 
 	/**
 	 * \brief Rotation du moteur droit d'un pas.
 	 * \param pull Sens du pas a effectuer : \a true pour tirer, \a false pour relacher.
 	 */
-	void rightStep(
-				bool shouldPull);
+	void rightStep(bool shouldPull);
 
 	/**
 	 * \brief Alimente ou désalimente les moteurs.
-	 * \details Éloigne le stylo de la paroi avant la désalimentation pour éviter de dessiner pendant la chute éventuelle du moteur.
+	 * \details Éloigne le stylo de la paroi avant la désalimentation pour éviter de
+	 * dessiner pendant la chute éventuelle du moteur.
 	 * \param power \a true pour alimenter le moteur, \a false pour le désalimenter.
  	* \todo Séparer la désactivation moteur gauche et moteur droit.
 	 */
-	void power(
-				bool shouldPower);
+	void power(bool shouldPower);
 
 	/**************
 	* Convertions *
@@ -470,8 +452,7 @@ class Drawall {
 	 * \param position La position a convertir, de type \a Position.
 	 * \return La position verticale de \a position.
 	 */
-	int positionToX(
-				Position position);
+	int positionToX(Position position);
 
 	/**
 	 * \brief Récupère la position verticale de \a position.
@@ -479,8 +460,7 @@ class Drawall {
 	 * \param position La position a convertir, de type \a Position.
 	 * \return La position verticale de \a position.
 	 */
-	int positionToY(
-				Position position);
+	int positionToY(Position position);
 
 	/**
 	 * \brief Calcule la longueur de la courroie gauche pour la position [\a x ; \a y]
@@ -488,9 +468,7 @@ class Drawall {
 	 * \param y La position absolue horizontale du point.
 	 * \return La longueur de la courroie gauche pour cette position, en nombre de pas.
 	 */
-	long positionToLeftLength(
-				float x,
-				float y);
+	long positionToLeftLength(float x, float y);
 
 	/**
 	 * \brief Calcule la longueur de la courroie droite pour la position [\a x ; \a y]
@@ -498,9 +476,7 @@ class Drawall {
 	 * \param y La position absolue horizontale du point.
 	 * \return La longueur de la courroie droite pour cette position, en nombre de pas.
 	 */
-	long positionToRightLength(
-				float x,
-				float y);
+	long positionToRightLength(float x, float y);
 
 	/*******************
 	* Lecture carte SD *
@@ -512,38 +488,33 @@ class Drawall {
 	 * \param fileName Le nom du fichier à lire.
 	 * \todo : si erreur et nom fichier > 8 car, proposer de vérifer si carte formatée en fat16.
 	 */
-	void sdInit(
-				char *fileName);
+	void sdInit(char *fileName);
 
 	/**
 	 * \brief Interprète la fonction gcode passée en paramètre.
-	 * \detail Le curseur doit-être devant une fonction g-code, sinon envoie un warning. Ignore les espaces avant la fonction.
+	 * \detail Le curseur doit-être devant une fonction g-code, sinon envoie un warning.
+	 * Ignore les espaces avant la fonction.
 	 */
-	void processSDLine(
-				);
+	void processSDLine();
 
 	/**
 
 	*/
-	void segment(
-				float x,
-				float y,
-				bool shouldWrite);
+	void segment(float x, float y, bool shouldWrite);
 
 	/**
 	 * \brief Approche ou éloigne le crayon de la paroi.
-	 * \param write \a true pour plaquer le crayon contre la paroi (traçé), \a false pour l'éloigner (déplacement)
+	 * \param write \a true pour plaquer le crayon contre la paroi (traçé),
+	 * \a false pour l'éloigner (déplacement)
 	 */
-	void writingPen(
-				bool shouldWrite);
+	void writingPen(bool shouldWrite);
 
 	/**
 	 * \brief Convertit une chaine en valeur booléenne.
 	 * \param value Chaine contenant soit "true", soit "false".
 	 * \return \a true si la chaine est "true", \a false si la chaine est "false".
 	 */
-	bool atob(
-				char *value);
+	bool atob(char *value);
 
 	/**
 	 * \brief Convertit une chaine en position
@@ -555,11 +526,7 @@ class Drawall {
 	 * \Brief Charge les paramètres à partir d'un fichier de configuration présent sur la carte SD.
 	 * \param fileName Le nom du fichier de configuration à charger.
 	 */
-	void loadParameters(
-				char *fileName);
-
-	// void printParameters(
-	// 			);
+	void loadParameters(char *fileName);
 
 };
 
