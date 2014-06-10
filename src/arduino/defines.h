@@ -47,33 +47,19 @@
 
 // Pins 0 et 1 : utilisées par le port série (communication avec Processing)
 
-// Pin 2 utilisé par l'interruption du bouton pause
-#define PIN_PAUSE 2
+typedef enum {
+	PIN_PAUSE = 2,            // Pin 2 utilisé par l'interruption du bouton pause
+	PIN_LEFT_CAPTOR = 3,      // Pin du capteur fin de course du moteur gauche.
+	PIN_RIGHT_CAPTOR = 4,     // Pin du capteur fin de course du moteur droit.
+	PIN_SERVO = 5,            // Pin de commande du servo-moteur.
+	PIN_LEFT_MOTOR_DIR = 6,   // Pin DIR (la direction) du moteur gauche.
+	PIN_LEFT_MOTOR_STEP = 7,  // Pin STEP (les pas) du moteur gauche.
+	PIN_RIGHT_MOTOR_DIR = 8,  // Pin DIR (la direction) du moteur droit.
+	PIN_RIGHT_MOTOR_STEP = 9, // Pin STEP (les pas) du moteur droit.
+	PIN_SD_CS = 10            // Pin CS de la carte SD.
+} Pins;
 
-/// Pin du capteur fin de course du moteur gauche.
-#define PIN_LEFT_CAPTOR 3
-
-/// Pin du capteur fin de course du moteur droit.
-#define PIN_RIGHT_CAPTOR 4
-
-/// Pin de commande du servo-moteur.
-#define PIN_SERVO 5
-
-/// Pin DIR (la direction) du moteur gauche.
-#define PIN_LEFT_MOTOR_DIR 6
-
-/// Pin STEP (les pas) du moteur gauche.
-#define PIN_LEFT_MOTOR_STEP 7
-
-/// Pin DIR (la direction) du moteur droit.
-#define PIN_RIGHT_MOTOR_DIR 8
-
-/// Pin STEP (les pas) du moteur droit.
-#define PIN_RIGHT_MOTOR_STEP 9
-
-/// Pin CS de la carte SD.
 /// Snootlab et Adafruit : 10 - Sparkfun : 8
-#define PIN_SD_CS 10
 
 // Pins 11, 12 et 13 : utilisés par la carte SD (MOSI, MISO, SCK)
 
