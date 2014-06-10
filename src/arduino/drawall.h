@@ -27,10 +27,10 @@
 #define _H_DRAWALL
 
 #include "defines.h"
-#include <Arduino.h>
 #include <math.h>
 #include <SD.h>
 #include <Servo.h>
+#include <Arduino.h>
 
 /**
  * \brief Classe principale de la librairie
@@ -57,7 +57,7 @@ class Drawall {
 	 * \details Les différentes position pour accès rapide, correspondant aux 8 points cardinaux,
 	 * plus le centre.
 	 */
-	typedef enum Position {
+	typedef enum {
 		LOWER_LEFT,
 		LOWER_CENTER,
 		LOWER_RIGHT,
@@ -69,15 +69,15 @@ class Drawall {
 		UPPER_LEFT,
 		UPPER_CENTER,
 		UPPER_RIGHT
-	};
+	} Position;
 
 	/**
 	 * \brief modes de taille de l'image
 	 */
-	typedef enum DrawingSize {
+	typedef enum  {
 		ORIGINAL, ///< Image de la taille du dessin
 		FULL,     ///< Image de la taille de la zone de dessin
-	};
+	} DrawingSize;
 
 	/**
 	 * \brief Démarre la librairie.
@@ -165,7 +165,7 @@ class Drawall {
 	/**
 	 * \brief Liste des données envoyées au pc via le port série.
 	*/
-	typedef enum SerialData {
+	typedef enum {
 		PUSH_LEFT,          ///< Relâche la courroie gauche d'un cran.
 		PULL_LEFT,          ///< Tire la courroie gauche d'un cran.
 		PUSH_RIGHT,         ///< Relâche la courroie droite d'un cran.
@@ -186,7 +186,7 @@ class Drawall {
 		START = 100,        ///< Amorçage par liason série
 		START_INSTRUCTIONS, ///< Début d'envoi des données d'initialisation.
 		END_INSTRUCTIONS,   ///< Fin d'envoi des données d'initialisation.
-	};
+	} SerialData;
 
 	/**
 	* \brief Liste des erreurs et warnings pouvant survenir pendant l'execution du programme.
@@ -195,7 +195,7 @@ class Drawall {
 	* qui n'interfèrent pas la course du robot, tandis que les erreurs sont des
 	* anomalies critiques qui empèchent ou stoppent la course du robot.
 	*/
-	typedef enum Error {
+	typedef enum {
 		CARD_NOT_FOUND,     ///< La carte SD n'a pas été trouvée ou est illisible.
 		FILE_NOT_FOUND,     ///< Le fichier n'existe pas.
 		FILE_NOT_READABLE,  ///< Erreur d'ouverture du fichier.
@@ -220,14 +220,14 @@ class Drawall {
 		RIGHT_LIMIT,               ///< Le traceur a atteint la limite droite.
 		UPPER_LIMIT,               ///< Le traceur a atteint la limite haute.
 		LOWER_LIMIT,               ///< Le traceur a atteint la limite basse.
-	};
+	} Error;
 
 	/************
 	* Attributs *
 	************/
+
 	/// Objet pour manipuler le servo-moteur, utilisé avec la librairie \a Servo.
 	Servo mServo;
-
 	/// Le fichier svg contenant le dessin vectoriel à reproduire.
 	File mFile;
 
@@ -267,7 +267,7 @@ class Drawall {
 	/// Fonction actuellement en cours d'exécution dans le fichier Gcode.
 	/// utile lorsque le nom de fonction n'est pas spécifié de nouveau (ex : G1 X10 X20).
 	/// Lorsque aucune fonction n'est en cours, la valeur est 255.
-	byte mFunction;
+	char mFunction;
 
 	/************
 	* Positions *
@@ -406,7 +406,7 @@ class Drawall {
 	 * \param p2 2eme paramètre du warning (facultatif).
 	 * \todo Mettre en pause le traçé, quand la pause sera opérationnelle.
 	 */
-	void error(Error errorNumber, char *msg = "");
+	void error(Error errorNumber, char *msg = (char *) "");
 
 	/**
 	 * \brief Fonction appelée lorsque un warning se produit.
@@ -415,7 +415,7 @@ class Drawall {
 	 * \param p1 1er paramètre du warning (facultatif).
 	 * \param p2 2eme paramètre du warning (facultatif).
 	 */
-	void warning(Error warningNumber, char *msg = "");
+	void warning(Error warningNumber, char *msg = (char *) "");
 
 	/***********************
 	* Commande du matériel *
