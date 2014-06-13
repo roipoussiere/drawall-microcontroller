@@ -19,67 +19,54 @@
 
 /**
  * \file	config.h
- * \author  Nathanaël Jourdane
- * \brief   Affectation des pins, des modes de compilation et de la vitesse de communication série.
+ * \brief   Compilation modes, serial link speed and pin allocation.
  */
 
-// *** Modes de compilation ***
-// Décommenter la ligne si la fonction n'est pas désirée
+// *** Compilation modes ***
+// Comment the line if you don't need the feature.
 
-/// Active le support des boutons.
+/// Enable buttons support
 // #define BUTTONS
 
-/// Active l'envoi d'informations par liason série
+/// Enable sending data through serial link
 #define SERIAL
 
-/// Active l'envoi d'informations de deboguage.
-// #define DEBUG
-
-/// Active le support de l'écran.
+/// Enable screen support
 // #define SCREEN
 
-// *** Autre ***
+/// Enable sending debug data through serial link
+// #define DEBUG
 
-/// Vitesse de la communication série.
+// *** Misc ***
+
+/// Serial link speed
 #define SERIAL_BAUDS 57600
 
-// *** Affectation des pins ***
+// *** Pin allocations ***
 
-// Pins 0 et 1 : utilisées par le port série (communication avec Processing)
+// Notes:
+// pins 0 and 1 are used by serial link (RX, TX)
+// Pins 11, 12 and 13 are used by SD card (MOSI, MISO, SCK)
+// Pins 14-19 are respectively equivalent to A0-A5 on an Arduino UNO.
+
+// ** Atmega328P (Arduino) **
 
 typedef enum {
-	PIN_PAUSE = 2,            // Pin 2 utilisé par l'interruption du bouton pause
-	PIN_LEFT_CAPTOR = 3,      // Pin du capteur fin de course du moteur gauche.
-	PIN_RIGHT_CAPTOR = 4,     // Pin du capteur fin de course du moteur droit.
-	PIN_SERVO = 5,            // Pin de commande du servo-moteur.
-	PIN_LEFT_MOTOR_DIR = 6,   // Pin DIR (la direction) du moteur gauche.
-	PIN_LEFT_MOTOR_STEP = 7,  // Pin STEP (les pas) du moteur gauche.
-	PIN_RIGHT_MOTOR_DIR = 8,  // Pin DIR (la direction) du moteur droit.
-	PIN_RIGHT_MOTOR_STEP = 9, // Pin STEP (les pas) du moteur droit.
-	PIN_SD_CS = 10            // Pin CS de la carte SD.
+	PIN_PAUSE = 2,            	///< Pause button interruption
+	PIN_LEFT_CAPTOR = 3,      	///< Left limit switch
+	PIN_RIGHT_CAPTOR = 4,     	///< Right limit switch
+	PIN_SERVO = 5,            	///< Servo-motor control
+	PIN_LEFT_MOTOR_DIR = 6,   	///< Left motor direction
+	PIN_LEFT_MOTOR_STEP = 7,  	///< Left motor steps
+	PIN_RIGHT_MOTOR_DIR = 8,  	///< Right motor direction
+	PIN_RIGHT_MOTOR_STEP = 9, 	///< Right motor steps
+	PIN_SD_CS = 10,           	///< CS pin on the SD card reader (Snootlab, Adafruit : 10 - Sparkfun : 8).
+	PIN_REMOTE = 14,		  	///< Remote control sensor
+	PIN_ENABLE_LEFT_MOTOR = 15, ///< Left motor enabling
+	PIN_ENABLE_RIGHT_MOTOR = 16,///< Right motor enabling
+	PIN_BUZZER = 17,			///< Buzzer
 } Pins;
 
-/// Snootlab et Adafruit : 10 - Sparkfun : 8
+// ** Atmega644 (DraWall official) ***
 
-// Pins 11, 12 et 13 : utilisés par la carte SD (MOSI, MISO, SCK)
-
-// Pin de la diode infra-rouge pour télécommande.
-// #define PIN_REMOTE A0
-
-/// Pin pour desactivation des moteurs (nommé /en sur pololu).
-#define PIN_OFF_MOTORS A0
-
-/// Pin SCE de l'écran LCD
-#define PIN_SCREEN_SCE A1
-
-/// Pin RESET de l'écran LCD
-#define PIN_SCREEN_RST A2
-
-/// Pin DC de l'écran LCD
-#define PIN_SCREEN_DC A3
-
-/// Pin SDIN de l'écran LCD
-#define PIN_SCREEN_SDIN A4
-
-/// Pin SCLK de l'écran LCD
-#define PIN_SCREEN_SCLK A5
+// TODO: Make pin allocation template for Atmega644

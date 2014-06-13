@@ -180,7 +180,7 @@ int Drawall::positionToX(Position position)
 		return mpSheetWidth;
 
 	default:
-		return x = 0;
+		return 0;
 	}
 }
 
