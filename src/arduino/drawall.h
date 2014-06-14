@@ -26,7 +26,7 @@
 #ifndef _H_DRAWALL
 #define _H_DRAWALL
 
-#include "defines.h"
+#include "models.h"
 #include <math.h>
 #include <SD.h>
 #include <Servo.h>
