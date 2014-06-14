@@ -1,5 +1,5 @@
 /*
- * This file is part of Drawall, a vertical tracer (aka drawbot) - see http://drawall.fr/
+ * This file is part of Drawall, a vertical tracer (aka drawbot) - see http://drawall.cc/
  *
  * Copyright (c) 2012-2014 Nathanaël Jourdane
  *
@@ -18,9 +18,7 @@
  */
 
 /**
- * \file	drawall.cpp
- * \author	Nathanaël Jourdane
- * \brief	 Fichier principal de la bibliothèque.
+ * \brief	Main library file
  */
 
 #include <drawall.h>
@@ -28,7 +26,8 @@
 void Drawall::begin(char *fileName)
 {
 	// Affectation des pins des moteurs
-	pinMode(PIN_OFF_MOTORS, OUTPUT);
+	pinMode(PIN_ENABLE_LEFT_MOTOR, OUTPUT);
+	pinMode(PIN_ENABLE_RIGHT_MOTOR, OUTPUT);
 	pinMode(PIN_LEFT_MOTOR_STEP, OUTPUT);
 	pinMode(PIN_LEFT_MOTOR_DIR, OUTPUT);
 	pinMode(PIN_RIGHT_MOTOR_STEP, OUTPUT);
@@ -228,12 +227,14 @@ long Drawall::positionToRightLength(float positionX, float positionY)
 void Drawall::power(bool shouldPower)
 {
 	if (shouldPower) {
-		digitalWrite(PIN_OFF_MOTORS, LOW);
+		digitalWrite(PIN_ENABLE_LEFT_MOTOR, LOW);
+		digitalWrite(PIN_ENABLE_RIGHT_MOTOR, LOW);
 		#ifdef SERIAL
 			Serial.write(ENABLE_MOTORS);	// Processing: a = alimenter
 		#endif
 	} else {
-		digitalWrite(PIN_OFF_MOTORS, HIGH);
+		digitalWrite(PIN_ENABLE_LEFT_MOTOR, HIGH);
+		digitalWrite(PIN_ENABLE_RIGHT_MOTOR, HIGH);
 		#ifdef SERIAL
 			Serial.write(DISABLE_MOTORS);	// Processing: b = désalimenter
 		#endif

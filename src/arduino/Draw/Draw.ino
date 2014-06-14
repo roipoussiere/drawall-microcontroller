@@ -25,9 +25,8 @@ void setup() {
 }
 
 void loop() {
-  //d.drawingArea("lyra.lgc", d.FULL); // Draw the limits of the drawing area
-  d.draw("lyra.lgc", d.FULL); // Draw the GCode file
-  d.setSpeed(100);
+  d.drawingArea("gnu.lgc", d.FULL); // Draw the limits of the drawing area
+  d.draw("gnu.lgc", d.FULL); // Draw the GCode file
   d.end(); // Go to the final position (on the floor by default) and stop the robot.
   while(true);
 }
