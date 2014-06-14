@@ -1,5 +1,5 @@
 /*
- * This file is part of Drawall, a vertical tracer (aka drawbot) - see http://drawall.fr/
+ * This file is part of Drawall, a vertical tracer (aka drawbot) - see http://drawall.cc/
  *
  * Copyright (c) 2012-2014 Nathanaël Jourdane
  *
@@ -18,10 +18,10 @@
  */
 
 /**
- * \file   drawall.h
- * \author Nathanaël Jourdane
- * \brief  Fichier d'en-tête de la bibliothèque
+ * \brief  Header library file
  */
+
+#define BOARD ATMEGA328
 
 #ifndef _H_DRAWALL
 #define _H_DRAWALL
@@ -31,6 +31,15 @@
 #include <SD.h>
 #include <Servo.h>
 #include <Arduino.h>
+
+/// Serial link speed
+#define SERIAL_BAUDS 57600
+
+/// Enable sending data through serial link
+#define SERIAL
+
+/// Enable sending debug data through serial link
+// #define DEBUG
 
 /**
  * \brief Classe principale de la librairie
