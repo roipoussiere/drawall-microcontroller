@@ -18,7 +18,7 @@
  */
 
 /**
- * \brief	Main library file
+ * Main library file.
  */
 
 #include <drawall.h>
@@ -278,7 +278,7 @@ void Drawall::leftStep(bool shouldPull)
 	} else {
 		mLeftLength++;
 		#ifdef SERIAL
-			Serial.write(PUSH_LEFT);
+			Serial.write(RELEASE_LEFT);
 		#endif
 	}
 
@@ -295,7 +295,7 @@ void Drawall::rightStep(bool shouldPull)
 	} else {
 		mRightLength++;
 #ifdef SERIAL
-		Serial.write(PUSH_RIGHT);
+		Serial.write(RELEASE_RIGHT);
 #endif
 	}
 
@@ -463,7 +463,7 @@ void Drawall::error(
 			char *msg)
 {
 #ifdef SERIAL
-	Serial.write(ERROR);
+	Serial.write(START_ERROR);
 	Serial.print((byte) errorNumber);
 	Serial.println(msg);
 	Serial.write(END_ERROR);
@@ -478,7 +478,7 @@ void Drawall::warning(
 			char *msg)
 {
 #ifdef SERIAL
-	Serial.write(WARNING);
+	Serial.write(START_WARNING);
 	Serial.print((byte) warningNumber);
 	Serial.println(msg);
 	Serial.write(END_WARNING);

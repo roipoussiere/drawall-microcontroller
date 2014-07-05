@@ -18,7 +18,7 @@
  */
 
 /**
- * \brief  Header library file
+ * Header library file.
  */
 
 #define BOARD ATMEGA328
@@ -42,30 +42,15 @@
 // #define DEBUG
 
 /**
- * \brief Classe principale de la librairie
- *
- * \todo Tester le fichier GCode avant de commencer le dessin.
- * \todo Possibilité d'insérer une variable dans les codes d'erreurs.
- * \todo Création d'un fichier de log contenant les erreurs et warnings.
- * \todo Envoyer signal de pause sur le port série lors d'une pause.
- *
- * \bug Système de limites à corriger.
- * \bug Le crayon va très en bas en fin de traçé (en dehors de limite basse).
- * \bug Moteurs gauche et droit non synchronisés pour les déplacements.
- * \bug Il y a une légère marge en haut du dessin.
- * \bug Pour les surfaces larges, pas de marge en bas du dessin, sans doute lié au bug ci-dessus.
- * \bug Dessin pas centré pour les surfaces larges.
- * \bug Lorsqu'on change la vitesse, le traçé se fait en 2 segments.
+ * Main library class.
  */
 class Drawall {
 
 	public:
 
 	/**
-	 * \brief Position sur la zone de dessin
-	 * \details Les différentes position pour accès rapide, correspondant aux 8 points cardinaux,
-	 * plus le centre.
-	 */
+	 * CardinalPoint on the drawing area.
+	 * The positions, corresponding to the cardinal points, plus the center.	 */
 	typedef enum {
 		LOWER_LEFT,
 		LOWER_CENTER,
@@ -78,28 +63,29 @@ class Drawall {
 		UPPER_LEFT,
 		UPPER_CENTER,
 		UPPER_RIGHT
-	} Position;
+	} CardinalPoint;
 
 	/**
-	 * \brief modes de taille de l'image
+	 * Image width modes.
 	 */
 	typedef enum  {
-		ORIGINAL, ///< Image de la taille du dessin
-		FULL,     ///< Image de la taille de la zone de dessin
+		ORIGINAL, ///< Matching to the drawing width.
+		FULL,     ///< Matching to the sheet width.
 	} DrawingSize;
 
 	/**
-	 * \brief Démarre la librairie.
-	 * \details \b Nécessaire au fonctionnement de la librairie. Réalise les procédures
-	 * d'initialisation du robot.
-	 * \param fileName Nom du fichier de configuration à charger.
+	 * Initialise the library.
+	 * required to use the library. Do the plotter initialisation procedures.
+	 * \param fileName The name of the file to load.
 	 */
 	void begin(char *fileName);
 
 	/**
-	 * \brief Finit le traçé.
-	 * \details Utilisé à la fin du programme. Cela positionne le crayon en bas de la zone de
-	 * dessin, désalimente les moteurs et met en pause le programme.
+	 * End the drawing.
+	 * Used in the end of the drawing:
+	 * - position the plotter on the end position (at the bottom of the sheet by default);
+	 * - disable the motors;
+	 * - pause the program.
 	 */
 	void end();
 
@@ -107,27 +93,23 @@ class Drawall {
 	* Getters & setters *
 	********************/
 	/**
-	 * \brief Spécifie la position initiale du crayon.
-	 * \details À utiliser avant de commencer à tracer.
-	 * \param x La position horizontale du crayon.
-	 * \param y La position verticale du crayon.
+	 * Set the initial plotter position. Use before drawing.
+	 * \param x The horizontal plotter position.
+	 * \param y The horizontal plotter position.
 	 */
-	void setPosition(float x, float y);
+	void setCardinalPoint(float x, float y);
 
 	/**
-	 * \brief Spécifie la position initiale du crayon.
-	 * \details À utiliser avant de commencer à tracer.
-	 * \param position La position du crayon (voir type enum \a Position).
+	 * Set the initial plotter position. Use before drawing.
+	 * \param position The plotter position (@see CardinalPoint).
 	 */
-	void setPosition(Position position);
+	void setCardinalPoint(CardinalPoint position);
 
 	/**
-	 * \brief Spécifie la vitesse du traçé (en mm/s).
-	 * \details Cette vitesse correspond à la vitesse de déplacement de la courroie qui effectue la
-	 * plus grande distance entre 2 points (Cf. \a mDelay). La vitesse réelle
-	 * du dessin sera donc plus lente.
-	 * \param speed La vitesse du traçé.
-	 * \bug La vitesse diminue si on augmente le nombre de pas.
+	 * Set the plotter speed (in mm/s).
+	 * A next feature will support dynamic speed, then this parameter will be a 'base' speed.
+	 * \param speed The plotter speed.
+	 * \bug Speed growing if steep numbers growing.
 	 */
 	void setSpeed(unsigned int speed);
 
@@ -136,318 +118,312 @@ class Drawall {
 	**********************/
 
 	/**
-	 * \brief Déplace le crayon à la position absolue [\a x ; \a y].
-	 * \param x La position absolue horizontale du point de destination.
-	 * \param y La position absolue verticale du point de destination.
+	 * Move the plotter to the absloute position [\a x ; \a y].
+	 * \param x The horizontal absolute position of the destination point.
+	 * \param y The vertical absolute position of the destination point.
 	 */
 	void move(float x, float y);
 
 	/**
-	 * \brief Déplace le crayon à la position absolue \a position.
-	 * \param position La position absolue du point de destination (Cf type enum \a Position)
+	 * Move the plotter to the absloute position \a position.
+	 * \param position The absolue position of the destination point (@see CardinalPoint)
 	 */
-	void move(Position position);
+	void move(CardinalPoint position);
 
 	/**
-	 * \brief Trace une ligne droite, de la position actuelle à la position absolue [\a x; \a y].
-	 * \param x La position absolue horizontale du point de destination.
-	 * \param y La position absolue verticale du point de destination.
+	 * Draw a straight line, from the actual position to the absolute position  [\a x; \a y].
+	 * \param x The horizontal absolute position of the destination point.
+	 * \param y The vertical absolute position of the destination point.
 	 * \bug Fait des escaliers dans certains cas (?).
 	 */
 	void line(float x, float y);
 
 	/**
-	 * \brief Trace un rectangle représentant les limites du dessin.
+	 * Draw a rectangle matching with the limits of the drawing.
 	 */
-	void drawingArea(char *fileName, DrawingSize size = ORIGINAL, Position position = CENTER);
+	void drawingArea(char *fileName, DrawingSize size = ORIGINAL, CardinalPoint position = CENTER);
 
 	/**
-	 * \brief Trace un dessin correspondant au fichier gcode \a fileName de la carte SD.
-	 * \details Le robot doit être muni d'un lecteur de carte SD contenant un fichier gcode.
+	 * Draw a drawing as descibed in the \a fileName file stored int the SD card.
 	 * \param fileName Le nom du fichier gcode à dessiner.
-	 * \todo Tester la présence du code M02 (fin du dessin) avant la fin du fichier.
+	 * \TODO Check the M02 presence (end of drawing) before the end of drawing.
 	 */
-	void draw(char *fileName, DrawingSize size = ORIGINAL, Position position = CENTER);
+	void draw(char *fileName, DrawingSize size = ORIGINAL, CardinalPoint position = CENTER);
 
   private:
 
 	/**
-	 * \brief Liste des données envoyées au pc via le port série.
+	 * The codes to send to the computer trought the serial link.
+	 * \TODO Optimize the warning and errors messages: maybe use only one enum ?
 	*/
 	typedef enum {
-		PUSH_LEFT,          ///< Relâche la courroie gauche d'un cran.
-		PULL_LEFT,          ///< Tire la courroie gauche d'un cran.
-		PUSH_RIGHT,         ///< Relâche la courroie droite d'un cran.
-		PULL_RIGHT,         ///< Tire la courroie droite d'un cran.
-		WRITING,            ///< Le stylo dessine.
-		MOVING,             ///< Le stylo se déplace (ne dessine pas).
-		START_MESSAGE,      ///< Début d'envoie d'un message à afficher.
-		END_MESSAGE,        ///< Début d'envoie d'un message à afficher.
-		ENABLE_MOTORS,      ///< Alimentation des moteurs.
-		DISABLE_MOTORS,     ///< Désalimentation des moteurs.
-		SLEEP,              ///< Mise en pause du programme.
-		CHANGE_TOOL,        ///< Pause pour changement d'outil
-		END_DRAWING,        ///< Fin du dessin.
-		WARNING,            ///< Warning (suivi du code de warning).
-		END_WARNING,        ///< Fin du message de warning.
-		ERROR,              ///< Erreur (suivi du code d'erreur).
-		END_ERROR,          ///< Fin du message d'erreur.
-		START = 100,        ///< Amorçage par liason série
-		START_INSTRUCTIONS, ///< Début d'envoi des données d'initialisation.
-		END_INSTRUCTIONS,   ///< Fin d'envoi des données d'initialisation.
+		RELEASE_LEFT,       ///< Release the left belt for one step;
+		PULL_LEFT,          ///< Pull the left belt for one step;
+		RELEASE_RIGHT,      ///< Release the left belt for one step;
+		PULL_RIGHT,         ///< Pull the left belt for one step;
+		WRITING,            ///< The plotter is drawing;
+		MOVING,             ///< The plotter moving (dot drawing);
+		START_MESSAGE,      ///< Begining of the message to display on the sreen (if any) or/and on the computer (if any);
+		END_MESSAGE,        ///< End of the message to display on the sreen (if any) or/and on the computer (if any);
+		ENABLE_MOTORS,      ///< Enable the motors and the servo;
+		DISABLE_MOTORS,     ///< Disable the motors and the servo;
+		SLEEP,              ///< Pause the program;
+		CHANGE_TOOL,        ///< Pause the program to change the tool;
+		END_DRAWING,        ///< End of the drawing;
+		START_WARNING,      ///< Begining of a warning (followed by te warning code);
+		END_WARNING,        ///< End of warning message;
+		START_ERROR,        ///< Begining of an error (followed by te error code);
+		END_ERROR,          ///< End of error message;
+		START = 100,        ///< Sart-up with the serial link;
+		START_INSTRUCTIONS, ///< Begining of the initialization data;
+		END_INSTRUCTIONS,   ///< End of the initialization data;
 	} SerialData;
 
 	/**
-	* \brief Liste des erreurs et warnings pouvant survenir pendant l'execution du programme.
-	* \details Les erreurs commencent à l'indice 0 tandis que les warnings
-	* commencent à l'indice 100. Les warnings sont des simples avertissement
-	* qui n'interfèrent pas la course du robot, tandis que les erreurs sont des
-	* anomalies critiques qui empèchent ou stoppent la course du robot.
+	* The errors and warnings which should occurs during the program execution.
+	* The errors starts to 0 and the Warnings starts to 100.
+	* The warnings doesn't interfere in the drawing and the errors are critical anomalies which prevents the drawing.
 	*/
 	typedef enum {
-		CARD_NOT_FOUND,     ///< La carte SD n'a pas été trouvée ou est illisible.
-		FILE_NOT_FOUND,     ///< Le fichier n'existe pas.
-		FILE_NOT_READABLE,  ///< Erreur d'ouverture du fichier.
-		TOO_SHORT_SPAN,     ///< La distance entre les 2 moteurs est inférieure à la largeur.
-		                    ///< de la feuille et sa position horizontale.
-		TOO_FEW_PARAMETERS, ///< Certains paramètres n'ont pas été lus.
+		CARD_NOT_FOUND,     ///< The SD card is not found or not readable;
+		FILE_NOT_FOUND,     ///< The file not exists;
+		FILE_NOT_READABLE,  ///< Error while opening the file;
+		TOO_SHORT_SPAN,     ///< The distance between the belt extremities is lower than the sheet width plus his horizontal coordinate;
+		TOO_FEW_PARAMETERS, ///< One or several parameters have not been read;
 
 		// Warnings
-		UNKNOWN_SERIAL_CODE = 100, ///< Caractère envoyé au port série non reconnu.
-		WRONG_CONFIG_LINE,         ///< Ligne mal formée dans le fichier de configuration.
-		                           ///< Param : n° de la ligne.
-		TOO_LONG_CONFIG_LINE,      ///< Ligne trop longue dans le fichier de configuration.
-		                           ///< Param : n° de la ligne.
-		UNKNOWN_CONFIG_KEY,        ///< Clé inconnue dans le fichier de configuration.
-		                           ///< Params : clé, n° de la ligne.
-		UNKNOWN_CONFIG_POSITION,   ///< Position inconnue dans le fichier de configuration.
-		UNKNOWN_GCODE_FUNCTION,    ///< Fonction gcode inconnue dans le fichier.
-		UNKNOWN_GCODE_PARAMETER,   ///< Paramètre gcode inconnu.
-		WRONG_GCODE_PARAMETER,     ///< Erreur lors de la lecture d'un paramètre.
-		                           ///< Params : paramètre, n° de la ligne.
-		LEFT_LIMIT,                ///< Le traceur a atteint la limite gauche.
-		RIGHT_LIMIT,               ///< Le traceur a atteint la limite droite.
-		UPPER_LIMIT,               ///< Le traceur a atteint la limite haute.
-		LOWER_LIMIT,               ///< Le traceur a atteint la limite basse.
+		UNKNOWN_SERIAL_CODE = 100, ///< Character sent throught serial link has not been recognised (used only in the compunter side);
+		WRONG_CONFIG_LINE,         ///< Incorrectly formatted line in the configuration file. Param : the line number;
+		TOO_LONG_CONFIG_LINE,      ///< Too long line in the configuration file. Param : the line number;
+		UNKNOWN_CONFIG_KEY,        ///< Unknown key in the configuration file. Param : the key, the line number;
+		UNKNOWN_CONFIG_POSITION,   ///< Can not read the position string in the configuration file;
+		UNKNOWN_GCODE_FUNCTION,    ///< Unknown GCode function in the drawing file;
+		UNKNOWN_GCODE_PARAMETER,   ///< Unknown GCode parameter;
+		WRONG_GCODE_PARAMETER,     ///< Error while reader a parameter. Param: The parameter, the line number.
+		LEFT_LIMIT,                ///< The plotter reached the left limit of the sheet;
+		RIGHT_LIMIT,               ///< The plotter reached the right limit of the sheet;
+		UPPER_LIMIT,               ///< The plotter reached the upper limit of the sheet;
+		LOWER_LIMIT,               ///< The plotter reached the lower limit of the sheet;
 	} Error;
 
-	/************
-	* Attributs *
-	************/
+	/*************
+	* Attributes *
+	*************/
 
-	/// Objet pour manipuler le servo-moteur, utilisé avec la librairie \a Servo.
+	/// Instance of the servo, used to drive it with the \a Servo library.
 	Servo mServo;
-	/// Le fichier svg contenant le dessin vectoriel à reproduire.
+
+	/// The GCode file of the drawing.
 	File mFile;
 
-	/// Longueur de la courroie gauche, en pas.
+	/// Left belt length, in steps.
 	unsigned long mLeftLength;
 
-	/// Longueur de la courroie droite, en pas.
+	/// Right belt length, in steps.
 	unsigned long mRightLength;
 
-	/// Offset horizontal pour placer le dessin au bon endroit dans la zone de dessin
+	/// Horizontal offset. Can be used to calibrate the drawing in a accurate position.
 	unsigned int mOffsetX;
 
-	/// Offset vertical pour placer le dessin au bon endroit dans la zone de dessin
+	/// Vertical offset. Can be used to calibrate the drawing in a accurate position.
 	unsigned int mOffsetY;
 
-	/// Scale du dessin
+	/// Drawing scale. Can be used to calibrate the drawing in a accurate scale.
 	float mDrawingScale;
 
-	/// Largeur du dessin en cours
+	/// Width of the running drawing.
 	int mDrawingWidth;
 
-	/// Hauteur du dessin en cours
+	/// Hight of the running drawing.
 	int mDrawingHeight;
 
-	/// Longueur d'un pas (distance parcourue par la courroie en 1 pas, en mm).
+	/// Step length. This is the distance traveled by the belt in one step, in mm.
+	/// \TODO Use micro or more accurate unit to use int instead of floats ?
 	float mStepLength;
 
-	/// Delai initial en micro-secondes entre chaque pas du moteur
-	/// ayant la plus grande distance à parcourir.
-	/// \details Le délai de l'autre moteur est calculé pour que les deux
-	/// moteurs arrivent au point de destination simultanément.
+	/// Initial delay between each motor step (in mm). It concerns the motor which have the longger distance to travel.
+	/// The delay concerning the other motor is calculaed in such a way as to the 2 motors are synchronised, that is, they finishes the line on the same time.
 	float mDelay;
 
-	/// Indique si le robot est en train d'écrire (\a true) ou non (\a false).
+	/// The robot is currently writing (\a true) or not (\a false).
 	bool mIsWriting;
-
-	/// Fonction actuellement en cours d'exécution dans le fichier Gcode.
-	/// utile lorsque le nom de fonction n'est pas spécifié de nouveau (ex : G1 X10 X20).
-	/// Lorsque aucune fonction n'est en cours, la valeur est 255.
-	char mFunction;
 
 	/************
 	* Positions *
 	************/
-	/// Position horizontale actuelle du crayon sur le plan.
+
+	/// Current horizontal coordinate of the plotter on the sheet.
+	/// \TODO Use floats
 	float mPositionX;
 
-	/// Position verticale actuelle du crayon sur le plan.
+	/// Current vertical coordinate of the plotter on the sheet.
+	/// \TODO Use floats
 	float mPositionY;
 
-	/// Position du servo-moteur.
+	/// Current vertical coordinate of the plotter on the sheet, that it, the distance between the pen and the sheet (can be negative).
+	/// \TODO Use floats
 	float mPositionZ;
 
 	/*************
-	* Paramètres *
+	* Parameters *
 	*************/
 
 	// Commencent par mp, pour "member" et "parameter".
+	/// \TODO: Virer les préfices 'mp'
 
 	// * Dessin *
 
-	/// Distance entre les 2 moteurs.
+	/// Distance between the belt extremities.
 	unsigned int mpSpan;
 
-	/// Largeur de la feuille.
+	/// Sheet width, in mm.
 	unsigned int mpSheetWidth;
 
-	/// Hauteur de la feuille.
+	/// Sheet height (in mm).
 	unsigned int mpSheetHeight;
 
-	/// Position horizontale du coin supérieur gauche de la feuille par rapport au moteur gauche.
+	/// Horizontal position of the upper left corner of the sheet, according to the left belt extremity.
 	unsigned int mpSheetPositionX;
 
-	/// Position verticale du coin supérieur gauche de la feuille par rapport au moteur gauche.
+	/// Vertical position of the upper left corner of the sheet, according to the left belt extremity.
 	unsigned int mpSheetPositionY;
 
-	// * Servo-moteur *
+	// * Servo-motor *
 
-	/// Angle du servo-moteur lorsque le traceur écrit (en degrés).
+	/// Servo angle while the plotter is writing (in degrees).
 	unsigned int mpServoWritingAngle;
 
-	/// Angle du servo-moteur lorsque le traceur se déplace (en degrés).
+	/// Servo angle while the plotter is moving (in degrees).
 	unsigned int mpServoMoovingAngle;
 
-	/// Pause avant le déplacement du servo (en ms).
+	/// Delay before the servo moves (en ms).
 	unsigned int mpPreServoDelay;
 
-	/// Pause après le déplacement du servo (en ms).
+	/// Delay after the servo moves (en ms).
 	unsigned int mpPostServoDelay;
 
-	// * Moteurs *
+	// * Motors *
 
-	/// Nombre de pas (prendre en compte les micros-pas effectués par le driver moteur).
+	/// Step motor numbers. Consider the motor driver multiplier.
 	unsigned int mpSteps;
 
-	/// Diamètre du pignon (en microns).
+	/// Pinion diameter (in micrometers).
 	int mpDiameter;
 
-	/// Direction du moteur gauche : \a true pour relâcher la courroie lorsque le moteur
-	/// tourne dans le sens horaire et \a false dans le cas contraire.
+	/// Direction of the left motor. \a true to release the belt when the motor rotates clockwise, \a false if counter clockwise.
 	bool mpLeftDirection;
 
-	/// Direction du moteur droit : \a true pour relâcher la courroie lorsque le moteur tourne
-	/// dans le sens horaire et \a false dans le cas contraire.
+	/// Direction of the right motor. \a true to release the belt when the motor rotates clockwise, \a false if counter clockwise.
 	bool mpRightDirection;
 
-	// * Divers *
+	// * Misc *
 
-	/// Pause avant de commencer à desiner (en ms)
+	/// Delay before start the drawing (en milliseconds).
 	unsigned int mpInitialDelay;
 
-	/// Échelle horizontale appliquée au dessin, permetant de le calibrer.
+	/// Horizontal scale applied to the drawing. Used to calibrate it according to his width.
 	float mpScaleX;
-	/// Échelle verticale appliquée au dessin, permetant de le calibrer.
+
+	/// Vertical scale applied to the drawing. Used to calibrate it according to his height.
 	float mpScaleY;
 
-	/// Offset horizontal appliqué au dessin, permetant de le décaler.
+	/// Horizontal offset applied to the drawing. Used to shift it according to his width.
 	int mpOffsetX;
 
-	/// Offset vertical appliqué au dessin, permetant de le décaler.
+	/// Vertical offset applied to the drawing. Used to shift it according to his height.
 	int mpOffsetY;
 
-	/// Vitesse par défaut du crayon, avant l'appel éventuel de setSpeed() (en m/s).
+	/// Default plotter speed. Can be changed with setSpeed().
+	/// \TODO Dynamically manage the speed.
 	unsigned int mpDefaultSpeed;
 
-	/// Position par défaut du point de départ du crayon, avant l'appel éventuel de setPosition().
-	/// Todo Prendre en charge dans le fichier de paramètres.
-	Position mpInitPosition;
+	/// Default starting position of the plotter. Can be changed with setPosition().
+	CardinalPoint mpInitPosition;
 
-	/// Position du point d'arrivée du crayon
-	/// Todo Prendre en charge dans le fichier de paramètres.
-	Position mpEndPosition;
+	/// Default final position of plotter.
+	CardinalPoint mpEndPosition;
 
 	/***********
-	* Méthodes *
+	* Methods *
 	***********/
 
 	int processVar();
 
 	/**
-	 * \brief initialise les offset X et Y en fonction du fichier de config
-	 * et de la position désirée du dessin.
+	 * Initialise the X et Y offsets according to the configuration file and the desired position of the drawing.
 	 */
-	void initOffset(Position position);
+	void initOffset(CardinalPoint position);
 
 	/**
-	 * \brief initialise le scale en fonction de la taille désirée
+	 * Initialise the scale according to the desired drawing width.
 	 */
 	void initScale(DrawingSize size);
 
 	/**
+	 * Wait until the \a msg appears on the serial link.
+	 * \param msg The msg which wake up the plotter.
 	 */
 	void waitUntil(char msg);
 
 	/**
-	 * \brief Initialise le ratio entre le nombre de pas et la distance.
-	 * \details Le ratio est calculé en fonction du diametre moteur et du nombre de pas.
-	 * xx(mm)*ratio --> xx(pas)
-	 * xx(pas)/ratio --> xx(mm)
-	 * \todo Inverser le ratio car le nombre de pas est une valeur entière, éviter de le diviser.
+	 * Initialise the ratio of number of steps to distance.
+	 * Calculated with the pinion diameter and the number of steps.
+	 * - xx(mm)*ratio --> xx(pas)
+	 * - xx(pas)/ratio --> xx(mm)
+	 * \TODO Invert the ratio, then the ratio will be an integer value, so that prevents working with floats.
 	 */
 	void initStepLength();
 
 	/**
-	 * \brief Modifie l'échelle pour s'adapter à la \a width et la \a height du dessin.
-	 * \details Les dimentions du dessin sont récupérées sur le fichier svg.
-	 * \todo Changer le nom et retourner l'échelle plutôt que de la modifier directement.
+	 * Set the drawing scale, to adapt the drawing to his \a width and \a height.
+	 * Drawing dimentions are got from the GCode file header.
+	 * \TODO Return the new scale instead of modify it directly.
 	 */
 	void setDrawingScale(int width, int height);
 
 	/**
-	 * \brief Fonction appelée lorsque une erreur se produit.
-	 * \details Éloigne le stylo de la paroi et stoppe le programme. Envoie le code d'erreur
-	 * \a errNumber au PC, qui se charge d'afficher sa description.
-	 * \param p1 1er paramètre du warning (facultatif).
-	 * \param p2 2eme paramètre du warning (facultatif).
-	 * \todo Mettre en pause le traçé, quand la pause sera opérationnelle.
+	 * Function called when an error appends.
+	 * \TODO Optimize the errors and warning management, maybe use only one function for errors and warnings, and find something better for the parameter.
+	 * - Keep away the pen from the sheet;
+	 * - Stop the program;
+	 * \TODO Displays the error on the screen, if any;
+	 * - Send the error code \a to the computer trought the serial link, if any.
+	 * All the errors should appends before the begining of the drawing.
+	 * \param errorNumber The error number (See Drawall::Error);
+	 * \param msg An optional error message which adds an information about the error (empty string if there is no message to send);
 	 */
 	void error(Error errorNumber, char *msg = (char *) "");
 
 	/**
-	 * \brief Fonction appelée lorsque un warning se produit.
-	 * \details Envoie le code de warning \a errNumber à Processing,
-	 * qui se charge d'afficher sa description sans affecter le déroulement du programme.
-	 * \param p1 1er paramètre du warning (facultatif).
-	 * \param p2 2eme paramètre du warning (facultatif).
+	 * Function called when a warning appends.
+	 * \TODO Displays the error on the screen, if any;
+	 * - Send the error code \a to the computer trought the serial link, if any.
+	 * \param warningNumber The warning number (See Drawall::Error);
+	 * \param msg An optional warning message which adds an information about the about (empty string if there is no message to send);
 	 */
 	void warning(Error warningNumber, char *msg = (char *) "");
 
-	/***********************
-	* Commande du matériel *
-	***********************/
+	/*******************
+	* Hardware driving *
+	*******************/
 
 	/**
-	 * \brief Rotation du moteur gauche d'un pas.
-	 * \param pull Sens du pas a effectuer : \a true pour tirer, \a false pour relacher.
+	 * Rotate the left motor for one step.
+	 * \param pull direction of rotation: \a true to pull the belt, \a false to release the belt.
 	 */
 	void leftStep(bool shouldPull);
 
 	/**
-	 * \brief Rotation du moteur droit d'un pas.
-	 * \param pull Sens du pas a effectuer : \a true pour tirer, \a false pour relacher.
+	 * Rotate the right motor for one step.
+	 * \param pull direction of rotation: \a true to pull the belt, \a false to release the belt.
 	 */
 	void rightStep(bool shouldPull);
 
 	/**
-	 * \brief Alimente ou désalimente les moteurs.
-	 * \details Éloigne le stylo de la paroi avant la désalimentation pour éviter de
-	 * dessiner pendant la chute éventuelle du moteur.
-	 * \param power \a true pour alimenter le moteur, \a false pour le désalimenter.
- 	* \todo Séparer la désactivation moteur gauche et moteur droit.
+	 * Enable or disable the motors.
+	 * Keep away the pen from the sheet to prevent an ugly drawing during any plotter fall.
+	 * \param power \a true to enable the motors, \a false to disable the motors.
+ 	* \TODO Separate the left motor disable and the right motor disable.
 	 */
 	void power(bool shouldPower);
 
@@ -456,84 +432,81 @@ class Drawall {
 	**************/
 
 	/**
-	 * \brief Récupère la position horizontale de \a position.
-	 * \details Cf. type enum \a Position.
-	 * \param position La position a convertir, de type \a Position.
-	 * \return La position verticale de \a position.
+	 * Get the horizontal coordinate from the \a position. See Drawall::CardinalPoint.
+	 * \param position The position to convert.
+	 * \return The horizontal coordinate of the input \a position.
 	 */
-	int positionToX(Position position);
+	int positionToX(CardinalPoint position);
 
 	/**
-	 * \brief Récupère la position verticale de \a position.
-	 * \details Cf. type enum \a Position.
-	 * \param position La position a convertir, de type \a Position.
-	 * \return La position verticale de \a position.
+	 * Get the vertical coordinate from the \a position. See Drawall::CardinalPoint.
+	 * \param position The position to convert.
+	 * \return The vertical coordinate of the input \a position.
 	 */
-	int positionToY(Position position);
+	int positionToY(CardinalPoint position);
 
 	/**
-	 * \brief Calcule la longueur de la courroie gauche pour la position [\a x ; \a y]
-	 * \param x La position absolue horizontale du point.
-	 * \param y La position absolue horizontale du point.
-	 * \return La longueur de la courroie gauche pour cette position, en nombre de pas.
+	 * Calculate the left belt length for the position [\a x ; \a y].
+	 * \param x The horizontal absolute coordinate of the point.
+	 * \param y The vertical absolute coordinate of the point.
+	 * \return The left belt length for the given position (in steps number).
 	 */
 	long positionToLeftLength(float x, float y);
 
 	/**
-	 * \brief Calcule la longueur de la courroie droite pour la position [\a x ; \a y]
-	 * \param x La position absolue horizontale du point.
-	 * \param y La position absolue horizontale du point.
-	 * \return La longueur de la courroie droite pour cette position, en nombre de pas.
+	 * Calculate the right belt length for the position [\a x ; \a y].
+	 * \param x The horizontal absolute coordinate of the point.
+	 * \param y The vertical absolute coordinate of the point.
+	 * \return The right belt length for the given position (in steps number).
 	 */
 	long positionToRightLength(float x, float y);
 
-	/*******************
-	* Lecture carte SD *
-	*******************/
+	/******************
+	* SD card reading *
+	******************/
 
 	/**
-	 * \brief Initialise de la carte SD.
-	 * \details Peut générer l'erreur 01 : Carte absente ou non reconnue.
-	 * \param fileName Le nom du fichier à lire.
-	 * \todo : si erreur et nom fichier > 8 car, proposer de vérifer si carte formatée en fat16.
+	 * Initialise the SD card.
+	 * Could throw error CARD_NOT_FOUND (see Drawall::Error)
+	 * \param fileName The file name to read.
+	 * \TODO : If an error append and the file name is longer than 8 characters, suggest to format the card in fat16.
 	 */
 	void sdInit(char *fileName);
 
 	/**
-	 * \brief Interprète la fonction gcode passée en paramètre.
-	 * \detail Le curseur doit-être devant une fonction g-code, sinon envoie un warning.
-	 * Ignore les espaces avant la fonction.
+	 * Interpret the current GCode function.
+	 * The cursor need to be just before a GCode function. Ignore white spaces before the function name.
 	 */
 	void processSDLine();
 
 	/**
-
-	*/
+	 * Draw a straight line from the current point to the point [\a x ; \a y].
+	 * \param shouldWrite: the pen state, that is, \true to write and \false to move.
+	 */
 	void segment(float x, float y, bool shouldWrite);
 
 	/**
-	 * \brief Approche ou éloigne le crayon de la paroi.
-	 * \param write \a true pour plaquer le crayon contre la paroi (traçé),
-	 * \a false pour l'éloigner (déplacement)
+	 * Come close or keep away the pen from the sheet.
+	 * \param shouldWrite \a true to come close the pen to the sheet (writing), \a false to keep away (mooving).
 	 */
 	void writingPen(bool shouldWrite);
 
 	/**
-	 * \brief Convertit une chaine en valeur booléenne.
-	 * \param value Chaine contenant soit "true", soit "false".
-	 * \return \a true si la chaine est "true", \a false si la chaine est "false".
+	 * Converts a string into a boolean value.
+	 * \param value A string containing the word "true", or "false".
+	 * \return \a true if the String is "true", \a false if not.
 	 */
 	bool atob(char *value);
 
 	/**
-	 * \brief Convertit une chaine en position
+	 * Converts a string into a position.
+	 * \param str_pos A string containing the word "LOWER_LEFT", "LOWER_CENTER", "LOWER_RIGHT", "LEFT_CENTER", "CENTER", "RIGHT_CENTER", "UPPER_LEFT", "UPPER_CENTER" or "UPPER_RIGHT". Throw the warning UNKNOWN_CONFIG_POSITION (see Drawall::Error) if the string doesn't match with any of these words.
 	 */
-	Drawall::Position atop(char *str_pos);
-
+	Drawall::CardinalPoint atop(char *str_pos);
 
 	/**
-	 * \Brief Charge les paramètres à partir d'un fichier de configuration présent sur la carte SD.
-	 * \param fileName Le nom du fichier de configuration à charger.
+	 * Load the parameters from the configuration file on the SD card.
+	 * \param fileName The name of the configuration file to load.
 	 */
 	void loadParameters(char *fileName);
 
