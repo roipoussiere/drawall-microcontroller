@@ -91,13 +91,13 @@ class Drawall {
 	 * \param x The horizontal plotter position.
 	 * \param y The horizontal plotter position.
 	 */
-	void setCardinalPoint(float x, float y);
+	void setPosition(float x, float y);
 
 	/**
 	 * Set the initial plotter position. Use before drawing.
 	 * \param position The plotter position (@see CardinalPoint).
 	 */
-	void setCardinalPoint(CardinalPoint position);
+	void setPosition(CardinalPoint position);
 
 	/**
 	 * Set the plotter speed (in mm/s).
