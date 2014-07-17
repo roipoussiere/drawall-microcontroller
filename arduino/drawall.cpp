@@ -154,12 +154,12 @@ void Drawall::setPosition(float positionX, float positionY)
 	mPositionY = positionY;
 }
 
-void Drawall::setPosition(Position position)
+void Drawall::setPosition(CardinalPoint position)
 {
 	setPosition(positionToX(position), positionToY(position));
 }
 
-int Drawall::positionToX(Position position)
+int Drawall::positionToX(CardinalPoint position)
 {
 	switch (position) {
 	case UPPER_CENTER:
@@ -177,7 +177,7 @@ int Drawall::positionToX(Position position)
 	}
 }
 
-int Drawall::positionToY(Position position)
+int Drawall::positionToY(CardinalPoint position)
 {
 	switch (position) {
 	case UPPER_LEFT:
@@ -328,7 +328,7 @@ void Drawall::move(float x, float y)
 	segment(x, y, false);
 }
 
-void Drawall::move(Position position)
+void Drawall::move(CardinalPoint position)
 {
 	move(positionToX(position), positionToY(position));
 }
@@ -497,7 +497,7 @@ void Drawall::initScale(DrawingSize size)
 	}
 }
 
-void Drawall::initOffset(Position position)
+void Drawall::initOffset(CardinalPoint position)
 {
 	// write less
 	int right = mpSheetWidth - mDrawingScale * mDrawingWidth;
@@ -551,7 +551,7 @@ void Drawall::initOffset(Position position)
 }
 
 void Drawall::drawingArea(
-			char *fileName, DrawingSize size, Position position)
+			char *fileName, DrawingSize size, CardinalPoint position)
 {
 	mFile = SD.open(fileName);
 
@@ -578,7 +578,7 @@ void Drawall::drawingArea(
 }
 
 void Drawall::draw(
-			char *fileName, DrawingSize size, Position position)
+			char *fileName, DrawingSize size, CardinalPoint position)
 {
 	mFile = SD.open(fileName);
 
@@ -641,9 +641,9 @@ bool Drawall::atob(
 	return !strcmp(value, "true") || !strcmp(value, "yes");
 }
 
-Drawall::Position Drawall::atop(char *str_pos)
+Drawall::CardinalPoint Drawall::atop(char *str_pos)
 {
-	Position pos;
+	CardinalPoint pos;
 
 	if (!strcmp(str_pos, "LOWER_LEFT")) {
 		pos = LOWER_LEFT;
