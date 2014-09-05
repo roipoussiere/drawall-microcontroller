@@ -8,8 +8,8 @@
 
 #define PIN_SERVO 5
 
-#define MIN_SERVO 77
-#define MAX_SERVO 83
+#define MIN_SERVO 80
+#define MAX_SERVO 90
 
 Servo s;
 
