@@ -17,7 +17,9 @@
  * Note about enabled components : comment the #define line if you don't need the feature.
  * Available modes:
  * - BUTTONS: Enable buttons support;
- * - SCREEN: Enable screen support.
+ * - SCREEN: Enable screen support;
+ * - SERIAL: Enable sending data through serial link to use the simulator;
+ * - SERIAL_BAUDS: Serial link speed (baud rate).
  * Notes about pin allocation:
  * - pins 0 and 1 are used by serial link (RX, TX);
  * - pins 11, 12 and 13 are used by SD card (MOSI, MISO, SCK);
@@ -33,16 +35,23 @@ typedef enum {
 	PIN_PAUSE = 2,            	///< Pause button interruption
 	PIN_LEFT_CAPTOR = 3,      	///< Left limit switch
 	PIN_RIGHT_CAPTOR = 4,     	///< Right limit switch
+
 	PIN_SERVO = 5,            	///< Servo-motor control
+
 	PIN_LEFT_MOTOR_DIR = 6,   	///< Left motor direction
 	PIN_LEFT_MOTOR_STEP = 7,  	///< Left motor steps
 	PIN_RIGHT_MOTOR_DIR = 8,  	///< Right motor direction
 	PIN_RIGHT_MOTOR_STEP = 9, 	///< Right motor steps
+
 	PIN_SD_CS = 10,           	///< CS pin on the SD card reader (Snootlab, Adafruit : 10 - Sparkfun : 8).
-	PIN_REMOTE = 14,		  	///< Remote control sensor
-	PIN_ENABLE_LEFT_MOTOR = 15, ///< Left motor enabling
-	PIN_ENABLE_RIGHT_MOTOR = 16,///< Right motor enabling
-	PIN_BUZZER = 17,			///< Buzzer
+
+	PIN_STEP_MODE_0 = 14,            ///< Step Mode 0 on the motor driver
+	PIN_STEP_MODE_1 = 15,            ///< Step Mode 1 on the motor driver
+	PIN_STEP_MODE_2 = 16,            ///< Step Mode 2 on the motor driver
+
+	PIN_REMOTE = 17,		  	///< Remote control sensor
+	PIN_ENABLE_MOTORS = 18,     ///< Right motor enabling
+	PIN_BUZZER = 19,			///< Buzzer
 } Pins;
 
 #elif BOARD == ATMEGA644
@@ -56,16 +65,23 @@ typedef enum {
 	PIN_PAUSE = 2,            	///< Pause button interruption
 	PIN_LEFT_CAPTOR = 3,      	///< Left limit switch
 	PIN_RIGHT_CAPTOR = 4,     	///< Right limit switch
+
 	PIN_SERVO = 5,            	///< Servo-motor control
+
 	PIN_LEFT_MOTOR_DIR = 6,   	///< Left motor direction
 	PIN_LEFT_MOTOR_STEP = 7,  	///< Left motor steps
 	PIN_RIGHT_MOTOR_DIR = 8,  	///< Right motor direction
 	PIN_RIGHT_MOTOR_STEP = 9, 	///< Right motor steps
-	PIN_SD_CS = 10,           	///< CS pin on the SD card reader (Snootlab, Adafruit : 10 - Sparkfun : 8).
-	PIN_REMOTE = 14,		  	///< Remote control sensor
-	PIN_ENABLE_LEFT_MOTOR = 15, ///< Left motor enabling
-	PIN_ENABLE_RIGHT_MOTOR = 16,///< Right motor enabling
-	PIN_BUZZER = 17,			///< Buzzer
+
+	PIN_SD_CS = 10,           	///< Chip Select pin on the SD card reader (Snootlab, Adafruit : 10 - Sparkfun : 8).
+
+	PIN_STEP_MODE_0 = 14,            ///< Step Mode 0 on the motor driver
+	PIN_STEP_MODE_1 = 15,            ///< Step Mode 1 on the motor driver
+	PIN_STEP_MODE_2 = 16,            ///< Step Mode 2 on the motor driver
+
+	PIN_REMOTE = 17,		  	///< Remote control sensor
+	PIN_ENABLE_MOTORS = 18,     ///< Right motor enabling
+	PIN_BUZZER = 19,			///< Buzzer
 } Pins;
 
 #elif BOARD == PERSONALISED

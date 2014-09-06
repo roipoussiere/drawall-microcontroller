@@ -15,22 +15,19 @@
  * Header library file.
  */
 
-#define BOARD ATMEGA328
-
 #ifndef _H_DRAWALL
 #define _H_DRAWALL
+
+#define BOARD ATMEGA328
+
+#define SERIAL
+#define SERIAL_BAUDS 57600
 
 #include "models.h"
 #include <math.h>
 #include <SD.h>
 #include <Servo.h>
 #include <Arduino.h>
-
-/// Serial link speed
-#define SERIAL_BAUDS 57600
-
-/// Enable sending data through serial link
-#define SERIAL
 
 /// Enable sending debug data through serial link
 // #define DEBUG
@@ -242,6 +239,7 @@ class Drawall {
 	/// The robot is currently writing (\a true) or not (\a false).
 	bool mIsWriting;
 
+	int mStepMode;
 	/************
 	* Positions *
 	************/
@@ -309,6 +307,9 @@ class Drawall {
 
 	/// Direction of the right motor. \a true to release the belt when the motor rotates clockwise, \a false if counter clockwise.
 	bool mpRightDirection;
+
+	/// Virtual reversing state of the motors. \a true to reverse the motors, false to don't reverse them.
+	bool mpReverseMotors;
 
 	// * Misc *
 

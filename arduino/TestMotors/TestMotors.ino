@@ -13,9 +13,9 @@
 #define PIN_RIGHT_STEPS 9
 
 // step mode pins
-#define PIN_MODE_0 2
-#define PIN_MODE_1 3
-#define PIN_MODE_2 4
+#define PIN_MODE_0 A0
+#define PIN_MODE_1 A1
+#define PIN_MODE_2 A2
 
 // Motor steps
 #define MOTORS_STEPS 200
@@ -24,7 +24,7 @@
 #define SPEED_RPS 1
 
 // Serial baud rate
-#define SERIAL_BAUDS 9600
+#define SERIAL_BAUDS 57600
 
 int initStepsBySec = MOTORS_STEPS * SPEED_RPS;
 long stepsBySec;
