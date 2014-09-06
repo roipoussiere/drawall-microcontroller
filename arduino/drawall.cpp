@@ -20,12 +20,15 @@
 void Drawall::begin(char *fileName)
 {
 	// Affectation des pins des moteurs
-	pinMode(PIN_ENABLE_LEFT_MOTOR, OUTPUT);
-	pinMode(PIN_ENABLE_RIGHT_MOTOR, OUTPUT);
+	pinMode(PIN_ENABLE_MOTORS, OUTPUT);
 	pinMode(PIN_LEFT_MOTOR_STEP, OUTPUT);
 	pinMode(PIN_LEFT_MOTOR_DIR, OUTPUT);
 	pinMode(PIN_RIGHT_MOTOR_STEP, OUTPUT);
 	pinMode(PIN_RIGHT_MOTOR_DIR, OUTPUT);
+
+	pinMode(PIN_STEP_MODE_0, OUTPUT);
+	pinMode(PIN_STEP_MODE_1, OUTPUT);
+	pinMode(PIN_STEP_MODE_2, OUTPUT);
 
 	// Pin carte SD
 	pinMode(PIN_SD_CS, OUTPUT);
@@ -60,26 +63,22 @@ void Drawall::begin(char *fileName)
 		pinMode(PIN_SCREEN_SCLK, OUTPUT);
 	#endif
 
-	mServo.attach(PIN_SERVO);
-	mServo.write(mpServoMoovingAngle);
+	#ifdef SERIAL
+		// Début de la communication série.
+		Serial.begin(SERIAL_BAUDS);
+	#endif
 
 	if (!SD.begin(PIN_SD_CS)) {
 		error(CARD_NOT_FOUND);
 	}
 
-	mIsWriting = true; // Pour que write() fonctionne la 1ere fois
-
-	#ifdef SERIAL
-		// Début de la communication série.
-		// La vitesse du port est définie dans le fichier pins.h.
-		Serial.begin(SERIAL_BAUDS);
-
-		Serial.println("READY");
-		// waitUntil(START);
-	#endif
-
 	// Chargement des paramètres à partir du fichier de configuration
 	loadParameters(fileName);
+
+	mServo.attach(PIN_SERVO);
+	mServo.write(mpServoMoovingAngle);
+
+	mIsWriting = true; // Pour que write() fonctionne la 1ere fois
 
 	// Vérification de la distance entre les 2 moteurs.
 	if (mpSpan < mpSheetWidth + mpSheetPositionX) {
@@ -94,6 +93,17 @@ void Drawall::begin(char *fileName)
 	mRightLength = positionToRightLength(mPositionX, mPositionY);
 
 	setSpeed(mpDefaultSpeed);
+
+	// TODO make this dynamic
+	mStepMode = 5; // 1/32 step
+
+	// TODO init les pin step mode en fonction du stepMode
+
+	#ifdef SERIAL
+		Serial.println("READY");
+		delay(100);
+		// waitUntil(START);
+	#endif
 
 	#ifdef SERIAL
 		// Send init data to computer
@@ -221,14 +231,12 @@ long Drawall::positionToRightLength(float positionX, float positionY)
 void Drawall::power(bool shouldPower)
 {
 	if (shouldPower) {
-		digitalWrite(PIN_ENABLE_LEFT_MOTOR, LOW);
-		digitalWrite(PIN_ENABLE_RIGHT_MOTOR, LOW);
+		digitalWrite(PIN_ENABLE_MOTORS, LOW);
 		#ifdef SERIAL
 			Serial.write(ENABLE_MOTORS);	// Processing: a = alimenter
 		#endif
 	} else {
-		digitalWrite(PIN_ENABLE_LEFT_MOTOR, HIGH);
-		digitalWrite(PIN_ENABLE_RIGHT_MOTOR, HIGH);
+		digitalWrite(PIN_ENABLE_MOTORS, HIGH);
 		#ifdef SERIAL
 			Serial.write(DISABLE_MOTORS);	// Processing: b = désalimenter
 		#endif
@@ -276,7 +284,7 @@ void Drawall::leftStep(bool shouldPull)
 		#endif
 	}
 
-	digitalWrite(PIN_LEFT_MOTOR_STEP, mLeftLength % 2);
+	digitalWrite(mpReverseMotors ? PIN_RIGHT_MOTOR_STEP : PIN_LEFT_MOTOR_STEP, mLeftLength % 2);
 }
 
 void Drawall::rightStep(bool shouldPull)
@@ -293,7 +301,7 @@ void Drawall::rightStep(bool shouldPull)
 #endif
 	}
 
-	digitalWrite(PIN_RIGHT_MOTOR_STEP, mRightLength % 2);
+	digitalWrite(mpReverseMotors ? PIN_LEFT_MOTOR_STEP : PIN_RIGHT_MOTOR_STEP, mRightLength % 2);
 }
 
 // TODO: Gérer l'axe Z
@@ -422,15 +430,15 @@ void Drawall::segment(float x, float y, bool isWriting)
 	dernierTempsD = micros();
 
 	if (pullLeft) {
-		digitalWrite(PIN_LEFT_MOTOR_DIR, mpLeftDirection);
+		digitalWrite(mpRightDirection ? PIN_RIGHT_MOTOR_DIR : PIN_LEFT_MOTOR_DIR, mpLeftDirection);
 	} else {
-		digitalWrite(PIN_LEFT_MOTOR_DIR, !mpLeftDirection);
+		digitalWrite(mpRightDirection ? PIN_RIGHT_MOTOR_DIR : PIN_LEFT_MOTOR_DIR, !mpLeftDirection);
 	}
 
 	if (pullRight) {
-		digitalWrite(PIN_RIGHT_MOTOR_DIR, mpRightDirection);
+		digitalWrite(mpRightDirection ? PIN_LEFT_MOTOR_DIR : PIN_RIGHT_MOTOR_DIR, mpRightDirection);
 	} else {
-		digitalWrite(PIN_RIGHT_MOTOR_DIR, !mpRightDirection);
+		digitalWrite(mpRightDirection ? PIN_LEFT_MOTOR_DIR : PIN_RIGHT_MOTOR_DIR, !mpRightDirection);
 	}
 
 	while (nbPasG > 0 || nbPasD > 0) {
@@ -674,7 +682,7 @@ void Drawall::loadParameters(
 			char *fileName)
 {
 #define PARAM_BUFFER_SIZE 32	// Taille du buffer
-#define NB_PARAMETERS 21	// Taille du buffer
+#define NB_PARAMETERS 22	// Nombre de paramètres
 
 	char buffer[PARAM_BUFFER_SIZE];	// Stocke une ligne du fichier
 	char *key;					// Chaine pour la clé
@@ -812,6 +820,9 @@ void Drawall::loadParameters(
 			nb_parsed++;
 		} else if (!strcmp(key, "rightDirection")) {
 			mpRightDirection = atob(value);
+			nb_parsed++;
+		} else if (!strcmp(key, "reverseMotors")) {
+			mpReverseMotors = atob(value);
 			nb_parsed++;
 		} else if (!strcmp(key, "initialDelay")) {
 			mpInitialDelay = atoi(value);
