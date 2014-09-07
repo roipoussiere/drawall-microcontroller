@@ -104,6 +104,11 @@ class Drawall {
 	 */
 	void setSpeed(unsigned int speed);
 
+	/**
+	 * Set the step mode, on the motors drivers.
+	 */
+	void setStepMode(byte mode);
+
 	/**********************
 	* Fonctions de dessin *
 	**********************/
@@ -239,7 +244,6 @@ class Drawall {
 	/// The robot is currently writing (\a true) or not (\a false).
 	bool mIsWriting;
 
-	int mStepMode;
 	/************
 	* Positions *
 	************/
@@ -265,7 +269,7 @@ class Drawall {
 
 	// * Dessin *
 
-	/// Distance between the belt extremities.
+	/// Distance between the belt extremities, in mm.
 	unsigned int mpSpan;
 
 	/// Sheet width, in mm.
@@ -274,32 +278,35 @@ class Drawall {
 	/// Sheet height (in mm).
 	unsigned int mpSheetHeight;
 
-	/// Horizontal position of the upper left corner of the sheet, according to the left belt extremity.
+	/// Horizontal position of the upper left corner of the sheet, according to the left belt extremity, in mm.
 	unsigned int mpSheetPositionX;
 
-	/// Vertical position of the upper left corner of the sheet, according to the left belt extremity.
+	/// Vertical position of the upper left corner of the sheet, according to the left belt extremity, in mm.
 	unsigned int mpSheetPositionY;
 
 	// * Servo-motor *
 
-	/// Servo angle while the plotter is writing (in degrees).
+	/// Servo angle while the plotter is writing, in degrees.
 	unsigned int mpServoWritingAngle;
 
-	/// Servo angle while the plotter is moving (in degrees).
+	/// Servo angle while the plotter is moving, in degrees.
 	unsigned int mpServoMoovingAngle;
 
-	/// Delay before the servo moves (en ms).
+	/// Delay before the servo moves, in ms.
 	unsigned int mpPreServoDelay;
 
-	/// Delay after the servo moves (en ms).
+	/// Delay after the servo moves, in ms.
 	unsigned int mpPostServoDelay;
 
 	// * Motors *
 
-	/// Step motor numbers. Consider the motor driver multiplier.
+	/// Step motor numbers.
 	unsigned int mpSteps;
 
-	/// Pinion diameter (in micrometers).
+	/// Motor step mode, from 0 to 5. 0 = Full step, 1 = 1/2 step, ..., 5 = 1/32 step.
+	byte mpStepMode;
+
+	/// Pinion diameter, in micrometers.
 	int mpDiameter;
 
 	/// Direction of the left motor. \a true to release the belt when the motor rotates clockwise, \a false if counter clockwise.
@@ -308,12 +315,12 @@ class Drawall {
 	/// Direction of the right motor. \a true to release the belt when the motor rotates clockwise, \a false if counter clockwise.
 	bool mpRightDirection;
 
-	/// Virtual reversing state of the motors. \a true to reverse the motors, false to don't reverse them.
+	/// Virtual reversing state of the motors. \a true to reverse the motors, \a false to don't reverse them.
 	bool mpReverseMotors;
 
 	// * Misc *
 
-	/// Delay before start the drawing (en milliseconds).
+	/// Delay before start the drawing, en milliseconds.
 	unsigned int mpInitialDelay;
 
 	/// Horizontal scale applied to the drawing. Used to calibrate it according to his width.
@@ -342,6 +349,9 @@ class Drawall {
 	* Methods *
 	***********/
 
+	/**
+	 * Read a variable in the GCode file formated like this VARNAME = VALUE.
+	 */
 	int processVar();
 
 	/**

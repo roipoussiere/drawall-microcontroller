@@ -1,72 +1,78 @@
 ## Drawall Configuration File ##
 
-## Dessin ##
+## Drawing ##
 
-# Distance entre les 2 moteurs :
-span			1000
+# Distance between the belt extremities, in mm:
+span			3000
 
-# Largeur de la feuille :
-sheetWidth		650
+# Sheet width, in mm:
+sheetWidth		500
 
-# Hauteur de la feuille :
+# Sheet height (in mm):
 sheetHeight		500
 
-# Position horizontale du coin supérieur gauche de la feuille par rapport au moteur gauche :
-sheetPositionX	175
+# Horizontal position of the upper left corner of the sheet, according to the left belt extremity, in mm:
+sheetPositionX	1250
 
-# Position verticale du coin supérieur gauche de la feuille par rapport au moteur gauche :
-sheetPositionY	200
+# Vertical position of the upper left corner of the sheet, according to the left belt extremity, in mm:
+sheetPositionY	1250
 
-##Servo-moteur##
+##Servo-motor##
 
-# Angle minimal du servo-moteur (en degrés) :
-servoWritingAngle	83
+# Servo angle while the plotter is writing, in degrees:
+servoWritingAngle	0
 
-# Angle maximal du servo-moteur (en degrés) :
-servoMoovingAngle	77
+# Servo angle while the plotter is moving, in degrees:
+servoMoovingAngle	110
 
-# Pause avant le déplacement du servo (en ms) :
+# Delay before the servo moves, en ms:
 preServoDelay	100
 
-# Pause après le déplacement du servo (en ms) :
-postServoDelay	1000
+# Delay after the servo moves, in ms:
+postServoDelay	750
 
-## Moteurs ##
+## Motors ##
 
-# Nombre de pas (prendre en compte les micros-pas effectués par le driver-moteur) :
-steps			6400
+# Step motor numbers:
+steps			200
 
-# Diamètre du pignon (en microns) :
-diameter		20000
+# Motor step mode, from 0 to 5. 0 = Full step, 1 = 1/2 step, ..., 5 = 1/32 step:
+stepMode		3
 
-# Direction du moteur gauche :
+# Pinion diameter, in micrometers:
+diameter		12730
+
+# Direction of the left motor. True to release the belt when the motor rotates clockwise, false if counter clockwise:
 leftDirection	true
 
-# Direction du moteur droit :
+# Direction of the right motor. True to release the belt when the motor rotates clockwise, false if counter clockwise:
 rightDirection	false
 
-## Divers ##
+# Virtual reversing state of the motors. True to reverse the motors, false to don't reverse them:
+reverseMotors	false
 
-# Pause avant de commencer à desiner (en ms) :
+## Misc. ##
+
+# Delay before start the drawing, en milliseconds:
 initialDelay	5000
 
-# Échelle horizontale appliquée au dessin, permetant de le calibrer :
+# Horizontal scale applied to the drawing. Used to calibrate it according to his width:
 scaleX			1
 
-# Échelle verticale appliquée au dessin, permetant de le calibrer :
+# Vertical scale applied to the drawing. Used to calibrate it according to his height:
 scaleY			1
 
-# Offset horizontal appliqué au dessin, permetant de le décaler :
+# Horizontal offset applied to the drawing. Used to shift it according to his width:
 offsetX			0
 
-# Offset vertical appliqué au dessin, permetant de le décaler :
+# Vertical offset applied to the drawing. Used to shift it according to his height:
 offsetY			0
 
-# Vitesse du crayon, avant l'appel éventuel de setSpeed() (en m/s) :
+# Default plotter speed. Can be changed with setSpeed():
 defaultSpeed	10
 
-# Position du point de départ du crayon, avant l'appel éventuel de setPosition() :
-initPosition LOWER_CENTER
+# Default starting position of the plotter. Can be changed with setPosition():
+initPosition CENTER
 
-# Position du point d'arrivée du crayon :
-endPosition LOWER_CENTER
+# Default final position of plotter:
+endPosition CENTER

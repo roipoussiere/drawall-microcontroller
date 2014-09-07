@@ -85,7 +85,7 @@ void Drawall::begin(char *fileName)
 		error(TOO_SHORT_SPAN);
 	}
 
-	initStepLength();
+	setStepMode(mpStepMode); // call initStepLength()
 	setPosition(mpInitPosition);
 
 	// Calcul de la longueur des courroies au début
@@ -93,11 +93,6 @@ void Drawall::begin(char *fileName)
 	mRightLength = positionToRightLength(mPositionX, mPositionY);
 
 	setSpeed(mpDefaultSpeed);
-
-	// TODO make this dynamic
-	mStepMode = 5; // 1/32 step
-
-	// TODO init les pin step mode en fonction du stepMode
 
 	#ifdef SERIAL
 		Serial.println("READY");
@@ -147,6 +142,14 @@ void Drawall::begin(char *fileName)
  * EIFR = 1;                    // Flag de INT0 remis à '0'
  * };
  * #endif */
+
+void Drawall::setStepMode(byte stepMode)
+{
+	digitalWrite(PIN_STEP_MODE_0, (stepMode & B1) > 0 ? HIGH : LOW);
+	digitalWrite(PIN_STEP_MODE_1, (stepMode & B10) > 0 ? HIGH : LOW);
+	digitalWrite(PIN_STEP_MODE_2, (stepMode & B100) > 0 ? HIGH : LOW);
+	initStepLength();
+}
 
 void Drawall::waitUntil(char expected)
 {
@@ -207,8 +210,8 @@ int Drawall::positionToY(CardinalPoint position)
 
 void Drawall::initStepLength()
 {
-	// mpSteps*2 car c'est seulement le front montant qui contôle le moteur
-	mStepLength = (PI * mpDiameter / 1000) / (mpSteps * 2);
+	// mpSteps*2 car sur le driver c'est seulement le front montant qui contôle les pas du moteur
+	mStepLength = (PI * mpDiameter / 1000) / (mpSteps * 2 * pow(2, mpStepMode));
 }
 
 void Drawall::setSpeed(unsigned int speed)
@@ -429,16 +432,18 @@ void Drawall::segment(float x, float y, bool isWriting)
 	dernierTempsG = micros();
 	dernierTempsD = micros();
 
+	// TODO digitalWrite() should be called only when the direction is changing
+
 	if (pullLeft) {
-		digitalWrite(mpRightDirection ? PIN_RIGHT_MOTOR_DIR : PIN_LEFT_MOTOR_DIR, mpLeftDirection);
+		digitalWrite(mpReverseMotors ? PIN_RIGHT_MOTOR_DIR : PIN_LEFT_MOTOR_DIR, mpLeftDirection);
 	} else {
-		digitalWrite(mpRightDirection ? PIN_RIGHT_MOTOR_DIR : PIN_LEFT_MOTOR_DIR, !mpLeftDirection);
+		digitalWrite(mpReverseMotors ? PIN_RIGHT_MOTOR_DIR : PIN_LEFT_MOTOR_DIR, !mpLeftDirection);
 	}
 
 	if (pullRight) {
-		digitalWrite(mpRightDirection ? PIN_LEFT_MOTOR_DIR : PIN_RIGHT_MOTOR_DIR, mpRightDirection);
+		digitalWrite(mpReverseMotors ? PIN_LEFT_MOTOR_DIR : PIN_RIGHT_MOTOR_DIR, mpRightDirection);
 	} else {
-		digitalWrite(mpRightDirection ? PIN_LEFT_MOTOR_DIR : PIN_RIGHT_MOTOR_DIR, !mpRightDirection);
+		digitalWrite(mpReverseMotors ? PIN_LEFT_MOTOR_DIR : PIN_RIGHT_MOTOR_DIR, !mpRightDirection);
 	}
 
 	while (nbPasG > 0 || nbPasD > 0) {
@@ -682,7 +687,7 @@ void Drawall::loadParameters(
 			char *fileName)
 {
 #define PARAM_BUFFER_SIZE 32	// Taille du buffer
-#define NB_PARAMETERS 22	// Nombre de paramètres
+#define NB_PARAMETERS 23		// Nombre de paramètres
 
 	char buffer[PARAM_BUFFER_SIZE];	// Stocke une ligne du fichier
 	char *key;					// Chaine pour la clé
@@ -784,73 +789,54 @@ void Drawall::loadParameters(
 		// Transforme les données texte en valeur utilisable
 		if (!strcmp(key, "span")) {
 			mpSpan = atoi(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "sheetWidth")) {
 			mpSheetWidth = atoi(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "sheetHeight")) {
 			mpSheetHeight = atoi(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "sheetPositionX")) {
 			mpSheetPositionX = atoi(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "sheetPositionY")) {
 			mpSheetPositionY = atoi(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "servoWritingAngle")) {
 			mpServoWritingAngle = atoi(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "servoMoovingAngle")) {
 			mpServoMoovingAngle = atoi(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "preServoDelay")) {
 			mpPreServoDelay = atoi(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "postServoDelay")) {
 			mpPostServoDelay = atoi(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "steps")) {
 			mpSteps = atoi(value);
-			nb_parsed++;
+		} else if (!strcmp(key, "stepMode")) {
+			mpStepMode = atoi(value);
 		} else if (!strcmp(key, "diameter")) {
 			mpDiameter = atoi(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "leftDirection")) {
 			mpLeftDirection = atob(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "rightDirection")) {
 			mpRightDirection = atob(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "reverseMotors")) {
 			mpReverseMotors = atob(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "initialDelay")) {
 			mpInitialDelay = atoi(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "scaleX")) {
 			mpScaleX = atof(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "scaleY")) {
 			mpScaleY = atof(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "offsetX")) {
 			mpOffsetX = atoi(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "offsetY")) {
 			mpOffsetY = atoi(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "defaultSpeed")) {
 			mpDefaultSpeed = atoi(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "initPosition")) {
 			mpInitPosition = atop(value);
-			nb_parsed++;
 		} else if (!strcmp(key, "endPosition")) {
 			mpEndPosition = atop(value);
-			nb_parsed++;
 		} else {
 			warning(UNKNOWN_CONFIG_KEY, err_buffer);
 		}
+		nb_parsed++;
 	}
 
 	configFile.close();			// Ferme le fichier de configuration
