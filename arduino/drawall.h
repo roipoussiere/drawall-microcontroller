@@ -346,7 +346,7 @@ private:
 	/**
 	 * Read a variable in the GCode file formated like this VARNAME = VALUE.
 	 */
-	int processVar();
+	// int processVar();
 
 	/**
 	 * Initialise the X et Y offsets according to the configuration file and the desired position of the drawing.

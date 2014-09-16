@@ -339,44 +339,50 @@ void Drawall::move(CardinalPoint position) {
 
 // TODO: gérer l'axe Z
 void Drawall::processSDLine() {
+#define PARAM_MAX_LENGTH 5
+#define FUNC_MAX_LENGTH 3
+
 	byte i, j;
-	char functionName[4];
-	char car = mFile.read();
-	char buffer[10];         // paramètre
-	float parameters[3];
+	char functionName[FUNC_MAX_LENGTH + 1];
+	char car;
+	char parameter[PARAM_MAX_LENGTH + 1];
+	float parameters[2]; // TODO use integers
 
 	// Get function name
-	for (i = 0; car != ' '; i++) {
+	car = mFile.read();
+	for (i = 0; car != ' ' && car != '\n' && i < FUNC_MAX_LENGTH + 1; i++) {
 		functionName[i] = car;
 		car = mFile.read();
 	}
 	functionName[i] = '\0';
 
 	// Get parameters
+	// The first char has been already read.
 	for (i = 0; car != '\n'; i++) {
 		car = mFile.read(); // first param char (X, Y or Z)
-		for (j = 0; car != ' ' && car != '\n'; j++) {
+		for (j = 0; car != ' ' && car != '\n' && j < PARAM_MAX_LENGTH + 1;
+				j++) {
 			if (j == 0) {
 				car = mFile.read(); // pass first param char
 			}
-			buffer[j] = car;
+			parameter[j] = car;
 			car = mFile.read();
 		}
-		buffer[j] = '\0';
-		parameters[i] = atof(buffer);
+		parameter[j] = '\0';
+		parameters[i] = atof(parameter);
 	}
 
-	// Interprète la fonction Gcode
-	if (!strcmp(functionName, "G00") || !strcmp(functionName, "G01")) {
-		if (parameters[2] <= 0) {
-			line(parameters[0], parameters[1]);
-		} else {
-			move(parameters[0], parameters[1]);
-		}
+	// Process the GCode function
+	if (!strcmp(functionName, "G00")) {
+		move(parameters[0], parameters[1]); // move
+	} else if (!strcmp(functionName, "G01")) {
+		line(parameters[0], parameters[1]); // draw
 	} else if (!strcmp(functionName, "G04")) {
-		delay(1000 * parameters[0]);
+		delay(1000 * parameters[0]); // take a break
+	} else if (!strcmp(functionName, "G21") || !strcmp(functionName, "M30")) {
+		// Knows but useless GCode functions
 	} else {
-		warning(UNKNOWN_GCODE_FUNCTION, functionName); // Ajouter ligne
+		// warning(UNKNOWN_GCODE_FUNCTION, functionName); // raise warning
 	}
 }
 
@@ -561,8 +567,8 @@ void Drawall::drawingArea(char *fileName, DrawingSize size,
 		error(FILE_NOT_FOUND);
 	}
 
-	mDrawingWidth = processVar();
-	mDrawingHeight = processVar();
+	mDrawingWidth = 25000; // processVar();
+	mDrawingHeight = 25000; // processVar();
 	initScale(size);
 	initOffset(position);
 
@@ -586,8 +592,8 @@ void Drawall::draw(char *fileName, DrawingSize size, CardinalPoint position) {
 		error(FILE_NOT_FOUND);
 	}
 
-	mDrawingWidth = processVar();
-	mDrawingHeight = processVar();
+	mDrawingWidth = 25000; // processVar();
+	mDrawingHeight = 25000; // processVar();
 	initScale(size);
 	initOffset(position);
 
@@ -606,26 +612,26 @@ void Drawall::draw(char *fileName, DrawingSize size, CardinalPoint position) {
 #endif
 }
 
-int Drawall::processVar() {
-	char car = ' ';
-	char buffer[10];
-	byte i;
-
-	while (car != '=') {
-		car = mFile.read();
-	}
-
-	mFile.read(); // ignore space
-	car = mFile.read();
-
-	for (i = 0; car != '\n'; i++) {
-		buffer[i] = car;
-		car = mFile.read();
-	}
-
-	buffer[i] = '\0';
-	return atoi(buffer);
-}
+//int Drawall::processVar() {
+//	char car = ' ';
+//	char buffer[10];
+//	byte i;
+//
+//	while (car != '=') {
+//		car = mFile.read();
+//	}
+//
+//	mFile.read(); // ignore space
+//	car = mFile.read();
+//
+//	for (i = 0; car != '\n'; i++) {
+//		buffer[i] = car;
+//		car = mFile.read();
+//	}
+//
+//	buffer[i] = '\0';
+//	return atoi(buffer);
+//}
 
 void Drawall::end() {
 	move(mpEndPosition);
