@@ -37,29 +37,23 @@
  */
 class Drawall {
 
-	public:
+public:
 
 	/**
 	 * CardinalPoint on the drawing area.
 	 * The positions, corresponding to the cardinal points, plus the center.	 */
 	typedef enum {
-		LOWER_LEFT,
-		LOWER_CENTER,
-		LOWER_RIGHT,
+		LOWER_LEFT, LOWER_CENTER, LOWER_RIGHT,
 
-		LEFT_CENTER,
-		CENTER,
-		RIGHT_CENTER,
+		LEFT_CENTER, CENTER, RIGHT_CENTER,
 
-		UPPER_LEFT,
-		UPPER_CENTER,
-		UPPER_RIGHT
+		UPPER_LEFT, UPPER_CENTER, UPPER_RIGHT
 	} CardinalPoint;
 
 	/**
 	 * Image width modes.
 	 */
-	typedef enum  {
+	typedef enum {
 		ORIGINAL, ///< Matching to the drawing width.
 		FULL,     ///< Matching to the sheet width.
 	} DrawingSize;
@@ -81,8 +75,8 @@ class Drawall {
 	void end();
 
 	/********************
-	* Getters & setters *
-	********************/
+	 * Getters & setters *
+	 ********************/
 	/**
 	 * Set the initial plotter position. Use before drawing.
 	 * \param x The horizontal plotter position.
@@ -110,8 +104,8 @@ class Drawall {
 	void setStepMode(byte mode);
 
 	/**********************
-	* Fonctions de dessin *
-	**********************/
+	 * Fonctions de dessin *
+	 **********************/
 
 	/**
 	 * Move the plotter to the absloute position [\a x ; \a y].
@@ -137,21 +131,23 @@ class Drawall {
 	/**
 	 * Draw a rectangle matching with the limits of the drawing.
 	 */
-	void drawingArea(char *fileName, DrawingSize size = ORIGINAL, CardinalPoint position = CENTER);
+	void drawingArea(char *fileName, DrawingSize size = ORIGINAL,
+			CardinalPoint position = CENTER);
 
 	/**
 	 * Draw a drawing as descibed in the \a fileName file stored int the SD card.
 	 * \param fileName Le nom du fichier gcode à dessiner.
 	 * \TODO Check the M02 presence (end of drawing) before the end of drawing.
 	 */
-	void draw(char *fileName, DrawingSize size = ORIGINAL, CardinalPoint position = CENTER);
+	void draw(char *fileName, DrawingSize size = ORIGINAL,
+			CardinalPoint position = CENTER);
 
-  private:
+private:
 
 	/**
 	 * The codes to send to the computer trought the serial link.
 	 * \TODO Optimize the warning and errors messages: maybe use only one enum ?
-	*/
+	 */
 	typedef enum {
 		RELEASE_LEFT,       ///< Release the left belt for one step;
 		PULL_LEFT,          ///< Pull the left belt for one step;
@@ -159,16 +155,16 @@ class Drawall {
 		PULL_RIGHT,         ///< Pull the left belt for one step;
 		WRITING,            ///< The plotter is drawing;
 		MOVING,             ///< The plotter moving (dot drawing);
-		START_MESSAGE,      ///< Begining of the message to display on the sreen (if any) or/and on the computer (if any);
-		END_MESSAGE,        ///< End of the message to display on the sreen (if any) or/and on the computer (if any);
+		START_MESSAGE, ///< Begining of the message to display on the sreen (if any) or/and on the computer (if any);
+		END_MESSAGE, ///< End of the message to display on the sreen (if any) or/and on the computer (if any);
 		ENABLE_MOTORS,      ///< Enable the motors and the servo;
 		DISABLE_MOTORS,     ///< Disable the motors and the servo;
 		SLEEP,              ///< Pause the program;
 		CHANGE_TOOL,        ///< Pause the program to change the tool;
 		END_DRAWING,        ///< End of the drawing;
-		START_WARNING,      ///< Begining of a warning (followed by te warning code);
+		START_WARNING, ///< Begining of a warning (followed by te warning code);
 		END_WARNING,        ///< End of warning message;
-		START_ERROR,        ///< Begining of an error (followed by te error code);
+		START_ERROR,      ///< Begining of an error (followed by te error code);
 		END_ERROR,          ///< End of error message;
 		START = 100,        ///< Sart-up with the serial link;
 		START_INSTRUCTIONS, ///< Begining of the initialization data;
@@ -176,35 +172,35 @@ class Drawall {
 	} SerialData;
 
 	/**
-	* The errors and warnings which should occurs during the program execution.
-	* The errors starts to 0 and the Warnings starts to 100.
-	* The warnings doesn't interfere in the drawing and the errors are critical anomalies which prevents the drawing.
-	*/
+	 * The errors and warnings which should occurs during the program execution.
+	 * The errors starts to 0 and the Warnings starts to 100.
+	 * The warnings doesn't interfere in the drawing and the errors are critical anomalies which prevents the drawing.
+	 */
 	typedef enum {
 		CARD_NOT_FOUND,     ///< The SD card is not found or not readable;
 		FILE_NOT_FOUND,     ///< The file not exists;
 		FILE_NOT_READABLE,  ///< Error while opening the file;
-		TOO_SHORT_SPAN,     ///< The distance between the belt extremities is lower than the sheet width plus his horizontal coordinate;
+		TOO_SHORT_SPAN, ///< The distance between the belt extremities is lower than the sheet width plus his horizontal coordinate;
 		TOO_FEW_PARAMETERS, ///< One or several parameters have not been read;
 
 		// Warnings
 		UNKNOWN_SERIAL_CODE = 100, ///< Character sent throught serial link has not been recognised (used only in the compunter side);
-		WRONG_CONFIG_LINE,         ///< Incorrectly formatted line in the configuration file. Param : the line number;
-		TOO_LONG_CONFIG_LINE,      ///< Too long line in the configuration file. Param : the line number;
-		UNKNOWN_CONFIG_KEY,        ///< Unknown key in the configuration file. Param : the key, the line number;
-		UNKNOWN_CONFIG_POSITION,   ///< Can not read the position string in the configuration file;
-		UNKNOWN_GCODE_FUNCTION,    ///< Unknown GCode function in the drawing file;
+		WRONG_CONFIG_LINE, ///< Incorrectly formatted line in the configuration file. Param : the line number;
+		TOO_LONG_CONFIG_LINE, ///< Too long line in the configuration file. Param : the line number;
+		UNKNOWN_CONFIG_KEY, ///< Unknown key in the configuration file. Param : the key, the line number;
+		UNKNOWN_CONFIG_POSITION, ///< Can not read the position string in the configuration file;
+		UNKNOWN_GCODE_FUNCTION, ///< Unknown GCode function in the drawing file;
 		UNKNOWN_GCODE_PARAMETER,   ///< Unknown GCode parameter;
-		WRONG_GCODE_PARAMETER,     ///< Error while reader a parameter. Param: The parameter, the line number.
-		LEFT_LIMIT,                ///< The plotter reached the left limit of the sheet;
-		RIGHT_LIMIT,               ///< The plotter reached the right limit of the sheet;
-		UPPER_LIMIT,               ///< The plotter reached the upper limit of the sheet;
-		LOWER_LIMIT,               ///< The plotter reached the lower limit of the sheet;
+		WRONG_GCODE_PARAMETER, ///< Error while reader a parameter. Param: The parameter, the line number.
+		LEFT_LIMIT,        ///< The plotter reached the left limit of the sheet;
+		RIGHT_LIMIT,      ///< The plotter reached the right limit of the sheet;
+		UPPER_LIMIT,      ///< The plotter reached the upper limit of the sheet;
+		LOWER_LIMIT,     ///< The plotter reached the lower limit of the sheet;
 	} Error;
 
 	/*************
-	* Attributes *
-	*************/
+	 * Attributes *
+	 *************/
 
 	/// Instance of the servo, used to drive it with the \a Servo library.
 	Servo mServo;
@@ -245,8 +241,8 @@ class Drawall {
 	bool mIsWriting;
 
 	/************
-	* Positions *
-	************/
+	 * Positions *
+	 ************/
 
 	/// Current horizontal coordinate of the plotter on the sheet.
 	/// \TODO Use floats
@@ -261,14 +257,12 @@ class Drawall {
 	float mPositionZ;
 
 	/*************
-	* Parameters *
-	*************/
+	 * Parameters *
+	 *************/
 
 	// Commencent par mp, pour "member" et "parameter".
 	/// \TODO: Virer les préfices 'mp'
-
 	// * Dessin *
-
 	/// Distance between the belt extremities, in mm.
 	unsigned int mpSpan;
 
@@ -346,8 +340,8 @@ class Drawall {
 	CardinalPoint mpEndPosition;
 
 	/***********
-	* Methods *
-	***********/
+	 * Methods *
+	 ***********/
 
 	/**
 	 * Read a variable in the GCode file formated like this VARNAME = VALUE.
@@ -409,8 +403,8 @@ class Drawall {
 	void warning(Error warningNumber, char *msg = (char *) "");
 
 	/*******************
-	* Hardware driving *
-	*******************/
+	 * Hardware driving *
+	 *******************/
 
 	/**
 	 * Rotate the left motor for one step.
@@ -428,13 +422,13 @@ class Drawall {
 	 * Enable or disable the motors.
 	 * Keep away the pen from the sheet to prevent an ugly drawing during any plotter fall.
 	 * \param power \a true to enable the motors, \a false to disable the motors.
- 	* \TODO Separate the left motor disable and the right motor disable.
+	 * \TODO Separate the left motor disable and the right motor disable.
 	 */
 	void power(bool shouldPower);
 
 	/**************
-	* Convertions *
-	**************/
+	 * Convertions *
+	 **************/
 
 	/**
 	 * Get the horizontal coordinate from the \a position. See Drawall::CardinalPoint.
@@ -467,8 +461,8 @@ class Drawall {
 	long positionToRightLength(float x, float y);
 
 	/******************
-	* SD card reading *
-	******************/
+	 * SD card reading *
+	 ******************/
 
 	/**
 	 * Initialise the SD card.

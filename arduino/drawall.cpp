@@ -17,8 +17,7 @@
 
 #include <drawall.h>
 
-void Drawall::begin(char *fileName)
-{
+void Drawall::begin(char *fileName) {
 	// Affectation des pins des moteurs
 	pinMode(PIN_ENABLE_MOTORS, OUTPUT);
 	pinMode(PIN_LEFT_MOTOR_STEP, OUTPUT);
@@ -33,40 +32,40 @@ void Drawall::begin(char *fileName)
 	// Pin carte SD
 	pinMode(PIN_SD_CS, OUTPUT);
 
-	#ifdef BUTTONS
-		/* Étrange, ces lignes font foirer la communication série...
-		// Gestion de l'interruption à l'appui sur le BP pause.
-		SREG |= 128;   // Interruptions globales ok
-		EIMSK = B01;   // Interruption INT0 déclenchée à l'appui sur le BP pause
-		               // INT0 (pin2) = B01 ou INT1 (pin3) = B10 sur Atmega328.
-		EICRA = B0011; // Interruption déclenchée sur le front montant pour INT0
-		               // état bas = B00, changement d'état = B01
-		               // front descendant = B10, front montant = B11
-		*/
+#ifdef BUTTONS
+	/* Étrange, ces lignes font foirer la communication série...
+	 // Gestion de l'interruption à l'appui sur le BP pause.
+	 SREG |= 128;   // Interruptions globales ok
+	 EIMSK = B01;   // Interruption INT0 déclenchée à l'appui sur le BP pause
+	 // INT0 (pin2) = B01 ou INT1 (pin3) = B10 sur Atmega328.
+	 EICRA = B0011; // Interruption déclenchée sur le front montant pour INT0
+	 // état bas = B00, changement d'état = B01
+	 // front descendant = B10, front montant = B11
+	 */
 
-		pinMode(PIN_LEFT_CAPTOR, INPUT);
-		pinMode(PIN_RIGHT_CAPTOR, INPUT);
-		pinMode(PIN_REMOTE, INPUT);
+	pinMode(PIN_LEFT_CAPTOR, INPUT);
+	pinMode(PIN_RIGHT_CAPTOR, INPUT);
+	pinMode(PIN_REMOTE, INPUT);
 
-		// Activation des pullup internes pour les boutons
-		digitalWrite(PIN_PAUSE, HIGH);
-		digitalWrite(PIN_LEFT_CAPTOR, HIGH);
-		digitalWrite(PIN_RIGHT_CAPTOR, HIGH);
-	#endif
+	// Activation des pullup internes pour les boutons
+	digitalWrite(PIN_PAUSE, HIGH);
+	digitalWrite(PIN_LEFT_CAPTOR, HIGH);
+	digitalWrite(PIN_RIGHT_CAPTOR, HIGH);
+#endif
 
 	// Affectation des pin de l'écran
-	#ifdef SCREEN
-		pinMode(PIN_SCREEN_SCE, OUTPUT);
-		pinMode(PIN_SCREEN_RST, OUTPUT);
-		pinMode(PIN_SCREEN_DC, OUTPUT);
-		pinMode(PIN_SCREEN_SDIN, OUTPUT);
-		pinMode(PIN_SCREEN_SCLK, OUTPUT);
-	#endif
+#ifdef SCREEN
+	pinMode(PIN_SCREEN_SCE, OUTPUT);
+	pinMode(PIN_SCREEN_RST, OUTPUT);
+	pinMode(PIN_SCREEN_DC, OUTPUT);
+	pinMode(PIN_SCREEN_SDIN, OUTPUT);
+	pinMode(PIN_SCREEN_SCLK, OUTPUT);
+#endif
 
-	#ifdef SERIAL
-		// Début de la communication série.
-		Serial.begin(SERIAL_BAUDS);
-	#endif
+#ifdef SERIAL
+	// Début de la communication série.
+	Serial.begin(SERIAL_BAUDS);
+#endif
 
 	if (!SD.begin(PIN_SD_CS)) {
 		error(CARD_NOT_FOUND);
@@ -94,31 +93,31 @@ void Drawall::begin(char *fileName)
 
 	setSpeed(mpDefaultSpeed);
 
-	#ifdef SERIAL
-		Serial.println("READY");
-		delay(100);
-		// waitUntil(START);
-	#endif
+#ifdef SERIAL
+	Serial.println("READY");
+	delay(100);
+	// waitUntil(START);
+#endif
 
-	#ifdef SERIAL
-		// Send init data to computer
-		Serial.write(START_INSTRUCTIONS);
-		Serial.println(mpSpan);
-		Serial.println(mpSheetPositionX);
-		Serial.println(mpSheetPositionY);
-		Serial.println(mpSheetWidth);
-		Serial.println(mpSheetHeight);
-		Serial.println(mLeftLength);
-		Serial.println(mRightLength);
-		Serial.println(mStepLength * 1000);
-		Serial.write(END_INSTRUCTIONS);
-	#endif
+#ifdef SERIAL
+	// Send init data to computer
+	Serial.write(START_INSTRUCTIONS);
+	Serial.println(mpSpan);
+	Serial.println(mpSheetPositionX);
+	Serial.println(mpSheetPositionY);
+	Serial.println(mpSheetWidth);
+	Serial.println(mpSheetHeight);
+	Serial.println(mLeftLength);
+	Serial.println(mRightLength);
+	Serial.println(mStepLength * 1000);
+	Serial.write(END_INSTRUCTIONS);
+#endif
 
-	#ifdef BUTTONS
-		// Pause until button pushed.
-		// Serial.println("_Press button to begin...");
-		// while(digitalRead(PIN_BP) == LOW) {}
-	#endif
+#ifdef BUTTONS
+	// Pause until button pushed.
+	// Serial.println("_Press button to begin...");
+	// while(digitalRead(PIN_BP) == LOW) {}
+#endif
 
 	power(true);
 
@@ -143,37 +142,33 @@ void Drawall::begin(char *fileName)
  * };
  * #endif */
 
-void Drawall::setStepMode(byte stepMode)
-{
+void Drawall::setStepMode(byte stepMode) {
 	digitalWrite(PIN_STEP_MODE_0, (stepMode & B1) > 0 ? HIGH : LOW);
 	digitalWrite(PIN_STEP_MODE_1, (stepMode & B10) > 0 ? HIGH : LOW);
 	digitalWrite(PIN_STEP_MODE_2, (stepMode & B100) > 0 ? HIGH : LOW);
 	initStepLength();
 }
 
-void Drawall::waitUntil(char expected)
-{
+void Drawall::waitUntil(char expected) {
 	char received = 0;
 
 	while (received != expected) {
-		while (Serial.available() < 1); // Attend un octet
+		while (Serial.available() < 1)
+			; // Attend un octet
 		received = Serial.read();       // Lit l'octet
 	}
 }
 
-void Drawall::setPosition(float positionX, float positionY)
-{
+void Drawall::setPosition(float positionX, float positionY) {
 	mPositionX = positionX;
 	mPositionY = positionY;
 }
 
-void Drawall::setPosition(CardinalPoint position)
-{
+void Drawall::setPosition(CardinalPoint position) {
 	setPosition(positionToX(position), positionToY(position));
 }
 
-int Drawall::positionToX(CardinalPoint position)
-{
+int Drawall::positionToX(CardinalPoint position) {
 	switch (position) {
 	case UPPER_CENTER:
 	case CENTER:
@@ -190,8 +185,7 @@ int Drawall::positionToX(CardinalPoint position)
 	}
 }
 
-int Drawall::positionToY(CardinalPoint position)
-{
+int Drawall::positionToY(CardinalPoint position) {
 	switch (position) {
 	case UPPER_LEFT:
 	case UPPER_CENTER:
@@ -208,57 +202,59 @@ int Drawall::positionToY(CardinalPoint position)
 	}
 }
 
-void Drawall::initStepLength()
-{
+void Drawall::initStepLength() {
 	// mpSteps*2 car sur le driver c'est seulement le front montant qui contôle les pas du moteur
 	mStepLength = (PI * mpDiameter / 1000) / (mpSteps * 2 * pow(2, mpStepMode));
 }
 
-void Drawall::setSpeed(unsigned int speed)
-{
-	mDelay = 1000000 * mStepLength / float (speed);
+void Drawall::setSpeed(unsigned int speed) {
+	mDelay = 1000000 * mStepLength / float(speed);
 }
 
-long Drawall::positionToLeftLength(float positionX, float positionY)
-{
-	return sqrt(pow(((float) mpSheetPositionX + positionX) / mStepLength, 2) +
-			pow(((float) mpSheetPositionY + mpSheetHeight - positionY) / mStepLength, 2));
+long Drawall::positionToLeftLength(float positionX, float positionY) {
+	return sqrt(
+			pow(((float) mpSheetPositionX + positionX) / mStepLength, 2)
+					+ pow(
+							((float) mpSheetPositionY + mpSheetHeight
+									- positionY) / mStepLength, 2));
 }
 
-long Drawall::positionToRightLength(float positionX, float positionY)
-{
-	return sqrt(pow(((float) mpSpan - (float) mpSheetPositionX - positionX) / mStepLength, 2) +
-			pow(((float) mpSheetPositionY + mpSheetHeight - positionY) / mStepLength, 2));
+long Drawall::positionToRightLength(float positionX, float positionY) {
+	return sqrt(
+			pow(
+					((float) mpSpan - (float) mpSheetPositionX - positionX)
+							/ mStepLength, 2)
+					+ pow(
+							((float) mpSheetPositionY + mpSheetHeight
+									- positionY) / mStepLength, 2));
 }
 
-void Drawall::power(bool shouldPower)
-{
+void Drawall::power(bool shouldPower) {
 	if (shouldPower) {
 		digitalWrite(PIN_ENABLE_MOTORS, LOW);
-		#ifdef SERIAL
-			Serial.write(ENABLE_MOTORS);	// Processing: a = alimenter
-		#endif
+#ifdef SERIAL
+		Serial.write(ENABLE_MOTORS);	// Processing: a = alimenter
+#endif
 	} else {
 		digitalWrite(PIN_ENABLE_MOTORS, HIGH);
-		#ifdef SERIAL
-			Serial.write(DISABLE_MOTORS);	// Processing: b = désalimenter
-		#endif
+#ifdef SERIAL
+		Serial.write(DISABLE_MOTORS);	// Processing: b = désalimenter
+#endif
 		writingPen(false);
 	}
 }
 
 // À supprimer plus tard, mais garder pour l'instant
-void Drawall::writingPen(bool shouldWrite)
-{
+void Drawall::writingPen(bool shouldWrite) {
 	if (shouldWrite && !mIsWriting) {
 		// Si on veut écrire mais que le stylo n'écrit pas
 		delay(mpPreServoDelay);
 		mServo.write(mpServoWritingAngle);
 		delay(mpPostServoDelay);
 
-		#ifdef SERIAL
-			Serial.write(WRITING);	// Processing: w = écrire
-		#endif
+#ifdef SERIAL
+		Serial.write(WRITING);	// Processing: w = écrire
+#endif
 		mIsWriting = true;
 	} else if (!shouldWrite && mIsWriting) {
 		// Si on ne veut pas écrire mais que le stylo écrit
@@ -266,32 +262,31 @@ void Drawall::writingPen(bool shouldWrite)
 		mServo.write(mpServoMoovingAngle);
 		delay(mpPostServoDelay);
 
-		#ifdef SERIAL
-			Serial.write(MOVING);	// Processing: x = ne pas écrire
-		#endif
+#ifdef SERIAL
+		Serial.write(MOVING);	// Processing: x = ne pas écrire
+#endif
 		mIsWriting = false;
 	}
 }
 
-void Drawall::leftStep(bool shouldPull)
-{
+void Drawall::leftStep(bool shouldPull) {
 	if (shouldPull) {
 		mLeftLength--;
-		#ifdef SERIAL
-			Serial.write(PULL_LEFT);
-		#endif
+#ifdef SERIAL
+		Serial.write(PULL_LEFT);
+#endif
 	} else {
 		mLeftLength++;
-		#ifdef SERIAL
-			Serial.write(RELEASE_LEFT);
-		#endif
+#ifdef SERIAL
+		Serial.write(RELEASE_LEFT);
+#endif
 	}
 
-	digitalWrite(mpReverseMotors ? PIN_RIGHT_MOTOR_STEP : PIN_LEFT_MOTOR_STEP, mLeftLength % 2);
+	digitalWrite(mpReverseMotors ? PIN_RIGHT_MOTOR_STEP : PIN_LEFT_MOTOR_STEP,
+			mLeftLength % 2);
 }
 
-void Drawall::rightStep(bool shouldPull)
-{
+void Drawall::rightStep(bool shouldPull) {
 	if (shouldPull) {
 		mRightLength--;
 #ifdef SERIAL
@@ -304,12 +299,12 @@ void Drawall::rightStep(bool shouldPull)
 #endif
 	}
 
-	digitalWrite(mpReverseMotors ? PIN_LEFT_MOTOR_STEP : PIN_RIGHT_MOTOR_STEP, mRightLength % 2);
+	digitalWrite(mpReverseMotors ? PIN_LEFT_MOTOR_STEP : PIN_RIGHT_MOTOR_STEP,
+			mRightLength % 2);
 }
 
 // TODO: Gérer l'axe Z
-void Drawall::line(float x, float y)
-{
+void Drawall::line(float x, float y) {
 	writingPen(true);
 	int longmax = 5;
 
@@ -333,20 +328,17 @@ void Drawall::line(float x, float y)
 }
 
 // TODO: à supprimer plus tard, quand on utilisera l'axe Z pour gérer les mouvements.
-void Drawall::move(float x, float y)
-{
+void Drawall::move(float x, float y) {
 	writingPen(false);
 	segment(x, y, false);
 }
 
-void Drawall::move(CardinalPoint position)
-{
+void Drawall::move(CardinalPoint position) {
 	move(positionToX(position), positionToY(position));
 }
 
 // TODO: gérer l'axe Z
-void Drawall::processSDLine()
-{
+void Drawall::processSDLine() {
 	byte i, j;
 	char functionName[4];
 	char car = mFile.read();
@@ -389,11 +381,12 @@ void Drawall::processSDLine()
 }
 
 //TODO: Gérer l'axe Z
-void Drawall::segment(float x, float y, bool isWriting)
-{
-	unsigned long leftTargetLength = positionToLeftLength(mDrawingScale * mpScaleX * x + mOffsetX,
+void Drawall::segment(float x, float y, bool isWriting) {
+	unsigned long leftTargetLength = positionToLeftLength(
+			mDrawingScale * mpScaleX * x + mOffsetX,
 			mDrawingScale * mpScaleY * y + mOffsetY);
-	unsigned long rightTargetLength = positionToRightLength(mDrawingScale * mpScaleX * x + mOffsetX,
+	unsigned long rightTargetLength = positionToRightLength(
+			mDrawingScale * mpScaleX * x + mOffsetX,
 			mDrawingScale * mpScaleY * y + mOffsetY);
 
 	// nombre de pas à faire
@@ -435,15 +428,19 @@ void Drawall::segment(float x, float y, bool isWriting)
 	// TODO digitalWrite() should be called only when the direction is changing
 
 	if (pullLeft) {
-		digitalWrite(mpReverseMotors ? PIN_RIGHT_MOTOR_DIR : PIN_LEFT_MOTOR_DIR, mpLeftDirection);
+		digitalWrite(mpReverseMotors ? PIN_RIGHT_MOTOR_DIR : PIN_LEFT_MOTOR_DIR,
+				mpLeftDirection);
 	} else {
-		digitalWrite(mpReverseMotors ? PIN_RIGHT_MOTOR_DIR : PIN_LEFT_MOTOR_DIR, !mpLeftDirection);
+		digitalWrite(mpReverseMotors ? PIN_RIGHT_MOTOR_DIR : PIN_LEFT_MOTOR_DIR,
+				!mpLeftDirection);
 	}
 
 	if (pullRight) {
-		digitalWrite(mpReverseMotors ? PIN_LEFT_MOTOR_DIR : PIN_RIGHT_MOTOR_DIR, mpRightDirection);
+		digitalWrite(mpReverseMotors ? PIN_LEFT_MOTOR_DIR : PIN_RIGHT_MOTOR_DIR,
+				mpRightDirection);
 	} else {
-		digitalWrite(mpReverseMotors ? PIN_LEFT_MOTOR_DIR : PIN_RIGHT_MOTOR_DIR, !mpRightDirection);
+		digitalWrite(mpReverseMotors ? PIN_LEFT_MOTOR_DIR : PIN_RIGHT_MOTOR_DIR,
+				!mpRightDirection);
 	}
 
 	while (nbPasG > 0 || nbPasD > 0) {
@@ -465,10 +462,7 @@ void Drawall::segment(float x, float y, bool isWriting)
 	mPositionY = y;
 }
 
-void Drawall::error(
-			Error errorNumber,
-			char *msg)
-{
+void Drawall::error(Error errorNumber, char *msg) {
 #ifdef SERIAL
 	Serial.write(START_ERROR);
 	Serial.print((byte) errorNumber);
@@ -477,13 +471,11 @@ void Drawall::error(
 #endif
 	delay(1000);
 	writingPen(false);
-	while (true) ;
+	while (true)
+		;
 }
 
-void Drawall::warning(
-			Error warningNumber,
-			char *msg)
-{
+void Drawall::warning(Error warningNumber, char *msg) {
 #ifdef SERIAL
 	Serial.write(START_WARNING);
 	Serial.print((byte) warningNumber);
@@ -492,80 +484,77 @@ void Drawall::warning(
 #endif
 }
 
-void Drawall::initScale(DrawingSize size)
-{
-	switch(size) {
-		case ORIGINAL:
-			mDrawingScale = 1;
-			break;
-		case FULL:
-			if(mDrawingWidth / mDrawingHeight > mpSheetWidth / mpSheetHeight) {
-				mDrawingScale = (float)mpSheetWidth / mDrawingWidth;
-			} else {
-				mDrawingScale = (float)mpSheetHeight / mDrawingHeight;
-			}
-			break;
-		default:
-			break;
+void Drawall::initScale(DrawingSize size) {
+	switch (size) {
+	case ORIGINAL:
+		mDrawingScale = 1;
+		break;
+	case FULL:
+		if (mDrawingWidth / mDrawingHeight > mpSheetWidth / mpSheetHeight) {
+			mDrawingScale = (float) mpSheetWidth / mDrawingWidth;
+		} else {
+			mDrawingScale = (float) mpSheetHeight / mDrawingHeight;
+		}
+		break;
+	default:
+		break;
 	}
 }
 
-void Drawall::initOffset(CardinalPoint position)
-{
+void Drawall::initOffset(CardinalPoint position) {
 	// write less
 	int right = mpSheetWidth - mDrawingScale * mDrawingWidth;
 	int up = mpSheetHeight - mDrawingScale * mDrawingHeight;
-	int h_center = mpSheetWidth/2 - mDrawingScale * mDrawingWidth/2;
-	int v_center = mpSheetHeight/2 - mDrawingScale * mDrawingHeight/2;
+	int h_center = mpSheetWidth / 2 - mDrawingScale * mDrawingWidth / 2;
+	int v_center = mpSheetHeight / 2 - mDrawingScale * mDrawingHeight / 2;
 
-	switch(position) {
-		case LOWER_LEFT:
-			mOffsetX = mpOffsetX;
-			mOffsetY = mpOffsetY;
-			break;
-		case LOWER_CENTER:
-			mOffsetX = h_center + mpOffsetX;
-			mOffsetY = mpOffsetY;
-			break;
-		case LOWER_RIGHT:
-			mOffsetX = right + mpOffsetX;
-			mOffsetY = mpOffsetY;
-			break;
+	switch (position) {
+	case LOWER_LEFT:
+		mOffsetX = mpOffsetX;
+		mOffsetY = mpOffsetY;
+		break;
+	case LOWER_CENTER:
+		mOffsetX = h_center + mpOffsetX;
+		mOffsetY = mpOffsetY;
+		break;
+	case LOWER_RIGHT:
+		mOffsetX = right + mpOffsetX;
+		mOffsetY = mpOffsetY;
+		break;
 
-		case LEFT_CENTER:
-			mOffsetX = mpOffsetX;
-			mOffsetY = v_center + mpOffsetY;
-			break;
-		case CENTER:
-			mOffsetX = h_center + mpOffsetX;
-			mOffsetY = v_center + mpOffsetY;
-			break;
-		case RIGHT_CENTER:
-			mOffsetX = right + mpOffsetX;
-			mOffsetY = v_center + mpOffsetY;
-			break;
+	case LEFT_CENTER:
+		mOffsetX = mpOffsetX;
+		mOffsetY = v_center + mpOffsetY;
+		break;
+	case CENTER:
+		mOffsetX = h_center + mpOffsetX;
+		mOffsetY = v_center + mpOffsetY;
+		break;
+	case RIGHT_CENTER:
+		mOffsetX = right + mpOffsetX;
+		mOffsetY = v_center + mpOffsetY;
+		break;
 
-		case UPPER_LEFT:
-			mOffsetX = mpOffsetX;
-			mOffsetY = up + mpOffsetY;
-			break;
-		case UPPER_CENTER:
-			mOffsetX = h_center + mpOffsetX;
-			mOffsetY = up + mpOffsetY;
-			break;
-		case UPPER_RIGHT:
-			mOffsetX = right + mpOffsetX;
-			mOffsetY = up + mpOffsetY;
-			break;
+	case UPPER_LEFT:
+		mOffsetX = mpOffsetX;
+		mOffsetY = up + mpOffsetY;
+		break;
+	case UPPER_CENTER:
+		mOffsetX = h_center + mpOffsetX;
+		mOffsetY = up + mpOffsetY;
+		break;
+	case UPPER_RIGHT:
+		mOffsetX = right + mpOffsetX;
+		mOffsetY = up + mpOffsetY;
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 }
 
-void Drawall::drawingArea(
-			char *fileName, DrawingSize size, CardinalPoint position)
-{
+void Drawall::drawingArea(char *fileName, DrawingSize size,
+		CardinalPoint position) {
 	mFile = SD.open(fileName);
 
 	if (!mFile) {
@@ -590,9 +579,7 @@ void Drawall::drawingArea(
 	mFile.close();
 }
 
-void Drawall::draw(
-			char *fileName, DrawingSize size, CardinalPoint position)
-{
+void Drawall::draw(char *fileName, DrawingSize size, CardinalPoint position) {
 	mFile = SD.open(fileName);
 
 	if (!mFile) {
@@ -619,8 +606,7 @@ void Drawall::draw(
 #endif
 }
 
-int Drawall::processVar()
-{
+int Drawall::processVar() {
 	char car = ' ';
 	char buffer[10];
 	byte i;
@@ -641,21 +627,18 @@ int Drawall::processVar()
 	return atoi(buffer);
 }
 
-void Drawall::end()
-{
+void Drawall::end() {
 	move(mpEndPosition);
 	power(false);
-	while (true);
+	while (true)
+		;
 }
 
-bool Drawall::atob(
-			char *value)
-{
+bool Drawall::atob(char *value) {
 	return !strcmp(value, "true") || !strcmp(value, "yes");
 }
 
-Drawall::CardinalPoint Drawall::atop(char *str_pos)
-{
+Drawall::CardinalPoint Drawall::atop(char *str_pos) {
 	CardinalPoint pos;
 
 	if (!strcmp(str_pos, "LOWER_LEFT")) {
@@ -683,9 +666,7 @@ Drawall::CardinalPoint Drawall::atop(char *str_pos)
 	return pos;
 }
 
-void Drawall::loadParameters(
-			char *fileName)
-{
+void Drawall::loadParameters(char *fileName) {
 #define PARAM_BUFFER_SIZE 32	// Taille du buffer
 #define NB_PARAMETERS 23		// Nombre de paramètres
 
@@ -696,7 +677,7 @@ void Drawall::loadParameters(
 	byte i;						// Itérateur
 	byte line_length;			// Longueur de la ligne
 	byte line_counter = 0;		// Compteur de lignes
-	char err_buffer[3];			// Buffer pour affichage numéro de ligne si erreur
+	char err_buffer[3];		// Buffer pour affichage numéro de ligne si erreur
 	int nb_parsed = 0;
 
 	// Ici, problème avec la communication avec Processing !!!
@@ -750,10 +731,11 @@ void Drawall::loadParameters(
 		// Cherche l'emplacement de la clé en ignorant les espaces et les tabulations en début de ligne.
 		i = 0;
 		// Ignore les lignes contenant uniquement des espaces et/ou des tabulations.
-		while (buffer[i] == ' ' || buffer[i] == '\t' && !(++i == line_length));
+		while (buffer[i] == ' ' || buffer[i] == '\t' && !(++i == line_length))
+			;
 
 		if (i == line_length) {
-			continue;			// Gère les lignes contenant uniquement des espaces et/ou des tabulations.
+			continue;// Gère les lignes contenant uniquement des espaces et/ou des tabulations.
 		}
 		key = &buffer[i];
 
