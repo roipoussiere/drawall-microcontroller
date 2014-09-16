@@ -12,12 +12,12 @@
  */
 
 /*
-Drawall library - drawing test
+ Drawall library - drawing test
 
-This example shows how to use the svg function on the Drawall library.
-Please see and edit the params.h file to set the drawall parameters, like the pins location.
-Before uploading this sketch, copy the drawbot.svg file into your SD card.
-*/
+ This example shows how to use the svg function on the Drawall library.
+ Please see and edit the params.h file to set the drawall parameters, like the pins location.
+ Before uploading this sketch, copy the drawbot.svg file into your SD card.
+ */
 
 // Include drawall library and his dependencies.
 #include <SD.h>
@@ -28,13 +28,14 @@ Before uploading this sketch, copy the drawbot.svg file into your SD card.
 Drawall d;
 
 void setup() {
-  d.begin("drawall.dcf"); // Start the library and loads the configuration file.
+	d.begin("drawall.dcf"); // Start the library and loads the configuration file.
 }
 
 void loop() {
-  // d.setSpeed(5);
-  d.drawingArea("lyra.ngc", d.FULL);
-  d.draw("lyra.ngc", d.FULL); // Draw the GCode file
-  d.end(); // Go to the final position (on the floor by default) and stop the robot.
-  while(true);
+	// d.setSpeed(5);
+	d.drawingArea("lyra.ngc", d.FULL);
+	d.draw("lyra.ngc", d.FULL); // Draw the GCode file
+	d.end(); // Go to the final position (on the floor by default) and stop the robot.
+	while (true)
+		;
 }
