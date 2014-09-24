@@ -20,10 +20,10 @@ sheetPositionY	1250
 ##Servo-motor##
 
 # Servo angle while the plotter is writing, in degrees:
-servoWritingAngle	0
+servoWritingAngle	10
 
 # Servo angle while the plotter is moving, in degrees:
-servoMoovingAngle	110
+servoMoovingAngle	60
 
 # Delay before the servo moves, en ms:
 preServoDelay	100
@@ -42,18 +42,18 @@ stepMode		3
 # Pinion diameter, in micrometers:
 diameter		12730
 
-# Direction of the left motor. True to release the belt when the motor rotates clockwise, false if counter clockwise:
+# Direction of the left motor. True to release the belt when the motor rotates clockwise, false when counter clockwise:
 leftDirection	true
 
-# Direction of the right motor. True to release the belt when the motor rotates clockwise, false if counter clockwise:
+# Direction of the right motor. True to release the belt when the motor rotates clockwise, false when counter clockwise:
 rightDirection	false
 
 # Virtual reversing state of the motors. True to reverse the motors, false to don't reverse them:
-reverseMotors	false
+reverseMotors	true
 
 ## Misc. ##
 
-# Delay before start the drawing, en milliseconds:
+# Delay before start the drawing, in milliseconds:
 initialDelay	5000
 
 # Horizontal scale applied to the drawing. Used to calibrate it according to his width:
