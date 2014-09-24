@@ -24,7 +24,7 @@
 #include <Servo.h>
 #include <drawall.h>
 
-// Initialise the library.
+// Declare the library.
 Drawall d;
 
 void setup() {
@@ -32,10 +32,8 @@ void setup() {
 }
 
 void loop() {
-	// d.setSpeed(5);
-	d.drawingArea("lyra.ngc", d.FULL);
-	d.draw("lyra.ngc", d.FULL); // Draw the GCode file
+	// d.setSpeed(20);
+	d.drawingArea("gnu.ngc", d.FULL);
+	d.draw("gnu.ngc", d.FULL); // Draw the GCode file
 	d.end(); // Go to the final position (on the floor by default) and stop the robot.
-	while (true)
-		;
 }
