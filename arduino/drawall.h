@@ -53,14 +53,15 @@ public:
 	/**
 	 * Image width modes.
 	 */
+	// TODO delete this because the file dimensions are always the same (65535)
 	typedef enum {
 		ORIGINAL, ///< Matching to the drawing width.
 		FULL,     ///< Matching to the sheet width.
 	} DrawingSize;
 
 	/**
-	 * Initialise the library.
-	 * required to use the library. Do the plotter initialisation procedures.
+	 * Initialize the library.
+	 * required to use the library. Do the plotter initialization procedures.
 	 * \param fileName The name of the file to load.
 	 */
 	void begin(char *fileName);
@@ -131,16 +132,14 @@ public:
 	/**
 	 * Draw a rectangle matching with the limits of the drawing.
 	 */
-	void drawingArea(char *fileName, DrawingSize size = ORIGINAL,
-			CardinalPoint position = CENTER);
+	void drawingArea(DrawingSize size = FULL, CardinalPoint position = CENTER);
 
 	/**
 	 * Draw a drawing as descibed in the \a fileName file stored int the SD card.
 	 * \param fileName Le nom du fichier gcode à dessiner.
 	 * \TODO Check the M02 presence (end of drawing) before the end of drawing.
 	 */
-	void draw(char *fileName, DrawingSize size = ORIGINAL,
-			CardinalPoint position = CENTER);
+	void draw(DrawingSize size = FULL, CardinalPoint position = CENTER);
 
 private:
 
@@ -182,7 +181,7 @@ private:
 		FILE_NOT_READABLE,  ///< Error while opening the file;
 		TOO_SHORT_SPAN, ///< The distance between the belt extremities is lower than the sheet width plus his horizontal coordinate;
 		TOO_FEW_PARAMETERS, ///< One or several parameters have not been read;
-
+		TOO_MANY_PARAMETERS, ///< Too many parameters have been read.
 		// Warnings
 		UNKNOWN_SERIAL_CODE = 100, ///< Character sent throught serial link has not been recognised (used only in the compunter side);
 		WRONG_CONFIG_LINE, ///< Incorrectly formatted line in the configuration file. Param : the line number;
@@ -338,6 +337,9 @@ private:
 
 	/// Default final position of plotter.
 	CardinalPoint mpEndPosition;
+
+	/// Name of the file to draw.
+	char mpDrawingFileName[20];
 
 	/***********
 	 * Methods *

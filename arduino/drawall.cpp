@@ -17,7 +17,12 @@
 
 #include <drawall.h>
 
-void Drawall::begin(char *fileName) {
+// TODO config file name should be constant and not user settable,
+// since this file will be send through the serial port in a future release.
+
+// TODO remove all public methods, now they are useless and it will save space.
+
+void Drawall::begin(char *configFileName) {
 	// Affectation des pins des moteurs
 	pinMode(PIN_ENABLE_MOTORS, OUTPUT);
 	pinMode(PIN_LEFT_MOTOR_STEP, OUTPUT);
@@ -72,7 +77,7 @@ void Drawall::begin(char *fileName) {
 	}
 
 	// Chargement des paramètres à partir du fichier de configuration
-	loadParameters(fileName);
+	loadParameters(configFileName);
 
 	mServo.attach(PIN_SERVO);
 	mServo.write(mpServoMoovingAngle);
@@ -122,6 +127,9 @@ void Drawall::begin(char *fileName) {
 	power(true);
 
 	mPositionZ = 10;
+
+	// TODO: message: waiting for xx seconds
+	delay(mpInitialDelay);
 	//mDrawingHeight = mpSheetHeight; // Pour ne pas soustraire la hauteur du dessin
 }
 
@@ -559,9 +567,8 @@ void Drawall::initOffset(CardinalPoint position) {
 	}
 }
 
-void Drawall::drawingArea(char *fileName, DrawingSize size,
-		CardinalPoint position) {
-	mFile = SD.open(fileName);
+void Drawall::drawingArea(DrawingSize size, CardinalPoint position) {
+	mFile = SD.open(mpDrawingFileName);
 
 	if (!mFile) {
 		error(FILE_NOT_FOUND);
@@ -585,8 +592,8 @@ void Drawall::drawingArea(char *fileName, DrawingSize size,
 	mFile.close();
 }
 
-void Drawall::draw(char *fileName, DrawingSize size, CardinalPoint position) {
-	mFile = SD.open(fileName);
+void Drawall::draw(DrawingSize size, CardinalPoint position) {
+	mFile = SD.open(mpDrawingFileName);
 
 	if (!mFile) {
 		error(FILE_NOT_FOUND);
@@ -674,7 +681,7 @@ Drawall::CardinalPoint Drawall::atop(char *str_pos) {
 
 void Drawall::loadParameters(char *fileName) {
 #define PARAM_BUFFER_SIZE 32	// Taille du buffer
-#define NB_PARAMETERS 23		// Nombre de paramètres
+#define NB_PARAMETERS 23		// Nombre de paramètres à lire
 
 	char buffer[PARAM_BUFFER_SIZE];	// Stocke une ligne du fichier
 	char *key;					// Chaine pour la clé
@@ -737,7 +744,7 @@ void Drawall::loadParameters(char *fileName) {
 		// Cherche l'emplacement de la clé en ignorant les espaces et les tabulations en début de ligne.
 		i = 0;
 		// Ignore les lignes contenant uniquement des espaces et/ou des tabulations.
-		while (buffer[i] == ' ' || buffer[i] == '\t' && !(++i == line_length))
+		while (buffer[i] == ' ' || (buffer[i] == '\t' && !(++i == line_length)))
 			;
 
 		if (i == line_length) {
@@ -773,6 +780,8 @@ void Drawall::loadParameters(char *fileName) {
 		}
 
 		value = &buffer[i];
+
+		// TODO use constants for the param names
 
 		// Transforme les données texte en valeur utilisable
 		if (!strcmp(key, "span")) {
@@ -821,7 +830,11 @@ void Drawall::loadParameters(char *fileName) {
 			mpInitPosition = atop(value);
 		} else if (!strcmp(key, "endPosition")) {
 			mpEndPosition = atop(value);
+		} else if (!strcmp(key, "drawingFile")) {
+			strcpy(mpDrawingFileName, value);
+			// TODO add drawingPosition(CardinalPoint)
 		} else {
+			configFile.close();
 			warning(UNKNOWN_CONFIG_KEY, err_buffer);
 		}
 		nb_parsed++;
@@ -829,8 +842,11 @@ void Drawall::loadParameters(char *fileName) {
 
 	configFile.close();			// Ferme le fichier de configuration
 
-	if (nb_parsed != NB_PARAMETERS) {
+	if (nb_parsed < NB_PARAMETERS) {
 		error(TOO_FEW_PARAMETERS);
+	} else if (nb_parsed > NB_PARAMETERS) {
+		error(TOO_MANY_PARAMETERS);
 	}
+
 }
 
