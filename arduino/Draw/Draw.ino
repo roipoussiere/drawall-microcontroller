@@ -12,12 +12,10 @@
  */
 
 /*
- Drawall library - drawing test
-
- This example shows how to use the svg function on the Drawall library.
- Please see and edit the params.h file to set the drawall parameters, like the pins location.
- Before uploading this sketch, copy the drawbot.svg file into your SD card.
- */
+PLEASE UPLOAD THIS PROGRAM ONCE ON THE PLOTTER MICROCONTROLLER.
+ALL THE OPTIONS FOR THE DRAWING MUST BE SET IN THE CONFIGURATION FILE, STORED IN THE SD CARD.
+YOU SHOULD NOT MODIFY THIS FILE, EXCEPT IF YOU WANT TO HACK THE DRAWALL.
+*/
 
 // Include drawall library and his dependencies.
 #include <SD.h>
@@ -28,12 +26,12 @@
 Drawall d;
 
 void setup() {
-	d.begin("drawall.dcf"); // Start the library and loads the configuration file.
+	d.begin("config"); // Start the library and loads the configuration file.
 }
 
 void loop() {
 	// d.setSpeed(20);
-	d.drawingArea("gnu.ngc", d.FULL);
-	d.draw("gnu.ngc", d.FULL); // Draw the GCode file
+	// d.drawingArea(d.FULL, d.CENTER);
+	d.draw(d.FULL, d.CENTER); // Draw the GCode file
 	d.end(); // Go to the final position (on the floor by default) and stop the robot.
 }
