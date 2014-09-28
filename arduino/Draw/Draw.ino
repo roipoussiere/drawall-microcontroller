@@ -26,12 +26,9 @@ YOU SHOULD NOT MODIFY THIS FILE, EXCEPT IF YOU WANT TO HACK THE DRAWALL.
 Drawall d;
 
 void setup() {
-	d.begin("config"); // Start the library and loads the configuration file.
+	d.begin(); // Start the library and loads the configuration file.
+	d.draw(d.FULL, d.CENTER); // Draw the GCode file
 }
 
 void loop() {
-	// d.setSpeed(20);
-	// d.drawingArea(d.FULL, d.CENTER);
-	d.draw(d.FULL, d.CENTER); // Draw the GCode file
-	d.end(); // Go to the final position (on the floor by default) and stop the robot.
 }
