@@ -28,9 +28,6 @@
 
 #if BOARD == ATMEGA328
 
-// #define BUTTONS
-// #define SCREEN
-
 typedef enum {
 	PIN_PAUSE = 2,            	///< Pause button interruption
 	PIN_LEFT_CAPTOR = 3,      	///< Left limit switch
@@ -86,6 +83,6 @@ typedef enum {
 
 #elif BOARD == PERSONALISED
 
-// Write here your personalised configuration
+// Write here your personalized configuration
 
 #endif

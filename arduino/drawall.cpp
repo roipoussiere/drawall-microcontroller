@@ -22,7 +22,7 @@
 
 // TODO remove all public methods, now they are useless and it will save space.
 
-void Drawall::begin(char *configFileName) {
+void Drawall::begin() {
 	// Affectation des pins des moteurs
 	pinMode(PIN_ENABLE_MOTORS, OUTPUT);
 	pinMode(PIN_LEFT_MOTOR_STEP, OUTPUT);
@@ -73,11 +73,11 @@ void Drawall::begin(char *configFileName) {
 #endif
 
 	if (!SD.begin(PIN_SD_CS)) {
-		error(CARD_NOT_FOUND);
+		error(ERR_CARD_NOT_FOUND);
 	}
 
 	// Chargement des paramètres à partir du fichier de configuration
-	loadParameters(configFileName);
+	loadParameters();
 
 	mServo.attach(PIN_SERVO);
 	mServo.write(mpServoMoovingAngle);
@@ -86,7 +86,7 @@ void Drawall::begin(char *configFileName) {
 
 	// Vérification de la distance entre les 2 moteurs.
 	if (mpSpan < mpSheetWidth + mpSheetPositionX) {
-		error(TOO_SHORT_SPAN);
+		error(ERR_TOO_SHORT_SPAN);
 	}
 
 	setStepMode(mpStepMode); // call initStepLength()
@@ -101,12 +101,11 @@ void Drawall::begin(char *configFileName) {
 #ifdef SERIAL
 	Serial.println("READY");
 	delay(100);
-	// waitUntil(START);
 #endif
 
 #ifdef SERIAL
 	// Send init data to computer
-	Serial.write(START_INSTRUCTIONS);
+	Serial.write(DRAW_START_INSTRUCTIONS);
 	Serial.println(mpSpan);
 	Serial.println(mpSheetPositionX);
 	Serial.println(mpSheetPositionY);
@@ -115,7 +114,7 @@ void Drawall::begin(char *configFileName) {
 	Serial.println(mLeftLength);
 	Serial.println(mRightLength);
 	Serial.println(mStepLength * 1000);
-	Serial.write(END_INSTRUCTIONS);
+	Serial.write(DRAW_END_INSTRUCTIONS);
 #endif
 
 #ifdef BUTTONS
@@ -241,12 +240,12 @@ void Drawall::power(bool shouldPower) {
 	if (shouldPower) {
 		digitalWrite(PIN_ENABLE_MOTORS, LOW);
 #ifdef SERIAL
-		Serial.write(ENABLE_MOTORS);	// Processing: a = alimenter
+		Serial.write(DRAW_ENABLE_MOTORS);	// Processing: a = alimenter
 #endif
 	} else {
 		digitalWrite(PIN_ENABLE_MOTORS, HIGH);
 #ifdef SERIAL
-		Serial.write(DISABLE_MOTORS);	// Processing: b = désalimenter
+		Serial.write(DRAW_DISABLE_MOTORS);	// Processing: b = désalimenter
 #endif
 		writingPen(false);
 	}
@@ -261,7 +260,7 @@ void Drawall::writingPen(bool shouldWrite) {
 		delay(mpPostServoDelay);
 
 #ifdef SERIAL
-		Serial.write(WRITING);	// Processing: w = écrire
+		Serial.write(DRAW_WRITING);	// Processing: w = écrire
 #endif
 		mIsWriting = true;
 	} else if (!shouldWrite && mIsWriting) {
@@ -271,7 +270,7 @@ void Drawall::writingPen(bool shouldWrite) {
 		delay(mpPostServoDelay);
 
 #ifdef SERIAL
-		Serial.write(MOVING);	// Processing: x = ne pas écrire
+		Serial.write(DRAW_MOVING);	// Processing: x = ne pas écrire
 #endif
 		mIsWriting = false;
 	}
@@ -281,12 +280,12 @@ void Drawall::leftStep(bool shouldPull) {
 	if (shouldPull) {
 		mLeftLength--;
 #ifdef SERIAL
-		Serial.write(PULL_LEFT);
+		Serial.write(DRAW_PULL_LEFT);
 #endif
 	} else {
 		mLeftLength++;
 #ifdef SERIAL
-		Serial.write(RELEASE_LEFT);
+		Serial.write(DRAW_RELEASE_LEFT);
 #endif
 	}
 
@@ -298,12 +297,12 @@ void Drawall::rightStep(bool shouldPull) {
 	if (shouldPull) {
 		mRightLength--;
 #ifdef SERIAL
-		Serial.write(PULL_RIGHT);
+		Serial.write(DRAW_PULL_RIGHT);
 #endif
 	} else {
 		mRightLength++;
 #ifdef SERIAL
-		Serial.write(RELEASE_RIGHT);
+		Serial.write(DRAW_RELEASE_RIGHT);
 #endif
 	}
 
@@ -476,26 +475,22 @@ void Drawall::segment(float x, float y, bool isWriting) {
 	mPositionY = y;
 }
 
-void Drawall::error(Error errorNumber, char *msg) {
+void Drawall::error(SerialData errorNumber) {
 #ifdef SERIAL
-	Serial.write(START_ERROR);
 	Serial.print((byte) errorNumber);
-	Serial.println(msg);
-	Serial.write(END_ERROR);
 #endif
+	//TODO ring buzzer
 	delay(1000);
 	writingPen(false);
 	while (true)
 		;
 }
 
-void Drawall::warning(Error warningNumber, char *msg) {
+void Drawall::warning(SerialData warningNumber) {
 #ifdef SERIAL
-	Serial.write(START_WARNING);
 	Serial.print((byte) warningNumber);
-	Serial.println(msg);
-	Serial.write(END_WARNING);
 #endif
+	//TODO ring buzzer
 }
 
 void Drawall::initScale(DrawingSize size) {
@@ -571,7 +566,7 @@ void Drawall::drawingArea(DrawingSize size, CardinalPoint position) {
 	mFile = SD.open(mpDrawingFileName);
 
 	if (!mFile) {
-		error(FILE_NOT_FOUND);
+		error(ERR_FILE_NOT_FOUND);
 	}
 
 	mDrawingWidth = 25000; // processVar();
@@ -596,7 +591,7 @@ void Drawall::draw(DrawingSize size, CardinalPoint position) {
 	mFile = SD.open(mpDrawingFileName);
 
 	if (!mFile) {
-		error(FILE_NOT_FOUND);
+		error(ERR_FILE_NOT_FOUND);
 	}
 
 	mDrawingWidth = 25000; // processVar();
@@ -615,8 +610,9 @@ void Drawall::draw(DrawingSize size, CardinalPoint position) {
 
 	mFile.close();
 #ifdef SERIAL
-	Serial.print(END_DRAWING);
+	Serial.print(DRAW_END_DRAWING);
 #endif
+	end();
 }
 
 //int Drawall::processVar() {
@@ -673,13 +669,13 @@ Drawall::CardinalPoint Drawall::atop(char *str_pos) {
 	} else if (!strcmp(str_pos, "UPPER_RIGHT")) {
 		pos = UPPER_RIGHT;
 	} else {
-		warning(UNKNOWN_CONFIG_POSITION);
+		warning(WARN_UNKNOWN_CONFIG_POSITION);
 	}
 
 	return pos;
 }
 
-void Drawall::loadParameters(char *fileName) {
+void Drawall::loadParameters() {
 #define PARAM_BUFFER_SIZE 32	// Taille du buffer
 #define NB_PARAMETERS 23		// Nombre de paramètres à lire
 
@@ -704,10 +700,10 @@ void Drawall::loadParameters(char *fileName) {
 	 * } */
 
 	// Ouvre le fichier de configuration
-	File configFile = SD.open(fileName, FILE_READ);
+	File configFile = SD.open(CONFIG_FILE_NAME, FILE_READ);
 
 	if (!configFile) {
-		error(FILE_NOT_READABLE);
+		error(ERR_FILE_NOT_READABLE);
 	}
 	// Tant qu'on est pas à la fin du fichier
 	while (configFile.available() > 0) {
@@ -739,7 +735,7 @@ void Drawall::loadParameters(char *fileName) {
 		// Gestion des lignes trop grande
 		if (i == PARAM_BUFFER_SIZE) {
 			sprintf(err_buffer, "%d", line_counter);
-			warning(TOO_LONG_CONFIG_LINE, err_buffer);
+			warning(WARN_TOO_LONG_CONFIG_LINE);
 		}
 		// Cherche l'emplacement de la clé en ignorant les espaces et les tabulations en début de ligne.
 		i = 0;
@@ -756,7 +752,7 @@ void Drawall::loadParameters(char *fileName) {
 		while (buffer[i] != ' ' && buffer[i] != '\t') {
 			if (++i == line_length) {
 				sprintf(err_buffer, "%d", line_counter);
-				warning(WRONG_CONFIG_LINE, err_buffer);
+				warning(WARN_WRONG_CONFIG_LINE);
 				break;			// Ignore les lignes mal formées
 			}
 		}
@@ -770,7 +766,7 @@ void Drawall::loadParameters(char *fileName) {
 		while (buffer[i] == ' ' || buffer[i] == '\t') {
 			if (++i == line_length) {
 				sprintf(err_buffer, "%d", line_counter);
-				warning(WRONG_CONFIG_LINE, err_buffer);
+				warning(WARN_WRONG_CONFIG_LINE);
 				break;			// Ignore les lignes mal formées
 			}
 		}
@@ -835,7 +831,7 @@ void Drawall::loadParameters(char *fileName) {
 			// TODO add drawingPosition(CardinalPoint)
 		} else {
 			configFile.close();
-			warning(UNKNOWN_CONFIG_KEY, err_buffer);
+			warning(WARN_UNKNOWN_CONFIG_KEY);
 		}
 		nb_parsed++;
 	}
@@ -843,9 +839,9 @@ void Drawall::loadParameters(char *fileName) {
 	configFile.close();			// Ferme le fichier de configuration
 
 	if (nb_parsed < NB_PARAMETERS) {
-		error(TOO_FEW_PARAMETERS);
+		error(ERR_TOO_FEW_PARAMETERS);
 	} else if (nb_parsed > NB_PARAMETERS) {
-		error(TOO_MANY_PARAMETERS);
+		error(ERR_TOO_MANY_PARAMETERS);
 	}
 
 }

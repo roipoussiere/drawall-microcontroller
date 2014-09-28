@@ -17,7 +17,6 @@
 
 #ifndef _H_DRAWALL
 #define _H_DRAWALL
-
 #define BOARD ATMEGA328
 
 #define SERIAL
@@ -62,9 +61,8 @@ public:
 	/**
 	 * Initialize the library.
 	 * required to use the library. Do the plotter initialization procedures.
-	 * \param fileName The name of the file to load.
 	 */
-	void begin(char *fileName);
+	void begin();
 
 	/**
 	 * End the drawing.
@@ -143,59 +141,55 @@ public:
 
 private:
 
-	/**
-	 * The codes to send to the computer trought the serial link.
-	 * \TODO Optimize the warning and errors messages: maybe use only one enum ?
-	 */
-	typedef enum {
-		RELEASE_LEFT,       ///< Release the left belt for one step;
-		PULL_LEFT,          ///< Pull the left belt for one step;
-		RELEASE_RIGHT,      ///< Release the left belt for one step;
-		PULL_RIGHT,         ///< Pull the left belt for one step;
-		WRITING,            ///< The plotter is drawing;
-		MOVING,             ///< The plotter moving (dot drawing);
-		START_MESSAGE, ///< Begining of the message to display on the sreen (if any) or/and on the computer (if any);
-		END_MESSAGE, ///< End of the message to display on the sreen (if any) or/and on the computer (if any);
-		ENABLE_MOTORS,      ///< Enable the motors and the servo;
-		DISABLE_MOTORS,     ///< Disable the motors and the servo;
-		SLEEP,              ///< Pause the program;
-		CHANGE_TOOL,        ///< Pause the program to change the tool;
-		END_DRAWING,        ///< End of the drawing;
-		START_WARNING, ///< Begining of a warning (followed by te warning code);
-		END_WARNING,        ///< End of warning message;
-		START_ERROR,      ///< Begining of an error (followed by te error code);
-		END_ERROR,          ///< End of error message;
-		START = 100,        ///< Sart-up with the serial link;
-		START_INSTRUCTIONS, ///< Begining of the initialization data;
-		END_INSTRUCTIONS,   ///< End of the initialization data;
-	} SerialData;
+	/// Configuration file name
+	const char *CONFIG_FILE_NAME = "config";
 
 	/**
+	 * The codes to send to the computer trought the serial link.
 	 * The errors and warnings which should occurs during the program execution.
 	 * The errors starts to 0 and the Warnings starts to 100.
 	 * The warnings doesn't interfere in the drawing and the errors are critical anomalies which prevents the drawing.
 	 */
 	typedef enum {
-		CARD_NOT_FOUND,     ///< The SD card is not found or not readable;
-		FILE_NOT_FOUND,     ///< The file not exists;
-		FILE_NOT_READABLE,  ///< Error while opening the file;
-		TOO_SHORT_SPAN, ///< The distance between the belt extremities is lower than the sheet width plus his horizontal coordinate;
-		TOO_FEW_PARAMETERS, ///< One or several parameters have not been read;
-		TOO_MANY_PARAMETERS, ///< Too many parameters have been read.
+
+		// Drawing messages
+
+		DRAW_START_INSTRUCTIONS, ///< Beginning of the initialization data;
+		DRAW_END_INSTRUCTIONS,   ///< End of the initialization data;
+		DRAW_RELEASE_LEFT,  ///< Release the left belt for one step;
+		DRAW_PULL_LEFT,     ///< Pull the left belt for one step;
+		DRAW_RELEASE_RIGHT, ///< Release the left belt for one step;
+		DRAW_PULL_RIGHT,    ///< Pull the left belt for one step;
+		DRAW_WRITING,       ///< The plotter is drawing;
+		DRAW_MOVING,        ///< The plotter moving (dot drawing);
+		DRAW_ENABLE_MOTORS, ///< Enable the motors and the servo;
+		DRAW_DISABLE_MOTORS,///< Disable the motors and the servo;
+		DRAW_SLEEP,         ///< Pause the program;
+		DRAW_CHANGE_TOOL,   ///< Pause the program to change the tool;
+		DRAW_END_DRAWING,   ///< The drawing is finished;
+		DRAW_START_MESSAGE,      ///< Beginning of the message to display on the screen (if any) or/and on the computer (if any);
+		DRAW_END_MESSAGE,        ///< End of the message to display on the screen (if any) or/and on the computer (if any);
+
+		// Errors
+
+		ERR_CARD_NOT_FOUND,     ///< The SD card is not found or not readable;
+		ERR_FILE_NOT_FOUND,     ///< The file not exists;
+		ERR_FILE_NOT_READABLE,  ///< Error while opening the file;
+		ERR_TOO_SHORT_SPAN, ///< The distance between the belt extremities is lower than the sheet width plus his horizontal coordinate;
+		ERR_TOO_FEW_PARAMETERS, ///< One or several parameters have not been read;
+		ERR_TOO_MANY_PARAMETERS, ///< Too many parameters have been read;
+
 		// Warnings
-		UNKNOWN_SERIAL_CODE = 100, ///< Character sent throught serial link has not been recognised (used only in the compunter side);
-		WRONG_CONFIG_LINE, ///< Incorrectly formatted line in the configuration file. Param : the line number;
-		TOO_LONG_CONFIG_LINE, ///< Too long line in the configuration file. Param : the line number;
-		UNKNOWN_CONFIG_KEY, ///< Unknown key in the configuration file. Param : the key, the line number;
-		UNKNOWN_CONFIG_POSITION, ///< Can not read the position string in the configuration file;
-		UNKNOWN_GCODE_FUNCTION, ///< Unknown GCode function in the drawing file;
-		UNKNOWN_GCODE_PARAMETER,   ///< Unknown GCode parameter;
-		WRONG_GCODE_PARAMETER, ///< Error while reader a parameter. Param: The parameter, the line number.
-		LEFT_LIMIT,        ///< The plotter reached the left limit of the sheet;
-		RIGHT_LIMIT,      ///< The plotter reached the right limit of the sheet;
-		UPPER_LIMIT,      ///< The plotter reached the upper limit of the sheet;
-		LOWER_LIMIT,     ///< The plotter reached the lower limit of the sheet;
-	} Error;
+
+		WARN_UNKNOWN_SERIAL_CODE, ///< Character sent through serial link has not been recognized (used only in the compunter side);
+		WARN_WRONG_CONFIG_LINE, ///< Incorrectly formatted line in the configuration file;
+		WARN_TOO_LONG_CONFIG_LINE, ///< Too long line in the configuration file;
+		WARN_UNKNOWN_CONFIG_KEY, ///< Unknown key in the configuration file;
+		WARN_UNKNOWN_CONFIG_POSITION, ///< Can not read the position string in the configuration file;
+		WARN_UNKNOWN_GCODE_FUNCTION, ///< Unknown GCode function in the drawing file;
+		WARN_UNKNOWN_GCODE_PARAMETER,   ///< Unknown GCode parameter;
+		WARN_WRONG_GCODE_PARAMETER, ///< Error while reader a parameter;
+	} SerialData;
 
 	/*************
 	 * Attributes *
@@ -349,7 +343,6 @@ private:
 	 * Read a variable in the GCode file formated like this VARNAME = VALUE.
 	 */
 	// int processVar();
-
 	/**
 	 * Initialise the X et Y offsets according to the configuration file and the desired position of the drawing.
 	 */
@@ -393,7 +386,7 @@ private:
 	 * \param errorNumber The error number (See Drawall::Error);
 	 * \param msg An optional error message which adds an information about the error (empty string if there is no message to send);
 	 */
-	void error(Error errorNumber, char *msg = (char *) "");
+	void error(SerialData errorNumber);
 
 	/**
 	 * Function called when a warning appends.
@@ -402,7 +395,7 @@ private:
 	 * \param warningNumber The warning number (See Drawall::Error);
 	 * \param msg An optional warning message which adds an information about the about (empty string if there is no message to send);
 	 */
-	void warning(Error warningNumber, char *msg = (char *) "");
+	void warning(SerialData warningNumber);
 
 	/*******************
 	 * Hardware driving *
@@ -509,7 +502,7 @@ private:
 	 * Load the parameters from the configuration file on the SD card.
 	 * \param fileName The name of the configuration file to load.
 	 */
-	void loadParameters(char *fileName);
+	void loadParameters();
 
 };
 
