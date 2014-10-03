@@ -1,79 +1,22 @@
-## Drawall Configuration File ##
-
-## Drawing ##
-
-# Distance between the belt extremities, in mm:
-span			3000
-
-# Sheet width, in mm:
-sheetWidth		500
-
-# Sheet height (in mm):
-sheetHeight		500
-
-# Horizontal position of the upper left corner of the sheet, according to the left belt extremity, in mm:
-sheetPositionX	1250
-
-# Vertical position of the upper left corner of the sheet, according to the left belt extremity, in mm:
-sheetPositionY	1250
-
-##Servo-motor##
-
-# Servo angle while the plotter is writing, in degrees:
-servoWritingAngle	10
-
-# Servo angle while the plotter is moving, in degrees:
-servoMoovingAngle	60
-
-# Delay before the servo moves, en ms:
-preServoDelay	100
-
-# Delay after the servo moves, in ms:
-postServoDelay	750
-
-## Motors ##
-
-# Step motor numbers:
-steps			200
-
-# Motor step mode, from 0 to 5. 0 = Full step, 1 = 1/2 step, ..., 5 = 1/32 step:
-stepMode		3
-
-# Pinion diameter, in micrometers:
-diameter		12730
-
-# Direction of the left motor. True to release the belt when the motor rotates clockwise, false when counter clockwise:
-leftDirection	true
-
-# Direction of the right motor. True to release the belt when the motor rotates clockwise, false when counter clockwise:
-rightDirection	false
-
-# Virtual reversing state of the motors. True to reverse the motors, false to don't reverse them:
-reverseMotors	true
-
-## Misc. ##
-
-# Delay before start the drawing, in milliseconds:
-initialDelay	5000
-
-# Horizontal scale applied to the drawing. Used to calibrate it according to his width:
-scaleX			1
-
-# Vertical scale applied to the drawing. Used to calibrate it according to his height:
-scaleY			1
-
-# Horizontal offset applied to the drawing. Used to shift it according to his width:
-offsetX			0
-
-# Vertical offset applied to the drawing. Used to shift it according to his height:
-offsetY			0
-
-# Default plotter speed. Can be changed with setSpeed():
-defaultSpeed	10
-
-# Default starting position of the plotter. Can be changed with setPosition():
-initPosition CENTER
-
-# File name of the file to draw:
-drawingFile		gnu.ngc
-
+drawingName=drawing
+drawingWidth=650
+drawingPosX=20
+drawingPosY=0
+span=3000
+startupEvent=0
+initDelay=2000
+maxSpeed=20
+sheetWidth=650
+sheetHeight=500
+sheetPosX=1175
+sheetPosY=1000
+initPosX=325
+initPosY=0
+endPosX=325
+endPosY=0
+drawingInsert=0
+movingInsert=1000
+scaleX=1000
+scaleY=1000
+offsetX=0
+offsetY=0
