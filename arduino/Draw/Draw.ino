@@ -22,13 +22,11 @@ YOU SHOULD NOT MODIFY THIS FILE, EXCEPT IF YOU WANT TO HACK THE DRAWALL.
 #include <Servo.h>
 #include <drawall.h>
 
-// Declare the library.
 Drawall d;
 
+// Start the drawing(s)
 void setup() {
-	d.begin(); // Start the library and loads the configuration file.
-	d.draw(d.FULL, d.CENTER); // Draw the GCode file
+	d.start();
 }
 
-void loop() {
-}
+void loop() {}
