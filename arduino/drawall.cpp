@@ -15,13 +15,14 @@
  * Main library file.
  */
 
-// #define I_AM_CODING
+//#define I_AM_CODING
 #include <drawall.h>
 
 // TODO remove all public methods, they are useless and it will save space.
 // TODO use all variables without Arduino.h defines, like true, false, etc.
 // TODO Make a Parameter object
 // TODO: Interrupt routine with ISR(INT0_vect){...}
+// TODO: make a method to write data on serial, with #if EN_SERIAL test
 
 void Drawall::start() {
 	pinInitialization();

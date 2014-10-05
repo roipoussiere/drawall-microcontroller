@@ -139,37 +139,37 @@ private:
 
 		// Drawing messages
 
-		DRAW_START_INSTRUCTIONS, ///< Beginning of the initialization data;
-		DRAW_END_INSTRUCTIONS,   ///< End of the initialization data;
-		DRAW_RELEASE_LEFT,       ///< Release the left belt for one step;
-		DRAW_PULL_LEFT,          ///< Pull the left belt for one step;
-		DRAW_RELEASE_RIGHT,      ///< Release the left belt for one step;
-		DRAW_PULL_RIGHT,         ///< Pull the left belt for one step;
-		DRAW_WRITING,            ///< The plotter is drawing;
-		DRAW_MOVING,             ///< The plotter is moving (dot drawing);
-		DRAW_WAITING,            ///< The plotter waiting for something;
-		DRAW_ENABLE_MOTORS,      ///< Enable the motors and the servo;
-		DRAW_DISABLE_MOTORS,     ///< Disable the motors and the servo;
-		DRAW_CHANGE_TOOL,        ///< Pause the program to change the tool;
-		DRAW_END_DRAWING,        ///< The drawing is finished;
-		DRAW_START_MESSAGE, ///< Beginning of the message to display on the screen (if any) or/and on the computer (if any);
-		DRAW_END_MESSAGE, ///< End of the message to display on the screen (if any) or/and on the computer (if any);
+		DRAW_START_INSTRUCTIONS, ///< 0. Beginning of the initialization data;
+		DRAW_END_INSTRUCTIONS,   ///< 1. End of the initialization data;
+		DRAW_RELEASE_LEFT,       ///< 2. Release the left belt for one step;
+		DRAW_PULL_LEFT,          ///< 3. Pull the left belt for one step;
+		DRAW_RELEASE_RIGHT,      ///< 4. Release the left belt for one step;
+		DRAW_PULL_RIGHT,         ///< 5. Pull the left belt for one step;
+		DRAW_WRITING,            ///< 6. The plotter is drawing;
+		DRAW_MOVING,             ///< 7. The plotter is moving (dot drawing);
+		DRAW_WAITING,            ///< 8. The plotter waiting for something;
+		DRAW_ENABLE_MOTORS,      ///< 9. Enable the motors and the servo;
+		DRAW_DISABLE_MOTORS,     ///< 10. Disable the motors and the servo;
+		DRAW_CHANGE_TOOL,        ///< 11. Pause the program to change the tool;
+		DRAW_END_DRAWING,        ///< 12. The drawing is finished;
+		DRAW_START_MESSAGE,      ///< 13. Beginning of the message to display on the screen (if any) or/and on the computer (if any);
+		DRAW_END_MESSAGE,        ///< 14. End of the message to display on the screen (if any) or/and on the computer (if any);
 
 		// Errors
 
-		ERR_CARD_NOT_FOUND,     ///< The SD card is not found or not readable;
-		ERR_FILE_NOT_FOUND,     ///< The file not exists;
-		ERR_FILE_NOT_READABLE,  ///< Error while opening the file;
-		ERR_TOO_FEW_PARAMETERS, ///< One or several parameters have not been read;
-		ERR_TOO_MANY_PARAMETERS, ///< Too many parameters have been read;
-		ERR_WRONG_CONFIG_LINE, ///< Incorrectly formatted line in the configuration file;
-		ERR_TOO_LONG_CONFIG_LINE, ///< Too long line in the configuration file;
-		ERR_UNKNOWN_CONFIG_KEY, ///< Unknown key in the configuration file;
+		ERR_CARD_NOT_FOUND,      ///< 15. The SD card is not found or not readable;
+		ERR_FILE_NOT_FOUND,      ///< 16. The file not exists;
+		ERR_FILE_NOT_READABLE,   ///< 17. Error while opening the file;
+		ERR_TOO_FEW_PARAMETERS,  ///< 18. One or several parameters have not been read;
+		ERR_TOO_MANY_PARAMETERS, ///< 19. Too many parameters have been read;
+		ERR_WRONG_CONFIG_LINE,   ///< 20. Incorrectly formatted line in the configuration file;
+		ERR_TOO_LONG_CONFIG_LINE,///< 21. Too long line in the configuration file;
+		ERR_UNKNOWN_CONFIG_KEY,  ///< 22. Unknown key in the configuration file;
 
 		// Warnings
 
-		WARN_UNKNOWN_GCODE_FUNCTION, ///< Unknown GCode function in the drawing file;
-		WARN_UNKNOWN_GCODE_PARAMETER,   ///< Unknown GCode parameter;
+		WARN_UNKNOWN_GCODE_FUNCTION, ///< 23. Unknown GCode function in the drawing file;
+		WARN_UNKNOWN_GCODE_PARAMETER,///< 24. Unknown GCode parameter;
 	} SerialData;
 
 	/*************

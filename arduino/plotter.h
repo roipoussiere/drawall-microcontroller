@@ -131,10 +131,10 @@
 #define PLT_REVERSE_MOTORS true
 
 /// Minimum servo-motor angle (as close as possible to the wall).
-#define PLT_MIN_SERVO_ANGLE 10
+#define PLT_MIN_SERVO_ANGLE 60
 
 /// Maximum servo-motor angle (as far away as possible to the wall).
-#define PLT_MAX_SERVO_ANGLE 60
+#define PLT_MAX_SERVO_ANGLE 120
 
 /// Delay before the servo moves, in milliseconds.
 #define PLT_PRE_SERVO_DELAY 100
