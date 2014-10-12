@@ -261,82 +261,34 @@ void Drawall::rightStep(bool shouldPull) {
 
 void Drawall::line(float x, float y) {
 	writingPen(true);
-	int longmax = 5;
+	byte longmax = 5;
 
 	float longX = abs(x - plotterPosX);
 	float longY = abs(y - plotterPosY);
 
 	float miniX;
 	float miniY;
-	int boucle;
+	unsigned int boucle;
 
 	if (longX > longmax || longY > longmax) {
 		boucle = ceil((longX > longY ? longX : longY) / longmax);
 		miniX = (x - plotterPosX) / boucle;
 		miniY = (y - plotterPosY) / boucle;
 
-		for (int i = 0; i < boucle; i++) {
+		for (unsigned int i = 0; i < boucle; i++) {
 			segment(plotterPosX + miniX, plotterPosY + miniY, true);
 		}
 	}
 	segment(x, y, true);
 }
 
+// TODO use uint when DOV support will be supported
 void Drawall::move(float x, float y) {
 	writingPen(false);
 	segment(x, y, false);
 }
 
-void Drawall::processSDLine() {
-#define PARAM_MAX_LENGTH 5
-#define FUNC_NAME_MAX_LENGTH 3
-
-	byte i, j;
-	char functionName[FUNC_NAME_MAX_LENGTH + 1];
-	char car;
-	char parameter[PARAM_MAX_LENGTH + 1];
-	unsigned int parameters[2];
-
-	// Get function name
-	car = file.read();
-	for (i = 0; car != ' ' && car != '\n' && i < FUNC_NAME_MAX_LENGTH + 1;
-			i++) {
-		functionName[i] = car;
-		car = file.read();
-	}
-	functionName[i] = '\0';
-
-	// Get parameters
-	// The first char has been already read.
-	for (i = 0; car != '\n'; i++) {
-		car = file.read(); // first parameter char (X, Y or Z)
-		for (j = 0; car != ' ' && car != '\n' && j < PARAM_MAX_LENGTH + 1;
-				j++) {
-			if (j == 0) {
-				car = file.read(); // pass first parameter char
-			}
-			parameter[j] = car;
-			car = file.read();
-		}
-		parameter[j] = '\0';
-		parameters[i] = atoi(parameter);
-	}
-
-	// Process the GCode function
-	if (!strcmp(functionName, "G00")) {
-		move(parameters[0], parameters[1]); // move
-	} else if (!strcmp(functionName, "G01")) {
-		line(parameters[0], parameters[1]); // draw
-	} else if (!strcmp(functionName, "G04")) {
-		delay(1000 * parameters[0]); // drink some coffee
-		Serial.write(DRAW_WAITING);
-	} else if (!strcmp(functionName, "G21") || !strcmp(functionName, "M30")) {
-		// Knows but useless GCode functions
-	} else {
-		warning(WARN_UNKNOWN_GCODE_FUNCTION); // raise warning
-	}
-}
-
+// TODO use uint when DOV support will be supported
 void Drawall::segment(float x, float y, bool isWriting) {
 	unsigned long leftTargetLength = positionToLeftLength(
 			drawingScale * scaleXConf / 1000 * x + offsetX,
@@ -456,10 +408,10 @@ void Drawall::initScale(DrawingSize size) {
 // TODO: do not use CardinalPoint
 void Drawall::initOffset(CardinalPoint position) {
 	// write less
-	int right = sheetWidthConf - drawingScale * drawingWidth;
-	int up = sheetHeightConf - drawingScale * drawingHeight;
-	int h_center = sheetWidthConf / 2 - drawingScale * drawingWidth / 2;
-	int v_center = sheetHeightConf / 2 - drawingScale * drawingHeight / 2;
+	unsigned int right = sheetWidthConf - drawingScale * drawingWidth;
+	unsigned int up = sheetHeightConf - drawingScale * drawingHeight;
+	unsigned int h_center = sheetWidthConf / 2 - drawingScale * drawingWidth / 2;
+	unsigned int v_center = sheetHeightConf / 2 - drawingScale * drawingHeight / 2;
 
 	switch (position) {
 	case LOWER_LEFT:
@@ -508,7 +460,7 @@ void Drawall::initOffset(CardinalPoint position) {
 
 // TODO: do not use CardinalPoint
 void Drawall::drawingArea(DrawingSize size, CardinalPoint position) {
-	file = SD.open(drawingNameConf);
+	File file = SD.open(drawingNameConf);
 
 	if (!file) {
 		error(ERR_FILE_NOT_FOUND);
@@ -535,7 +487,7 @@ void Drawall::drawingArea(DrawingSize size, CardinalPoint position) {
 
 // TODO: do not use CardinalPoint
 void Drawall::draw(DrawingSize size, CardinalPoint position) {
-	file = SD.open(drawingNameConf);
+	File file = SD.open(drawingNameConf);
 
 	if (!file) {
 		error(ERR_FILE_NOT_FOUND);
@@ -550,7 +502,54 @@ void Drawall::draw(DrawingSize size, CardinalPoint position) {
 
 	// process line until we can read the file
 	while (file.available()) {
-		processSDLine();
+#define PARAM_MAX_LENGTH 5
+#define FUNC_NAME_MAX_LENGTH 3
+
+		byte i, j;
+		char functionName[FUNC_NAME_MAX_LENGTH + 1];
+		char car;
+		char parameter[PARAM_MAX_LENGTH + 1];
+		unsigned int parameters[2];
+
+		// Get function name
+		car = file.read();
+		for (i = 0; car != ' ' && car != '\n' && i < FUNC_NAME_MAX_LENGTH + 1;
+				i++) {
+			functionName[i] = car;
+			car = file.read();
+		}
+		functionName[i] = '\0';
+
+		// Get parameters
+		// The first char has been already read.
+		for (i = 0; car != '\n'; i++) {
+			car = file.read(); // first parameter char (X, Y or Z)
+			for (j = 0; car != ' ' && car != '\n' && j < PARAM_MAX_LENGTH + 1;
+					j++) {
+				if (j == 0) {
+					car = file.read(); // pass first parameter char
+				}
+				parameter[j] = car;
+				car = file.read();
+			}
+			parameter[j] = '\0';
+			parameters[i] = atoi(parameter);
+		}
+
+		// Process the GCode function
+		if (!strcmp(functionName, "G00")) {
+			move(parameters[0], parameters[1]); // move
+		} else if (!strcmp(functionName, "G01")) {
+			line(parameters[0], parameters[1]); // draw
+		} else if (!strcmp(functionName, "G04")) {
+			delay(1000 * parameters[0]); // drink some coffee
+			Serial.write(DRAW_WAITING);
+		} else if (!strcmp(functionName, "G21")
+				|| !strcmp(functionName, "M30")) {
+			// Knows but useless GCode functions
+		} else {
+			warning(WARN_UNKNOWN_GCODE_FUNCTION); // raise warning
+		}
 	}
 
 	offsetX = 0;
@@ -588,7 +587,7 @@ void Drawall::loadParameters() {
 
 	byte i;
 	byte line_length;
-	int nb_parsed = 0;
+	byte nb_parsed = 0;
 
 	// Check if the file exists
 	// TODO Something wrong here with serial communication

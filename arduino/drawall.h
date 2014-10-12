@@ -179,10 +179,6 @@ private:
 	/// Instance of the servo, used to drive it with the \a Servo library.
 	Servo servo;
 
-	/// The GCode file of the drawing.
-	// TODO: use in local variable
-	File file;
-
 	/// Left belt length, in steps.
 	unsigned long leftLength;
 
@@ -199,13 +195,13 @@ private:
 	float drawingScale;
 
 	/// Width of the running drawing.
-	int drawingWidth;
+	unsigned int drawingWidth;
 
 	/// Hight of the running drawing.
-	int drawingHeight;
+	unsigned int drawingHeight;
 
 	/// Step length. This is the distance traveled by the belt in one step, in mm.
-	/// \TODO Use micro or more accurate unit to use int instead of floats ?
+	/// \TODO Use nanometers to use uint instead of floats ?
 	float stepLength;
 
 	/// Initial delay between each motor step (in ms). It concerns the motor which have the longger distance to travel.
@@ -488,7 +484,7 @@ private:
 	 * Drawing dimentions are got from the GCode file header.
 	 * \TODO Return the new scale instead of modify it directly.
 	 */
-	void setDrawingScale(int width, int height);
+	void setDrawingScale(unsigned int width, unsigned int height);
 
 	/**
 	 * Function called when an error appends.
@@ -567,12 +563,6 @@ private:
 	 * \TODO : If an error append and the file name is longer than 8 characters, suggest to format the card in fat16.
 	 */
 	void sdInit(char *fileName);
-
-	/**
-	 * Interpret the current GCode function.
-	 * The cursor need to be just before a GCode function. Ignore white spaces before the function name.
-	 */
-	void processSDLine();
 
 	/**
 	 * Draw a straight line from the current point to the point [\a x ; \a y].
