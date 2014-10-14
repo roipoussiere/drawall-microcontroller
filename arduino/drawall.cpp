@@ -15,7 +15,7 @@
  * Main library file.
  */
 
-//#define I_AM_CODING
+#define I_AM_CODING true
 #include <drawall.h>
 
 // TODO remove all public methods, they are useless and it will save space.
@@ -47,20 +47,24 @@ void Drawall::start() {
 	isWriting = true; // to make write() works for the first time.
 
 #if EN_STEP_MODES
-	setStepMode();
+	digitalWrite(PIN_STEP_MODE_0, (PLT_STEP_MODE & B1) > 0 ? HIGH : LOW);
+	digitalWrite(PIN_STEP_MODE_1, (PLT_STEP_MODE & B10) > 0 ? HIGH : LOW);
+	digitalWrite(PIN_STEP_MODE_2, (PLT_STEP_MODE & B100) > 0 ? HIGH : LOW);
 #endif
 
-	stepLength = getStepLength();
+	// PLT_STEPS * 2 because it is the rising edge which drive the motor steps.
+	// TODO Use unsigned long nanometters
+	stepLength = (PI * PLT_PINION_DIAMETER / 1000)
+			/ (PLT_STEPS * 2 * pow(2, PLT_STEP_MODE));
 
 	// Get the belts length
 	leftLength = positionToLeftLength(initPosXConf, initPosYConf);
 	rightLength = positionToRightLength(initPosXConf, initPosYConf);
 
-#ifdef I_AM_CODING
-	delayBetweenSteps = getDelay(100);
-#else
-	delayBetweenSteps = getDelay(maxSpeedConf);
-#endif
+	 // Set the plotter speed (in mm/s).
+	 // A next feature will support dynamic speed, then this parameter will be a 'base' speed.
+	 // \bug Speed growing if steep numbers growing.
+	delayBetweenSteps = 1000000 * stepLength / float(I_AM_CODING ? 100 : maxSpeedConf);
 
 #if EN_SERIAL
 	// Send initialization data to computer
@@ -143,24 +147,6 @@ void Drawall::pinInitialization() {
 	pinMode(PIN_SCREEN_SDIN, OUTPUT);
 	pinMode(PIN_SCREEN_SCLK, OUTPUT);
 #endif
-}
-
-void Drawall::setStepMode() {
-	digitalWrite(PIN_STEP_MODE_0, (PLT_STEP_MODE & B1) > 0 ? HIGH : LOW);
-	digitalWrite(PIN_STEP_MODE_1, (PLT_STEP_MODE & B10) > 0 ? HIGH : LOW);
-	digitalWrite(PIN_STEP_MODE_2, (PLT_STEP_MODE & B100) > 0 ? HIGH : LOW);
-}
-
-// TODO use a Macro Expansion
-float Drawall::getStepLength() {
-	// PLT_STEPS * 2 because it is the rising edge which drive the motor steps.
-	return (PI * PLT_PINION_DIAMETER / 1000)
-			/ (PLT_STEPS * 2 * pow(2, PLT_STEP_MODE));
-}
-
-// TODO use a Macro Expansion
-float Drawall::getDelay(unsigned int speed) {
-	return 1000000 * stepLength / float(speed);
 }
 
 // TODO use a Macro Expansion
@@ -410,8 +396,10 @@ void Drawall::initOffset(CardinalPoint position) {
 	// write less
 	unsigned int right = sheetWidthConf - drawingScale * drawingWidth;
 	unsigned int up = sheetHeightConf - drawingScale * drawingHeight;
-	unsigned int h_center = sheetWidthConf / 2 - drawingScale * drawingWidth / 2;
-	unsigned int v_center = sheetHeightConf / 2 - drawingScale * drawingHeight / 2;
+	unsigned int h_center = sheetWidthConf / 2
+			- drawingScale * drawingWidth / 2;
+	unsigned int v_center = sheetHeightConf / 2
+			- drawingScale * drawingHeight / 2;
 
 	switch (position) {
 	case LOWER_LEFT:

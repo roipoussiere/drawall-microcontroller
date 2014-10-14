@@ -76,23 +76,6 @@ public:
 	 */
 	void end();
 
-	/********************
-	 * Getters & setters *
-	 ********************/
-
-	/**
-	 * Set the plotter speed (in mm/s).
-	 * A next feature will support dynamic speed, then this parameter will be a 'base' speed.
-	 * \param speed The plotter speed.
-	 * \bug Speed growing if steep numbers growing.
-	 */
-	float getDelay(unsigned int speed);
-
-	/**
-	 * Set the step mode, on the motors drivers.
-	 */
-	void setStepMode();
-
 	/**********************
 	 * Fonctions de dessin *
 	 **********************/
@@ -469,15 +452,6 @@ private:
 	 * Initialise the scale according to the desired drawing width.
 	 */
 	void initScale(DrawingSize size);
-
-	/**
-	 * Initialize the ratio of number of steps to distance.
-	 * Calculated with the pinion diameter and the number of steps.
-	 * - xx(mm)*ratio --> xx(pas)
-	 * - xx(pas)/ratio --> xx(mm)
-	 * \TODO Invert the ratio, then the ratio will be an integer value, so that prevents working with floats.
-	 */
-	float getStepLength();
 
 	/**
 	 * Set the drawing scale, to adapt the drawing to his \a width and \a height.
