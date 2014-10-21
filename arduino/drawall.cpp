@@ -53,18 +53,25 @@ void Drawall::start() {
 #endif
 
 	// PLT_STEPS * 2 because it is the rising edge which drive the motor steps.
-	// TODO Use unsigned long nanometters
-	stepLength = (PI * PLT_PINION_DIAMETER / 1000)
+	// Step length in nanometers
+	stepLength = (PI * PLT_PINION_DIAMETER * 1000) // périmètre en nm
 			/ (PLT_STEPS * 2 * pow(2, PLT_STEP_MODE));
 
 	// Get the belts length
+	Serial.println();
+	Serial.print("initPosXConf:");
+	Serial.println(initPosXConf);
+	Serial.print("initPosYConf:");
+	Serial.println(initPosYConf);
+	Serial.print("stepLength:");
+	Serial.println(stepLength);
 	leftLength = positionToLeftLength(initPosXConf, initPosYConf);
 	rightLength = positionToRightLength(initPosXConf, initPosYConf);
 
-	 // Set the plotter speed (in mm/s).
+	 // Set the plotter speed (in milliseconds).
 	 // A next feature will support dynamic speed, then this parameter will be a 'base' speed.
 	 // \bug Speed growing if steep numbers growing.
-	delayBetweenSteps = 1000000 * stepLength / float(I_AM_CODING ? 100 : maxSpeedConf);
+	delayBetweenSteps = stepLength / float(I_AM_CODING ? 100 : maxSpeedConf);
 
 #if EN_SERIAL
 	// Send initialization data to computer
@@ -79,7 +86,7 @@ void Drawall::start() {
 	Serial.println(sheetHeightConf);
 	Serial.println(leftLength);
 	Serial.println(rightLength);
-	Serial.println(stepLength * 1000);
+	Serial.println(stepLength);
 	Serial.write(DRAW_END_INSTRUCTIONS);
 #endif
 
@@ -152,19 +159,19 @@ void Drawall::pinInitialization() {
 // TODO use a Macro Expansion
 long Drawall::positionToLeftLength(float posX, float posY) {
 	return sqrt(
-			pow(((float) sheetPosXConf + posX) / stepLength, 2)
+			pow(((float) sheetPosXConf + posX) * 1000000 / stepLength, 2)
 					+ pow(
-							((float) sheetPosYConf + sheetHeightConf - posY)
+							((float) sheetPosYConf + sheetHeightConf - posY) * 1000000
 									/ stepLength, 2));
 }
 
 // TODO use a Macro Expansion
 long Drawall::positionToRightLength(float posX, float posY) {
 	return sqrt(
-			pow(((float) spanConf - (float) sheetPosXConf - posX) / stepLength,
+			pow(((float) spanConf - (float) sheetPosXConf - posX) * 1000000 / stepLength,
 					2)
 					+ pow(
-							((float) sheetPosYConf + sheetHeightConf - posY)
+							((float) sheetPosYConf + sheetHeightConf - posY) * 1000000
 									/ stepLength, 2));
 }
 

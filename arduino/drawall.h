@@ -183,12 +183,12 @@ private:
 	/// Hight of the running drawing.
 	unsigned int drawingHeight;
 
-	/// Step length. This is the distance traveled by the belt in one step, in mm.
-	/// \TODO Use nanometers to use uint instead of floats ?
-	float stepLength;
+	/// Step length. This is the distance traveled by the belt in one step (in nanometers).
+	unsigned long stepLength;
 
-	/// Initial delay between each motor step (in ms). It concerns the motor which have the longger distance to travel.
-	/// The delay concerning the other motor is calculaed in such a way as to the 2 motors are synchronised, that is, they finishes the line on the same time.
+	/// Initial delay between each motor step (in milliseconds).
+	// It concerns the motor which have the longer distance to travel.
+	/// The delay concerning the other motor is calculated in such a way as to the 2 motors are synchronized, that is, they finishes the line on the same time.
 	float delayBetweenSteps;
 
 	/// The robot is currently writing (\a true) or not (\a false).
