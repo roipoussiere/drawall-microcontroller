@@ -396,26 +396,6 @@ private:
 	// * 3.2 Adjusting *
 
 	/**
-	 * Horizontal scale
-	 * Scale applied to the drawing, used to calibrate it according to his width and height. Should be used rarely.
-	 * Unit: percents
-	 * Default value: 100%
-	 * Range: [70.0%, 150.0%]
-	 */
-	unsigned int scaleXConf;
-	// TODO /!\ I just changed this to unsigned integer
-
-	/**
-	 * Vertical scale
-	 * Scale applied to the drawing, used to calibrate it according to his width and height. Should be used rarely.
-	 * Unit: percents
-	 * Default value: 100%
-	 * Range: [70.0%, 150.0%]
-	 */
-	unsigned int scaleYConf;
-	// TODO /!\ I just changed this to unsigned integer
-
-	/**
 	 * Horizontal offset
 	 * Offset applied to the drawing, used to shift it according to his width and height. Should be used rarely.
 	 * Unit: millimeters

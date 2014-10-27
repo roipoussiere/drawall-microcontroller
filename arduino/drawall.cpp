@@ -284,11 +284,11 @@ void Drawall::move(float x, float y) {
 // TODO use uint when DOV support will be supported
 void Drawall::segment(float x, float y, bool isWriting) {
 	unsigned long leftTargetLength = positionToLeftLength(
-			drawingScale * scaleXConf / 1000 * x + offsetX,
-			drawingScale * scaleYConf / 1000 * y + offsetY);
+			drawingScale * x + offsetX,
+			drawingScale * y + offsetY);
 	unsigned long rightTargetLength = positionToRightLength(
-			drawingScale * scaleXConf / 1000 * x + offsetX,
-			drawingScale * scaleYConf / 1000 * y + offsetY);
+			drawingScale * x + offsetX,
+			drawingScale * y + offsetY);
 
 	// get the number of steps to do
 	long nbPasG = leftTargetLength - leftLength;
@@ -574,7 +574,7 @@ void Drawall::message(char* message) {
 
 void Drawall::loadParameters() {
 #define LINE_MAX_LENGTH 32
-#define NB_PARAMETERS 22
+#define NB_PARAMETERS 20
 
 	char buffer[LINE_MAX_LENGTH + 1];
 	char *key;
@@ -666,10 +666,6 @@ void Drawall::loadParameters() {
 			endPosXConf = atoi(value);
 		} else if (!strcmp(key, "endPosY")) {
 			endPosYConf = atoi(value);
-		} else if (!strcmp(key, "scaleX")) {
-			scaleXConf = atoi(value);
-		} else if (!strcmp(key, "scaleY")) {
-			scaleYConf = atoi(value);
 		} else if (!strcmp(key, "offsetX")) {
 			offsetXConf = atoi(value);
 		} else if (!strcmp(key, "offsetY")) {
