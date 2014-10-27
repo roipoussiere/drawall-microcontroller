@@ -161,7 +161,7 @@ long Drawall::positionToLeftLength(float posX, float posY) {
 	return sqrt(
 			pow(((float) sheetPosXConf + posX) * 1000000 / stepLength, 2)
 					+ pow(
-							((float) sheetPosYConf + sheetHeightConf - posY) * 1000000
+							((float) sheetPosYConf + posY) * 1000000
 									/ stepLength, 2));
 }
 
@@ -171,7 +171,7 @@ long Drawall::positionToRightLength(float posX, float posY) {
 			pow(((float) spanConf - (float) sheetPosXConf - posX) * 1000000 / stepLength,
 					2)
 					+ pow(
-							((float) sheetPosYConf + sheetHeightConf - posY) * 1000000
+							((float) sheetPosYConf + posY) * 1000000
 									/ stepLength, 2));
 }
 
@@ -400,52 +400,44 @@ void Drawall::initScale(DrawingSize size) {
 
 // TODO: do not use CardinalPoint
 void Drawall::initOffset(CardinalPoint position) {
-	// write less
-	unsigned int right = sheetWidthConf - drawingScale * drawingWidth;
-	unsigned int up = sheetHeightConf - drawingScale * drawingHeight;
-	unsigned int h_center = sheetWidthConf / 2
-			- drawingScale * drawingWidth / 2;
-	unsigned int v_center = sheetHeightConf / 2
-			- drawingScale * drawingHeight / 2;
-
 	switch (position) {
 	case LOWER_LEFT:
 		offsetX = 0;
-		offsetY = 0;
+		offsetY = sheetHeightConf - drawingScale * drawingHeight;
 		break;
 	case LOWER_CENTER:
-		offsetX = h_center;
-		offsetY = 0;
+		offsetX = sheetWidthConf / 2 - drawingScale * drawingWidth / 2;
+		offsetY = sheetHeightConf - drawingScale * drawingHeight;
 		break;
 	case LOWER_RIGHT:
-		offsetX = right;
-		offsetY = 0;
+		offsetX = sheetWidthConf - drawingScale * drawingWidth;
+		offsetY = sheetHeightConf - drawingScale * drawingHeight;
 		break;
 
 	case LEFT_CENTER:
 		offsetX = 0;
-		offsetY = v_center;
+		offsetY = sheetHeightConf / 2 - drawingScale * drawingHeight / 2;
 		break;
 	case CENTER:
-		offsetX = h_center;
-		offsetY = v_center;
+		offsetX = sheetWidthConf / 2 - drawingScale * drawingWidth / 2;
+		offsetY = sheetHeightConf / 2 - drawingScale * drawingHeight / 2;
 		break;
 	case RIGHT_CENTER:
-		offsetX = right;
-		offsetY = v_center;
+		offsetX = sheetWidthConf - drawingScale * drawingWidth;
+		offsetY = sheetHeightConf / 2 - drawingScale * drawingHeight / 2;
 		break;
 
 	case UPPER_LEFT:
 		offsetX = 0;
-		offsetY = up;
+		offsetY = 0;
 		break;
 	case UPPER_CENTER:
-		offsetX = h_center;
-		offsetY = up;
+		offsetX = sheetWidthConf / 2 - drawingScale * drawingWidth / 2;
+		offsetY = 0;
 		break;
 	case UPPER_RIGHT:
-		offsetX = right;
-		offsetY = up;
+		offsetX = sheetWidthConf - drawingScale * drawingWidth;
+		offsetY = 0;
 		break;
 
 	default:
@@ -475,7 +467,6 @@ void Drawall::drawingArea(DrawingSize size, CardinalPoint position) {
 
 	offsetX = 0;
 	offsetY = 0;
-	drawingHeight = sheetHeightConf; // do not subtract the picture height
 
 	file.close();
 }
@@ -549,7 +540,6 @@ void Drawall::draw(DrawingSize size, CardinalPoint position) {
 
 	offsetX = 0;
 	offsetY = 0;
-	drawingHeight = sheetHeightConf; // do not subtract the picture height
 
 	file.close();
 #if EN_SERIAL
