@@ -55,7 +55,7 @@ void Drawall::start() {
 	// PLT_STEPS * 2 because it is the rising edge which drive the motor steps.
 	// Step length in nanometers
 	stepLength = (PI * PLT_PINION_DIAMETER * 1000) // périmètre en nm
-			/ (PLT_STEPS * 2 * pow(2, PLT_STEP_MODE));
+	/ (PLT_STEPS * 2 * pow(2, PLT_STEP_MODE));
 
 	// Get the belts length
 	Serial.println();
@@ -68,9 +68,9 @@ void Drawall::start() {
 	leftLength = positionToLeftLength(initPosXConf, initPosYConf);
 	rightLength = positionToRightLength(initPosXConf, initPosYConf);
 
-	 // Set the plotter speed (in milliseconds).
-	 // A next feature will support dynamic speed, then this parameter will be a 'base' speed.
-	 // \bug Speed growing if steep numbers growing.
+	// Set the plotter speed (in milliseconds).
+	// A next feature will support dynamic speed, then this parameter will be a 'base' speed.
+	// \bug Speed growing if steep numbers growing.
 	delayBetweenSteps = stepLength / float(I_AM_CODING ? 100 : maxSpeedConf);
 
 #if EN_SERIAL
@@ -160,19 +160,18 @@ void Drawall::pinInitialization() {
 long Drawall::positionToLeftLength(float posX, float posY) {
 	return sqrt(
 			pow(((float) sheetPosXConf + posX) * 1000000 / stepLength, 2)
-					+ pow(
-							((float) sheetPosYConf + posY) * 1000000
-									/ stepLength, 2));
+					+ pow(((float) sheetPosYConf + posY) * 1000000 / stepLength,
+							2));
 }
 
 // TODO use a Macro Expansion
 long Drawall::positionToRightLength(float posX, float posY) {
 	return sqrt(
-			pow(((float) spanConf - (float) sheetPosXConf - posX) * 1000000 / stepLength,
-					2)
-					+ pow(
-							((float) sheetPosYConf + posY) * 1000000
-									/ stepLength, 2));
+			pow(
+					((float) spanConf - (float) sheetPosXConf - posX) * 1000000
+							/ stepLength, 2)
+					+ pow(((float) sheetPosYConf + posY) * 1000000 / stepLength,
+							2));
 }
 
 void Drawall::power(bool shouldPower) {
@@ -284,11 +283,9 @@ void Drawall::move(float x, float y) {
 // TODO use uint when DOV support will be supported
 void Drawall::segment(float x, float y, bool isWriting) {
 	unsigned long leftTargetLength = positionToLeftLength(
-			drawingScale * x + offsetX,
-			drawingScale * y + offsetY);
+			drawingScale * x + offsetX, drawingScale * y + offsetY);
 	unsigned long rightTargetLength = positionToRightLength(
-			drawingScale * x + offsetX,
-			drawingScale * y + offsetY);
+			drawingScale * x + offsetX, drawingScale * y + offsetY);
 
 	// get the number of steps to do
 	long nbPasG = leftTargetLength - leftLength;
@@ -381,21 +378,12 @@ void Drawall::warning(SerialData warningNumber) {
 	// TODO ring buzzer
 }
 
-void Drawall::initScale(DrawingSize size) {
-	switch (size) {
-	case ORIGINAL:
-		drawingScale = 1;
-		break;
-	case FULL:
-		if (drawingWidth / drawingHeight > sheetWidthConf / sheetHeightConf) {
-			drawingScale = (float) sheetWidthConf / drawingWidth;
-		} else {
-			drawingScale = (float) sheetHeightConf / drawingHeight;
-		}
-		break;
-	default:
-		break;
-	}
+// TODO: use macro expression
+void Drawall::initScale() {
+	drawingScale =
+			(drawingWidth / drawingHeight > sheetWidthConf / sheetHeightConf) ?
+					(float) sheetWidthConf / drawingWidth :
+					drawingScale = (float) sheetHeightConf / drawingHeight;
 }
 
 // TODO: do not use CardinalPoint
@@ -446,7 +434,7 @@ void Drawall::initOffset(CardinalPoint position) {
 }
 
 // TODO: do not use CardinalPoint
-void Drawall::drawingArea(DrawingSize size, CardinalPoint position) {
+void Drawall::drawingArea(CardinalPoint position) {
 	File file = SD.open(drawingNameConf);
 
 	if (!file) {
@@ -456,7 +444,7 @@ void Drawall::drawingArea(DrawingSize size, CardinalPoint position) {
 	// TODO make this better
 	drawingWidth = 25000; // processVar();
 	drawingHeight = 25000; // processVar();
-	initScale(size);
+	initScale();
 	initOffset(position);
 
 	move(0, 0);
@@ -472,7 +460,7 @@ void Drawall::drawingArea(DrawingSize size, CardinalPoint position) {
 }
 
 // TODO: do not use CardinalPoint
-void Drawall::draw(DrawingSize size, CardinalPoint position) {
+void Drawall::draw(CardinalPoint position) {
 	File file = SD.open(drawingNameConf);
 
 	if (!file) {
@@ -483,7 +471,7 @@ void Drawall::draw(DrawingSize size, CardinalPoint position) {
 	drawingWidth = 25000;
 	drawingHeight = 25000;
 
-	initScale(size);
+	initScale();
 	initOffset(position);
 
 	// process line until we can read the file

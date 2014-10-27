@@ -48,15 +48,6 @@ public:
 	} CardinalPoint;
 
 	/**
-	 * Image width modes.
-	 */
-	// TODO delete this because the file dimensions are always the same (65535)
-	typedef enum {
-		ORIGINAL, ///< Matching to the drawing width.
-		FULL,     ///< Matching to the sheet width.
-	} DrawingSize;
-
-	/**
 	 * Initialize the library.
 	 * required to use the library. Do the plotter initialization procedures.
 	 */
@@ -98,14 +89,14 @@ public:
 	/**
 	 * Draw a rectangle matching with the limits of the drawing.
 	 */
-	void drawingArea(DrawingSize size = FULL, CardinalPoint position = CENTER);
+	void drawingArea(CardinalPoint position = CENTER);
 
 	/**
 	 * Draw a drawing as descibed in the \a fileName file stored int the SD card.
 	 * \param fileName Le nom du fichier gcode à dessiner.
 	 * TODO Check the M02 presence (end of drawing) before the end of drawing.
 	 */
-	void draw(DrawingSize size = FULL, CardinalPoint position = CENTER);
+	void draw(CardinalPoint position = CENTER);
 
 private:
 
@@ -135,24 +126,24 @@ private:
 		DRAW_DISABLE_MOTORS,     ///< 10. Disable the motors and the servo;
 		DRAW_CHANGE_TOOL,        ///< 11. Pause the program to change the tool;
 		DRAW_END_DRAWING,        ///< 12. The drawing is finished;
-		DRAW_START_MESSAGE,      ///< 13. Beginning of the message to display on the screen (if any) or/and on the computer (if any);
-		DRAW_END_MESSAGE,        ///< 14. End of the message to display on the screen (if any) or/and on the computer (if any);
+		DRAW_START_MESSAGE, ///< 13. Beginning of the message to display on the screen (if any) or/and on the computer (if any);
+		DRAW_END_MESSAGE, ///< 14. End of the message to display on the screen (if any) or/and on the computer (if any);
 
 		// Errors
 
-		ERR_CARD_NOT_FOUND,      ///< 15. The SD card is not found or not readable;
+		ERR_CARD_NOT_FOUND,   ///< 15. The SD card is not found or not readable;
 		ERR_FILE_NOT_FOUND,      ///< 16. The file not exists;
 		ERR_FILE_NOT_READABLE,   ///< 17. Error while opening the file;
-		ERR_TOO_FEW_PARAMETERS,  ///< 18. One or several parameters have not been read;
+		ERR_TOO_FEW_PARAMETERS, ///< 18. One or several parameters have not been read;
 		ERR_TOO_MANY_PARAMETERS, ///< 19. Too many parameters have been read;
-		ERR_WRONG_CONFIG_LINE,   ///< 20. Incorrectly formatted line in the configuration file;
-		ERR_TOO_LONG_CONFIG_LINE,///< 21. Too long line in the configuration file;
+		ERR_WRONG_CONFIG_LINE, ///< 20. Incorrectly formatted line in the configuration file;
+		ERR_TOO_LONG_CONFIG_LINE, ///< 21. Too long line in the configuration file;
 		ERR_UNKNOWN_CONFIG_KEY,  ///< 22. Unknown key in the configuration file;
 
 		// Warnings
 
 		WARN_UNKNOWN_GCODE_FUNCTION, ///< 23. Unknown GCode function in the drawing file;
-		WARN_UNKNOWN_GCODE_PARAMETER,///< 24. Unknown GCode parameter;
+		WARN_UNKNOWN_GCODE_PARAMETER, ///< 24. Unknown GCode parameter;
 	} SerialData;
 
 	/*************
@@ -411,7 +402,7 @@ private:
 	/**
 	 * Initialise the scale according to the desired drawing width.
 	 */
-	void initScale(DrawingSize size);
+	void initScale();
 
 	/**
 	 * Set the drawing scale, to adapt the drawing to his \a width and \a height.
