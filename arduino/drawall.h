@@ -36,6 +36,17 @@ class Drawall {
 public:
 
 	/**
+	 * Initialize the library.
+	 * required to use the library. Do the plotter initialization procedures.
+	 */
+	void start();
+
+private:
+
+	/// Configuration file name
+	const char *CONFIG_FILE_NAME = "config";
+
+	/**
 	 * CardinalPoint on the drawing area.
 	 * The positions, corresponding to the cardinal points, plus the center.	 */
 	// TODO: delete this, because configuration file will give positions in millimeters.
@@ -48,63 +59,7 @@ public:
 	} CardinalPoint;
 
 	/**
-	 * Initialize the library.
-	 * required to use the library. Do the plotter initialization procedures.
-	 */
-	void start();
-
-	/**
-	 * Initialize all pins.
-	 */
-	void pinInitialization();
-
-	/**
-	 * End the drawing.
-	 * Used in the end of the drawing:
-	 * - position the plotter on the end position (at the bottom of the sheet by default);
-	 * - disable the motors;
-	 * - pause the program.
-	 */
-	void end();
-
-	/**********************
-	 * Fonctions de dessin *
-	 **********************/
-
-	/**
-	 * Move the plotter to the absloute position [\a x ; \a y].
-	 * \param x The horizontal absolute position of the destination point.
-	 * \param y The vertical absolute position of the destination point.
-	 */
-	void move(float posX, float posY);
-
-	/**
-	 * Draw a straight line, from the actual position to the absolute position  [\a x; \a y].
-	 * \param x The horizontal absolute position of the destination point.
-	 * \param y The vertical absolute position of the destination point.
-	 * \bug Fait des escaliers dans certains cas (?).
-	 */
-	void line(float x, float y);
-
-	/**
-	 * Draw a rectangle matching with the limits of the drawing.
-	 */
-	void drawingArea(CardinalPoint position = CENTER);
-
-	/**
-	 * Draw a drawing as descibed in the \a fileName file stored int the SD card.
-	 * \param fileName Le nom du fichier gcode à dessiner.
-	 * TODO Check the M02 presence (end of drawing) before the end of drawing.
-	 */
-	void draw(CardinalPoint position = CENTER);
-
-private:
-
-	/// Configuration file name
-	const char *CONFIG_FILE_NAME = "config";
-
-	/**
-	 * The codes to send to the computer trought the serial link.
+	 * The codes to send to the computer thought the serial link.
 	 * The errors and warnings which should occurs during the program execution.
 	 * The errors starts to 0 and the Warnings starts to 100.
 	 * The warnings doesn't interfere in the drawing and the errors are critical anomalies which prevents the drawing.
@@ -171,7 +126,7 @@ private:
 	/// Width of the running drawing.
 	unsigned int drawingWidth;
 
-	/// Hight of the running drawing.
+	/// Height of the running drawing.
 	unsigned int drawingHeight;
 
 	/// Step length. This is the distance traveled by the belt in one step (in nanometers).
@@ -391,22 +346,67 @@ private:
 	 ***********/
 
 	/**
+	 * Initialize all pins.
+	 */
+	void pinInitialization();
+
+	/**
+	 * End the drawing.
+	 * Used in the end of the drawing:
+	 * - position the plotter on the end position (at the bottom of the sheet by default);
+	 * - disable the motors;
+	 * - pause the program.
+	 */
+	void end();
+
+	/*******************
+	 * Drawing methods *
+	 ******************/
+
+	/**
+	 * Move the plotter to the absolute position [\a x ; \a y].
+	 * \param x The horizontal absolute position of the destination point.
+	 * \param y The vertical absolute position of the destination point.
+	 */
+	void move(float posX, float posY);
+
+	/**
+	 * Draw a straight line, from the actual position to the absolute position  [\a x; \a y].
+	 * \param x The horizontal absolute position of the destination point.
+	 * \param y The vertical absolute position of the destination point.
+	 * \bug Sometimes do upstairs.
+	 */
+	void line(float x, float y);
+
+	/**
+	 * Draw a rectangle matching with the limits of the drawing.
+	 */
+	void drawingArea(CardinalPoint position = CENTER);
+
+	/**
+	 * Draw a drawing as described in the \a fileName file stored in the SD card.
+	 * \param fileName The file to draw.
+	 * TODO Check the M02 presence (end of drawing) before the end of drawing.
+	 */
+	void draw(CardinalPoint position = CENTER);
+
+	/**
 	 * Read a variable in the GCode file formated like this VARNAME = VALUE.
 	 */
 	// int processVar();
 	/**
-	 * Initialise the X et Y offsets according to the configuration file and the desired position of the drawing.
+	 * Initialize the X and Y offsets, according to the configuration file and the desired position of the drawing.
 	 */
 	void initOffset(CardinalPoint position);
 
 	/**
-	 * Initialise the scale according to the desired drawing width.
+	 * Initialize the scale according to the desired drawing width.
 	 */
 	void initScale();
 
 	/**
 	 * Set the drawing scale, to adapt the drawing to his \a width and \a height.
-	 * Drawing dimentions are got from the GCode file header.
+	 * Drawing dimensions are got from the GCode file header.
 	 * \TODO Return the new scale instead of modify it directly.
 	 */
 	void setDrawingScale(unsigned int width, unsigned int height);
@@ -417,19 +417,17 @@ private:
 	 * - Keep away the pen from the sheet;
 	 * - Stop the program;
 	 * \TODO Displays the error on the screen, if any;
-	 * - Send the error code \a to the computer trought the serial link, if any.
-	 * All the errors should appends before the begining of the drawing.
+	 * - Send the error code \a to the computer trough the serial link, if any.
+	 * All the errors should appends before the beginning of the drawing.
 	 * \param errorNumber The error number (See Drawall::Error);
-	 * \param msg An optional error message which adds an information about the error (empty string if there is no message to send);
 	 */
 	void error(SerialData errorNumber);
 
 	/**
 	 * Function called when a warning appends.
 	 * \TODO Displays the error on the screen, if any;
-	 * - Send the error code \a to the computer trought the serial link, if any.
+	 * - Send the error code \a to the computer trough the serial link, if any.
 	 * \param warningNumber The warning number (See Drawall::Error);
-	 * \param msg An optional warning message which adds an information about the about (empty string if there is no message to send);
 	 */
 	void warning(SerialData warningNumber);
 
@@ -458,7 +456,7 @@ private:
 	void power(bool shouldPower);
 
 	/**************
-	 * Convertions *
+	 * Conversions *
 	 **************/
 
 	/**
@@ -482,7 +480,7 @@ private:
 	 ******************/
 
 	/**
-	 * Initialise the SD card.
+	 * Initialize the SD card.
 	 * Could throw error CARD_NOT_FOUND (see Drawall::Error)
 	 * \param fileName The file name to read.
 	 * \TODO : If an error append and the file name is longer than 8 characters, suggest to format the card in fat16.
