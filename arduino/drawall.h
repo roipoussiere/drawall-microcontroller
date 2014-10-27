@@ -393,26 +393,6 @@ private:
 	 */
 	unsigned int endPosYConf;
 
-	// * 3.2 Adjusting *
-
-	/**
-	 * Horizontal offset
-	 * Offset applied to the drawing, used to shift it according to his width and height. Should be used rarely.
-	 * Unit: millimeters
-	 * Default value: 0 mm
-	 * Range: [-500mm, +500mm]
-	 */
-	int offsetXConf;
-
-	/**
-	 * Vertical offset
-	 * Offset applied to the drawing, used to shift it according to his width and height. Should be used rarely.
-	 * Unit: millimeters
-	 * Default value: 0 mm
-	 * Range: [-500mm, +500mm]
-	 */
-	int offsetYConf;
-
 	//-------------------------------------------------------------------------
 
 	/***********

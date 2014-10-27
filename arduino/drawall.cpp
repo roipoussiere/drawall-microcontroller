@@ -410,42 +410,42 @@ void Drawall::initOffset(CardinalPoint position) {
 
 	switch (position) {
 	case LOWER_LEFT:
-		offsetX = offsetXConf;
-		offsetY = offsetYConf;
+		offsetX = 0;
+		offsetY = 0;
 		break;
 	case LOWER_CENTER:
-		offsetX = h_center + offsetXConf;
-		offsetY = offsetYConf;
+		offsetX = h_center;
+		offsetY = 0;
 		break;
 	case LOWER_RIGHT:
-		offsetX = right + offsetXConf;
-		offsetY = offsetYConf;
+		offsetX = right;
+		offsetY = 0;
 		break;
 
 	case LEFT_CENTER:
-		offsetX = offsetXConf;
-		offsetY = v_center + offsetYConf;
+		offsetX = 0;
+		offsetY = v_center;
 		break;
 	case CENTER:
-		offsetX = h_center + offsetXConf;
-		offsetY = v_center + offsetYConf;
+		offsetX = h_center;
+		offsetY = v_center;
 		break;
 	case RIGHT_CENTER:
-		offsetX = right + offsetXConf;
-		offsetY = v_center + offsetYConf;
+		offsetX = right;
+		offsetY = v_center;
 		break;
 
 	case UPPER_LEFT:
-		offsetX = offsetXConf;
-		offsetY = up + offsetYConf;
+		offsetX = 0;
+		offsetY = up;
 		break;
 	case UPPER_CENTER:
-		offsetX = h_center + offsetXConf;
-		offsetY = up + offsetYConf;
+		offsetX = h_center;
+		offsetY = up;
 		break;
 	case UPPER_RIGHT:
-		offsetX = right + offsetXConf;
-		offsetY = up + offsetYConf;
+		offsetX = right;
+		offsetY = up;
 		break;
 
 	default:
@@ -574,7 +574,7 @@ void Drawall::message(char* message) {
 
 void Drawall::loadParameters() {
 #define LINE_MAX_LENGTH 32
-#define NB_PARAMETERS 20
+#define NB_PARAMETERS 18
 
 	char buffer[LINE_MAX_LENGTH + 1];
 	char *key;
@@ -666,10 +666,6 @@ void Drawall::loadParameters() {
 			endPosXConf = atoi(value);
 		} else if (!strcmp(key, "endPosY")) {
 			endPosYConf = atoi(value);
-		} else if (!strcmp(key, "offsetX")) {
-			offsetXConf = atoi(value);
-		} else if (!strcmp(key, "offsetY")) {
-			offsetYConf = atoi(value);
 		} else {
 			warning(ERR_UNKNOWN_CONFIG_KEY);
 		}
