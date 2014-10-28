@@ -47,18 +47,6 @@ private:
 	const char *CONFIG_FILE_NAME = "config";
 
 	/**
-	 * CardinalPoint on the drawing area.
-	 * The positions, corresponding to the cardinal points, plus the center.	 */
-	// TODO: delete this, because configuration file will give positions in millimeters.
-	typedef enum {
-		LOWER_LEFT, LOWER_CENTER, LOWER_RIGHT,
-
-		LEFT_CENTER, CENTER, RIGHT_CENTER,
-
-		UPPER_LEFT, UPPER_CENTER, UPPER_RIGHT
-	} CardinalPoint;
-
-	/**
 	 * The codes to send to the computer thought the serial link.
 	 * The errors and warnings which should occurs during the program execution.
 	 * The errors starts to 0 and the Warnings starts to 100.
@@ -381,14 +369,14 @@ private:
 	/**
 	 * Draw a rectangle matching with the limits of the drawing.
 	 */
-	void drawingArea(CardinalPoint position = CENTER);
+	void drawingArea();
 
 	/**
 	 * Draw a drawing as described in the \a fileName file stored in the SD card.
 	 * \param fileName The file to draw.
 	 * TODO Check the M02 presence (end of drawing) before the end of drawing.
 	 */
-	void draw(CardinalPoint position = CENTER);
+	void draw();
 
 	/**
 	 * Read a variable in the GCode file formated like this VARNAME = VALUE.
@@ -397,7 +385,7 @@ private:
 	/**
 	 * Initialize the X and Y offsets, according to the configuration file and the desired position of the drawing.
 	 */
-	void initOffset(CardinalPoint position);
+	void initOffset();
 
 	/**
 	 * Initialize the scale according to the desired drawing width.

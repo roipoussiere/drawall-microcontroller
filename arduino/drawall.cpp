@@ -18,9 +18,7 @@
 #define I_AM_CODING true
 #include <drawall.h>
 
-// TODO remove all public methods, they are useless and it will save space.
 // TODO use all variables without Arduino.h defines, like true, false, etc.
-// TODO Make a Parameter object
 // TODO: Interrupt routine with ISR(INT0_vect){...}
 // TODO: make a method to write data on serial, with #if EN_SERIAL test
 
@@ -283,9 +281,11 @@ void Drawall::move(float x, float y) {
 // TODO use uint when DOV support will be supported
 void Drawall::segment(float x, float y, bool isWriting) {
 	unsigned long leftTargetLength = positionToLeftLength(
-			drawingScale * x + offsetX, drawingScale * y + offsetY);
+			drawingScale * x + offsetX + drawingPosXConf,
+			drawingScale * y + offsetY + drawingPosYConf);
 	unsigned long rightTargetLength = positionToRightLength(
-			drawingScale * x + offsetX, drawingScale * y + offsetY);
+			drawingScale * x + offsetX + drawingPosXConf,
+			drawingScale * y + offsetY + drawingPosYConf);
 
 	// get the number of steps to do
 	long nbPasG = leftTargetLength - leftLength;
@@ -386,55 +386,14 @@ void Drawall::initScale() {
 					drawingScale = (float) sheetHeightConf / drawingHeight;
 }
 
-// TODO: do not use CardinalPoint
-void Drawall::initOffset(CardinalPoint position) {
-	switch (position) {
-	case LOWER_LEFT:
-		offsetX = 0;
-		offsetY = sheetHeightConf - drawingScale * drawingHeight;
-		break;
-	case LOWER_CENTER:
-		offsetX = sheetWidthConf / 2 - drawingScale * drawingWidth / 2;
-		offsetY = sheetHeightConf - drawingScale * drawingHeight;
-		break;
-	case LOWER_RIGHT:
-		offsetX = sheetWidthConf - drawingScale * drawingWidth;
-		offsetY = sheetHeightConf - drawingScale * drawingHeight;
-		break;
-
-	case LEFT_CENTER:
-		offsetX = 0;
-		offsetY = sheetHeightConf / 2 - drawingScale * drawingHeight / 2;
-		break;
-	case CENTER:
-		offsetX = sheetWidthConf / 2 - drawingScale * drawingWidth / 2;
-		offsetY = sheetHeightConf / 2 - drawingScale * drawingHeight / 2;
-		break;
-	case RIGHT_CENTER:
-		offsetX = sheetWidthConf - drawingScale * drawingWidth;
-		offsetY = sheetHeightConf / 2 - drawingScale * drawingHeight / 2;
-		break;
-
-	case UPPER_LEFT:
-		offsetX = 0;
-		offsetY = 0;
-		break;
-	case UPPER_CENTER:
-		offsetX = sheetWidthConf / 2 - drawingScale * drawingWidth / 2;
-		offsetY = 0;
-		break;
-	case UPPER_RIGHT:
-		offsetX = sheetWidthConf - drawingScale * drawingWidth;
-		offsetY = 0;
-		break;
-
-	default:
-		break;
-	}
+// TODO: useless, remove this
+void Drawall::initOffset() {
+	offsetX = 0;
+	offsetY = 0;
 }
 
 // TODO: do not use CardinalPoint
-void Drawall::drawingArea(CardinalPoint position) {
+void Drawall::drawingArea() {
 	File file = SD.open(drawingNameConf);
 
 	if (!file) {
@@ -445,7 +404,7 @@ void Drawall::drawingArea(CardinalPoint position) {
 	drawingWidth = 25000; // processVar();
 	drawingHeight = 25000; // processVar();
 	initScale();
-	initOffset(position);
+	initOffset();
 
 	move(0, 0);
 	line(drawingWidth, 0);
@@ -460,7 +419,7 @@ void Drawall::drawingArea(CardinalPoint position) {
 }
 
 // TODO: do not use CardinalPoint
-void Drawall::draw(CardinalPoint position) {
+void Drawall::draw() {
 	File file = SD.open(drawingNameConf);
 
 	if (!file) {
@@ -472,7 +431,7 @@ void Drawall::draw(CardinalPoint position) {
 	drawingHeight = 25000;
 
 	initScale();
-	initOffset(position);
+	initOffset();
 
 	// process line until we can read the file
 	while (file.available()) {
