@@ -52,7 +52,7 @@ void Drawall::start() {
 
 	// PLT_STEPS * 2 because it is the rising edge which drive the motor steps.
 	// Step length in nanometers
-	stepLength = (PI * PLT_PINION_DIAMETER * 1000) // périmètre en nm
+	stepLength = (PI * PLT_PINION_DIAMETER * 1000)
 	/ (PLT_STEPS * 2 * pow(2, PLT_STEP_MODE));
 
 	// Get the belts length
@@ -68,7 +68,7 @@ void Drawall::start() {
 
 	// Set the plotter speed (in milliseconds).
 	// A next feature will support dynamic speed, then this parameter will be a 'base' speed.
-	// \bug Speed growing if steep numbers growing.
+	// FIXME Speed growing if steep numbers growing.
 	delayBetweenSteps = stepLength / float(I_AM_CODING ? 100 : maxSpeedConf);
 
 #if EN_SERIAL
@@ -381,9 +381,9 @@ void Drawall::warning(SerialData warningNumber) {
 // TODO: use macro expression
 void Drawall::initScale() {
 	drawingScale =
-			(drawingWidth / drawingHeight > sheetWidthConf / sheetHeightConf) ?
-					(float) sheetWidthConf / drawingWidth :
-					(float) sheetHeightConf / drawingHeight;
+			(DRAWING_WIDTH / DRAWING_HEIGHT > sheetWidthConf / sheetHeightConf) ?
+					(float) sheetWidthConf / DRAWING_WIDTH :
+					(float) sheetHeightConf / DRAWING_HEIGHT;
 }
 
 void Drawall::drawingArea() {
@@ -393,31 +393,23 @@ void Drawall::drawingArea() {
 		error(ERR_FILE_NOT_FOUND);
 	}
 
-	// TODO make this better
-	drawingWidth = 25000; // processVar();
-	drawingHeight = 25000; // processVar();
 	initScale();
 
 	move(0, 0);
-	line(drawingWidth, 0);
-	line(drawingWidth, drawingHeight);
-	line(0, drawingHeight);
+	line(DRAWING_WIDTH, 0);
+	line(DRAWING_WIDTH, DRAWING_HEIGHT);
+	line(0, DRAWING_HEIGHT);
 	line(0, 0);
 
 	file.close();
 }
 
-// TODO: do not use CardinalPoint
 void Drawall::draw() {
 	File file = SD.open(drawingNameConf);
 
 	if (!file) {
 		error(ERR_FILE_NOT_FOUND);
 	}
-
-	// TODO make this better
-	drawingWidth = 25000;
-	drawingHeight = 25000;
 
 	initScale();
 

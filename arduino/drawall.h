@@ -28,6 +28,9 @@
 #define START_WITH_BUTTON 1
 #define START_WITH_SERIAL 2
 
+#define DRAWING_WIDTH 25000
+#define DRAWING_HEIGHT 25000
+
 /**
  * Main library class.
  */
@@ -104,12 +107,6 @@ private:
 
 	/// Drawing scale. Can be used to calibrate the drawing in a accurate scale.
 	float drawingScale;
-
-	/// Width of the running drawing.
-	unsigned int drawingWidth;
-
-	/// Height of the running drawing.
-	unsigned int drawingHeight;
 
 	/// Step length. This is the distance traveled by the belt in one step (in nanometers).
 	unsigned long stepLength;
@@ -356,7 +353,7 @@ private:
 	 * Draw a straight line, from the actual position to the absolute position  [\a x; \a y].
 	 * \param x The horizontal absolute position of the destination point.
 	 * \param y The vertical absolute position of the destination point.
-	 * \bug Sometimes do upstairs.
+	 * FIXME Sometimes do upstairs.
 	 */
 	void line(float x, float y);
 
