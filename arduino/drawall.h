@@ -102,12 +102,6 @@ private:
 	/// Right belt length, in steps.
 	unsigned long rightLength;
 
-	/// Horizontal offset. Can be used to calibrate the drawing in a accurate position.
-	unsigned int offsetX;
-
-	/// Vertical offset. Can be used to calibrate the drawing in a accurate position.
-	unsigned int offsetY;
-
 	/// Drawing scale. Can be used to calibrate the drawing in a accurate scale.
 	float drawingScale;
 
@@ -377,15 +371,6 @@ private:
 	 * TODO Check the M02 presence (end of drawing) before the end of drawing.
 	 */
 	void draw();
-
-	/**
-	 * Read a variable in the GCode file formated like this VARNAME = VALUE.
-	 */
-	// int processVar();
-	/**
-	 * Initialize the X and Y offsets, according to the configuration file and the desired position of the drawing.
-	 */
-	void initOffset();
 
 	/**
 	 * Initialize the scale according to the desired drawing width.

@@ -281,11 +281,11 @@ void Drawall::move(float x, float y) {
 // TODO use uint when DOV support will be supported
 void Drawall::segment(float x, float y, bool isWriting) {
 	unsigned long leftTargetLength = positionToLeftLength(
-			drawingScale * x + offsetX + drawingPosXConf,
-			drawingScale * y + offsetY + drawingPosYConf);
+			drawingScale * x + drawingPosXConf,
+			drawingScale * y + drawingPosYConf);
 	unsigned long rightTargetLength = positionToRightLength(
-			drawingScale * x + offsetX + drawingPosXConf,
-			drawingScale * y + offsetY + drawingPosYConf);
+			drawingScale * x + drawingPosXConf,
+			drawingScale * y + drawingPosYConf);
 
 	// get the number of steps to do
 	long nbPasG = leftTargetLength - leftLength;
@@ -383,16 +383,9 @@ void Drawall::initScale() {
 	drawingScale =
 			(drawingWidth / drawingHeight > sheetWidthConf / sheetHeightConf) ?
 					(float) sheetWidthConf / drawingWidth :
-					drawingScale = (float) sheetHeightConf / drawingHeight;
+					(float) sheetHeightConf / drawingHeight;
 }
 
-// TODO: useless, remove this
-void Drawall::initOffset() {
-	offsetX = 0;
-	offsetY = 0;
-}
-
-// TODO: do not use CardinalPoint
 void Drawall::drawingArea() {
 	File file = SD.open(drawingNameConf);
 
@@ -404,16 +397,12 @@ void Drawall::drawingArea() {
 	drawingWidth = 25000; // processVar();
 	drawingHeight = 25000; // processVar();
 	initScale();
-	initOffset();
 
 	move(0, 0);
 	line(drawingWidth, 0);
 	line(drawingWidth, drawingHeight);
 	line(0, drawingHeight);
 	line(0, 0);
-
-	offsetX = 0;
-	offsetY = 0;
 
 	file.close();
 }
@@ -431,7 +420,6 @@ void Drawall::draw() {
 	drawingHeight = 25000;
 
 	initScale();
-	initOffset();
 
 	// process line until we can read the file
 	while (file.available()) {
@@ -484,9 +472,6 @@ void Drawall::draw() {
 			warning(WARN_UNKNOWN_GCODE_FUNCTION); // raise warning
 		}
 	}
-
-	offsetX = 0;
-	offsetY = 0;
 
 	file.close();
 #if EN_SERIAL
