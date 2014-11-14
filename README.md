@@ -1,5 +1,6 @@
 DraWall
 =======
 
-DraWall is a wall plotter. See http://www.drawall.cc for more informations (in french).
-Some other instructions will be available here soon.
+DraWall is a vertical plotter. More informations are available here -> http://www.drawall.cc (currently in french).
+
+This project is a work in progress. A stable release will be published soon.
