@@ -1,3 +1,8 @@
+Plotter code
+============
+
+This is the code inside the plotter chip, which drives the hardware components (motors and servo-motor).
+
 DraWall
 =======
 
