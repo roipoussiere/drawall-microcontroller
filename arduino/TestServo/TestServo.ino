@@ -6,10 +6,10 @@
 
 #include <Servo.h>
 
-#define PIN_SERVO 5
+#define PIN_SERVO A5
 
-#define MIN_SERVO 10
-#define MAX_SERVO 80
+#define MIN_SERVO 40
+#define MAX_SERVO 105
 
 Servo s;
 

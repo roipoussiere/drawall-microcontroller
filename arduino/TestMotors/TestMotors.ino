@@ -5,17 +5,17 @@
  */
 
 // Left motor pins
-#define PIN_LEFT_DIR 6
-#define PIN_LEFT_STEPS 7
+#define PIN_LEFT_DIR 5
+#define PIN_LEFT_STEPS 6
 
 // Right motor pins
-#define PIN_RIGHT_DIR 8
-#define PIN_RIGHT_STEPS 9
+#define PIN_RIGHT_DIR 7
+#define PIN_RIGHT_STEPS 8
 
 // step mode pins
-#define PIN_MODE_0 A0
-#define PIN_MODE_1 A1
-#define PIN_MODE_2 A2
+#define PIN_MODE_0 2
+#define PIN_MODE_1 3
+#define PIN_MODE_2 4
 
 // Motor steps
 #define MOTORS_STEPS 200

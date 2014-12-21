@@ -324,9 +324,9 @@ void Drawall::processSDLine() {
 
 	// Process the GCode function
 	if (!strcmp(functionName, "G00")) {
-		move(parameters[0], parameters[1]); // move
+		move(5000 + parameters[0], parameters[1]); // move
 	} else if (!strcmp(functionName, "G01")) {
-		line(parameters[0], parameters[1]); // draw
+		line(5000 + parameters[0], parameters[1]); // draw
 	} else if (!strcmp(functionName, "G04")) {
 		delay(1000 * parameters[0]); // drink some coffee
 		Serial.write(DRAW_WAITING);
@@ -339,11 +339,9 @@ void Drawall::processSDLine() {
 
 void Drawall::segment(float x, float y, bool isWriting) {
 	unsigned long leftTargetLength = positionToLeftLength(
-			drawingScale * scaleXConf / 1000 * x + offsetX,
-			drawingScale * scaleYConf / 1000 * y + offsetY);
+			drawingScale * x, drawingScale * y);
 	unsigned long rightTargetLength = positionToRightLength(
-			drawingScale * scaleXConf / 1000 * x + offsetX,
-			drawingScale * scaleYConf / 1000 * y + offsetY);
+			drawingScale * x, drawingScale * y);
 
 	// get the number of steps to do
 	long nbPasG = leftTargetLength - leftLength;
@@ -437,73 +435,15 @@ void Drawall::warning(SerialData warningNumber) {
 }
 
 void Drawall::initScale(DrawingSize size) {
-	switch (size) {
-	case ORIGINAL:
-		drawingScale = 1;
-		break;
-	case FULL:
-		if (drawingWidth / drawingHeight > sheetWidthConf / sheetHeightConf) {
-			drawingScale = (float) sheetWidthConf / drawingWidth;
-		} else {
-			drawingScale = (float) sheetHeightConf / drawingHeight;
-		}
-		break;
-	default:
-		break;
+	if (drawingWidth / drawingHeight > sheetWidthConf / sheetHeightConf) {
+		drawingScale = (float) sheetWidthConf / drawingWidth;
+	} else {
+		drawingScale = (float) sheetHeightConf / drawingHeight;
 	}
 }
 
 // TODO: do not use CardinalPoint
 void Drawall::initOffset(CardinalPoint position) {
-	// write less
-	int right = sheetWidthConf - drawingScale * drawingWidth;
-	int up = sheetHeightConf - drawingScale * drawingHeight;
-	int h_center = sheetWidthConf / 2 - drawingScale * drawingWidth / 2;
-	int v_center = sheetHeightConf / 2 - drawingScale * drawingHeight / 2;
-
-	switch (position) {
-	case LOWER_LEFT:
-		offsetX = offsetXConf;
-		offsetY = offsetYConf;
-		break;
-	case LOWER_CENTER:
-		offsetX = h_center + offsetXConf;
-		offsetY = offsetYConf;
-		break;
-	case LOWER_RIGHT:
-		offsetX = right + offsetXConf;
-		offsetY = offsetYConf;
-		break;
-
-	case LEFT_CENTER:
-		offsetX = offsetXConf;
-		offsetY = v_center + offsetYConf;
-		break;
-	case CENTER:
-		offsetX = h_center + offsetXConf;
-		offsetY = v_center + offsetYConf;
-		break;
-	case RIGHT_CENTER:
-		offsetX = right + offsetXConf;
-		offsetY = v_center + offsetYConf;
-		break;
-
-	case UPPER_LEFT:
-		offsetX = offsetXConf;
-		offsetY = up + offsetYConf;
-		break;
-	case UPPER_CENTER:
-		offsetX = h_center + offsetXConf;
-		offsetY = up + offsetYConf;
-		break;
-	case UPPER_RIGHT:
-		offsetX = right + offsetXConf;
-		offsetY = up + offsetYConf;
-		break;
-
-	default:
-		break;
-	}
 }
 
 // TODO: do not use CardinalPoint
@@ -542,8 +482,8 @@ void Drawall::draw(DrawingSize size, CardinalPoint position) {
 	}
 
 	// TODO make this better
-	drawingWidth = 25000;
-	drawingHeight = 25000;
+	drawingWidth = 25000; // processVar();
+	drawingHeight = 25000; // processVar();
 
 	initScale(size);
 	initOffset(position);
@@ -673,13 +613,13 @@ void Drawall::loadParameters() {
 		} else if (!strcmp(key, "endPosY")) {
 			endPosYConf = atoi(value);
 		} else if (!strcmp(key, "scaleX")) {
-			scaleXConf = atoi(value);
+			scaleXConf = 1;
 		} else if (!strcmp(key, "scaleY")) {
-			scaleYConf = atoi(value);
+			scaleYConf = 1;
 		} else if (!strcmp(key, "offsetX")) {
-			offsetXConf = atoi(value);
+			offsetXConf = 0;
 		} else if (!strcmp(key, "offsetY")) {
-			offsetYConf = atoi(value);
+			offsetYConf = 0;
 		} else {
 			warning(ERR_UNKNOWN_CONFIG_KEY);
 		}
