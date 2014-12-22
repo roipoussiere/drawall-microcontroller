@@ -15,8 +15,8 @@
  * Configuration file for the plotter, describing enabled components, pins allocation and physical attributes.
  * Notes about pin allocation:
  * - pins 0 and 1 are used by serial link (respectively RX, TX);
- * - pins 11, 12 and 13 are used by SD card (respectively MOSI, MISO, SCK);
- * - pins 14-19 are respectively equivalent to A0-A5 on an Arduino UNO.
+ * - pins 11, 12 and 13 are used by ICSP (SD card communication) : respectively MOSI, MISO, SCK ;
+ * - pin 14 = pin A0, 15 = A1, 16 = A2, 17 = A3, 18 = A4 and 19 = A5 (on Arduino UNO board).
  * TODO: Make a user friendly window in the DOVBuilder software to build this file (including comments).
  */
 
@@ -51,49 +51,46 @@
 // *** Pins allocation ***
 
 /// Pause button interruption pin.
-#define PIN_PAUSE 2
+#define PIN_PAUSE A2
 
-/// Left limit switch pin.
-#define PIN_LEFT_CAPTOR 3
-
-/// Right limit switch pin.
-#define PIN_RIGHT_CAPTOR 4
+/// Limit switch pin.
+#define PIN_LIMIT_SWITCH A3
 
 /// Servo-motor control pin.
-#define PIN_SERVO 5
+#define PIN_SERVO A5
 
 /// Left motor direction pin.
-#define PIN_LEFT_MOTOR_DIR 6
+#define PIN_LEFT_MOTOR_DIR 5
 
 /// Left motor steps pin.
-#define PIN_LEFT_MOTOR_STEP 7
+#define PIN_LEFT_MOTOR_STEP 6
 
 /// Right motor direction pin.
-#define PIN_RIGHT_MOTOR_DIR 8
+#define PIN_RIGHT_MOTOR_DIR 7
 
 /// Right motor steps pin.
-#define PIN_RIGHT_MOTOR_STEP 9
+#define PIN_RIGHT_MOTOR_STEP 8
 
 /// CS pin on the SD card reader pin.
 #define PIN_SD_CS 10
 
 /// Step Mode 0 on the motor driver pin.
-#define PIN_STEP_MODE_0 14
+#define PIN_STEP_MODE_0 2
 
 /// Step Mode 1 on the motor driver pin.
-#define PIN_STEP_MODE_1 15
+#define PIN_STEP_MODE_1 3
 
 /// Step Mode 2 on the motor driver pin.
-#define PIN_STEP_MODE_2 16
+#define PIN_STEP_MODE_2 4
 
 /// Remote control sensor pin.
-#define PIN_REMOTE 17
+#define PIN_REMOTE A4
 
 /// Right motor enabling pin.
-#define PIN_ENABLE_MOTORS 18
+#define PIN_ENABLE_MOTORS A7
 
 /// Buzzer pin.
-#define PIN_BUZZER 19
+#define PIN_BUZZER A6
 
 /// SCE screen pin.
 #define PIN_SCREEN_SCE -1
@@ -116,28 +113,28 @@
 #define PLT_STEPS 200
 
 /// Motor step mode, from 0 (full step) to 5 (1/32 step).
-#define PLT_STEP_MODE 3
+#define PLT_STEP_MODE 5
 
 /// Pinion diameter, in micrometers.
 #define PLT_PINION_DIAMETER 12730
 
 /// Direction of the left motor. True to release the belt when the motor rotates clockwise, false if counter clockwise.
-#define PLT_LEFT_DIRECTION true
+#define PLT_LEFT_DIRECTION false
 
 /// Direction of the right motor. True to release the belt when the motor rotates clockwise, false if counter clockwise.
-#define PLT_RIGHT_DIRECTION false
+#define PLT_RIGHT_DIRECTION true
 
 /// Virtual reversing state of the motors. True to reverse the motors, false to don't reverse them.
 #define PLT_REVERSE_MOTORS true
 
 /// Minimum servo-motor angle (as close as possible to the wall).
-#define PLT_MIN_SERVO_ANGLE 60
+#define PLT_MIN_SERVO_ANGLE 55
 
 /// Maximum servo-motor angle (as far away as possible to the wall).
-#define PLT_MAX_SERVO_ANGLE 120
+#define PLT_MAX_SERVO_ANGLE 95
 
 /// Delay before the servo moves, in milliseconds.
-#define PLT_PRE_SERVO_DELAY 100
+#define PLT_PRE_SERVO_DELAY 750
 
 /// Delay after the servo moves, in milliseconds.
 #define PLT_POST_SERVO_DELAY 750

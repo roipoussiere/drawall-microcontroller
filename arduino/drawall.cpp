@@ -78,8 +78,6 @@ void Drawall::start() {
 
 	Serial.write(DRAW_START_INSTRUCTIONS);
 	Serial.println(spanConf);
-	Serial.println(sheetPosXConf);
-	Serial.println(sheetPosYConf);
 	Serial.println(sheetWidthConf);
 	Serial.println(sheetHeightConf);
 	Serial.println(leftLength);
@@ -157,8 +155,8 @@ void Drawall::pinInitialization() {
 // TODO use a Macro Expansion
 long Drawall::positionToLeftLength(float posX, float posY) {
 	return sqrt(
-			pow(((float) sheetPosXConf + posX) * 1000000 / stepLength, 2)
-					+ pow(((float) sheetPosYConf + posY) * 1000000 / stepLength,
+			pow(posX * 1000000 / stepLength, 2)
+					+ pow(posY * 1000000 / stepLength,
 							2));
 }
 
@@ -166,9 +164,9 @@ long Drawall::positionToLeftLength(float posX, float posY) {
 long Drawall::positionToRightLength(float posX, float posY) {
 	return sqrt(
 			pow(
-					((float) spanConf - (float) sheetPosXConf - posX) * 1000000
+					((float) spanConf - posX) * 1000000
 							/ stepLength, 2)
-					+ pow(((float) sheetPosYConf + posY) * 1000000 / stepLength,
+					+ pow(posY * 1000000 / stepLength,
 							2));
 }
 
@@ -488,7 +486,7 @@ void Drawall::message(char* message) {
 
 void Drawall::loadParameters() {
 #define LINE_MAX_LENGTH 32
-#define NB_PARAMETERS 18
+#define NB_PARAMETERS 16
 
 	char buffer[LINE_MAX_LENGTH + 1];
 	char *key;
@@ -564,14 +562,6 @@ void Drawall::loadParameters() {
 			sheetWidthConf = atoi(value);
 		} else if (!strcmp(key, "sheetHeight")) {
 			sheetHeightConf = atoi(value);
-		} else if (!strcmp(key, "sheetPosX")) {
-			sheetPosXConf = atoi(value);
-		} else if (!strcmp(key, "sheetPosY")) {
-			sheetPosYConf = atoi(value);
-		} else if (!strcmp(key, "drawingInsert")) {
-			drawingInsertConf = atoi(value);
-		} else if (!strcmp(key, "movingInsert")) {
-			movingInsertConf = atoi(value);
 		} else if (!strcmp(key, "initPosX")) {
 			initPosXConf = atoi(value);
 		} else if (!strcmp(key, "initPosY")) {
@@ -580,6 +570,10 @@ void Drawall::loadParameters() {
 			endPosXConf = atoi(value);
 		} else if (!strcmp(key, "endPosY")) {
 			endPosYConf = atoi(value);
+		} else if (!strcmp(key, "drawingInsert")) {
+			drawingInsertConf = atoi(value);
+		} else if (!strcmp(key, "movingInsert")) {
+			movingInsertConf = atoi(value);
 		} else {
 			warning(ERR_UNKNOWN_CONFIG_KEY);
 		}
