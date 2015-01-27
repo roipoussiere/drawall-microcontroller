@@ -18,7 +18,10 @@
 #ifndef _H_DRAWALL
 #define _H_DRAWALL
 
-#include "plotter.h"
+#include "../DraWallParameters/pins.h"
+#include "../DraWallParameters/hardware.h"
+#include "../DraWallParameters/components.h"
+
 #include <math.h>
 #include <SD.h>
 #include <Servo.h>

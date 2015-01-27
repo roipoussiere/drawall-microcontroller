@@ -104,8 +104,8 @@ void Drawall::pinInitialization() {
 
 	pinMode(PIN_ENABLE_MOTORS, OUTPUT);
 
-	pinMode(PIN_LEFT_MOTOR_STEP, OUTPUT);
-	pinMode(PIN_RIGHT_MOTOR_STEP, OUTPUT);
+	pinMode(PIN_LEFT_MOTOR_STEPS, OUTPUT);
+	pinMode(PIN_RIGHT_MOTOR_STEPS, OUTPUT);
 
 	pinMode(PIN_LEFT_MOTOR_DIR, OUTPUT);
 	pinMode(PIN_RIGHT_MOTOR_DIR, OUTPUT);
@@ -155,7 +155,7 @@ void Drawall::setStepMode() {
 float Drawall::getStepLength() {
 	// PLT_STEPS * 2 because it is the rising edge which drive the motor steps.
 	return (PI * PLT_PINION_DIAMETER / 1000)
-			/ (PLT_STEPS * 2 * pow(2, PLT_STEP_MODE));
+			/ (PLT_MOTORS_STEPS * 2 * pow(2, PLT_STEP_MODE));
 }
 
 // TODO use a Macro Expansion
@@ -237,7 +237,7 @@ void Drawall::leftStep(bool shouldPull) {
 	}
 
 	digitalWrite(
-	PLT_REVERSE_MOTORS ? PIN_RIGHT_MOTOR_STEP : PIN_LEFT_MOTOR_STEP,
+	PLT_REVERSE_MOTORS ? PIN_RIGHT_MOTOR_STEPS : PIN_LEFT_MOTOR_STEPS,
 			leftLength % 2);
 }
 
@@ -255,7 +255,7 @@ void Drawall::rightStep(bool shouldPull) {
 	}
 
 	digitalWrite(
-	PLT_REVERSE_MOTORS ? PIN_LEFT_MOTOR_STEP : PIN_RIGHT_MOTOR_STEP,
+	PLT_REVERSE_MOTORS ? PIN_LEFT_MOTOR_STEPS : PIN_RIGHT_MOTOR_STEPS,
 			rightLength % 2);
 }
 
