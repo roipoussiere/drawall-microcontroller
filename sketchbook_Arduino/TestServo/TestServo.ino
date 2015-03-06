@@ -19,7 +19,7 @@ int currentPulseWidth;
 
 void setup() {
   pinMode(PIN_SERVO, OUTPUT);
-  currentPulseWidth = MIN_SERVO_PULSE_WIDTH;
+  currentPulseWidth = PLT_MIN_SERVO_PULSE_WIDTH;
   delay(2000);
 }
 
@@ -34,24 +34,24 @@ void loop()
 }
 
 void moveServo(int servoPin, int position) {
-  int pulseWidth = position*(MAX_SERVO_PULSE_WIDTH-MIN_SERVO_PULSE_WIDTH)/100 + MIN_SERVO_PULSE_WIDTH;
+  int pulseWidth = position*(PLT_MAX_SERVO_PULSE_WIDTH-PLT_MIN_SERVO_PULSE_WIDTH)/100 + PLT_MIN_SERVO_PULSE_WIDTH;
 
-  pulseWidth = pulseWidth < MIN_SERVO_PULSE_WIDTH ? MIN_SERVO_PULSE_WIDTH : pulseWidth;
-  pulseWidth = pulseWidth > MAX_SERVO_PULSE_WIDTH ? MAX_SERVO_PULSE_WIDTH : pulseWidth;
+  pulseWidth = pulseWidth < PLT_MIN_SERVO_PULSE_WIDTH ? PLT_MIN_SERVO_PULSE_WIDTH : pulseWidth;
+  pulseWidth = pulseWidth > PLT_MAX_SERVO_PULSE_WIDTH ? PLT_MAX_SERVO_PULSE_WIDTH : pulseWidth;
 
   if (currentPulseWidth > pulseWidth) {
-    for (; currentPulseWidth >= pulseWidth; currentPulseWidth-=INCREMENT_MS) {
+    for (; currentPulseWidth >= pulseWidth; currentPulseWidth-=PLT_INCREMENT_MS) {
       digitalWrite(servoPin, HIGH);
       delayMicroseconds(currentPulseWidth);
       digitalWrite(servoPin, LOW);
-      delayMicroseconds(PERIOD_MS - currentPulseWidth);
+      delayMicroseconds(PLT_PERIOD_MS - currentPulseWidth);
     }
   } else {
-    for (; currentPulseWidth <= pulseWidth; currentPulseWidth+=INCREMENT_MS) {
+    for (; currentPulseWidth <= pulseWidth; currentPulseWidth+=PLT_INCREMENT_MS) {
       digitalWrite(servoPin, HIGH);
       delayMicroseconds(currentPulseWidth);
       digitalWrite(servoPin, LOW);
-      delayMicroseconds(PERIOD_MS - currentPulseWidth);
+      delayMicroseconds(PLT_PERIOD_MS - currentPulseWidth);
     }    
   }
 }

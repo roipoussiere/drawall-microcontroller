@@ -24,7 +24,6 @@
 
 int initStepsByTurn = PLT_MOTORS_STEPS * SPEED_RPM / 60 * 2;
 long stepsByTurn;
-int stepMode = 0;
 
 void setup() {
 	Serial.begin(SERIAL_BAUDS);
@@ -34,23 +33,12 @@ void setup() {
 	pinMode(PIN_RIGHT_MOTOR_DIR, OUTPUT);
 	pinMode(PIN_RIGHT_MOTOR_STEPS, OUTPUT);
 
-	pinMode(PIN_STEP_MODE_0, OUTPUT);
-	pinMode(PIN_STEP_MODE_1, OUTPUT);
-	pinMode(PIN_STEP_MODE_2, OUTPUT);
-
 	delay(3000);
 }
 
 void loop() {
-	stepsByTurn = initStepsByTurn * pow(2, stepMode);
+	stepsByTurn = initStepsByTurn * 32;
 
-	digitalWrite(PIN_STEP_MODE_0, (stepMode & B1) > 0 ? HIGH : LOW);
-	digitalWrite(PIN_STEP_MODE_1, (stepMode & B10) > 0 ? HIGH : LOW);
-	digitalWrite(PIN_STEP_MODE_2, (stepMode & B100) > 0 ? HIGH : LOW);
-
-	Serial.print("stepMode ");
-	Serial.print(stepMode);
-	Serial.print(" -> ");
 	Serial.print(stepsByTurn);
 	Serial.println(" steps/sec.\n");
 
@@ -69,10 +57,6 @@ void loop() {
 	Serial.println("Right motor is moving down...\n");
 	digitalWrite(PIN_RIGHT_MOTOR_DIR, LOW);
 	move(PIN_RIGHT_MOTOR_STEPS);
-
-	stepMode++;
-	if (stepMode == 6)
-		stepMode = 0;
 }
 
 void move(int stepPin) {

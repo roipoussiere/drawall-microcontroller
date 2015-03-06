@@ -17,16 +17,16 @@
 // *** Servo parameters ***
 
 /// Pulse width for minimum angle, in ms
-#define PLT_MIN_SERVO_PULSE_WIDTH 500
+//#define PLT_MIN_SERVO_PULSE_WIDTH 500
 
 /// Pulse width for maximum angle, in ms
-#define PLT_MAX_SERVO_PULSE_WIDTH 2300
+//#define PLT_MAX_SERVO_PULSE_WIDTH 2300
 
 /// Period width, in ms
-#define PLT_PERIOD_MS 25000
+//#define PLT_PERIOD_MS 25000
 
 /// Increment value for the rotation loop, in ms
-#define PLT_INCREMENT_MS 15
+//#define PLT_INCREMENT_MS 15
 
 // *** Motors parameters ***
 
@@ -40,22 +40,22 @@
 #define PLT_PINION_DIAMETER 12730
 
 /// Direction of the left motor. True to release the belt when the motor rotates clockwise, false if counter clockwise.
-#define PLT_LEFT_DIRECTION false
+#define PLT_LEFT_DIRECTION true
 
 /// Direction of the right motor. True to release the belt when the motor rotates clockwise, false if counter clockwise.
-#define PLT_RIGHT_DIRECTION true
+#define PLT_RIGHT_DIRECTION false
 
 /// Virtual reversing state of the motors. True to reverse the motors, false to don't reverse them.
-#define PLT_REVERSE_MOTORS true
+#define PLT_REVERSE_MOTORS false
 
-/// Minimum servo-motor angle (as close as possible to the wall).
-#define PLT_MIN_SERVO_ANGLE 55
+/// Maximum servo-motor angle (as far away as possible to the wall, to prevent accidental writing during plotter drop).
+#define PLT_MIN_SERVO_ANGLE 0
 
-/// Maximum servo-motor angle (as far away as possible to the wall).
-#define PLT_MAX_SERVO_ANGLE 95
+/// Maximum servo-motor angle (as far away as possible to the wall, to prevent accidental writing during plotter drop).
+#define PLT_MAX_SERVO_ANGLE 180
 
 /// Delay before the servo moves, in milliseconds.
-#define PLT_PRE_SERVO_DELAY 750
+#define PLT_PRE_SERVO_DELAY 100
 
 /// Delay after the servo moves, in milliseconds.
-#define PLT_POST_SERVO_DELAY 750
+#define PLT_POST_SERVO_DELAY 100

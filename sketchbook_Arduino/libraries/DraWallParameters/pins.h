@@ -19,59 +19,35 @@
  * - pin 14 = pin A0, 15 = A1, 16 = A2, 17 = A3, 18 = A4 and 19 = A5 (on Arduino UNO board).
  */
 
-/// Pause button interruption pin.
-#define PIN_PAUSE A2
-
-/// Limit switch pin.
-#define PIN_LIMIT_SWITCH A3
+/// Motor enabling pin.
+#define PIN_ENABLE_MOTORS 2
 
 /// Servo-motor control pin.
-#define PIN_SERVO A5
+#define PIN_SERVO 3
 
 /// Left motor direction pin.
-#define PIN_LEFT_MOTOR_DIR 5
+#define PIN_LEFT_MOTOR_DIR 4
 
 /// Left motor steps pin.
-#define PIN_LEFT_MOTOR_STEPS 6
+#define PIN_LEFT_MOTOR_STEPS 5
 
 /// Right motor direction pin.
-#define PIN_RIGHT_MOTOR_DIR 7
+#define PIN_RIGHT_MOTOR_DIR 6
 
 /// Right motor steps pin.
-#define PIN_RIGHT_MOTOR_STEPS 8
-
-/// CS pin on the SD card reader pin.
-#define PIN_SD_CS 10
-
-/// Step Mode 0 on the motor driver pin.
-#define PIN_STEP_MODE_0 2
-
-/// Step Mode 1 on the motor driver pin.
-#define PIN_STEP_MODE_1 3
-
-/// Step Mode 2 on the motor driver pin.
-#define PIN_STEP_MODE_2 4
-
-/// Remote control sensor pin.
-#define PIN_REMOTE A4
-
-/// Right motor enabling pin.
-#define PIN_ENABLE_MOTORS A7
+#define PIN_RIGHT_MOTOR_STEPS 7
 
 /// Buzzer pin.
-#define PIN_BUZZER A6
+#define PIN_BUZZER 8
 
-/// SCE screen pin.
-#define PIN_SCREEN_SCE -1
+/// SD card detect pin.
+#define PIN_SD_CD 9
 
-/// RST screen pin.
-#define PIN_SCREEN_RST -1
+/// CS pin on the SD card reader.
+#define PIN_SD_CS 10
 
-/// DC screen pin.
-#define PIN_SCREEN_DC -1
+/// Pause button pin.
+#define PIN_PAUSE 16
 
-/// SDIN screen pin.
-#define PIN_SCREEN_SDIN -1
-
-/// SCLK screen pin.
-#define PIN_SCREEN_SCLK -1
+/// Limit switch pin.
+#define PIN_LIMIT_SWITCH 17

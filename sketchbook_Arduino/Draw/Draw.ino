@@ -27,6 +27,9 @@ Drawall d;
 // Start the drawing(s)
 void setup() {
 	d.start();
+	//d.drawArea();
+	d.draw();
+        d.end();
 }
 
 void loop() {}

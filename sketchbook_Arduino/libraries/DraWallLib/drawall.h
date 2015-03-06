@@ -7,8 +7,7 @@
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details. You should have received a copy of the GNU
  * General Public License along with DraWall. If not, see <http://www.gnu.org/licenses/>.
- * © 2012–2014 Nathanaël Jourdane
- * © 2014 Victor Adam
+ * © 2012–2015 Nathanaël Jourdane
  */
 
 /**
@@ -27,37 +26,12 @@
 #include <Servo.h>
 #include <Arduino.h>
 
-#define START_WITH_DELAY 0
-#define START_WITH_BUTTON 1
-#define START_WITH_SERIAL 2
-
 /**
  * Main library class.
  */
 class Drawall {
 
 public:
-
-	/**
-	 * CardinalPoint on the drawing area.
-	 * The positions, corresponding to the cardinal points, plus the center.	 */
-	// TODO: delete this, because configuration file will give positions in millimeters.
-	typedef enum {
-		LOWER_LEFT, LOWER_CENTER, LOWER_RIGHT,
-
-		LEFT_CENTER, CENTER, RIGHT_CENTER,
-
-		UPPER_LEFT, UPPER_CENTER, UPPER_RIGHT
-	} CardinalPoint;
-
-	/**
-	 * Image width modes.
-	 */
-	// TODO delete this because the file dimensions are always the same (65535)
-	typedef enum {
-		ORIGINAL, ///< Matching to the drawing width.
-		FULL,     ///< Matching to the sheet width.
-	} DrawingSize;
 
 	/**
 	 * Initialize the library.
@@ -91,11 +65,6 @@ public:
 	 */
 	float getDelay(unsigned int speed);
 
-	/**
-	 * Set the step mode, on the motors drivers.
-	 */
-	void setStepMode();
-
 	/**********************
 	 * Fonctions de dessin *
 	 **********************/
@@ -118,14 +87,14 @@ public:
 	/**
 	 * Draw a rectangle matching with the limits of the drawing.
 	 */
-	void drawingArea(DrawingSize size = FULL, CardinalPoint position = CENTER);
+	void drawArea();
 
 	/**
 	 * Draw a drawing as descibed in the \a fileName file stored int the SD card.
 	 * \param fileName Le nom du fichier gcode à dessiner.
 	 * TODO Check the M02 presence (end of drawing) before the end of drawing.
 	 */
-	void draw(DrawingSize size = FULL, CardinalPoint position = CENTER);
+	void draw();
 
 private:
 
@@ -191,12 +160,6 @@ private:
 
 	/// Right belt length, in steps.
 	unsigned long rightLength;
-
-	/// Horizontal offset. Can be used to calibrate the drawing in a accurate position.
-	unsigned int offsetX;
-
-	/// Vertical offset. Can be used to calibrate the drawing in a accurate position.
-	unsigned int offsetY;
 
 	/// Drawing scale. Can be used to calibrate the drawing in a accurate scale.
 	float drawingScale;
@@ -285,16 +248,6 @@ private:
 	 * Range: [500 mm, 30,000 mm]
 	 */
 	unsigned int spanConf;
-
-	/**
-	 * Start-up mode
-	 * Specify which event starts the drawing.
-	 * Unit: -
-	 * Default value: Delay
-	 * Range: [0 = Delay, 1 = pushButton, 2 = serial]
-	 * TODO unused yet
-	 */
-	byte startupEventConf;
 
 	/**
 	 * Initial delay
@@ -417,65 +370,11 @@ private:
 	 */
 	unsigned int endPosYConf;
 
-	// * 3.2 Adjusting *
-
-	/**
-	 * Horizontal scale
-	 * Scale applied to the drawing, used to calibrate it according to his width and height. Should be used rarely.
-	 * Unit: percents
-	 * Default value: 100%
-	 * Range: [70.0%, 150.0%]
-	 */
-	unsigned int scaleXConf;
-	// TODO /!\ I just changed this to unsigned integer
-
-	/**
-	 * Vertical scale
-	 * Scale applied to the drawing, used to calibrate it according to his width and height. Should be used rarely.
-	 * Unit: percents
-	 * Default value: 100%
-	 * Range: [70.0%, 150.0%]
-	 */
-	unsigned int scaleYConf;
-	// TODO /!\ I just changed this to unsigned integer
-
-	/**
-	 * Horizontal offset
-	 * Offset applied to the drawing, used to shift it according to his width and height. Should be used rarely.
-	 * Unit: millimeters
-	 * Default value: 0 mm
-	 * Range: [-500mm, +500mm]
-	 */
-	int offsetXConf;
-
-	/**
-	 * Vertical offset
-	 * Offset applied to the drawing, used to shift it according to his width and height. Should be used rarely.
-	 * Unit: millimeters
-	 * Default value: 0 mm
-	 * Range: [-500mm, +500mm]
-	 */
-	int offsetYConf;
-
 	//-------------------------------------------------------------------------
 
 	/***********
 	 * Methods *
 	 ***********/
-
-	/**
-	 * Read a variable in the GCode file formated like this VARNAME = VALUE.
-	 */
-	// int processVar();
-	/**
-	 * Initialise the X et Y offsets according to the configuration file and the desired position of the drawing.
-	 */
-	void initOffset(CardinalPoint position);
-
-	/**
-	 * Initialise the scale according to the desired drawing width.
-	 */
-	void initScale(DrawingSize size);
 
 	/**
 	 * Initialize the ratio of number of steps to distance.
@@ -531,14 +430,6 @@ private:
 	 */
 	void rightStep(bool shouldPull);
 
-	/**
-	 * Enable or disable the motors.
-	 * Keep away the pen from the sheet to prevent an ugly drawing during any plotter fall.
-	 * \param power \a true to enable the motors, \a false to disable the motors.
-	 * \TODO Separate the left motor disable and the right motor disable.
-	 */
-	void power(bool shouldPower);
-
 	/**************
 	 * Convertions *
 	 **************/
@@ -581,7 +472,7 @@ private:
 	 * Draw a straight line from the current point to the point [\a x ; \a y].
 	 * \param shouldWrite: the pen state, that is, \true to write and \false to move.
 	 */
-	void segment(float x, float y, bool shouldWrite);
+	void segment(float x, float y);
 
 	/**
 	 * Come close or keep away the pen from the sheet.
