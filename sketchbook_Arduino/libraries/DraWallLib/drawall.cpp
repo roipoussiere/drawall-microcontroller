@@ -39,7 +39,7 @@ void Drawall::start() {
 
 	drawingInsertConf = drawingInsertConf/float(100)*PLT_MAX_SERVO_ANGLE+PLT_MIN_SERVO_ANGLE;
 	movingInsertConf = movingInsertConf/float(100)*PLT_MAX_SERVO_ANGLE+PLT_MIN_SERVO_ANGLE;
-	drawingScale = (sheetWidthConf>sheetHeightConf) ? sheetWidthConf/float(25000) : sheetHeightConf/float(25000);
+	drawingScale = (sheetWidthConf>sheetHeightConf) ? sheetWidthConf/float(65535) : sheetHeightConf/float(65535);
 
 	servo.attach(PIN_SERVO);
 	servo.write(movingInsertConf);
@@ -251,7 +251,7 @@ void Drawall::move(float x, float y) {
 
 void Drawall::processSDLine() {
 #define PARAM_MAX_LENGTH 5
-#define FUNC_NAME_MAX_LENGTH 3
+#define FUNC_NAME_MAX_LENGTH 2
 
 	byte i, j;
 	char functionName[FUNC_NAME_MAX_LENGTH + 1];
@@ -291,15 +291,13 @@ void Drawall::processSDLine() {
 	}
 
 	// Process the GCode function
-	if (!strcmp(functionName, "G00")) {
+	if (!strcmp(functionName, "G0")) {
 		move(parameters[0], parameters[1]); // move
-	} else if (!strcmp(functionName, "G01")) {
+	} else if (!strcmp(functionName, "G1")) {
 		line(parameters[0], parameters[1]); // draw
-	} else if (!strcmp(functionName, "G04")) {
+	} else if (!strcmp(functionName, "G4")) {
 		delay(1000 * parameters[0]); // drink some coffee
 		Serial.write(DRAW_WAITING);
-	} else if (!strcmp(functionName, "G21") || !strcmp(functionName, "M30")) {
-		// Knows but useless GCode functions
 	} else {
 		warning(WARN_UNKNOWN_GCODE_FUNCTION); // raise warning
 	}
@@ -418,11 +416,11 @@ void Drawall::drawArea() {
 
 	segment(0, 0);
 	delay(1000);
-	segment(25000, 0);
+	segment(65535, 0);
 	delay(1000);
-	segment(25000, 25000);
+	segment(65535, 65535);
 	delay(1000);
-	segment(0, 25000);
+	segment(0, 65535);
 	delay(1000);
 	segment(0, 0);
 
