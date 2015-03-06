@@ -261,6 +261,12 @@ void Drawall::processSDLine() {
 
 	// Get function name
 	car = file.read();
+
+	if (car == ';') {
+		while(file.read() != '\n');
+		return;
+	}
+
 	for (i = 0; car != ' ' && car != '\n' && i < FUNC_NAME_MAX_LENGTH + 1;
 			i++) {
 		functionName[i] = car;
