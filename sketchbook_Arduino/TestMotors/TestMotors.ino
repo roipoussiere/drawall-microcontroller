@@ -20,13 +20,11 @@
 #define SPEED_RPM 30 // Speed in rotations by seconds
 #define NB_TURNS 3 // Number of turns before switching direction
 
-#define SERIAL_BAUDS 57600 // Serial baud rate
-
 int initStepsByTurn = PLT_MOTORS_STEPS * SPEED_RPM / 60 * 2;
 long stepsByTurn;
 
 void setup() {
-	Serial.begin(SERIAL_BAUDS);
+	Serial.begin(PLT_SERIAL_BAUDS);
 	pinMode(PIN_LEFT_MOTOR_DIR, OUTPUT);
 	pinMode(PIN_LEFT_MOTOR_STEPS, OUTPUT);
 

@@ -37,6 +37,3 @@
 
 /// Enable serial communication, with 0 = disabled and 1 = enabled.
 #define EN_SERIAL 1
-
-/// Serial speed, in bauds.
-#define SERIAL_BAUDS 57600

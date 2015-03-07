@@ -27,7 +27,7 @@ void Drawall::start() {
 	pinInitialization();
 
 #if EN_SERIAL
-	Serial.begin(SERIAL_BAUDS);
+	Serial.begin(PLT_SERIAL_BAUDS);
 #endif
 
 	if (!SD.begin(PIN_SD_CS)) {
@@ -76,6 +76,13 @@ void Drawall::start() {
 #if EN_SERIAL
 	Serial.write(DRAW_WAITING);
 #endif
+	while (digitalRead(PIN_PAUSE) == HIGH);
+	delay(PLT_ANTIBOUNCE_BUTTON_DELAY);
+	if(digitalRead(PIN_PAUSE) == LOW) {
+		delay(PLT_ANTIBOUNCE_BUTTON_DELAY);
+		drawArea();
+	}
+	while(digitalRead(PIN_PAUSE) == HIGH);
 
 	delay(initDelayConf);
 }
@@ -94,16 +101,18 @@ void Drawall::pinInitialization() {
 	// Memory card
 	pinMode(PIN_SD_CS, OUTPUT);
 
+	// Pause button
+	pinMode(PIN_PAUSE, INPUT);
+	digitalWrite(PIN_PAUSE, HIGH);
+
 #if EN_LIMIT_SENSORS
 	// Limit sensors
-
 	pinMode(PIN_LEFT_CAPTOR, INPUT);
 	pinMode(PIN_RIGHT_CAPTOR, INPUT);
 
 	// Enable sensors internal pull-ups
 	digitalWrite(PIN_LEFT_CAPTOR, HIGH);
 	digitalWrite(PIN_RIGHT_CAPTOR, HIGH);
-	// TODO: set sensors interrupt here
 #endif
 
 #if EN_REMOTE_SUPPORT
@@ -364,6 +373,13 @@ void Drawall::segment(float x, float y) {
 	}
 
 	while (nbPasG > 0 || nbPasD > 0) {
+
+		if (digitalRead(PIN_PAUSE) == LOW) {
+			delay(PLT_ANTIBOUNCE_BUTTON_DELAY); // anti-bounce
+			while(digitalRead(PIN_PAUSE) == HIGH);
+			delay(PLT_ANTIBOUNCE_BUTTON_DELAY); // anti-bounce
+		}
+
 		// if delay is reached and there are steps to do
 		if ((nbPasG > 0) && (micros() - dernierTempsG >= delaiG)) {
 			dernierTempsG = micros(); // save current time
@@ -465,8 +481,9 @@ void Drawall::end() {
 
 	digitalWrite(PIN_ENABLE_MOTORS, HIGH);
 
-	while (true)
-		;
+	// If pressed, restart the drawing from current position
+	while (digitalRead(PIN_PAUSE) == HIGH);
+	delay(PLT_ANTIBOUNCE_BUTTON_DELAY);
 }
 
 void Drawall::message(char* message) {

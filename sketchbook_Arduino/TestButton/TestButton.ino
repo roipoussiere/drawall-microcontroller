@@ -1,57 +1,40 @@
 /*
-  Button
- 
- Turns on and off a light emitting diode(LED) connected to digital  
- pin 13, when pressing a pushbutton attached to pin 2. 
- 
- 
- The circuit:
- * LED attached from pin 13 to ground 
- * pushbutton attached to pin 2 from +5V
- * 10K resistor attached to pin 2 from ground
- 
- * Note: on most Arduinos there is already an LED on the board
- attached to pin 13.
- 
- 
- created 2005
- by DojoDave <http://www.0j0.org>
- modified 30 Aug 2011
- by Tom Igoe
- 
- This example code is in the public domain.
- 
- http://www.arduino.cc/en/Tutorial/Button
+ * This file is part of DraWall, a vertical plotter (aka drawbot) - see http://drawall.cc
+ * Drawall is free software and licenced under GNU GPL v3 : http://www.gnu.org/licenses/
+ * Copyright (c) 2012-2015 Nathanaël Jourdane
+ * 
+ * You can open the serial monitor window to get informations during execution.
+ *
+ * To change pins allocation or other parameters,
+ * edit pins.h or hardware.h files in the DraWallParameters folder.
  */
 
-// constants won't change. They're used here to 
-// set pin numbers:
-const int buttonPin = A2;     // the number of the pushbutton pin
-const int ledPin =  13;      // the number of the LED pin
-
-// variables will change:
-int buttonState = LOW;         // variable for reading the pushbutton status
+// Include parameter files.
+#include "pins.h"
+#include "hardware.h"
 
 void setup() {
-  // initialize the LED pin as an output:
-  pinMode(ledPin, OUTPUT);      
-  // initialize the pushbutton pin as an input:
-  pinMode(buttonPin, INPUT);
-  digitalWrite(buttonPin, HIGH);  
+  Serial.begin(PLT_SERIAL_BAUDS);
+  pinMode(PIN_PAUSE, INPUT);
+  digitalWrite(PIN_PAUSE, HIGH); // set internal pull-up
 }
 
 void loop(){
-  // read the state of the pushbutton value:
-  buttonState = digitalRead(buttonPin);
-
-  // check if the pushbutton is pressed.
-  // if it is, the buttonState is HIGH:
-  if (buttonState == HIGH) {     
-    // turn LED on:    
-    digitalWrite(ledPin, LOW);  
-  } 
-  else {
-    // turn LED off:
-    digitalWrite(ledPin, HIGH); 
+  Serial.println("Waiting for button press...");
+  while (digitalRead(PIN_PAUSE) == HIGH);
+  Serial.println("Button is pressed");
+  delay(PLT_ANTIBOUNCE_BUTTON_DELAY);
+  if(digitalRead(PIN_PAUSE) == LOW) {
+    delay(PLT_ANTIBOUNCE_BUTTON_DELAY);
+    Serial.println("Long press");
   }
+  
+  Serial.print("\nReloading");
+  delay(500);
+  Serial.print('.');
+  delay(500);
+  Serial.print('.');
+  delay(500);
+  Serial.println('.');
+  delay(500);
 }

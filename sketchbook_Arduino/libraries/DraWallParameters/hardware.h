@@ -30,6 +30,12 @@
 
 // *** Motors parameters ***
 
+/// Sensor detection limit.
+#define PLT_SENSOR_LIMIT 1500
+
+/// Serial speed, in bauds.
+#define PLT_SERIAL_BAUDS 57600
+
 /// Number of motor steps.
 #define PLT_MOTORS_STEPS 200
 
@@ -59,3 +65,5 @@
 
 /// Delay after the servo moves, in milliseconds.
 #define PLT_POST_SERVO_DELAY 100
+
+#define PLT_ANTIBOUNCE_BUTTON_DELAY 1000

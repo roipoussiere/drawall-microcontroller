@@ -50,4 +50,4 @@
 #define PIN_PAUSE 16
 
 /// Limit switch pin.
-#define PIN_LIMIT_SWITCH 17
+#define PIN_LIMIT_SWITCHES 17

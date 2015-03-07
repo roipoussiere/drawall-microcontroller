@@ -30,21 +30,18 @@
  // include the SD library:
 #include <SD.h>
 
+#include "pins.h"
+#include "hardware.h"
+
 // set up variables using the SD utility library functions:
 Sd2Card card;
 SdVolume volume;
 SdFile root;
 
-// change this to match your SD shield or module;
-// Arduino Ethernet shield: pin 4
-// Adafruit SD shields and modules: pin 10
-// Sparkfun SD shield: pin 8
-const int chipSelect = 10;
-
 void setup()
 {
  // Open serial communications and wait for port to open:
-  Serial.begin(57600);
+  Serial.begin(PLT_SERIAL_BAUDS);
    while (!Serial) {
     ; // wait for serial port to connect. Needed for Leonardo only
   }
@@ -60,7 +57,7 @@ void setup()
 
   // we'll use the initialization code from the utility libraries
   // since we're just testing if the card is working!
-  if (!card.init(SPI_HALF_SPEED, chipSelect)) {
+  if (!card.init(SPI_HALF_SPEED, PIN_SD_CS)) {
     Serial.println("initialization failed. Things to check:");
     Serial.println("* is a card is inserted?");
     Serial.println("* Is your wiring correct?");

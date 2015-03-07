@@ -7,8 +7,7 @@
  * the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details. You should have received a copy of the GNU
  * General Public License along with DraWall. If not, see <http://www.gnu.org/licenses/>.
- * © 2012–2014 Nathanaël Jourdane
- * © 2014 Victor Adam
+ * © 2012–2015 Nathanaël Jourdane
  */
 
 /*
@@ -26,10 +25,11 @@ Drawall d;
 
 // Start the drawing(s)
 void setup() {
-	d.start();
-	//d.drawArea();
-	d.draw();
-        d.end();
 }
 
-void loop() {}
+void loop() {
+  d.start();
+  //d.drawArea();
+  d.draw();
+  d.end();
+}

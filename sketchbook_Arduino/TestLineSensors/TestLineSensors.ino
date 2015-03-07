@@ -4,12 +4,11 @@
 
 // Outputs and inputs via the serial terminal
 
-#define LIMIT 1500
-
-int sensors_pin = 3; // connected to digital 3
+#include "pins.h"
+#include "hardware.h"
 
 void setup(){
-  Serial.begin(57600);
+  Serial.begin(PLT_SERIAL_BAUDS);
 }
 
 void loop(){
@@ -26,15 +25,15 @@ int readQD(){
   // Returns value from the QRE1113 
   // Lower numbers mean more refleacive
   // More than 3000 means nothing was reflected.
-  pinMode(sensors_pin, OUTPUT);
-  digitalWrite(sensors_pin, HIGH);  
+  pinMode(PIN_LIMIT_SWITCHES, OUTPUT);
+  digitalWrite(PIN_LIMIT_SWITCHES, HIGH);  
   delayMicroseconds(10);
-  pinMode(sensors_pin, INPUT);
+  pinMode(PIN_LIMIT_SWITCHES, INPUT);
 
   long time = micros();
 
   // Time how long the input is HIGH, but quit after 3ms as nothing happens after that
-  while (digitalRead(sensors_pin) == HIGH && micros() - time < 3000);
+  while (digitalRead(PIN_LIMIT_SWITCHES) == HIGH && micros() - time < 3000);
 
-  return (micros() - time) > LIMIT;
+  return (micros() - time) > PLT_SENSOR_LIMIT;
 }
