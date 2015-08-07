@@ -14,17 +14,14 @@
  * Main library file.
  */
 
-//#define I_AM_CODING
 #include <drawall.h>
 
-// TODO remove all public methods, they are useless and it will save space.
-// TODO use all variables without Arduino.h defines, like true, false, etc.
-// TODO Make a Parameter object
-// TODO: Interrupt routine with ISR(INT0_vect){...}
 // TODO: make a method to write data on serial, with #if EN_SERIAL test
 
 void Drawall::start() {
 	pinInitialization();
+
+	digitalWrite(PIN_ENABLE_MOTORS, LOW); // disable motors
 
 #if EN_SERIAL
 	Serial.begin(PLT_SERIAL_BAUDS);
@@ -37,12 +34,13 @@ void Drawall::start() {
 	// Load all parameters from the configuration file
 	loadParameters();
 
-	drawingInsertConf = drawingInsertConf/float(100)*PLT_MAX_SERVO_ANGLE+PLT_MIN_SERVO_ANGLE;
-	movingInsertConf = movingInsertConf/float(100)*PLT_MAX_SERVO_ANGLE+PLT_MIN_SERVO_ANGLE;
+	drawingInsertConf = drawingInsertConf/float(100)*PLT_MAX_SERVO_ANGLE + PLT_MIN_SERVO_ANGLE;
+	movingInsertConf = movingInsertConf/float(100)*PLT_MAX_SERVO_ANGLE + PLT_MIN_SERVO_ANGLE;
 	drawingScale = (sheetWidthConf>sheetHeightConf) ? sheetWidthConf/float(65535) : sheetHeightConf/float(65535);
 
 	servo.attach(PIN_SERVO);
 	servo.write(movingInsertConf);
+	currentServoAngle = movingInsertConf;
 
 	isWriting = true; // to make write() works for the first time.
 
@@ -69,22 +67,23 @@ void Drawall::start() {
 	Serial.println(rightLength);
 	Serial.println(stepLength * 1000);
 	Serial.write(DRAW_END_INSTRUCTIONS);
-#endif
 
-	digitalWrite(PIN_ENABLE_MOTORS, LOW); // power
-
-#if EN_SERIAL
 	Serial.write(DRAW_WAITING);
 #endif
 	while (digitalRead(PIN_PAUSE) == HIGH);
+	digitalWrite(PIN_ENABLE_MOTORS, HIGH); // enable motors
 	delay(PLT_ANTIBOUNCE_BUTTON_DELAY);
+
+	// Draw area if long push
 	if(digitalRead(PIN_PAUSE) == LOW) {
 		delay(PLT_ANTIBOUNCE_BUTTON_DELAY);
-		drawArea();
+		showArea();
+		while(digitalRead(PIN_PAUSE) == HIGH);
 	}
-	while(digitalRead(PIN_PAUSE) == HIGH);
 
 	delay(initDelayConf);
+	draw();
+	end();
 }
 
 void Drawall::pinInitialization() {
@@ -165,30 +164,25 @@ void Drawall::writingPen(bool shouldWrite) {
 		// If pen is not writing and should write
 
 		delay(PLT_PRE_SERVO_DELAY);
-		for(int pos = movingInsertConf; pos>=drawingInsertConf; pos-=1)
-		{                                
-			servo.write(pos);
-			delay(15);
-		}
+		moveServo(drawingInsertConf);
 		delay(PLT_POST_SERVO_DELAY);
 
 #if EN_SERIAL
 		Serial.write(DRAW_WRITING);
+		Serial.println("\nDRAW_WRITING");
+
 #endif
 		isWriting = true;
 	} else if (!shouldWrite && isWriting) {
 		// If pen is writing and shouldn't
 
 		delay(PLT_PRE_SERVO_DELAY);
-		for(int pos = drawingInsertConf; pos < movingInsertConf; pos += 1)
-		{
-			servo.write(pos);
-			delay(15);
-		} 
+		moveServo(movingInsertConf);
 		delay(PLT_POST_SERVO_DELAY);
 
 #if EN_SERIAL
 		Serial.write(DRAW_MOVING);
+		Serial.println("\nDRAW_MOVING");
 #endif
 		isWriting = false;
 	}
@@ -312,6 +306,15 @@ void Drawall::processSDLine() {
 	}
 }
 
+void Drawall::moveServo(unsigned int desiredAngle) {
+	while(currentServoAngle != desiredAngle)
+	{
+		currentServoAngle += (desiredAngle > currentServoAngle ? 1 : -1);
+		servo.write(currentServoAngle);
+		delay(PLT_PAUSE_MOVING_SERVO);
+	}
+}
+
 void Drawall::segment(float x, float y) {
 	unsigned long leftTargetLength = positionToLeftLength(
 			drawingScale * x, drawingScale * y);
@@ -376,6 +379,7 @@ void Drawall::segment(float x, float y) {
 
 		if (digitalRead(PIN_PAUSE) == LOW) {
 			delay(PLT_ANTIBOUNCE_BUTTON_DELAY); // anti-bounce
+			
 			while(digitalRead(PIN_PAUSE) == HIGH);
 			delay(PLT_ANTIBOUNCE_BUTTON_DELAY); // anti-bounce
 		}
@@ -417,18 +421,14 @@ void Drawall::warning(SerialData warningNumber) {
 }
 
 // TODO: do not use CardinalPoint
-void Drawall::drawArea() {
-	file = SD.open(drawingNameConf);
+void Drawall::showArea() {
+	file = SD.open(drawingNamesConf);
 
 	if (!file) {
 		error(ERR_FILE_NOT_FOUND);
 	}
 
-	for(int pos = movingInsertConf; pos < PLT_MAX_SERVO_ANGLE; pos += 1)
-	{
-		servo.write(pos);
-		delay(15);
-	}
+	moveServo(PLT_MAX_SERVO_ANGLE);
 
 	segment(0, 0);
 	delay(1000);
@@ -448,10 +448,39 @@ void Drawall::drawArea() {
 #endif
 }
 
-// TODO: do not use CardinalPoint
 void Drawall::draw() {
-	file = SD.open(drawingNameConf);
+	char name[15];
+	char car;
+	int i = 0;
+	int j = 0;
+	int drawingNumber = 0;
 
+	while (car != '\n') {
+		car = drawingNamesConf[i++];
+		if(car != ',' && car != '\0') {
+			name[j++] = car;
+		} else {
+			name[j] = '\0';
+			j = 0;
+			
+			// Wait for button press before to start the next drawing
+			drawingNumber++;
+
+			if(drawingNumber > 1) {
+				while (digitalRead(PIN_PAUSE) == HIGH);
+				delay(initDelayConf);
+			}
+			draw(name);
+			
+			moveServo(PLT_MAX_SERVO_ANGLE);
+			segment(endPosXConf/drawingScale, endPosYConf/drawingScale);
+			// TODO ring buzzer
+		}
+	}
+}
+
+void Drawall::draw(char* drawingName) {
+	file = SD.open(drawingName);
 	if (!file) {
 		error(ERR_FILE_NOT_FOUND);
 	}
@@ -470,20 +499,8 @@ void Drawall::draw() {
 }
 
 void Drawall::end() {
-	for(int pos = movingInsertConf; pos < PLT_MAX_SERVO_ANGLE; pos += 1)
-	{
-		servo.write(pos);
-		delay(15);
-	}
-
-	segment(endPosXConf/drawingScale, endPosYConf/drawingScale);
-	// TODO ring buzzer
-
-	digitalWrite(PIN_ENABLE_MOTORS, HIGH);
-
-	// If pressed, restart the drawing from current position
-	while (digitalRead(PIN_PAUSE) == HIGH);
-	delay(PLT_ANTIBOUNCE_BUTTON_DELAY);
+	digitalWrite(PIN_ENABLE_MOTORS, LOW); // disable motors
+	while (true);
 }
 
 void Drawall::message(char* message) {
@@ -493,7 +510,7 @@ void Drawall::message(char* message) {
 }
 
 void Drawall::loadParameters() {
-#define LINE_MAX_LENGTH 32
+#define LINE_MAX_LENGTH 50
 #define NB_PARAMETERS 17
 
 	char buffer[LINE_MAX_LENGTH + 1];
@@ -550,8 +567,8 @@ void Drawall::loadParameters() {
 
 		// * Convert text data into usable data *
 
-		if (!strcmp(key, "drawingName")) {
-			strcpy(drawingNameConf, value);
+		if (!strcmp(key, "drawingNames")) {
+			strcpy(drawingNamesConf, value);
 		} else if (!strcmp(key, "drawingWidth")) {
 			drawingWidthConf = atoi(value);
 			// note : never used yet.

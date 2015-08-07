@@ -42,14 +42,14 @@
 /// Motor step mode, from 0 (full step) to 5 (1/32 step).
 #define PLT_STEP_MODE 5
 
-/// Pinion diameter, in micrometers.
+/// Pinion diameter, in micrometers (diameter = nb_teeth*module/pi, module=2 for GT2 belt).
 #define PLT_PINION_DIAMETER 12730
 
 /// Direction of the left motor. True to release the belt when the motor rotates clockwise, false if counter clockwise.
-#define PLT_LEFT_DIRECTION true
+#define PLT_LEFT_DIRECTION false
 
 /// Direction of the right motor. True to release the belt when the motor rotates clockwise, false if counter clockwise.
-#define PLT_RIGHT_DIRECTION false
+#define PLT_RIGHT_DIRECTION true
 
 /// Virtual reversing state of the motors. True to reverse the motors, false to don't reverse them.
 #define PLT_REVERSE_MOTORS false
@@ -62,6 +62,8 @@
 
 /// Delay before the servo moves, in milliseconds.
 #define PLT_PRE_SERVO_DELAY 100
+
+#define PLT_PAUSE_MOVING_SERVO 15
 
 /// Delay after the servo moves, in milliseconds.
 #define PLT_POST_SERVO_DELAY 100

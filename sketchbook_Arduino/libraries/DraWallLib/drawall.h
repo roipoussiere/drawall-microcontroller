@@ -85,16 +85,27 @@ public:
 	void line(float x, float y);
 
 	/**
+	 * Move the servo-motor to the desired angle.
+	 */
+	void moveServo(unsigned int angle);
+
+	/**
 	 * Draw a rectangle matching with the limits of the drawing.
 	 */
-	void drawArea();
+	void showArea();
+
+	/**
+	 * Draw a drawing as descibed in the \a fileName file stored int the SD card.
+	 * \param fileName Le nom du fichier gcode à dessiner.
+	 */
+	void draw();
 
 	/**
 	 * Draw a drawing as descibed in the \a fileName file stored int the SD card.
 	 * \param fileName Le nom du fichier gcode à dessiner.
 	 * TODO Check the M02 presence (end of drawing) before the end of drawing.
 	 */
-	void draw();
+	void draw(char* drawingName);
 
 private:
 
@@ -151,6 +162,9 @@ private:
 	/// Instance of the servo, used to drive it with the \a Servo library.
 	Servo servo;
 
+	/// The servo angle.
+	unsigned int currentServoAngle;
+
 	/// The GCode file of the drawing.
 	// TODO: use in local variable
 	File file;
@@ -205,9 +219,8 @@ private:
 	 * Name of the file stored on the memory card which will drawn.
 	 * Default value: "drawing"
 	 * Range: [1 char, 20 chars]
-	 * TODO [v1+] The plotter should draw more than one file.
 	 */
-	char drawingNameConf[15];
+	char drawingNamesConf[40];
 
 	/**
 	 * Drawing width
@@ -339,7 +352,7 @@ private:
 	 * Range: [0 mm, sheetWidth]
 	 * TODO v1.0: set up the initial position automatically.
 	 */
-	unsigned int initPosXConf;
+	int initPosXConf;
 
 	/**
 	 * Initial plotter horizontal position
@@ -350,7 +363,7 @@ private:
 	 * Range: [0 mm, sheetHeight]
 	 * TODO v1.0: set up the initial position automatically.
 	 */
-	unsigned int initPosYConf;
+	int initPosYConf;
 
 	/**
 	 * Final plotter horizontal position
@@ -359,7 +372,7 @@ private:
 	 * Default value: Center
 	 * Range: [0 mm, sheetWidth]
 	 */
-	unsigned int endPosXConf;
+	int endPosXConf;
 
 	/**
 	 * Final plotter vertical position
@@ -368,7 +381,7 @@ private:
 	 * Default value: Bottom
 	 * Range: [0 mm, sheetHeight]
 	 */
-	unsigned int endPosYConf;
+	int endPosYConf;
 
 	//-------------------------------------------------------------------------
 

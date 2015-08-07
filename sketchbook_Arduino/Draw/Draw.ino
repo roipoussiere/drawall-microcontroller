@@ -16,20 +16,15 @@ ALL THE OPTIONS FOR THE DRAWING MUST BE SET IN THE CONFIGURATION FILE, STORED IN
 YOU SHOULD NOT MODIFY THIS FILE, EXCEPT IF YOU WANT TO HACK THE DRAWALL.
 */
 
-// Include drawall library and his dependencies.
 #include <SD.h>
 #include <Servo.h>
 #include <drawall.h>
 
 Drawall d;
 
-// Start the drawing(s)
 void setup() {
 }
 
 void loop() {
   d.start();
-  //d.drawArea();
-  d.draw();
-  d.end();
 }

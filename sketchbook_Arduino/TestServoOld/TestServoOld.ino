@@ -5,8 +5,8 @@ Servo servo;
 #include "pins.h"
 #include "hardware.h"
 
-int drawingInsertConf = 37;
-int movingInsertConf = 47;
+int drawingInsertConf = 20;
+int movingInsertConf = 80;
 
 void setup() 
 { 
@@ -22,7 +22,7 @@ void loop()
 {
 	delay(PLT_PRE_SERVO_DELAY);
 	for(int pos = movingInsertConf; pos>=drawingInsertConf; pos-=1)
-	{                                
+	{
 		servo.write(pos);
                 Serial.println(pos);
 		delay(15);
